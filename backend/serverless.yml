@@ -1,0 +1,625 @@
+service: affittochiaro-api
+
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: eu-north-1
+  stage: ${opt:stage, 'dev'}
+  memorySize: 256
+  timeout: 30
+
+  environment:
+    STAGE: ${self:provider.stage}
+    DB_HOST: ${ssm:/affittochiaro/${self:provider.stage}/db/host}
+    DB_PORT: ${ssm:/affittochiaro/${self:provider.stage}/db/port}
+    DB_NAME: ${ssm:/affittochiaro/${self:provider.stage}/db/name}
+    DB_USER: ${ssm:/affittochiaro/${self:provider.stage}/db/user}
+    DB_PASSWORD: ${ssm:/affittochiaro/${self:provider.stage}/db/password}
+    COGNITO_USER_POOL_ID: !Ref CognitoUserPool
+    COGNITO_CLIENT_ID: !Ref CognitoUserPoolClient
+    S3_BUCKET: !Ref UploadsBucket
+    STRIPE_SECRET_KEY: ${ssm:/affittochiaro/${self:provider.stage}/stripe/secret_key}
+    STRIPE_WEBHOOK_SECRET: ${ssm:/affittochiaro/${self:provider.stage}/stripe/webhook_secret}
+    SES_FROM_EMAIL: noreply@affittochiaro.it
+    WHATSAPP_PHONE_NUMBER_ID: ${ssm:/affittochiaro/${self:provider.stage}/whatsapp/phone_id}
+    WHATSAPP_ACCESS_TOKEN: ${ssm:/affittochiaro/${self:provider.stage}/whatsapp/access_token}
+    WEBSOCKET_CONNECTIONS_TABLE: !Ref WebSocketConnectionsTable
+    SCRAPER_QUEUE_URL: !Ref ScraperQueue
+    MATCHING_QUEUE_URL: !Ref MatchingQueue
+    NOTIFICATION_RETRY_QUEUE_URL: !Ref NotificationRetryQueue
+    # Twilio (WhatsApp)
+    TWILIO_ACCOUNT_SID: ${ssm:/affittochiaro/${self:provider.stage}/twilio/account_sid, ''}
+    TWILIO_AUTH_TOKEN: ${ssm:/affittochiaro/${self:provider.stage}/twilio/auth_token, ''}
+    TWILIO_WHATSAPP_NUMBER: ${ssm:/affittochiaro/${self:provider.stage}/twilio/whatsapp_number, ''}
+    # SES
+    SES_SENDER_EMAIL: ${ssm:/affittochiaro/${self:provider.stage}/ses/sender_email, 'noreply@affittochiaro.it'}
+    SES_SENDER_NAME: Affittochiaro
+
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - cognito-idp:*
+          Resource: !GetAtt CognitoUserPool.Arn
+        - Effect: Allow
+          Action:
+            - s3:GetObject
+            - s3:PutObject
+            - s3:DeleteObject
+          Resource: !Join ['', [!GetAtt UploadsBucket.Arn, '/*']]
+        - Effect: Allow
+          Action:
+            - ses:SendEmail
+            - ses:SendRawEmail
+          Resource: '*'
+        - Effect: Allow
+          Action:
+            - sqs:SendMessage
+            - sqs:ReceiveMessage
+            - sqs:DeleteMessage
+          Resource:
+            - !GetAtt ScraperQueue.Arn
+            - !GetAtt MatchingQueue.Arn
+            - !GetAtt NotificationRetryQueue.Arn
+        - Effect: Allow
+          Action:
+            - dynamodb:GetItem
+            - dynamodb:PutItem
+            - dynamodb:DeleteItem
+            - dynamodb:Query
+          Resource:
+            - !GetAtt WebSocketConnectionsTable.Arn
+            - !Join ['', [!GetAtt WebSocketConnectionsTable.Arn, '/index/*']]
+        - Effect: Allow
+          Action:
+            - execute-api:ManageConnections
+          Resource: '*'
+
+plugins:
+  - serverless-esbuild
+  - serverless-offline
+
+custom:
+  esbuild:
+    bundle: true
+    minify: false
+    sourcemap: true
+    exclude:
+      - aws-sdk
+    target: node18
+    platform: node
+    concurrency: 10
+
+functions:
+  # ========== AUTH TRIGGERS ==========
+  preSignUp:
+    handler: lambdas/auth/cognito-triggers/preSignUp.handler
+    events:
+      - cognitoUserPool:
+          pool: CognitoUserPool
+          trigger: PreSignUp
+
+  postConfirmation:
+    handler: lambdas/auth/cognito-triggers/postConfirmation.handler
+    events:
+      - cognitoUserPool:
+          pool: CognitoUserPool
+          trigger: PostConfirmation
+
+  preTokenGeneration:
+    handler: lambdas/auth/cognito-triggers/preTokenGeneration.handler
+    events:
+      - cognitoUserPool:
+          pool: CognitoUserPool
+          trigger: PreTokenGeneration
+
+  # ========== USERS API ==========
+  getCurrentUser:
+    handler: lambdas/api/users/getCurrentUser.handler
+    events:
+      - http:
+          path: /users/me
+          method: get
+          cors: true
+          authorizer:
+            type: COGNITO_USER_POOLS
+            authorizerId: !Ref ApiGatewayAuthorizer
+
+  # ========== TENANTS API ==========
+  listTenants:
+    handler: lambdas/api/tenants/list.handler
+    events:
+      - http:
+          path: /tenants
+          method: get
+          cors: true
+          authorizer:
+            type: COGNITO_USER_POOLS
+            authorizerId: !Ref ApiGatewayAuthorizer
+
+  getTenant:
+    handler: lambdas/api/tenants/get.handler
+    events:
+      - http:
+          path: /tenants/{tenantId}
+          method: get
+          cors: true
+          authorizer:
+            type: COGNITO_USER_POOLS
+            authorizerId: !Ref ApiGatewayAuthorizer
+
+  getTenantProfile:
+    handler: lambdas/api/tenants/getProfile.handler
+    events:
+      - http:
+          path: /tenants/me
+          method: get
+          cors: true
+          authorizer:
+            type: COGNITO_USER_POOLS
+            authorizerId: !Ref ApiGatewayAuthorizer
+
+  updateTenantProfile:
+    handler: lambdas/api/tenants/updateProfile.handler
+    events:
+      - http:
+          path: /tenants/me
+          method: put
+          cors: true
+          authorizer:
+            type: COGNITO_USER_POOLS
+            authorizerId: !Ref ApiGatewayAuthorizer
+
+  unlockTenant:
+    handler: lambdas/api/tenants/unlock.handler
+    events:
+      - http:
+          path: /tenants/{tenantId}/unlock
+          method: post
+          cors: true
+          authorizer:
+            type: COGNITO_USER_POOLS
+            authorizerId: !Ref ApiGatewayAuthorizer
+
+  uploadDocument:
+    handler: lambdas/api/tenants/uploadDocument.handler
+    events:
+      - http:
+          path: /tenants/me/documents
+          method: post
+          cors: true
+          authorizer:
+            type: COGNITO_USER_POOLS
+            authorizerId: !Ref ApiGatewayAuthorizer
+
+  # ========== AGENCIES API ==========
+  getAgencyProfile:
+    handler: lambdas/api/agencies/getProfile.handler
+    events:
+      - http:
+          path: /agencies/me
+          method: get
+          cors: true
+          authorizer:
+            type: COGNITO_USER_POOLS
+            authorizerId: !Ref ApiGatewayAuthorizer
+
+  updateAgencyProfile:
+    handler: lambdas/api/agencies/updateProfile.handler
+    events:
+      - http:
+          path: /agencies/me
+          method: put
+          cors: true
+          authorizer:
+            type: COGNITO_USER_POOLS
+            authorizerId: !Ref ApiGatewayAuthorizer
+
+  getCredits:
+    handler: lambdas/api/agencies/getCredits.handler
+    events:
+      - http:
+          path: /agencies/me/credits
+          method: get
+          cors: true
+          authorizer:
+            type: COGNITO_USER_POOLS
+            authorizerId: !Ref ApiGatewayAuthorizer
+
+  getUnlockedTenants:
+    handler: lambdas/api/agencies/getUnlockedTenants.handler
+    events:
+      - http:
+          path: /agencies/me/unlocked-tenants
+          method: get
+          cors: true
+          authorizer:
+            type: COGNITO_USER_POOLS
+            authorizerId: !Ref ApiGatewayAuthorizer
+
+  # ========== LISTINGS API ==========
+  listListings:
+    handler: lambdas/api/listings/list.handler
+    events:
+      - http:
+          path: /listings
+          method: get
+          cors: true
+
+  getListing:
+    handler: lambdas/api/listings/get.handler
+    events:
+      - http:
+          path: /listings/{listingId}
+          method: get
+          cors: true
+
+  createListing:
+    handler: lambdas/api/listings/create.handler
+    events:
+      - http:
+          path: /listings
+          method: post
+          cors: true
+          authorizer:
+            type: COGNITO_USER_POOLS
+            authorizerId: !Ref ApiGatewayAuthorizer
+
+  updateListing:
+    handler: lambdas/api/listings/update.handler
+    events:
+      - http:
+          path: /listings/{listingId}
+          method: put
+          cors: true
+          authorizer:
+            type: COGNITO_USER_POOLS
+            authorizerId: !Ref ApiGatewayAuthorizer
+
+  deleteListing:
+    handler: lambdas/api/listings/delete.handler
+    events:
+      - http:
+          path: /listings/{listingId}
+          method: delete
+          cors: true
+          authorizer:
+            type: COGNITO_USER_POOLS
+            authorizerId: !Ref ApiGatewayAuthorizer
+
+  # ========== APPLICATIONS API ==========
+  applyToListing:
+    handler: lambdas/api/applications/apply.handler
+    events:
+      - http:
+          path: /listings/{listingId}/apply
+          method: post
+          cors: true
+          authorizer:
+            type: COGNITO_USER_POOLS
+            authorizerId: !Ref ApiGatewayAuthorizer
+
+  listApplications:
+    handler: lambdas/api/applications/list.handler
+    events:
+      - http:
+          path: /applications
+          method: get
+          cors: true
+          authorizer:
+            type: COGNITO_USER_POOLS
+            authorizerId: !Ref ApiGatewayAuthorizer
+
+  updateApplication:
+    handler: lambdas/api/applications/update.handler
+    events:
+      - http:
+          path: /applications/{applicationId}
+          method: patch
+          cors: true
+          authorizer:
+            type: COGNITO_USER_POOLS
+            authorizerId: !Ref ApiGatewayAuthorizer
+
+  # ========== MATCHING API ==========
+  getMatchingListings:
+    handler: lambdas/api/matching/getListingsForTenant.handler
+    events:
+      - http:
+          path: /matching/tenant/{tenantId}/listings
+          method: get
+          cors: true
+          authorizer:
+            type: COGNITO_USER_POOLS
+            authorizerId: !Ref ApiGatewayAuthorizer
+
+  getMatchingTenants:
+    handler: lambdas/api/matching/getTenantsForListing.handler
+    events:
+      - http:
+          path: /matching/listing/{listingId}/tenants
+          method: get
+          cors: true
+          authorizer:
+            type: COGNITO_USER_POOLS
+            authorizerId: !Ref ApiGatewayAuthorizer
+
+  # ========== NOTIFICATIONS API ==========
+  listNotifications:
+    handler: lambdas/api/notifications/list.handler
+    events:
+      - http:
+          path: /notifications
+          method: get
+          cors: true
+          authorizer:
+            type: COGNITO_USER_POOLS
+            authorizerId: !Ref ApiGatewayAuthorizer
+
+  markNotificationsRead:
+    handler: lambdas/api/notifications/markRead.handler
+    events:
+      - http:
+          path: /notifications/mark-read
+          method: post
+          cors: true
+          authorizer:
+            type: COGNITO_USER_POOLS
+            authorizerId: !Ref ApiGatewayAuthorizer
+
+  getNotificationPreferences:
+    handler: lambdas/api/notifications/getPreferences.handler
+    events:
+      - http:
+          path: /notifications/preferences
+          method: get
+          cors: true
+          authorizer:
+            type: COGNITO_USER_POOLS
+            authorizerId: !Ref ApiGatewayAuthorizer
+
+  updateNotificationPreferences:
+    handler: lambdas/api/notifications/updatePreferences.handler
+    events:
+      - http:
+          path: /notifications/preferences
+          method: put
+          cors: true
+          authorizer:
+            type: COGNITO_USER_POOLS
+            authorizerId: !Ref ApiGatewayAuthorizer
+
+  # ========== PAYMENTS API ==========
+  createCheckout:
+    handler: lambdas/api/payments/createCheckout.handler
+    events:
+      - http:
+          path: /payments/create-checkout
+          method: post
+          cors: true
+          authorizer:
+            type: COGNITO_USER_POOLS
+            authorizerId: !Ref ApiGatewayAuthorizer
+
+  stripeWebhook:
+    handler: lambdas/api/payments/webhook.handler
+    events:
+      - http:
+          path: /payments/webhook
+          method: post
+          cors: true
+
+  createPortalSession:
+    handler: lambdas/api/payments/createPortal.handler
+    events:
+      - http:
+          path: /payments/portal
+          method: post
+          cors: true
+          authorizer:
+            type: COGNITO_USER_POOLS
+            authorizerId: !Ref ApiGatewayAuthorizer
+
+  # ========== WEBSOCKET ==========
+  wsConnect:
+    handler: lambdas/api/websocket/connect.handler
+    events:
+      - websocket:
+          route: $connect
+
+  wsDisconnect:
+    handler: lambdas/api/websocket/disconnect.handler
+    events:
+      - websocket:
+          route: $disconnect
+
+  # ========== WORKERS ==========
+  scraperScheduler:
+    handler: lambdas/workers/scraper/scheduler.handler
+    timeout: 900
+    events:
+      - schedule: cron(0 3 * * ? *)
+
+  scraperProcessor:
+    handler: lambdas/workers/scraper/processor.handler
+    timeout: 300
+    events:
+      - sqs:
+          arn: !GetAtt ScraperQueue.Arn
+          batchSize: 1
+
+  matchingCalculator:
+    handler: lambdas/workers/matching/calculator.handler
+    timeout: 300
+    events:
+      - sqs:
+          arn: !GetAtt MatchingQueue.Arn
+          batchSize: 10
+
+  notificationSender:
+    handler: lambdas/workers/notifications/sender.handler
+    timeout: 60
+
+  # ========== NOTIFICATION DISPATCHER ==========
+  notificationDispatcher:
+    handler: lambdas/notifications/dispatcher.handler
+    timeout: 30
+    memorySize: 512
+    events:
+      - http:
+          path: /notifications/send
+          method: post
+          cors: true
+          authorizer:
+            type: COGNITO_USER_POOLS
+            authorizerId: !Ref ApiGatewayAuthorizer
+
+  notificationRetryProcessor:
+    handler: lambdas/notifications/retry-processor.handler
+    timeout: 60
+    memorySize: 256
+    events:
+      - sqs:
+          arn: !GetAtt NotificationRetryQueue.Arn
+          batchSize: 5
+
+resources:
+  Resources:
+    # ========== COGNITO ==========
+    CognitoUserPool:
+      Type: AWS::Cognito::UserPool
+      Properties:
+        UserPoolName: affittochiaro-${self:provider.stage}
+        AutoVerifiedAttributes:
+          - email
+        UsernameAttributes:
+          - email
+        Policies:
+          PasswordPolicy:
+            MinimumLength: 8
+            RequireUppercase: true
+            RequireLowercase: true
+            RequireNumbers: true
+            RequireSymbols: false
+        Schema:
+          - Name: email
+            Required: true
+            Mutable: true
+          - Name: role
+            AttributeDataType: String
+            Mutable: true
+          - Name: profile_id
+            AttributeDataType: String
+            Mutable: true
+        EmailConfiguration:
+          EmailSendingAccount: COGNITO_DEFAULT
+
+    CognitoUserPoolClient:
+      Type: AWS::Cognito::UserPoolClient
+      Properties:
+        ClientName: affittochiaro-web-${self:provider.stage}
+        UserPoolId: !Ref CognitoUserPool
+        GenerateSecret: false
+        ExplicitAuthFlows:
+          - ALLOW_USER_PASSWORD_AUTH
+          - ALLOW_REFRESH_TOKEN_AUTH
+          - ALLOW_USER_SRP_AUTH
+        PreventUserExistenceErrors: ENABLED
+
+    # ========== API GATEWAY ==========
+    ApiGatewayAuthorizer:
+      Type: AWS::ApiGateway::Authorizer
+      Properties:
+        Name: CognitoAuthorizer
+        Type: COGNITO_USER_POOLS
+        IdentitySource: method.request.header.Authorization
+        RestApiId: !Ref ApiGatewayRestApi
+        ProviderARNs:
+          - !GetAtt CognitoUserPool.Arn
+
+    # ========== S3 ==========
+    UploadsBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: affittochiaro-uploads-${self:provider.stage}
+        CorsConfiguration:
+          CorsRules:
+            - AllowedHeaders:
+                - '*'
+              AllowedMethods:
+                - GET
+                - PUT
+                - POST
+                - DELETE
+              AllowedOrigins:
+                - '*'
+              MaxAge: 3000
+
+    # ========== DYNAMODB ==========
+    WebSocketConnectionsTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: affittochiaro-ws-connections-${self:provider.stage}
+        AttributeDefinitions:
+          - AttributeName: connectionId
+            AttributeType: S
+          - AttributeName: userId
+            AttributeType: S
+        KeySchema:
+          - AttributeName: connectionId
+            KeyType: HASH
+        GlobalSecondaryIndexes:
+          - IndexName: userId-index
+            KeySchema:
+              - AttributeName: userId
+                KeyType: HASH
+            Projection:
+              ProjectionType: ALL
+        BillingMode: PAY_PER_REQUEST
+
+    # ========== SQS ==========
+    ScraperQueue:
+      Type: AWS::SQS::Queue
+      Properties:
+        QueueName: affittochiaro-scraper-${self:provider.stage}
+        VisibilityTimeout: 900
+        MessageRetentionPeriod: 86400
+
+    MatchingQueue:
+      Type: AWS::SQS::Queue
+      Properties:
+        QueueName: affittochiaro-matching-${self:provider.stage}
+        VisibilityTimeout: 300
+        MessageRetentionPeriod: 86400
+
+    NotificationRetryQueue:
+      Type: AWS::SQS::Queue
+      Properties:
+        QueueName: affittochiaro-notification-retry-${self:provider.stage}
+        VisibilityTimeout: 120
+        MessageRetentionPeriod: 86400
+        DelaySeconds: 300
+
+  Outputs:
+    CognitoUserPoolId:
+      Value: !Ref CognitoUserPool
+      Export:
+        Name: ${self:service}-${self:provider.stage}-UserPoolId
+
+    CognitoUserPoolClientId:
+      Value: !Ref CognitoUserPoolClient
+      Export:
+        Name: ${self:service}-${self:provider.stage}-UserPoolClientId
+
+    ApiGatewayUrl:
+      Value: !Sub https://${ApiGatewayRestApi}.execute-api.${self:provider.region}.amazonaws.com/${self:provider.stage}
+      Export:
+        Name: ${self:service}-${self:provider.stage}-ApiUrl
+
+    WebSocketUrl:
+      Value: !Sub wss://${WebsocketsApi}.execute-api.${self:provider.region}.amazonaws.com/${self:provider.stage}
+      Export:
+        Name: ${self:service}-${self:provider.stage}-WsUrl

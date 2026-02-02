@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Affittochiaro - Il Curriculum dell'Inquilino</title>
+    <meta name="description" content="Affittochiaro - La piattaforma per affitti immobiliari in Italia. Crea il tuo profilo inquilino e trova casa velocemente.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700&family=Montserrat:wght@700&display=swap" rel="stylesheet">
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              'brand-green': '#004832',
+              'action-green': '#00D094',
+              'soft-green': '#F4F9F6',
+              'error-red': '#FF5A5F',
+              'trust-blue': '#2B7DE9',
+              'dark-gray': '#1A1A1A',
+              'medium-gray': '#666666',
+              // App colors
+              'primary': {
+                50: '#E6FFF5',
+                100: '#B3FFE0',
+                200: '#80FFCC',
+                300: '#4DFFB8',
+                400: '#1AFFA3',
+                500: '#00C48C',
+                600: '#00A376',
+                700: '#008261',
+                800: '#00614B',
+                900: '#004036',
+              },
+              'teal': {
+                50: '#E6F5F2',
+                100: '#B3E0D8',
+                200: '#80CCBE',
+                300: '#4DB8A4',
+                400: '#1AA38A',
+                500: '#0A8F70',
+                600: '#0A7A60',
+                700: '#0A5E4D',
+                800: '#08493C',
+                900: '#05342B',
+              },
+              'accent': {
+                50: '#FFF2EC',
+                100: '#FFD9C7',
+                200: '#FFC0A3',
+                300: '#FFA77E',
+                400: '#FF8E5A',
+                500: '#FF6B35',
+                600: '#E55A2A',
+                700: '#CC4A20',
+                800: '#B33915',
+                900: '#99290B',
+              },
+              'success': '#00C48C',
+              'warning': '#FFB020',
+              'error': '#FF5A5F',
+              'info': '#2B7DE9',
+              'background': {
+                DEFAULT: '#FFFFFF',
+                secondary: '#F8FAFB',
+                tertiary: '#F1F5F9',
+              },
+              'text': {
+                primary: '#2C3E50',
+                secondary: '#64748B',
+                muted: '#94A3B8',
+                inverse: '#FFFFFF',
+              },
+              'border': {
+                DEFAULT: '#E2E8F0',
+                light: '#F1F5F9',
+                dark: '#CBD5E1',
+              },
+            },
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+              poppins: ['Poppins', 'sans-serif'],
+            },
+            borderRadius: {
+              '4xl': '2rem',
+              '5xl': '2.5rem',
+            },
+            boxShadow: {
+              'soft': '0 2px 15px -3px rgba(0, 0, 0, 0.07), 0 10px 20px -2px rgba(0, 0, 0, 0.04)',
+              'medium': '0 4px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 30px -5px rgba(0, 0, 0, 0.04)',
+              'large': '0 10px 40px -10px rgba(0, 0, 0, 0.15), 0 20px 50px -10px rgba(0, 0, 0, 0.1)',
+              'card': '0 1px 3px rgba(0, 0, 0, 0.08), 0 4px 12px rgba(0, 0, 0, 0.05)',
+              'card-hover': '0 4px 12px rgba(0, 0, 0, 0.1), 0 8px 24px rgba(0, 0, 0, 0.08)',
+            },
+          }
+        }
+      }
+    </script>
+    <style>
+      html { scroll-behavior: smooth; }
+      body { font-family: 'Inter', sans-serif; color: #1A1A1A; }
+      h1, h2, h3 { font-family: 'Poppins', sans-serif; letter-spacing: -0.02em; }
+      .underline-green {
+        position: relative;
+        display: inline-block;
+      }
+      .underline-green::after {
+        content: '';
+        position: absolute;
+        bottom: 0.1em;
+        left: -0.1em;
+        right: -0.1em;
+        width: calc(100% + 0.2em);
+        height: 0.35em;
+        background: linear-gradient(120deg, #00D094 0%, #00E8A4 100%);
+        border-radius: 0.2em;
+        z-index: -1;
+        opacity: 0.85;
+        transform: rotate(-1deg);
+      }
+      @keyframes slideUp {
+        from { transform: translateY(20px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
+      }
+      .animate-slide-up {
+        animation: slideUp 0.4s ease-out forwards;
+      }
+    </style>
+</head>
+<body class="bg-white">
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+</body>
+</html>
