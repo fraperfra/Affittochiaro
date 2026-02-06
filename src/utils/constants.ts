@@ -118,10 +118,14 @@ export const ROUTES = {
   // Tenant
   TENANT_DASHBOARD: '/tenant',
   TENANT_PROFILE: '/tenant/profile',
+  TENANT_CV: '/tenant/cv',
+  TENANT_CV_PREVIEW: '/tenant/cv/preview',
   TENANT_LISTINGS: '/tenant/listings',
   TENANT_NOTIFICATIONS: '/tenant/notifications',
   TENANT_AGENCIES: '/tenant/agencies',
   TENANT_DOCUMENTS: '/tenant/documents',
+  TENANT_MESSAGES: '/tenant/messages',
+  TENANT_SETTINGS: '/tenant/settings',
   TENANT_TEMPLATES: '/tenant/templates',
 
   // Agency
@@ -130,6 +134,8 @@ export const ROUTES = {
   AGENCY_LISTINGS: '/agency/listings',
   AGENCY_APPLICATIONS: '/agency/applications',
   AGENCY_PLAN: '/agency/plan',
+  AGENCY_MESSAGES: '/agency/messages',
+  AGENCY_SETTINGS: '/agency/settings',
   AGENCY_TEMPLATES: '/agency/templates',
 
   // Admin

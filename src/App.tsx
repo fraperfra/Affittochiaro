@@ -34,8 +34,13 @@ import ForgotPasswordPage from './pages/ForgotPasswordPage';
 // Tenant Pages
 import TenantDashboardPage from './pages/tenant/TenantDashboardPage';
 import TenantProfilePage from './pages/tenant/TenantProfilePage';
+import TenantCVPage from './pages/tenant/TenantCVPage';
+import TenantCVPreviewPage from './pages/tenant/TenantCVPreviewPage';
 import ListingsPage from './pages/tenant/ListingsPage';
 import NotificationsPage from './pages/tenant/NotificationsPage';
+import TenantAgenciesPage from './pages/tenant/TenantAgenciesPage';
+import SettingsPage from './pages/SettingsPage';
+import MessagesPage from './pages/MessagesPage';
 
 // Agency Pages
 import AgencyDashboardPage from './pages/agency/AgencyDashboardPage';
@@ -43,6 +48,9 @@ import TenantSearchPage from './pages/agency/TenantSearchPage';
 import MyListingsPage from './pages/agency/MyListingsPage';
 import ApplicationsPage from './pages/agency/ApplicationsPage';
 import PlanPage from './pages/agency/PlanPage';
+
+// Maintenance
+import MaintenancePage from './pages/MaintenancePage';
 
 // Admin Pages
 import AdminDashboardPage from './pages/admin/AdminDashboardPage';
@@ -119,7 +127,13 @@ function HomePageWithState() {
   );
 }
 
+const isMaintenanceMode = import.meta.env.VITE_MAINTENANCE_MODE === 'true';
+
 function App() {
+  if (isMaintenanceMode) {
+    return <MaintenancePage />;
+  }
+
   return (
     <Routes>
       {/* Landing Pages (public with landing layout) */}
@@ -197,8 +211,13 @@ function App() {
       >
         <Route index element={<TenantDashboardPage />} />
         <Route path="profile" element={<TenantProfilePage />} />
+        <Route path="cv" element={<TenantCVPage />} />
+        <Route path="cv/preview" element={<TenantCVPreviewPage />} />
         <Route path="listings" element={<ListingsPage />} />
         <Route path="notifications" element={<NotificationsPage />} />
+        <Route path="agencies" element={<TenantAgenciesPage />} />
+        <Route path="messages" element={<MessagesPage />} />
+        <Route path="settings" element={<SettingsPage />} />
       </Route>
 
       {/* Agency Routes */}
@@ -215,6 +234,8 @@ function App() {
         <Route path="listings" element={<MyListingsPage />} />
         <Route path="applications" element={<ApplicationsPage />} />
         <Route path="plan" element={<PlanPage />} />
+        <Route path="messages" element={<MessagesPage />} />
+        <Route path="settings" element={<SettingsPage />} />
       </Route>
 
       {/* Admin Routes */}

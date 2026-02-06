@@ -2,7 +2,7 @@
 
 export type UserRole = 'tenant' | 'agency' | 'admin';
 
-export type Status = 'pending' | 'approved' | 'rejected' | 'active' | 'inactive';
+export type Status = 'pending' | 'approved' | 'rejected' | 'active' | 'inactive' | 'suspended';
 
 export type DocumentStatus = 'pending' | 'verified' | 'rejected';
 

@@ -13,7 +13,7 @@ import {
   TrendingUp,
   AlertCircle,
 } from 'lucide-react';
-import { useAuthStore } from '../../store';
+import { useAuthStore, useCVStore } from '../../store';
 import { TenantUser } from '../../types';
 import { ROUTES } from '../../utils/constants';
 import { formatRelativeTime } from '../../utils/formatters';
@@ -53,6 +53,7 @@ const recentActivity = [
 
 export default function TenantDashboardPage() {
   const { user } = useAuthStore();
+  const { cv, loadCV } = useCVStore();
   const tenantUser = user as TenantUser;
   const [localProfile, setLocalProfile] = useState<any>(null);
 
@@ -66,6 +67,13 @@ export default function TenantDashboardPage() {
       }
     }
   }, []);
+
+  // Load CV for completeness data
+  useEffect(() => {
+    if (tenantUser?.id && !cv) {
+      loadCV(tenantUser.id);
+    }
+  }, [tenantUser?.id, cv, loadCV]);
 
   // Use localStorage profile if available, otherwise use store profile
   const profile = localProfile || tenantUser?.profile;
@@ -83,7 +91,7 @@ export default function TenantDashboardPage() {
       { value: profile.employmentType, weight: 10 },
       { value: profile.monthlyIncome, weight: 15 },
       { value: profile.bio, weight: 15 },
-      { value: profile.avatar, weight: 10 },
+      { value: profile.avatarUrl, weight: 10 },
       { value: profile.hasVideo, weight: 12 },
       { value: profile.preferences?.preferredCity, weight: 5 },
     ];
@@ -157,24 +165,24 @@ export default function TenantDashboardPage() {
         <StatCard
           icon="👁️"
           label="Visualizzazioni Profilo"
-          value={calculatedCompletion >= 50 ? 127 : 3}
+          value={profile?.profileViews ?? (calculatedCompletion >= 50 ? 127 : 3)}
           change={calculatedCompletion >= 50 ? 12 : undefined}
           changeLabel={calculatedCompletion >= 50 ? "vs mese scorso" : undefined}
         />
         <StatCard
           icon="📩"
           label="Candidature Inviate"
-          value={8}
+          value={profile?.applicationsSent ?? 8}
         />
         <StatCard
           icon={<Star className="text-yellow-500" size={28} />}
           label="Match Ricevuti"
-          value={calculatedCompletion >= 50 ? 3 : 0}
+          value={profile?.matchesReceived ?? (calculatedCompletion >= 50 ? 3 : 0)}
         />
         <StatCard
           icon="📄"
-          label="Documenti Caricati"
-          value="3/5"
+          label="CV Completezza"
+          value={cv ? `${cv.completeness.total}%` : `${calculatedCompletion}%`}
         />
       </div>
 
@@ -253,6 +261,20 @@ export default function TenantDashboardPage() {
               </Link>
 
               <Link
+                to={ROUTES.TENANT_CV}
+                className="flex items-center gap-4 p-4 rounded-xl bg-background-secondary hover:bg-primary-50 transition-colors group"
+              >
+                <div className="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center">
+                  <FileText size={20} className="text-primary-600" />
+                </div>
+                <div className="flex-1">
+                  <p className="font-medium group-hover:text-primary-600">Il Mio CV</p>
+                  <p className="text-sm text-text-muted">{cv ? `${cv.completeness.total}% completo` : 'Gestisci il tuo CV'}</p>
+                </div>
+                <ArrowRight size={18} className="text-text-muted group-hover:text-primary-500" />
+              </Link>
+
+              <Link
                 to={ROUTES.TENANT_LISTINGS}
                 className="flex items-center gap-4 p-4 rounded-xl bg-background-secondary hover:bg-primary-50 transition-colors group"
               >
@@ -316,7 +338,7 @@ export default function TenantDashboardPage() {
                 {!profile?.hasVideo && (
                   <span className="px-2 py-1 bg-white rounded-lg text-xs text-amber-700">+ Carica video</span>
                 )}
-                {!profile?.avatar && (
+                {!profile?.avatarUrl && (
                   <span className="px-2 py-1 bg-white rounded-lg text-xs text-amber-700">+ Aggiungi foto</span>
                 )}
               </div>

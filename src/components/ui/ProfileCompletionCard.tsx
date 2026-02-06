@@ -34,7 +34,7 @@ interface ProfileCompletionCardProps {
     employmentType?: string;
     monthlyIncome?: string;
     bio?: string;
-    avatar?: string;
+    avatarUrl?: string;
     hasVideo?: boolean;
     isVerified?: boolean;
     preferences?: {
@@ -83,7 +83,7 @@ export function ProfileCompletionCard({ profile }: ProfileCompletionCardProps) {
       label: 'Foto Profilo',
       icon: <Camera size={16} />,
       weight: 15,
-      isComplete: !!profile.avatar,
+      isComplete: !!profile.avatarUrl,
       link: ROUTES.TENANT_PROFILE,
       tip: 'Una foto aumenta la fiducia',
     },

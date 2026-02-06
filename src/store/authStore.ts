@@ -1,229 +1,119 @@
 /**
- * Auth Store - Zustand store per autenticazione con AWS Cognito
+ * Auth Store - Zustand store per autenticazione (modalità demo)
  */
 
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { User, UserRole, TenantUser, AgencyUser, AdminUser } from '../types';
-import {
-  signIn,
-  signUp,
-  signOut,
-  confirmSignUp,
-  resendConfirmationCode,
-  forgotPassword,
-  confirmForgotPassword,
-  getCurrentUser,
-  getCurrentSession,
-  isCognitoConfigured,
-  SignUpParams,
-  AuthUser,
-} from '../services/cognito/auth';
-import { tenantsApi } from '../services/api/tenants';
+import { User, UserRole } from '../types';
+import { authService } from '../services';
+
+interface PendingConfirmation {
+  email: string;
+  userId?: string;
+}
 
 interface AuthState {
   user: User | null;
-  cognitoUser: AuthUser | null;
   isAuthenticated: boolean;
   isLoading: boolean;
   error: string | null;
-  pendingConfirmation: { email: string; role: UserRole } | null;
+  pendingConfirmation: PendingConfirmation | null;
 
   // Actions
   login: (email: string, password: string) => Promise<void>;
-  register: (params: SignUpParams) => Promise<void>;
+  quickLogin: (role: 'admin' | 'tenant' | 'agency') => Promise<void>;
+  register: (data: {
+    email: string;
+    password: string;
+    role: 'tenant' | 'agency';
+    firstName?: string;
+    lastName?: string;
+    agencyName?: string;
+    vatNumber?: string;
+    phone?: string;
+    city?: string;
+    occupation?: string;
+  }) => Promise<void>;
   confirmEmail: (email: string, code: string) => Promise<void>;
   resendCode: (email: string) => Promise<void>;
-  logout: () => void;
   resetPassword: (email: string) => Promise<void>;
   confirmResetPassword: (email: string, code: string, newPassword: string) => Promise<void>;
+  logout: () => void;
   checkSession: () => Promise<void>;
   setUser: (user: User | null) => void;
   setLoading: (loading: boolean) => void;
   setError: (error: string | null) => void;
   clearError: () => void;
-  clearPendingConfirmation: () => void;
 }
 
-// Helper per creare user object dal profilo
-async function fetchUserProfile(cognitoUser: AuthUser): Promise<User> {
-  const baseUser = {
-    id: cognitoUser.sub,
-    email: cognitoUser.email,
-    role: cognitoUser.role,
-    createdAt: new Date(),
-    lastLogin: new Date(),
-  };
-
-  try {
-    if (cognitoUser.role === 'tenant') {
-      const profile = await tenantsApi.getProfile();
-      return {
-        ...baseUser,
-        role: 'tenant',
-        profile: {
-          firstName: profile.firstName || '',
-          lastName: profile.lastName || '',
-          phone: undefined,
-          avatar: profile.avatarUrl,
-          dateOfBirth: undefined,
-          bio: profile.bio,
-          occupation: profile.occupation,
-          employmentType: profile.employmentType,
-          employer: profile.employer,
-          annualIncome: profile.annualIncome,
-          incomeVisible: profile.incomeVisible ?? true,
-          city: profile.currentCity,
-          isVerified: profile.isVerified,
-          hasVideo: profile.hasVideo,
-          videoUrl: profile.videoUrl,
-          profileCompleteness: profile.profileCompleteness,
-          profileViews: profile.profileViews,
-          applicationsSent: profile.applicationsSent,
-          availableFrom: profile.availableFrom,
-        },
-      } as TenantUser;
-    } else if (cognitoUser.role === 'agency') {
-      // TODO: Fetch agency profile
-      return {
-        ...baseUser,
-        role: 'agency',
-        agency: {
-          name: 'Agenzia',
-          logo: undefined,
-          vatNumber: '',
-          phone: '',
-          city: '',
-          website: '',
-          isVerified: false,
-          plan: 'free',
-          credits: 0,
-        },
-      } as AgencyUser;
-    } else {
-      return {
-        ...baseUser,
-        role: 'admin',
-        permissions: ['full_access'],
-      } as AdminUser;
-    }
-  } catch (error) {
-    console.error('Error fetching user profile:', error);
-    // Ritorna user base se il profilo non è disponibile
-    if (cognitoUser.role === 'tenant') {
-      return {
-        ...baseUser,
-        role: 'tenant',
-        profile: {
-          firstName: '',
-          lastName: '',
-          phone: undefined,
-          avatar: undefined,
-          dateOfBirth: undefined,
-          occupation: undefined,
-          city: undefined,
-          isVerified: false,
-          hasVideo: false,
-          profileCompleteness: 0,
-        },
-      } as TenantUser;
-    } else if (cognitoUser.role === 'agency') {
-      return {
-        ...baseUser,
-        role: 'agency',
-        agency: {
-          name: '',
-          logo: undefined,
-          vatNumber: '',
-          phone: '',
-          city: '',
-          website: '',
-          isVerified: false,
-          plan: 'free',
-          credits: 0,
-        },
-      } as AgencyUser;
-    }
-    return {
-      ...baseUser,
-      role: 'admin',
-      permissions: ['full_access'],
-    } as AdminUser;
-  }
-}
+export type { AuthState };
 
 export const useAuthStore = create<AuthState>()(
   persist(
     (set, get) => ({
       user: null,
-      cognitoUser: null,
       isAuthenticated: false,
       isLoading: false,
       error: null,
       pendingConfirmation: null,
 
+      // Quick login per testing
+      quickLogin: async (role: 'admin' | 'tenant' | 'agency') => {
+        set({ isLoading: true, error: null });
+
+        try {
+          const user = await authService.quickLogin(role);
+
+          set({
+            user,
+            isAuthenticated: true,
+            isLoading: false,
+            error: null,
+          });
+
+          console.log('[AuthStore] Quick login as:', role);
+        } catch (error: any) {
+          set({
+            error: error.message || 'Errore durante il login',
+            isLoading: false,
+          });
+          throw error;
+        }
+      },
+
       login: async (email: string, password: string) => {
         set({ isLoading: true, error: null });
 
         try {
-          if (!isCognitoConfigured()) {
-            throw new Error('Cognito non configurato. Contatta l\'amministratore.');
-          }
-
-          // Autenticazione con Cognito
-          await signIn(email, password);
-
-          // Ottieni info utente dal token
-          const cognitoUser = await getCurrentUser();
-          if (!cognitoUser) {
-            throw new Error('Impossibile recuperare i dati utente');
-          }
-
-          // Fetch profilo completo
-          const user = await fetchUserProfile(cognitoUser);
+          const user = await authService.login(email, password);
 
           set({
             user,
-            cognitoUser,
             isAuthenticated: true,
             isLoading: false,
             error: null,
           });
         } catch (error: any) {
-          const errorMessage = error.message || 'Errore durante il login';
-
-          // Gestisci caso utente non confermato
-          if (error.code === 'UserNotConfirmedException') {
-            set({
-              pendingConfirmation: { email, role: 'tenant' },
-              isLoading: false,
-              error: errorMessage,
-            });
-          } else {
-            set({
-              error: errorMessage,
-              isLoading: false,
-            });
-          }
+          set({
+            error: error.message || 'Errore durante il login',
+            isLoading: false,
+          });
           throw error;
         }
       },
 
-      register: async (params: SignUpParams) => {
+      register: async (data) => {
         set({ isLoading: true, error: null });
 
         try {
-          if (!isCognitoConfigured()) {
-            throw new Error('Cognito non configurato. Contatta l\'amministratore.');
-          }
+          const user = await authService.register(data);
 
-          await signUp(params);
-
-          // Salva email per conferma
           set({
-            pendingConfirmation: { email: params.email, role: params.role },
+            user,
+            isAuthenticated: true,
             isLoading: false,
             error: null,
+            pendingConfirmation: { email: data.email, userId: user.id },
           });
         } catch (error: any) {
           set({
@@ -236,105 +126,72 @@ export const useAuthStore = create<AuthState>()(
 
       confirmEmail: async (email: string, code: string) => {
         set({ isLoading: true, error: null });
-
         try {
-          await confirmSignUp(email, code);
-
-          set({
-            pendingConfirmation: null,
-            isLoading: false,
-            error: null,
-          });
+          await authService.confirmEmail(email, code);
+          set({ isLoading: false, pendingConfirmation: null });
         } catch (error: any) {
-          set({
-            error: error.message || 'Codice non valido',
-            isLoading: false,
-          });
+          set({ error: error.message || 'Codice non valido', isLoading: false });
           throw error;
         }
       },
 
       resendCode: async (email: string) => {
-        set({ isLoading: true, error: null });
-
         try {
-          await resendConfirmationCode(email);
-          set({ isLoading: false });
+          await authService.resendCode(email);
         } catch (error: any) {
-          set({
-            error: error.message || 'Errore nell\'invio del codice',
-            isLoading: false,
-          });
+          set({ error: error.message || 'Errore invio codice' });
           throw error;
         }
       },
 
-      logout: () => {
-        signOut();
-        set({
-          user: null,
-          cognitoUser: null,
-          isAuthenticated: false,
-          error: null,
-          pendingConfirmation: null,
-        });
-      },
-
       resetPassword: async (email: string) => {
         set({ isLoading: true, error: null });
-
         try {
-          await forgotPassword(email);
+          await authService.resetPassword(email);
           set({ isLoading: false });
         } catch (error: any) {
-          set({
-            error: error.message || 'Errore nell\'invio email di reset',
-            isLoading: false,
-          });
+          set({ error: error.message || 'Errore reset password', isLoading: false });
           throw error;
         }
       },
 
       confirmResetPassword: async (email: string, code: string, newPassword: string) => {
         set({ isLoading: true, error: null });
-
         try {
-          await confirmForgotPassword(email, code, newPassword);
+          await authService.confirmResetPassword(email, code, newPassword);
           set({ isLoading: false });
         } catch (error: any) {
-          set({
-            error: error.message || 'Errore nel reset password',
-            isLoading: false,
-          });
+          set({ error: error.message || 'Errore conferma reset', isLoading: false });
           throw error;
         }
       },
 
+      logout: () => {
+        authService.logout();
+        set({
+          user: null,
+          isAuthenticated: false,
+          error: null,
+        });
+      },
+
       checkSession: async () => {
         try {
-          const session = await getCurrentSession();
-          if (session) {
-            const cognitoUser = await getCurrentUser();
-            if (cognitoUser) {
-              const user = await fetchUserProfile(cognitoUser);
-              set({
-                user,
-                cognitoUser,
-                isAuthenticated: true,
-              });
-              return;
-            }
+          const user = await authService.getCurrentSession();
+          if (user) {
+            set({
+              user,
+              isAuthenticated: true,
+            });
+            return;
           }
-          // Nessuna sessione valida
           set({
             user: null,
-            cognitoUser: null,
             isAuthenticated: false,
           });
         } catch {
           set({
             user: null,
-            cognitoUser: null,
             isAuthenticated: false,
           });
         }
@@ -355,18 +212,12 @@ export const useAuthStore = create<AuthState>()(
       clearError: () => {
         set({ error: null });
       },
-
-      clearPendingConfirmation: () => {
-        set({ pendingConfirmation: null });
-      },
     }),
     {
       name: 'affittochiaro-auth',
       partialize: (state) => ({
         user: state.user,
-        cognitoUser: state.cognitoUser,
         isAuthenticated: state.isAuthenticated,
-        pendingConfirmation: state.pendingConfirmation,
       }),
     }
   )

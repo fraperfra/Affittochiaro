@@ -23,6 +23,7 @@ import { formatDate, formatCurrency, formatNumber, formatSquareMeters } from '..
 import { ITALIAN_CITIES } from '../../utils/constants';
 import { Listing, ListingStatus } from '../../types';
 import { Card, Button, Badge, Modal, ModalFooter, EmptyState } from '../../components/ui';
+import toast from 'react-hot-toast';
 
 const statusConfig: Record<ListingStatus, { label: string; variant: 'success' | 'warning' | 'info' | 'error' | 'neutral'; icon: React.ReactNode }> = {
   active: { label: 'Attivo', variant: 'success', icon: <CheckCircle size={14} /> },
@@ -73,18 +74,30 @@ export default function ListingsManagementPage() {
   const avgPrice = Math.round(listings.reduce((sum, l) => sum + l.price, 0) / listings.length);
 
   const handleApprove = (listing: Listing) => {
-    console.log('Approving listing:', listing.id);
+    const updated = listings.map(l =>
+      l.id === listing.id ? { ...l, status: 'active' as ListingStatus } : l
+    );
+    setListings(updated);
     setShowActions(null);
+    toast.success(`Annuncio "${listing.title}" approvato!`);
   };
 
   const handleReject = (listing: Listing) => {
-    console.log('Rejecting listing:', listing.id);
+    const updated = listings.map(l =>
+      l.id === listing.id ? { ...l, status: 'rejected' as ListingStatus } : l
+    );
+    setListings(updated);
     setShowActions(null);
+    toast.success(`Annuncio "${listing.title}" rifiutato`);
   };
 
   const handlePause = (listing: Listing) => {
-    console.log('Pausing listing:', listing.id);
+    const updated = listings.map(l =>
+      l.id === listing.id ? { ...l, status: 'paused' as ListingStatus } : l
+    );
+    setListings(updated);
     setShowActions(null);
+    toast.success(`Annuncio "${listing.title}" messo in pausa`);
   };
 
   return (

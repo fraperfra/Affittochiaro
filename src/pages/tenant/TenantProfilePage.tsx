@@ -96,7 +96,7 @@ export default function TenantProfilePage() {
 
   // Stati avatar
   const [avatarUrl, setAvatarUrl] = useState<string | null>(
-    tenantUser?.profile?.avatar || null
+    tenantUser?.profile?.avatarUrl || null
   );
   const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
 

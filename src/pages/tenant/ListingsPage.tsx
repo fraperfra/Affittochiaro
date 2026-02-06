@@ -11,24 +11,89 @@ import {
   Eye,
   Users,
   X,
+  Send,
+  CheckCircle,
+  Calendar,
+  PawPrint,
+  Cigarette,
 } from 'lucide-react';
-import { useListingStore } from '../../store';
+import { useListingStore, useAuthStore } from '../../store';
 import { mockListings } from '../../utils/mockData';
 import { formatCurrency, formatNumber, formatSquareMeters } from '../../utils/formatters';
 import { ITALIAN_CITIES } from '../../utils/constants';
-import { Listing, ListingFilters } from '../../types';
+import { Listing, ListingFilters, TenantUser } from '../../types';
+import { EMPLOYMENT_TYPE_LABELS } from '../../types/cv';
 import { Card, Button, Badge, Modal, ModalFooter, Input, EmptyState } from '../../components/ui';
+import toast from 'react-hot-toast';
+
+interface ApplicationFormData {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  occupation: string;
+  employmentType: string;
+  monthlyIncome: string;
+  moveInDate: string;
+  stayDuration: string;
+  hasPets: boolean;
+  petDetails: string;
+  isSmoker: boolean;
+  message: string;
+}
+
+const INITIAL_FORM: ApplicationFormData = {
+  firstName: '',
+  lastName: '',
+  email: '',
+  phone: '',
+  occupation: '',
+  employmentType: '',
+  monthlyIncome: '',
+  moveInDate: '',
+  stayDuration: '12 mesi',
+  hasPets: false,
+  petDetails: '',
+  isSmoker: false,
+  message: '',
+};
 
 export default function ListingsPage() {
   const { listings, setListings, filters, setFilters, viewMode, setViewMode, savedListings, toggleSavedListing } = useListingStore();
+  const { user } = useAuthStore();
+  const tenantUser = user as TenantUser;
+
   const [selectedListing, setSelectedListing] = useState<Listing | null>(null);
   const [showFilters, setShowFilters] = useState(false);
   const [localFilters, setLocalFilters] = useState<ListingFilters>({});
+  const [applyingTo, setApplyingTo] = useState<Listing | null>(null);
+  const [appliedIds, setAppliedIds] = useState<string[]>([]);
+  const [formData, setFormData] = useState<ApplicationFormData>(INITIAL_FORM);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
-    // Load mock listings
     setListings(mockListings.slice(0, 50));
+    // Load previously applied listing IDs
+    const stored = localStorage.getItem('affittochiaro_applied_ids');
+    if (stored) setAppliedIds(JSON.parse(stored));
   }, []);
+
+  // Pre-fill form from user profile when opening application modal
+  useEffect(() => {
+    if (applyingTo && tenantUser?.profile) {
+      const p = tenantUser.profile;
+      setFormData({
+        ...INITIAL_FORM,
+        firstName: p.firstName || '',
+        lastName: p.lastName || '',
+        email: tenantUser.email || '',
+        phone: p.phone || '',
+        occupation: p.occupation || '',
+        employmentType: p.employmentType || '',
+        monthlyIncome: p.annualIncome ? `${Math.round(p.annualIncome / 12).toLocaleString('it-IT')} €/mese` : '',
+      });
+    }
+  }, [applyingTo]);
 
   const filteredListings = listings.filter((listing) => {
     if (filters.city && listing.address.city !== filters.city) return false;
@@ -48,12 +113,82 @@ export default function ListingsPage() {
     setFilters({});
   };
 
+  const openApplicationForm = (listing: Listing, e?: React.MouseEvent) => {
+    if (e) e.stopPropagation();
+    if (appliedIds.includes(listing.id)) {
+      toast('Hai gia inviato la candidatura per questo annuncio', { icon: '📝' });
+      return;
+    }
+    setApplyingTo(listing);
+  };
+
+  const handleSubmitApplication = async () => {
+    if (!applyingTo) return;
+
+    // Validation
+    if (!formData.firstName || !formData.lastName || !formData.email || !formData.phone) {
+      toast.error('Compila tutti i campi obbligatori');
+      return;
+    }
+    if (!formData.message.trim()) {
+      toast.error('Scrivi un messaggio di presentazione');
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    // Simulate API delay
+    await new Promise(r => setTimeout(r, 800));
+
+    const application = {
+      id: `app_${Date.now()}`,
+      ...formData,
+      listingId: applyingTo.id as unknown as number,
+      listingTitle: applyingTo.title,
+      submittedAt: new Date().toISOString(),
+      status: 'pending' as const,
+    };
+
+    // Save to localStorage (compatible with ApplicationsPage)
+    const existing = JSON.parse(localStorage.getItem('affittochiaro_applications') || '[]');
+    existing.push(application);
+    localStorage.setItem('affittochiaro_applications', JSON.stringify(existing));
+
+    // Create notification for agency
+    const notification = {
+      id: `notif_${Date.now()}`,
+      type: 'new_application',
+      title: 'Nuova candidatura ricevuta',
+      message: `${formData.firstName} ${formData.lastName} si e candidato per "${applyingTo.title}"`,
+      applicantName: `${formData.firstName} ${formData.lastName}`,
+      listingTitle: applyingTo.title,
+      listingId: applyingTo.id,
+      applicationId: application.id,
+      createdAt: new Date().toISOString(),
+      read: false,
+    };
+    const existingNotifs = JSON.parse(localStorage.getItem('affittochiaro_agency_notifications') || '[]');
+    existingNotifs.unshift(notification);
+    localStorage.setItem('affittochiaro_agency_notifications', JSON.stringify(existingNotifs));
+
+    // Track applied listings
+    const newAppliedIds = [...appliedIds, applyingTo.id];
+    setAppliedIds(newAppliedIds);
+    localStorage.setItem('affittochiaro_applied_ids', JSON.stringify(newAppliedIds));
+
+    setIsSubmitting(false);
+    setApplyingTo(null);
+    setFormData(INITIAL_FORM);
+    toast.success('Candidatura inviata con successo!');
+  };
+
+  const isApplied = (listingId: string) => appliedIds.includes(listingId);
+
   return (
     <div className="space-y-6">
       {/* Search & Filters Bar */}
       <Card padding="sm" className="sticky top-0 z-20">
         <div className="flex flex-col lg:flex-row gap-4">
-          {/* Search Input */}
           <div className="flex-1 relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-text-muted" size={18} />
             <input
@@ -65,7 +200,6 @@ export default function ListingsPage() {
             />
           </div>
 
-          {/* Quick Filters */}
           <div className="flex gap-2 flex-wrap">
             <select
               className="input w-auto"
@@ -112,7 +246,6 @@ export default function ListingsPage() {
             </Button>
           </div>
 
-          {/* View Toggle */}
           <div className="flex gap-1 p-1 bg-background-secondary rounded-lg">
             <button
               className={`p-2 rounded-md ${viewMode === 'grid' ? 'bg-white shadow-sm' : ''}`}
@@ -129,7 +262,6 @@ export default function ListingsPage() {
           </div>
         </div>
 
-        {/* Results count & active filters */}
         <div className="flex items-center justify-between mt-4 pt-4 border-t border-border">
           <p className="text-text-secondary">
             <span className="font-semibold text-text-primary">{formatNumber(filteredListings.length)}</span> annunci trovati
@@ -157,7 +289,6 @@ export default function ListingsPage() {
               className="overflow-hidden"
               onClick={() => setSelectedListing(listing)}
             >
-              {/* Image */}
               <div className="relative aspect-[16/10] bg-gradient-to-br from-primary-100 to-teal-100">
                 {listing.createdAt && new Date().getTime() - new Date(listing.createdAt).getTime() < 7 * 24 * 60 * 60 * 1000 && (
                   <Badge variant="primary" className="absolute top-3 left-3">NUOVO</Badge>
@@ -177,7 +308,6 @@ export default function ListingsPage() {
                 </button>
               </div>
 
-              {/* Content */}
               <div className="p-4">
                 <h3 className="font-semibold text-text-primary line-clamp-2 mb-2">
                   {listing.title}
@@ -214,9 +344,19 @@ export default function ListingsPage() {
                   </div>
                 </div>
 
-                <Button className="w-full mt-4">
-                  Candidati Ora
-                </Button>
+                {isApplied(listing.id) ? (
+                  <Button className="w-full mt-4" variant="secondary" disabled leftIcon={<CheckCircle size={16} />}>
+                    Candidatura Inviata
+                  </Button>
+                ) : (
+                  <Button
+                    className="w-full mt-4"
+                    leftIcon={<Send size={16} />}
+                    onClick={(e) => openApplicationForm(listing, e)}
+                  >
+                    Candidati Ora
+                  </Button>
+                )}
               </div>
             </Card>
           ))}
@@ -242,10 +382,8 @@ export default function ListingsPage() {
       >
         {selectedListing && (
           <div className="space-y-6">
-            {/* Image placeholder */}
             <div className="aspect-video bg-gradient-to-br from-primary-100 to-teal-100 rounded-xl" />
 
-            {/* Price & Location */}
             <div className="flex items-start justify-between">
               <div>
                 <span className="text-3xl font-bold text-primary-600">
@@ -264,7 +402,6 @@ export default function ListingsPage() {
               </div>
             </div>
 
-            {/* Details Grid */}
             <div className="grid grid-cols-4 gap-4 p-4 bg-background-secondary rounded-xl">
               <div className="text-center">
                 <p className="text-2xl font-bold text-text-primary">{selectedListing.rooms}</p>
@@ -286,13 +423,11 @@ export default function ListingsPage() {
               </div>
             </div>
 
-            {/* Description */}
             <div>
               <h4 className="font-semibold mb-2">Descrizione</h4>
               <p className="text-text-secondary">{selectedListing.description}</p>
             </div>
 
-            {/* Features */}
             {selectedListing.features.length > 0 && (
               <div>
                 <h4 className="font-semibold mb-2">Caratteristiche</h4>
@@ -304,7 +439,6 @@ export default function ListingsPage() {
               </div>
             )}
 
-            {/* Agency */}
             <div className="flex items-center gap-3 p-4 bg-background-secondary rounded-xl">
               <div className="w-12 h-12 rounded-full bg-primary-100 flex items-center justify-center">
                 🏢
@@ -320,11 +454,202 @@ export default function ListingsPage() {
           <Button variant="secondary" onClick={() => setSelectedListing(null)}>
             Chiudi
           </Button>
-          <Button leftIcon={<Heart size={16} />} variant="outline">
-            Salva
+          {selectedListing && (
+            <>
+              <Button
+                leftIcon={<Heart size={16} />}
+                variant="outline"
+                onClick={() => {
+                  toggleSavedListing(selectedListing.id);
+                  toast.success(savedListings.includes(selectedListing.id) ? 'Rimosso dai salvati' : 'Salvato!');
+                }}
+              >
+                {savedListings.includes(selectedListing.id) ? 'Salvato' : 'Salva'}
+              </Button>
+              {isApplied(selectedListing.id) ? (
+                <Button disabled variant="secondary" leftIcon={<CheckCircle size={16} />}>
+                  Gia candidato
+                </Button>
+              ) : (
+                <Button
+                  leftIcon={<Send size={16} />}
+                  onClick={() => {
+                    setSelectedListing(null);
+                    openApplicationForm(selectedListing);
+                  }}
+                >
+                  Candidati
+                </Button>
+              )}
+            </>
+          )}
+        </ModalFooter>
+      </Modal>
+
+      {/* Application Form Modal */}
+      <Modal
+        isOpen={!!applyingTo}
+        onClose={() => { setApplyingTo(null); setFormData(INITIAL_FORM); }}
+        title="Candidatura"
+        size="lg"
+      >
+        {applyingTo && (
+          <div className="space-y-6">
+            {/* Listing summary */}
+            <div className="p-4 bg-primary-50 rounded-xl border border-primary-100">
+              <p className="text-sm text-primary-600 font-medium">Ti stai candidando per:</p>
+              <p className="font-bold text-text-primary mt-1">{applyingTo.title}</p>
+              <p className="text-sm text-text-secondary">
+                {applyingTo.address.city} - {formatCurrency(applyingTo.price)}/mese
+              </p>
+            </div>
+
+            {/* Personal Info */}
+            <div>
+              <h4 className="font-semibold mb-3">Dati Personali</h4>
+              <div className="grid grid-cols-2 gap-4">
+                <Input
+                  label="Nome *"
+                  value={formData.firstName}
+                  onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
+                />
+                <Input
+                  label="Cognome *"
+                  value={formData.lastName}
+                  onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
+                />
+                <Input
+                  label="Email *"
+                  type="email"
+                  value={formData.email}
+                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                />
+                <Input
+                  label="Telefono *"
+                  type="tel"
+                  value={formData.phone}
+                  onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                />
+              </div>
+            </div>
+
+            {/* Employment */}
+            <div>
+              <h4 className="font-semibold mb-3">Situazione Lavorativa</h4>
+              <div className="grid grid-cols-2 gap-4">
+                <Input
+                  label="Occupazione"
+                  value={formData.occupation}
+                  onChange={(e) => setFormData({ ...formData, occupation: e.target.value })}
+                />
+                <div>
+                  <label className="label">Tipo Contratto</label>
+                  <select
+                    className="input"
+                    value={formData.employmentType}
+                    onChange={(e) => setFormData({ ...formData, employmentType: e.target.value })}
+                  >
+                    <option value="">Seleziona...</option>
+                    {Object.entries(EMPLOYMENT_TYPE_LABELS).map(([key, label]) => (
+                      <option key={key} value={key}>{label}</option>
+                    ))}
+                  </select>
+                </div>
+                <Input
+                  label="Reddito mensile"
+                  value={formData.monthlyIncome}
+                  onChange={(e) => setFormData({ ...formData, monthlyIncome: e.target.value })}
+                  placeholder="es. 1.500 €/mese"
+                />
+              </div>
+            </div>
+
+            {/* Housing Preferences */}
+            <div>
+              <h4 className="font-semibold mb-3">Preferenze Abitative</h4>
+              <div className="grid grid-cols-2 gap-4">
+                <Input
+                  label="Data ingresso desiderata"
+                  type="date"
+                  value={formData.moveInDate}
+                  onChange={(e) => setFormData({ ...formData, moveInDate: e.target.value })}
+                />
+                <div>
+                  <label className="label">Durata permanenza</label>
+                  <select
+                    className="input"
+                    value={formData.stayDuration}
+                    onChange={(e) => setFormData({ ...formData, stayDuration: e.target.value })}
+                  >
+                    <option value="6 mesi">6 mesi</option>
+                    <option value="12 mesi">12 mesi</option>
+                    <option value="24 mesi">24 mesi</option>
+                    <option value="36+ mesi">36+ mesi</option>
+                    <option value="Indeterminata">Indeterminata</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="flex gap-6 mt-4">
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={formData.hasPets}
+                    onChange={(e) => setFormData({ ...formData, hasPets: e.target.checked })}
+                    className="rounded border-border"
+                  />
+                  <PawPrint size={16} className="text-text-muted" />
+                  <span className="text-sm">Ho animali domestici</span>
+                </label>
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={formData.isSmoker}
+                    onChange={(e) => setFormData({ ...formData, isSmoker: e.target.checked })}
+                    className="rounded border-border"
+                  />
+                  <Cigarette size={16} className="text-text-muted" />
+                  <span className="text-sm">Fumatore</span>
+                </label>
+              </div>
+
+              {formData.hasPets && (
+                <Input
+                  label="Descrivi i tuoi animali"
+                  className="mt-3"
+                  value={formData.petDetails}
+                  onChange={(e) => setFormData({ ...formData, petDetails: e.target.value })}
+                  placeholder="es. Un gatto di 3 anni"
+                />
+              )}
+            </div>
+
+            {/* Message */}
+            <div>
+              <label className="label">Messaggio di presentazione *</label>
+              <textarea
+                className="input min-h-[100px] resize-y"
+                value={formData.message}
+                onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                placeholder="Presentati brevemente: chi sei, perche cerchi questa casa, quando vorresti trasferirti..."
+                rows={4}
+              />
+              <p className="text-xs text-text-muted mt-1">
+                Un buon messaggio aumenta le possibilita di essere selezionato
+              </p>
+            </div>
+          </div>
+        )}
+        <ModalFooter>
+          <Button variant="secondary" onClick={() => { setApplyingTo(null); setFormData(INITIAL_FORM); }}>
+            Annulla
           </Button>
-          <Button>
-            Candidati
+          <Button
+            leftIcon={<Send size={16} />}
+            onClick={handleSubmitApplication}
+            isLoading={isSubmitting}
+          >
+            Invia Candidatura
           </Button>
         </ModalFooter>
       </Modal>

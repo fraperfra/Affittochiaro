@@ -19,6 +19,7 @@ import { formatDate, formatInitials, formatCurrency } from '../../utils/formatte
 import { ITALIAN_CITIES } from '../../utils/constants';
 import { Tenant } from '../../types';
 import { Card, Button, Badge, Modal, ModalFooter, Input, EmptyState } from '../../components/ui';
+import toast from 'react-hot-toast';
 
 export default function TenantsManagementPage() {
   const { tenants, setTenants, filters, setFilters, pagination, setPagination } = useTenantStore();
@@ -52,14 +53,21 @@ export default function TenantsManagementPage() {
   );
 
   const handleVerify = (tenant: Tenant) => {
-    // Mock verify action
-    console.log('Verifying tenant:', tenant.id);
+    const updated = tenants.map(t =>
+      t.id === tenant.id ? { ...t, isVerified: true } : t
+    );
+    setTenants(updated);
     setShowActions(null);
+    toast.success(`${tenant.firstName} ${tenant.lastName} verificato!`);
   };
 
   const handleSuspend = (tenant: Tenant) => {
-    console.log('Suspending tenant:', tenant.id);
+    const updated = tenants.map(t =>
+      t.id === tenant.id ? { ...t, status: 'suspended' as const } : t
+    );
+    setTenants(updated);
     setShowActions(null);
+    toast.success(`${tenant.firstName} ${tenant.lastName} sospeso`);
   };
 
   return (
@@ -162,8 +170,8 @@ export default function TenantsManagementPage() {
                     <td className="px-6 py-4 text-text-secondary">{tenant.email}</td>
                     <td className="px-6 py-4 text-text-secondary">{tenant.currentCity || '-'}</td>
                     <td className="px-6 py-4">
-                      <Badge variant={tenant.status === 'active' ? 'success' : 'warning'}>
-                        {tenant.status === 'active' ? 'Attivo' : 'Inattivo'}
+                      <Badge variant={tenant.status === 'active' ? 'success' : tenant.status === 'suspended' ? 'error' : 'warning'}>
+                        {tenant.status === 'active' ? 'Attivo' : tenant.status === 'suspended' ? 'Sospeso' : 'Inattivo'}
                       </Badge>
                     </td>
                     <td className="px-6 py-4">

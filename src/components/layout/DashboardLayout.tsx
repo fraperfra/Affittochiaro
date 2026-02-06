@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useRef, useCallback } from 'react';
 import { Outlet, NavLink, useNavigate } from 'react-router-dom';
 import {
   Home,
@@ -16,10 +16,12 @@ import {
   CreditCard,
   ChevronDown,
   Inbox,
+  MessageSquare,
 } from 'lucide-react';
 import { useAuthStore } from '../../store';
 import { ROUTES } from '../../utils/constants';
 import { formatInitials } from '../../utils/formatters';
+import { mockTenants, mockAgencies, mockListings } from '../../utils/mockData';
 import { TenantUser, AgencyUser, AdminUser } from '../../types';
 
 interface DashboardLayoutProps {
@@ -36,9 +38,11 @@ interface NavItem {
 const tenantNavItems: NavItem[] = [
   { icon: <Home size={20} />, label: 'Dashboard', path: ROUTES.TENANT_DASHBOARD },
   { icon: <User size={20} />, label: 'Il Mio Profilo', path: ROUTES.TENANT_PROFILE },
+  { icon: <FileText size={20} />, label: 'Il Mio CV', path: ROUTES.TENANT_CV },
   { icon: <Search size={20} />, label: 'Cerca Annunci', path: ROUTES.TENANT_LISTINGS },
+  { icon: <MessageSquare size={20} />, label: 'Messaggi', path: ROUTES.TENANT_MESSAGES },
   { icon: <Bell size={20} />, label: 'Notifiche', path: ROUTES.TENANT_NOTIFICATIONS, badge: 3 },
-  { icon: <Building2 size={20} />, label: 'Agenzie Partner', path: ROUTES.TENANT_AGENCIES },
+  { icon: <Settings size={20} />, label: 'Impostazioni', path: ROUTES.TENANT_SETTINGS },
 ];
 
 const agencyNavItems: NavItem[] = [
@@ -46,7 +50,9 @@ const agencyNavItems: NavItem[] = [
   { icon: <Inbox size={20} />, label: 'Candidature', path: ROUTES.AGENCY_APPLICATIONS, badge: 0 },
   { icon: <Users size={20} />, label: 'Cerca Inquilini', path: ROUTES.AGENCY_TENANTS },
   { icon: <Home size={20} />, label: 'I Miei Annunci', path: ROUTES.AGENCY_LISTINGS },
+  { icon: <MessageSquare size={20} />, label: 'Messaggi', path: ROUTES.AGENCY_MESSAGES },
   { icon: <CreditCard size={20} />, label: 'Piano & Crediti', path: ROUTES.AGENCY_PLAN },
+  { icon: <Settings size={20} />, label: 'Impostazioni', path: ROUTES.AGENCY_SETTINGS },
 ];
 
 const adminNavItems: NavItem[] = [
@@ -77,6 +83,183 @@ const roleConfig = {
     color: 'accent',
   },
 };
+
+interface SearchResult {
+  id: string;
+  title: string;
+  subtitle: string;
+  category: string;
+  path: string;
+}
+
+function GlobalSearch({ userRole, navigate }: { userRole: string; navigate: (path: string) => void }) {
+  const [query, setQuery] = useState('');
+  const [isOpen, setIsOpen] = useState(false);
+  const [results, setResults] = useState<SearchResult[]>([]);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const performSearch = useCallback((q: string) => {
+    if (!q || q.length < 2) {
+      setResults([]);
+      return;
+    }
+    const s = q.toLowerCase();
+    const found: SearchResult[] = [];
+
+    // Search tenants (agency & admin)
+    if (userRole === 'agency' || userRole === 'admin') {
+      mockTenants
+        .filter(t =>
+          t.firstName.toLowerCase().includes(s) ||
+          t.lastName.toLowerCase().includes(s) ||
+          t.email.toLowerCase().includes(s) ||
+          (t.currentCity || '').toLowerCase().includes(s)
+        )
+        .slice(0, 5)
+        .forEach(t => {
+          found.push({
+            id: `tenant_${t.id}`,
+            title: `${t.firstName} ${t.lastName}`,
+            subtitle: `${t.email} - ${t.currentCity || 'N/A'}`,
+            category: 'Inquilini',
+            path: userRole === 'agency' ? ROUTES.AGENCY_TENANTS : ROUTES.ADMIN_TENANTS,
+          });
+        });
+    }
+
+    // Search listings (all roles)
+    mockListings
+      .filter(l =>
+        l.title.toLowerCase().includes(s) ||
+        l.address.city.toLowerCase().includes(s) ||
+        (l.address.street || '').toLowerCase().includes(s)
+      )
+      .slice(0, 5)
+      .forEach(l => {
+        found.push({
+          id: `listing_${l.id}`,
+          title: l.title,
+          subtitle: `${l.address.city} - €${l.price}/mese`,
+          category: 'Annunci',
+          path: userRole === 'tenant' ? ROUTES.TENANT_LISTINGS :
+                userRole === 'agency' ? ROUTES.AGENCY_LISTINGS : ROUTES.ADMIN_LISTINGS,
+        });
+      });
+
+    // Search agencies (tenant & admin)
+    if (userRole === 'tenant' || userRole === 'admin') {
+      mockAgencies
+        .filter(a =>
+          a.name.toLowerCase().includes(s) ||
+          a.email.toLowerCase().includes(s) ||
+          (a.address?.city || '').toLowerCase().includes(s)
+        )
+        .slice(0, 5)
+        .forEach(a => {
+          found.push({
+            id: `agency_${a.id}`,
+            title: a.name,
+            subtitle: `${a.address?.city || 'N/A'} - ${a.activeListingsCount} annunci`,
+            category: 'Agenzie',
+            path: userRole === 'tenant' ? ROUTES.TENANT_AGENCIES : ROUTES.ADMIN_AGENCIES,
+          });
+        });
+    }
+
+    setResults(found.slice(0, 10));
+  }, [userRole]);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => performSearch(query), 200);
+    return () => clearTimeout(timeout);
+  }, [query, performSearch]);
+
+  // Close on outside click
+  useEffect(() => {
+    const handleClick = (e: MouseEvent) => {
+      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClick);
+    return () => document.removeEventListener('mousedown', handleClick);
+  }, []);
+
+  const grouped = useMemo(() => {
+    const map = new Map<string, SearchResult[]>();
+    results.forEach(r => {
+      if (!map.has(r.category)) map.set(r.category, []);
+      map.get(r.category)!.push(r);
+    });
+    return map;
+  }, [results]);
+
+  return (
+    <div className="hidden md:flex flex-1 max-w-md mx-4 relative" ref={containerRef}>
+      <div className="relative w-full">
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-text-muted" size={18} />
+        <input
+          ref={inputRef}
+          type="text"
+          placeholder="Cerca inquilini, annunci, agenzie..."
+          className="input pl-10"
+          value={query}
+          onChange={(e) => { setQuery(e.target.value); setIsOpen(true); }}
+          onFocus={() => query.length >= 2 && setIsOpen(true)}
+        />
+        {query && (
+          <button
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-text-muted hover:text-text-primary"
+            onClick={() => { setQuery(''); setResults([]); setIsOpen(false); }}
+          >
+            <X size={16} />
+          </button>
+        )}
+      </div>
+
+      {/* Results dropdown */}
+      {isOpen && query.length >= 2 && (
+        <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-lg border border-border z-50 max-h-96 overflow-y-auto">
+          {results.length > 0 ? (
+            <div className="p-2">
+              {Array.from(grouped.entries()).map(([category, items]) => (
+                <div key={category}>
+                  <p className="text-xs font-semibold text-text-muted uppercase px-3 py-1.5">{category}</p>
+                  {items.map((item) => (
+                    <button
+                      key={item.id}
+                      className="w-full flex items-start gap-3 px-3 py-2 text-left rounded-lg hover:bg-background-secondary"
+                      onClick={() => {
+                        navigate(item.path);
+                        setIsOpen(false);
+                        setQuery('');
+                      }}
+                    >
+                      <div className="w-8 h-8 rounded-lg bg-background-secondary flex items-center justify-center flex-shrink-0 mt-0.5">
+                        {item.category === 'Inquilini' ? <Users size={14} className="text-primary-500" /> :
+                         item.category === 'Annunci' ? <Home size={14} className="text-accent-500" /> :
+                         <Building2 size={14} className="text-teal-500" />}
+                      </div>
+                      <div className="min-w-0">
+                        <p className="text-sm font-medium truncate">{item.title}</p>
+                        <p className="text-xs text-text-muted truncate">{item.subtitle}</p>
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="p-6 text-center text-text-muted text-sm">
+              Nessun risultato per "{query}"
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
 
 export default function DashboardLayout({ userRole }: DashboardLayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -132,7 +315,7 @@ export default function DashboardLayout({ userRole }: DashboardLayoutProps) {
       return {
         name: `${tenantUser.profile.firstName} ${tenantUser.profile.lastName}`,
         email: user.email,
-        avatar: tenantUser.profile.avatar,
+        avatar: tenantUser.profile.avatarUrl,
       };
     }
     if (user.role === 'agency') {
@@ -140,7 +323,7 @@ export default function DashboardLayout({ userRole }: DashboardLayoutProps) {
       return {
         name: agencyUser.agency.name,
         email: user.email,
-        avatar: agencyUser.agency.logo,
+        avatar: agencyUser.agency.logoUrl,
       };
     }
     return { name: 'Admin', email: user.email };
@@ -290,17 +473,8 @@ export default function DashboardLayout({ userRole }: DashboardLayoutProps) {
               <Menu size={24} />
             </button>
 
-            {/* Search (placeholder) */}
-            <div className="hidden md:flex flex-1 max-w-md mx-4">
-              <div className="relative w-full">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-text-muted" size={18} />
-                <input
-                  type="text"
-                  placeholder="Cerca..."
-                  className="input pl-10"
-                />
-              </div>
-            </div>
+            {/* Global Search */}
+            <GlobalSearch userRole={userRole} navigate={navigate} />
 
             {/* Right side */}
             <div className="flex items-center gap-3">
@@ -348,7 +522,13 @@ export default function DashboardLayout({ userRole }: DashboardLayoutProps) {
                           <User size={16} className="inline mr-2" />
                           Profilo
                         </button>
-                        <button className="w-full px-3 py-2 text-left text-sm rounded-lg hover:bg-background-secondary">
+                        <button
+                          onClick={() => {
+                            setUserMenuOpen(false);
+                            navigate(userRole === 'tenant' ? ROUTES.TENANT_SETTINGS : userRole === 'agency' ? ROUTES.AGENCY_SETTINGS : ROUTES.ADMIN_SYSTEM);
+                          }}
+                          className="w-full px-3 py-2 text-left text-sm rounded-lg hover:bg-background-secondary"
+                        >
                           <Settings size={16} className="inline mr-2" />
                           Impostazioni
                         </button>

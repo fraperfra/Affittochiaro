@@ -1,13 +1,13 @@
 /**
  * LoginPage
- * Pagina di login con AWS Cognito
+ * Pagina di login (modalità demo)
  */
 
 import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Eye, EyeOff, Mail, Lock, ArrowLeft, AlertCircle } from 'lucide-react';
+import { Eye, EyeOff, Mail, Lock, ArrowLeft, AlertCircle, Shield, User, Building2 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { useAuthStore } from '../store';
 import { loginSchema, LoginFormData } from '../utils/validators';
@@ -16,8 +16,18 @@ import { Button, Input, Card } from '../components/ui';
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
-  const { login, isLoading, error, clearError, pendingConfirmation, isAuthenticated, user } = useAuthStore();
+  const { login, quickLogin, isLoading, error, clearError, isAuthenticated, user } = useAuthStore();
   const navigate = useNavigate();
+
+  // Handler per quick login (solo in dev)
+  const handleQuickLogin = async (role: 'admin' | 'tenant' | 'agency') => {
+    try {
+      await quickLogin(role);
+      toast.success(`Accesso come ${role} riuscito!`);
+    } catch (err: any) {
+      toast.error(err.message || 'Errore durante il login');
+    }
+  };
 
   const {
     register,
@@ -44,13 +54,6 @@ export default function LoginPage() {
     }
   }, [isAuthenticated, user, navigate]);
 
-  // Redirect a conferma email se necessario
-  useEffect(() => {
-    if (pendingConfirmation) {
-      navigate(`${ROUTES.CONFIRM_EMAIL}?email=${encodeURIComponent(pendingConfirmation.email)}`);
-    }
-  }, [pendingConfirmation, navigate]);
-
   // Clear error on mount
   useEffect(() => {
     clearError();
@@ -62,10 +65,7 @@ export default function LoginPage() {
       toast.success('Benvenuto!');
       // Il redirect avviene tramite useEffect
     } catch (err: any) {
-      // Se l'utente deve confermare l'email, il redirect avviene tramite useEffect
-      if (err.code !== 'UserNotConfirmedException') {
-        // toast.error già gestito dallo store
-      }
+      // Errore gestito dallo store
     }
   };
 
@@ -165,6 +165,42 @@ export default function LoginPage() {
                 Registrati
               </Link>
             </p>
+          </div>
+
+          {/* Quick Login (modalità demo) */}
+          <div className="mt-8 pt-6 border-t border-gray-200">
+            <p className="text-xs text-center text-gray-500 mb-4">
+              Accesso rapido (modalità demo)
+            </p>
+              <div className="grid grid-cols-3 gap-3">
+                <button
+                  type="button"
+                  onClick={() => handleQuickLogin('admin')}
+                  disabled={isLoading}
+                  className="flex flex-col items-center gap-2 p-3 rounded-xl border-2 border-dashed border-gray-300 hover:border-purple-400 hover:bg-purple-50 transition-all group disabled:opacity-50"
+                >
+                  <Shield className="w-6 h-6 text-purple-500 group-hover:scale-110 transition-transform" />
+                  <span className="text-xs font-medium text-gray-600">Admin</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleQuickLogin('tenant')}
+                  disabled={isLoading}
+                  className="flex flex-col items-center gap-2 p-3 rounded-xl border-2 border-dashed border-gray-300 hover:border-green-400 hover:bg-green-50 transition-all group disabled:opacity-50"
+                >
+                  <User className="w-6 h-6 text-green-500 group-hover:scale-110 transition-transform" />
+                  <span className="text-xs font-medium text-gray-600">Inquilino</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleQuickLogin('agency')}
+                  disabled={isLoading}
+                  className="flex flex-col items-center gap-2 p-3 rounded-xl border-2 border-dashed border-gray-300 hover:border-blue-400 hover:bg-blue-50 transition-all group disabled:opacity-50"
+                >
+                  <Building2 className="w-6 h-6 text-blue-500 group-hover:scale-110 transition-transform" />
+                  <span className="text-xs font-medium text-gray-600">Agenzia</span>
+                </button>
+              </div>
           </div>
         </Card>
 

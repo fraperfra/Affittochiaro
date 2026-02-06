@@ -106,7 +106,7 @@ export default function AgencyDashboardPage() {
                 </div>
                 <div className="flex items-center gap-2">
                   <Home size={18} />
-                  <span>12 annunci attivi</span>
+                  <span>{agencyUser?.agency?.activeListingsCount ?? 12} annunci attivi</span>
                 </div>
               </div>
             </div>
@@ -131,7 +131,7 @@ export default function AgencyDashboardPage() {
             <p className="text-text-muted mt-1">crediti disponibili</p>
             <div className="mt-4 pt-4 border-t border-border">
               <p className="text-sm text-text-secondary">
-                Usati questo mese: <span className="font-medium">18</span>
+                Usati questo mese: <span className="font-medium">{agencyUser?.agency?.creditsUsedThisMonth ?? 18}</span>
               </p>
             </div>
             <Link to={ROUTES.AGENCY_PLAN}>
@@ -164,12 +164,12 @@ export default function AgencyDashboardPage() {
         <StatCard
           icon={<Unlock size={24} className="text-primary-500" />}
           label="Profili Sbloccati"
-          value={18}
+          value={agencyUser?.agency?.tenantsUnlocked ?? 18}
         />
         <StatCard
           icon="🏠"
           label="Annunci Attivi"
-          value={12}
+          value={agencyUser?.agency?.activeListingsCount ?? 12}
         />
       </div>
 

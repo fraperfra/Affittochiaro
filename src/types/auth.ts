@@ -1,10 +1,16 @@
 import { UserRole } from './common';
+import { EmploymentType } from './tenant';
 
 export interface User {
   id: string;
+  cognitoSub?: string;
   email: string;
   role: UserRole;
+  status?: 'pending' | 'active' | 'inactive' | 'suspended';
+  emailVerified?: boolean;
+  phoneVerified?: boolean;
   createdAt: Date;
+  updatedAt?: Date;
   lastLogin?: Date;
 }
 
@@ -27,38 +33,71 @@ export interface TenantProfile {
   firstName: string;
   lastName: string;
   phone?: string;
-  avatar?: string;
+  avatarUrl?: string;
   dateOfBirth?: Date;
   bio?: string;
-  // Employment
+
+  // Employment (allineato con backend)
   occupation?: string;
-  employmentType?: string;
+  employmentType?: EmploymentType;
   employer?: string;
   annualIncome?: number;
   incomeVisible?: boolean;
+  employmentStartDate?: Date;
+
   // Location
   city?: string;
+  currentStreet?: string;
+  currentProvince?: string;
+  currentPostalCode?: string;
+
   // Verification
   isVerified: boolean;
+  verifiedAt?: Date;
   hasVideo: boolean;
   videoUrl?: string;
+  videoDuration?: number;
+  videoUploadedAt?: Date;
+
+  // Profile metrics
   profileCompleteness: number;
+  rating?: number;
+  reviewsCount?: number;
+
   // Stats
   profileViews?: number;
   applicationsSent?: number;
-  availableFrom?: string;
+  matchesReceived?: number;
+  availableFrom?: Date;
+
+  // Timestamps
+  lastActive?: Date;
 }
 
 export interface AgencyProfile {
   name: string;
-  logo?: string;
+  logoUrl?: string;
+  description?: string;
   vatNumber: string;
   phone: string;
   city: string;
+  province?: string;
+  postalCode?: string;
   website?: string;
   isVerified: boolean;
   plan: AgencyPlan;
   credits: number;
+  creditsUsedThisMonth?: number;
+  planStartDate?: Date;
+  planExpiresAt?: Date;
+
+  // Stats
+  listingsCount?: number;
+  activeListingsCount?: number;
+  tenantsUnlocked?: number;
+  matchesCount?: number;
+  rating?: number;
+  reviewsCount?: number;
 }
 
 export type AgencyPlan = 'free' | 'base' | 'professional' | 'enterprise';

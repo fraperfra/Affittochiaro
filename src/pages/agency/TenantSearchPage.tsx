@@ -15,6 +15,7 @@ import {
 import { useTenantStore, useAuthStore } from '../../store';
 import { mockTenants } from '../../utils/mockData';
 import { formatCurrency, formatInitials, formatRelativeTime } from '../../utils/formatters';
+import { calculateTenantScore } from '../../utils/matching';
 import { ITALIAN_CITIES, OCCUPATIONS } from '../../utils/constants';
 import { Tenant, AgencyUser } from '../../types';
 import { Card, Button, Badge, Modal, ModalFooter, Input, EmptyState } from '../../components/ui';
@@ -27,19 +28,31 @@ export default function TenantSearchPage() {
   const [selectedTenant, setSelectedTenant] = useState<Tenant | null>(null);
   const [showFilters, setShowFilters] = useState(false);
   const [unlockedIds, setUnlockedIds] = useState<string[]>([]);
+  const [sortBy, setSortBy] = useState<'score' | 'recent' | 'name'>('score');
 
   useEffect(() => {
     setTenants(mockTenants);
   }, []);
 
-  const filteredTenants = tenants.filter((tenant) => {
-    if (filters.city && tenant.currentCity !== filters.city) return false;
-    if (filters.occupation && tenant.occupation !== filters.occupation) return false;
-    if (filters.isVerified && !tenant.isVerified) return false;
-    if (filters.hasVideo && !tenant.hasVideo) return false;
-    if (tenant.status !== 'active') return false;
-    return true;
-  });
+  // Filtro + calcolo score + sort
+  const filteredTenants = tenants
+    .filter((tenant) => {
+      if (filters.city && tenant.currentCity !== filters.city) return false;
+      if (filters.occupation && tenant.occupation !== filters.occupation) return false;
+      if (filters.isVerified && !tenant.isVerified) return false;
+      if (filters.hasVideo && !tenant.hasVideo) return false;
+      if (tenant.status !== 'active') return false;
+      return true;
+    })
+    .map((tenant) => ({
+      ...tenant,
+      matchScore: calculateTenantScore(tenant),
+    }))
+    .sort((a, b) => {
+      if (sortBy === 'score') return b.matchScore - a.matchScore;
+      if (sortBy === 'recent') return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+      return a.firstName.localeCompare(b.firstName);
+    });
 
   const handleUnlock = (tenant: Tenant) => {
     if (unlockedIds.includes(tenant.id)) return;
@@ -122,6 +135,15 @@ export default function TenantSearchPage() {
           <p className="text-text-secondary">
             <span className="font-semibold text-text-primary">{filteredTenants.length}</span> inquilini trovati
           </p>
+          <select
+            className="input w-auto text-sm"
+            value={sortBy}
+            onChange={(e) => setSortBy(e.target.value as 'score' | 'recent' | 'name')}
+          >
+            <option value="score">Punteggio</option>
+            <option value="recent">Piu recenti</option>
+            <option value="name">Nome A-Z</option>
+          </select>
         </div>
       </Card>
 
@@ -173,9 +195,14 @@ export default function TenantSearchPage() {
 
               {/* Badges */}
               <div className="flex flex-wrap gap-2 mt-4">
+                <Badge
+                  variant={tenant.matchScore >= 70 ? 'success' : tenant.matchScore >= 50 ? 'warning' : 'error'}
+                  size="sm"
+                >
+                  {tenant.matchScore}% match
+                </Badge>
                 {tenant.isVerified && <Badge variant="success" size="sm">✓ Verificato</Badge>}
                 {tenant.hasVideo && <Badge variant="info" size="sm">🎥 Video</Badge>}
-                {tenant.rating && <Badge variant="warning" size="sm">⭐ {tenant.rating}</Badge>}
               </div>
 
               {/* Quick Info */}
