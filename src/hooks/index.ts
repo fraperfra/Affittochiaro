@@ -9,3 +9,5 @@ export type { UseVideoRecorderReturn, RecordingState } from './useVideoRecorder'
 
 export { useCamera } from './useCamera';
 export type { UseCameraReturn, CameraState } from './useCamera';
+
+export { usePageTitle } from './usePageTitle';

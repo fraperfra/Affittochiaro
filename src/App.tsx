@@ -232,6 +232,7 @@ function App() {
           <Route path="messages" element={<MessagesPage />} />
           <Route path="settings" element={<SettingsPage />} />
           <Route path="templates" element={<TenantTemplatesPage />} />
+          <Route path="*" element={<Navigate to={ROUTES.TENANT_DASHBOARD} replace />} />
         </Route>
 
         {/* Agency Routes */}
@@ -251,6 +252,7 @@ function App() {
           <Route path="messages" element={<MessagesPage />} />
           <Route path="settings" element={<SettingsPage />} />
           <Route path="templates" element={<AgencyTemplatesPage />} />
+          <Route path="*" element={<Navigate to={ROUTES.AGENCY_DASHBOARD} replace />} />
         </Route>
 
         {/* Admin Routes */}
@@ -268,6 +270,7 @@ function App() {
           <Route path="listings" element={<ListingsManagementPage />} />
           <Route path="system" element={<SystemPage />} />
           <Route path="templates" element={<AdminTemplatesPage />} />
+          <Route path="*" element={<Navigate to={ROUTES.ADMIN_DASHBOARD} replace />} />
         </Route>
 
         {/* 404 */}

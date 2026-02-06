@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo, useRef, useCallback } from 'react';
-import { Outlet, NavLink, useNavigate } from 'react-router-dom';
+import { Outlet, NavLink, useNavigate, useLocation } from 'react-router-dom';
 import {
   Home,
   User,
@@ -268,12 +268,48 @@ function GlobalSearch({ userRole, navigate }: { userRole: string; navigate: (pat
   );
 }
 
+// Page title map for SEO
+const PAGE_TITLES: Record<string, string> = {
+  '/tenant': 'Dashboard',
+  '/tenant/profile': 'Il Mio Profilo',
+  '/tenant/cv': 'Il Mio CV',
+  '/tenant/cv/preview': 'Anteprima CV',
+  '/tenant/listings': 'Cerca Annunci',
+  '/tenant/notifications': 'Notifiche',
+  '/tenant/agencies': 'Agenzie',
+  '/tenant/documents': 'Documenti',
+  '/tenant/messages': 'Messaggi',
+  '/tenant/settings': 'Impostazioni',
+  '/tenant/templates': 'Template',
+  '/agency': 'Dashboard',
+  '/agency/tenants': 'Cerca Inquilini',
+  '/agency/listings': 'I Miei Annunci',
+  '/agency/applications': 'Candidature',
+  '/agency/plan': 'Piano & Crediti',
+  '/agency/messages': 'Messaggi',
+  '/agency/settings': 'Impostazioni',
+  '/agency/templates': 'Template',
+  '/admin': 'Dashboard',
+  '/admin/tenants': 'Gestione Inquilini',
+  '/admin/agencies': 'Gestione Agenzie',
+  '/admin/listings': 'Gestione Annunci',
+  '/admin/system': 'Sistema',
+  '/admin/templates': 'Template di Sistema',
+};
+
 export default function DashboardLayout({ userRole }: DashboardLayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const [unreadApplications, setUnreadApplications] = useState(0);
   const { user, logout } = useAuthStore();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // Set page title based on current route
+  useEffect(() => {
+    const title = PAGE_TITLES[location.pathname] || 'Affittochiaro';
+    document.title = `${title} | Affittochiaro`;
+  }, [location.pathname]);
 
   // Logout handler
   const handleLogout = () => {
