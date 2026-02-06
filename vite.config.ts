@@ -24,6 +24,16 @@ export default defineConfig(({ mode }) => {
       build: {
         outDir: 'dist',
         sourcemap: true,
+        rollupOptions: {
+          output: {
+            manualChunks: {
+              'vendor-react': ['react', 'react-dom', 'react-router-dom'],
+              'vendor-charts': ['recharts'],
+              'vendor-pdf': ['jspdf', 'html2canvas'],
+              'vendor-zustand': ['zustand'],
+            },
+          },
+        },
       }
     };
 });

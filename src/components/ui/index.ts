@@ -7,3 +7,12 @@ export { default as Modal, ModalFooter } from './Modal';
 export { default as Spinner, FullPageSpinner } from './Spinner';
 export { default as EmptyState } from './EmptyState';
 export { ProfileCompletionCard } from './ProfileCompletionCard';
+export {
+  default as Skeleton,
+  StatCardsSkeleton,
+  TableSkeleton,
+  CardGridSkeleton,
+  DashboardSkeleton,
+  ProfileSkeleton,
+  ChatSkeleton,
+} from './Skeleton';

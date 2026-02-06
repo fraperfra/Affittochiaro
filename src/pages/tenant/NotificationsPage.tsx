@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Check, Trash2, Bell, BellOff, Settings } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { useNotificationStore } from '../../store';
+import { ROUTES } from '../../utils/constants';
 import { generateMockNotifications } from '../../utils/mockData';
 import { formatRelativeTime } from '../../utils/formatters';
 import { NOTIFICATION_ICONS } from '../../types';
@@ -16,6 +18,7 @@ export default function NotificationsPage() {
     deleteNotification,
   } = useNotificationStore();
 
+  const navigate = useNavigate();
   const [filter, setFilter] = useState<'all' | 'unread'>('all');
 
   useEffect(() => {
@@ -44,7 +47,7 @@ export default function NotificationsPage() {
               Segna tutte come lette
             </Button>
           )}
-          <Button variant="ghost" size="sm" leftIcon={<Settings size={16} />}>
+          <Button variant="ghost" size="sm" leftIcon={<Settings size={16} />} onClick={() => navigate(ROUTES.TENANT_SETTINGS)}>
             Impostazioni
           </Button>
         </div>

@@ -57,7 +57,7 @@ function getEmploymentTypeLabel(type?: string): string {
 }
 
 export default function TenantProfilePage() {
-  const { user } = useAuthStore();
+  const { user, setUser } = useAuthStore();
   const tenantUser = user as TenantUser;
 
   // Stati locali
@@ -219,10 +219,27 @@ export default function TenantProfilePage() {
       // Aggiorna bio locale
       setBio(data.bio || bio);
 
-      // Ricarica il profilo per aggiornare lo store
-      // Questo aggiornerà automaticamente i dati visualizzati
-      window.location.reload();
+      // Aggiorna lo store direttamente senza reload
+      if (user) {
+        const updatedUser = {
+          ...user,
+          profile: {
+            ...(user as TenantUser).profile,
+            firstName: data.firstName,
+            lastName: data.lastName,
+            phone: data.phone,
+            bio: data.bio,
+            occupation: data.occupation,
+            employmentType: data.employmentType as any,
+            employer: data.employer,
+            annualIncome: data.annualIncome,
+            city: data.currentCity,
+          },
+        } as TenantUser;
+        setUser(updatedUser);
+      }
 
+      setEditProfileOpen(false);
       toast.success('Profilo aggiornato con successo!');
     } catch (error: any) {
       toast.error(error.message || 'Errore durante il salvataggio');

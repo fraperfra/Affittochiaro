@@ -1,9 +1,9 @@
-import { useState } from 'react';
+import { useState, lazy, Suspense } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { useAuthStore } from './store';
 import { ROUTES } from './utils/constants';
 
-// Landing Page Components (from root)
+// Landing Page Components (from root) - eagerly loaded (entry point)
 import { useNotifications } from '../hooks';
 import {
   Header as LandingHeader,
@@ -22,42 +22,47 @@ import {
   NotFoundPage,
 } from '../pages';
 
-// App Layouts
+// App Layouts - eagerly loaded (shared shell)
 import DashboardLayout from './components/layout/DashboardLayout';
 
-// Auth Pages
-import LoginPage from './pages/LoginPage';
-import RegisterPage from './pages/RegisterPage';
-import ConfirmEmailPage from './pages/ConfirmEmailPage';
-import ForgotPasswordPage from './pages/ForgotPasswordPage';
+// Suspense fallback
+import { FullPageSpinner } from './components/ui/Spinner';
 
-// Tenant Pages
-import TenantDashboardPage from './pages/tenant/TenantDashboardPage';
-import TenantProfilePage from './pages/tenant/TenantProfilePage';
-import TenantCVPage from './pages/tenant/TenantCVPage';
-import TenantCVPreviewPage from './pages/tenant/TenantCVPreviewPage';
-import ListingsPage from './pages/tenant/ListingsPage';
-import NotificationsPage from './pages/tenant/NotificationsPage';
-import TenantAgenciesPage from './pages/tenant/TenantAgenciesPage';
-import SettingsPage from './pages/SettingsPage';
-import MessagesPage from './pages/MessagesPage';
-
-// Agency Pages
-import AgencyDashboardPage from './pages/agency/AgencyDashboardPage';
-import TenantSearchPage from './pages/agency/TenantSearchPage';
-import MyListingsPage from './pages/agency/MyListingsPage';
-import ApplicationsPage from './pages/agency/ApplicationsPage';
-import PlanPage from './pages/agency/PlanPage';
-
-// Maintenance
+// Maintenance - eagerly loaded (simple, small)
 import MaintenancePage from './pages/MaintenancePage';
 
-// Admin Pages
-import AdminDashboardPage from './pages/admin/AdminDashboardPage';
-import TenantsManagementPage from './pages/admin/TenantsManagementPage';
-import AgenciesManagementPage from './pages/admin/AgenciesManagementPage';
-import ListingsManagementPage from './pages/admin/ListingsManagementPage';
-import SystemPage from './pages/admin/SystemPage';
+// Auth Pages - lazy loaded
+const LoginPage = lazy(() => import('./pages/LoginPage'));
+const RegisterPage = lazy(() => import('./pages/RegisterPage'));
+const ConfirmEmailPage = lazy(() => import('./pages/ConfirmEmailPage'));
+const ForgotPasswordPage = lazy(() => import('./pages/ForgotPasswordPage'));
+
+// Tenant Pages - lazy loaded
+const TenantDashboardPage = lazy(() => import('./pages/tenant/TenantDashboardPage'));
+const TenantProfilePage = lazy(() => import('./pages/tenant/TenantProfilePage'));
+const TenantCVPage = lazy(() => import('./pages/tenant/TenantCVPage'));
+const TenantCVPreviewPage = lazy(() => import('./pages/tenant/TenantCVPreviewPage'));
+const ListingsPage = lazy(() => import('./pages/tenant/ListingsPage'));
+const NotificationsPage = lazy(() => import('./pages/tenant/NotificationsPage'));
+const TenantAgenciesPage = lazy(() => import('./pages/tenant/TenantAgenciesPage'));
+
+// Agency Pages - lazy loaded
+const AgencyDashboardPage = lazy(() => import('./pages/agency/AgencyDashboardPage'));
+const TenantSearchPage = lazy(() => import('./pages/agency/TenantSearchPage'));
+const MyListingsPage = lazy(() => import('./pages/agency/MyListingsPage'));
+const ApplicationsPage = lazy(() => import('./pages/agency/ApplicationsPage'));
+const PlanPage = lazy(() => import('./pages/agency/PlanPage'));
+
+// Admin Pages - lazy loaded
+const AdminDashboardPage = lazy(() => import('./pages/admin/AdminDashboardPage'));
+const TenantsManagementPage = lazy(() => import('./pages/admin/TenantsManagementPage'));
+const AgenciesManagementPage = lazy(() => import('./pages/admin/AgenciesManagementPage'));
+const ListingsManagementPage = lazy(() => import('./pages/admin/ListingsManagementPage'));
+const SystemPage = lazy(() => import('./pages/admin/SystemPage'));
+
+// Shared Pages - lazy loaded
+const SettingsPage = lazy(() => import('./pages/SettingsPage'));
+const MessagesPage = lazy(() => import('./pages/MessagesPage'));
 
 // Auth Guard Component
 function AuthGuard({ children, allowedRoles }: { children: React.ReactNode; allowedRoles?: string[] }) {
@@ -135,135 +140,137 @@ function App() {
   }
 
   return (
-    <Routes>
-      {/* Landing Pages (public with landing layout) */}
-      <Route
-        path="/"
-        element={
-          <LandingWrapper>
-            <HomePageWithState />
-          </LandingWrapper>
-        }
-      />
-      <Route
-        path="/annunci"
-        element={
-          <LandingWrapper>
-            <AnnunciPage />
-          </LandingWrapper>
-        }
-      />
-      <Route
-        path="/come-funziona"
-        element={
-          <LandingWrapper>
-            <ComeFunzionaPage />
-          </LandingWrapper>
-        }
-      />
-      <Route
-        path="/faq"
-        element={
-          <LandingWrapper>
-            <FAQPage />
-          </LandingWrapper>
-        }
-      />
+    <Suspense fallback={<FullPageSpinner />}>
+      <Routes>
+        {/* Landing Pages (public with landing layout) */}
+        <Route
+          path="/"
+          element={
+            <LandingWrapper>
+              <HomePageWithState />
+            </LandingWrapper>
+          }
+        />
+        <Route
+          path="/annunci"
+          element={
+            <LandingWrapper>
+              <AnnunciPage />
+            </LandingWrapper>
+          }
+        />
+        <Route
+          path="/come-funziona"
+          element={
+            <LandingWrapper>
+              <ComeFunzionaPage />
+            </LandingWrapper>
+          }
+        />
+        <Route
+          path="/faq"
+          element={
+            <LandingWrapper>
+              <FAQPage />
+            </LandingWrapper>
+          }
+        />
 
-      {/* Auth Pages (no layout) */}
-      <Route
-        path={ROUTES.LOGIN}
-        element={
-          <PublicGuard>
-            <LoginPage />
-          </PublicGuard>
-        }
-      />
-      <Route
-        path={ROUTES.REGISTER}
-        element={
-          <PublicGuard>
-            <RegisterPage />
-          </PublicGuard>
-        }
-      />
-      <Route
-        path={ROUTES.CONFIRM_EMAIL}
-        element={<ConfirmEmailPage />}
-      />
-      <Route
-        path={ROUTES.FORGOT_PASSWORD}
-        element={
-          <PublicGuard>
-            <ForgotPasswordPage />
-          </PublicGuard>
-        }
-      />
+        {/* Auth Pages (no layout) */}
+        <Route
+          path={ROUTES.LOGIN}
+          element={
+            <PublicGuard>
+              <LoginPage />
+            </PublicGuard>
+          }
+        />
+        <Route
+          path={ROUTES.REGISTER}
+          element={
+            <PublicGuard>
+              <RegisterPage />
+            </PublicGuard>
+          }
+        />
+        <Route
+          path={ROUTES.CONFIRM_EMAIL}
+          element={<ConfirmEmailPage />}
+        />
+        <Route
+          path={ROUTES.FORGOT_PASSWORD}
+          element={
+            <PublicGuard>
+              <ForgotPasswordPage />
+            </PublicGuard>
+          }
+        />
 
-      {/* Tenant Routes */}
-      <Route
-        path="/tenant"
-        element={
-          <AuthGuard allowedRoles={['tenant']}>
-            <DashboardLayout userRole="tenant" />
-          </AuthGuard>
-        }
-      >
-        <Route index element={<TenantDashboardPage />} />
-        <Route path="profile" element={<TenantProfilePage />} />
-        <Route path="cv" element={<TenantCVPage />} />
-        <Route path="cv/preview" element={<TenantCVPreviewPage />} />
-        <Route path="listings" element={<ListingsPage />} />
-        <Route path="notifications" element={<NotificationsPage />} />
-        <Route path="agencies" element={<TenantAgenciesPage />} />
-        <Route path="messages" element={<MessagesPage />} />
-        <Route path="settings" element={<SettingsPage />} />
-      </Route>
+        {/* Tenant Routes */}
+        <Route
+          path="/tenant"
+          element={
+            <AuthGuard allowedRoles={['tenant']}>
+              <DashboardLayout userRole="tenant" />
+            </AuthGuard>
+          }
+        >
+          <Route index element={<TenantDashboardPage />} />
+          <Route path="profile" element={<TenantProfilePage />} />
+          <Route path="cv" element={<TenantCVPage />} />
+          <Route path="cv/preview" element={<TenantCVPreviewPage />} />
+          <Route path="listings" element={<ListingsPage />} />
+          <Route path="notifications" element={<NotificationsPage />} />
+          <Route path="agencies" element={<TenantAgenciesPage />} />
+          <Route path="messages" element={<MessagesPage />} />
+          <Route path="settings" element={<SettingsPage />} />
+        </Route>
 
-      {/* Agency Routes */}
-      <Route
-        path="/agency"
-        element={
-          <AuthGuard allowedRoles={['agency']}>
-            <DashboardLayout userRole="agency" />
-          </AuthGuard>
-        }
-      >
-        <Route index element={<AgencyDashboardPage />} />
-        <Route path="tenants" element={<TenantSearchPage />} />
-        <Route path="listings" element={<MyListingsPage />} />
-        <Route path="applications" element={<ApplicationsPage />} />
-        <Route path="plan" element={<PlanPage />} />
-        <Route path="messages" element={<MessagesPage />} />
-        <Route path="settings" element={<SettingsPage />} />
-      </Route>
+        {/* Agency Routes */}
+        <Route
+          path="/agency"
+          element={
+            <AuthGuard allowedRoles={['agency']}>
+              <DashboardLayout userRole="agency" />
+            </AuthGuard>
+          }
+        >
+          <Route index element={<AgencyDashboardPage />} />
+          <Route path="tenants" element={<TenantSearchPage />} />
+          <Route path="listings" element={<MyListingsPage />} />
+          <Route path="applications" element={<ApplicationsPage />} />
+          <Route path="plan" element={<PlanPage />} />
+          <Route path="messages" element={<MessagesPage />} />
+          <Route path="settings" element={<SettingsPage />} />
+        </Route>
 
-      {/* Admin Routes */}
-      <Route
-        path="/admin"
-        element={
-          <AuthGuard allowedRoles={['admin']}>
-            <DashboardLayout userRole="admin" />
-          </AuthGuard>
-        }
-      >
-        <Route index element={<AdminDashboardPage />} />
-        <Route path="tenants" element={<TenantsManagementPage />} />
-        <Route path="agencies" element={<AgenciesManagementPage />} />
-        <Route path="listings" element={<ListingsManagementPage />} />
-        <Route path="system" element={<SystemPage />} />
-      </Route>
+        {/* Admin Routes */}
+        <Route
+          path="/admin"
+          element={
+            <AuthGuard allowedRoles={['admin']}>
+              <DashboardLayout userRole="admin" />
+            </AuthGuard>
+          }
+        >
+          <Route index element={<AdminDashboardPage />} />
+          <Route path="tenants" element={<TenantsManagementPage />} />
+          <Route path="agencies" element={<AgenciesManagementPage />} />
+          <Route path="listings" element={<ListingsManagementPage />} />
+          <Route path="system" element={<SystemPage />} />
+        </Route>
 
-      {/* 404 */}
-      <Route
-        path="*"
-        element={
-          <LandingWrapper>
-            <NotFoundPage />
-          </LandingWrapper>
-        }
-      />
-    </Routes>
+        {/* 404 */}
+        <Route
+          path="*"
+          element={
+            <LandingWrapper>
+              <NotFoundPage />
+            </LandingWrapper>
+          }
+        />
+      </Routes>
+    </Suspense>
   );
 }
 
