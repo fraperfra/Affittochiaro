@@ -64,6 +64,12 @@ const SystemPage = lazy(() => import('./pages/admin/SystemPage'));
 const SettingsPage = lazy(() => import('./pages/SettingsPage'));
 const MessagesPage = lazy(() => import('./pages/MessagesPage'));
 
+// Additional Pages - lazy loaded
+const TenantDocumentsPage = lazy(() => import('./pages/tenant/TenantDocumentsPage'));
+const TenantTemplatesPage = lazy(() => import('./pages/tenant/TenantTemplatesPage'));
+const AgencyTemplatesPage = lazy(() => import('./pages/agency/AgencyTemplatesPage'));
+const AdminTemplatesPage = lazy(() => import('./pages/admin/AdminTemplatesPage'));
+
 // Auth Guard Component
 function AuthGuard({ children, allowedRoles }: { children: React.ReactNode; allowedRoles?: string[] }) {
   const { isAuthenticated, user } = useAuthStore();
@@ -222,8 +228,10 @@ function App() {
           <Route path="listings" element={<ListingsPage />} />
           <Route path="notifications" element={<NotificationsPage />} />
           <Route path="agencies" element={<TenantAgenciesPage />} />
+          <Route path="documents" element={<TenantDocumentsPage />} />
           <Route path="messages" element={<MessagesPage />} />
           <Route path="settings" element={<SettingsPage />} />
+          <Route path="templates" element={<TenantTemplatesPage />} />
         </Route>
 
         {/* Agency Routes */}
@@ -242,6 +250,7 @@ function App() {
           <Route path="plan" element={<PlanPage />} />
           <Route path="messages" element={<MessagesPage />} />
           <Route path="settings" element={<SettingsPage />} />
+          <Route path="templates" element={<AgencyTemplatesPage />} />
         </Route>
 
         {/* Admin Routes */}
@@ -258,6 +267,7 @@ function App() {
           <Route path="agencies" element={<AgenciesManagementPage />} />
           <Route path="listings" element={<ListingsManagementPage />} />
           <Route path="system" element={<SystemPage />} />
+          <Route path="templates" element={<AdminTemplatesPage />} />
         </Route>
 
         {/* 404 */}

@@ -17,6 +17,8 @@ import {
   ChevronDown,
   Inbox,
   MessageSquare,
+  FolderOpen,
+  Layout,
 } from 'lucide-react';
 import { useAuthStore } from '../../store';
 import { ROUTES } from '../../utils/constants';
@@ -39,8 +41,10 @@ const tenantNavItems: NavItem[] = [
   { icon: <Home size={20} />, label: 'Dashboard', path: ROUTES.TENANT_DASHBOARD },
   { icon: <User size={20} />, label: 'Il Mio Profilo', path: ROUTES.TENANT_PROFILE },
   { icon: <FileText size={20} />, label: 'Il Mio CV', path: ROUTES.TENANT_CV },
+  { icon: <FolderOpen size={20} />, label: 'Documenti', path: ROUTES.TENANT_DOCUMENTS },
   { icon: <Search size={20} />, label: 'Cerca Annunci', path: ROUTES.TENANT_LISTINGS },
   { icon: <MessageSquare size={20} />, label: 'Messaggi', path: ROUTES.TENANT_MESSAGES },
+  { icon: <Layout size={20} />, label: 'Template', path: ROUTES.TENANT_TEMPLATES },
   { icon: <Bell size={20} />, label: 'Notifiche', path: ROUTES.TENANT_NOTIFICATIONS, badge: 3 },
   { icon: <Settings size={20} />, label: 'Impostazioni', path: ROUTES.TENANT_SETTINGS },
 ];
@@ -52,6 +56,7 @@ const agencyNavItems: NavItem[] = [
   { icon: <Home size={20} />, label: 'I Miei Annunci', path: ROUTES.AGENCY_LISTINGS },
   { icon: <MessageSquare size={20} />, label: 'Messaggi', path: ROUTES.AGENCY_MESSAGES },
   { icon: <CreditCard size={20} />, label: 'Piano & Crediti', path: ROUTES.AGENCY_PLAN },
+  { icon: <Layout size={20} />, label: 'Template', path: ROUTES.AGENCY_TEMPLATES },
   { icon: <Settings size={20} />, label: 'Impostazioni', path: ROUTES.AGENCY_SETTINGS },
 ];
 
@@ -60,6 +65,7 @@ const adminNavItems: NavItem[] = [
   { icon: <Users size={20} />, label: 'Inquilini', path: ROUTES.ADMIN_TENANTS },
   { icon: <Building2 size={20} />, label: 'Agenzie', path: ROUTES.ADMIN_AGENCIES },
   { icon: <Home size={20} />, label: 'Annunci', path: ROUTES.ADMIN_LISTINGS },
+  { icon: <Layout size={20} />, label: 'Template', path: ROUTES.ADMIN_TEMPLATES },
   { icon: <Settings size={20} />, label: 'Sistema', path: ROUTES.ADMIN_SYSTEM },
 ];
 
