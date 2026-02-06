@@ -43,6 +43,7 @@ const tenantNavItems: NavItem[] = [
   { icon: <FileText size={20} />, label: 'Il Mio CV', path: ROUTES.TENANT_CV },
   { icon: <FolderOpen size={20} />, label: 'Documenti', path: ROUTES.TENANT_DOCUMENTS },
   { icon: <Search size={20} />, label: 'Cerca Annunci', path: ROUTES.TENANT_LISTINGS },
+  { icon: <Building2 size={20} />, label: 'Agenzie', path: ROUTES.TENANT_AGENCIES },
   { icon: <MessageSquare size={20} />, label: 'Messaggi', path: ROUTES.TENANT_MESSAGES },
   { icon: <Layout size={20} />, label: 'Template', path: ROUTES.TENANT_TEMPLATES },
   { icon: <Bell size={20} />, label: 'Notifiche', path: ROUTES.TENANT_NOTIFICATIONS, badge: 3 },

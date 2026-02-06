@@ -247,7 +247,7 @@ export default function TenantDashboardPage() {
               )}
 
               <Link
-                to={ROUTES.TENANT_PROFILE}
+                to={ROUTES.TENANT_DOCUMENTS}
                 className="flex items-center gap-4 p-4 rounded-xl bg-background-secondary hover:bg-primary-50 transition-colors group"
               >
                 <div className="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center">
@@ -255,7 +255,7 @@ export default function TenantDashboardPage() {
                 </div>
                 <div className="flex-1">
                   <p className="font-medium group-hover:text-primary-600">Carica Documenti</p>
-                  <p className="text-sm text-text-muted">3/5 caricati</p>
+                  <p className="text-sm text-text-muted">Gestisci i tuoi documenti</p>
                 </div>
                 <ArrowRight size={18} className="text-text-muted group-hover:text-primary-500" />
               </Link>
