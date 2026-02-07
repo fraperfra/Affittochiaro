@@ -3,11 +3,11 @@
  * Pagina profilo inquilino con gestione documenti, video, foto e modifica dati
  */
 
-import { useState, useCallback } from 'react';
-import { useAuthStore } from '../../store';
+import { useState, useCallback, useEffect } from 'react';
+import { useAuthStore, useCVStore } from '../../store';
 import { TenantUser, DocumentType } from '../../types';
 import { formatCurrency, formatDate, formatInitials } from '../../utils/formatters';
-import { Card, CardHeader, CardTitle, Button, Badge, Modal, ModalFooter } from '../../components/ui';
+import { Card, CardHeader, CardTitle, Button, Badge, Modal, ModalFooter, Input } from '../../components/ui';
 import {
   Edit2,
   Eye,
@@ -28,6 +28,8 @@ import {
   CheckCircle,
   Settings,
 } from 'lucide-react';
+import { CVRentalHistorySection, CVReferencesSection } from '../../components/cv';
+import { ITALIAN_CITIES } from '../../utils/constants';
 
 // Nuovi componenti
 import { DocumentUploader, DocumentList } from '../../components/documents';
@@ -56,9 +58,53 @@ function getEmploymentTypeLabel(type?: string): string {
   return EMPLOYMENT_TYPE_LABELS[type] || type;
 }
 
+interface RentalFormData {
+  address: string;
+  city: string;
+  province: string;
+  startDate: string;
+  endDate: string;
+  isCurrent: boolean;
+  monthlyRent: string;
+  landlordName: string;
+  landlordContact: string;
+  reasonForLeaving: string;
+}
+
+interface ReferenceFormData {
+  landlordName: string;
+  landlordEmail: string;
+  propertyAddress: string;
+}
+
+const EMPTY_RENTAL: RentalFormData = {
+  address: '', city: '', province: '', startDate: '', endDate: '',
+  isCurrent: false, monthlyRent: '', landlordName: '', landlordContact: '', reasonForLeaving: '',
+};
+
+const EMPTY_REFERENCE: ReferenceFormData = {
+  landlordName: '', landlordEmail: '', propertyAddress: '',
+};
+
 export default function TenantProfilePage() {
   const { user, setUser } = useAuthStore();
   const tenantUser = user as TenantUser;
+
+  // CV Store
+  const {
+    cv, isLoading: isCVLoading, isSaving: isCVSaving, error: cvError,
+    loadCV, addRentalEntry, addReference, clearError: clearCVError,
+  } = useCVStore();
+
+  const tenantId = tenantUser?.id || '';
+
+  useEffect(() => {
+    if (tenantId) loadCV(tenantId);
+  }, [tenantId, loadCV]);
+
+  useEffect(() => {
+    if (cvError) { toast.error(cvError); clearCVError(); }
+  }, [cvError, clearCVError]);
 
   // Stati locali
   const [editBioOpen, setEditBioOpen] = useState(false);
@@ -67,6 +113,12 @@ export default function TenantProfilePage() {
   const [bio, setBio] = useState(
     tenantUser?.profile?.bio || "Ciao! Sono Mario, lavoro come Software Developer a Milano. Cerco un appartamento accogliente dove sentirmi a casa. Sono una persona ordinata, rispettosa e puntuale con i pagamenti."
   );
+
+  // Form modals - Rental History & References
+  const [showRentalForm, setShowRentalForm] = useState(false);
+  const [rentalForm, setRentalForm] = useState<RentalFormData>(EMPTY_RENTAL);
+  const [showReferenceForm, setShowReferenceForm] = useState(false);
+  const [referenceForm, setReferenceForm] = useState<ReferenceFormData>(EMPTY_REFERENCE);
 
   // Dati profilo
   const profile = tenantUser?.profile;
@@ -249,115 +301,65 @@ export default function TenantProfilePage() {
     }
   };
 
+  // Rental form handler
+  const handleAddRental = async () => {
+    if (!rentalForm.address || !rentalForm.city || !rentalForm.startDate || !rentalForm.monthlyRent) {
+      toast.error('Compila i campi obbligatori'); return;
+    }
+    try {
+      await addRentalEntry(tenantId, {
+        address: rentalForm.address,
+        city: rentalForm.city,
+        province: rentalForm.province || undefined,
+        startDate: new Date(rentalForm.startDate),
+        endDate: rentalForm.endDate ? new Date(rentalForm.endDate) : undefined,
+        isCurrent: rentalForm.isCurrent,
+        monthlyRent: parseInt(rentalForm.monthlyRent),
+        landlordName: rentalForm.landlordName || undefined,
+        landlordContact: rentalForm.landlordContact || undefined,
+        reasonForLeaving: rentalForm.reasonForLeaving || undefined,
+        hasReference: false,
+      });
+      toast.success('Affitto aggiunto!');
+      setShowRentalForm(false);
+      setRentalForm(EMPTY_RENTAL);
+    } catch {
+      toast.error('Errore nel salvataggio');
+    }
+  };
+
+  // Reference form handler
+  const handleAddReference = async () => {
+    if (!referenceForm.landlordName || !referenceForm.landlordEmail) {
+      toast.error('Inserisci nome e email del proprietario'); return;
+    }
+    try {
+      await addReference(tenantId, {
+        landlordName: referenceForm.landlordName,
+        landlordEmail: referenceForm.landlordEmail,
+        propertyAddress: referenceForm.propertyAddress || undefined,
+        rating: 0,
+      });
+      toast.success('Richiesta referenza inviata!');
+      setShowReferenceForm(false);
+      setReferenceForm(EMPTY_REFERENCE);
+    } catch {
+      toast.error('Errore nel salvataggio');
+    }
+  };
+
   return (
     <div className="space-y-6 max-w-6xl mx-auto">
-      {/* Profile Header */}
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-        {/* Top section with avatar and info */}
-        <div className="p-6 sm:p-8">
-          <div className="flex flex-col sm:flex-row gap-6">
-            {/* Avatar */}
-            <div className="flex justify-center sm:justify-start">
-              <AvatarUploader
-                currentAvatar={avatarUrl}
-                onUpload={handleAvatarUpload}
-                isUploading={isUploadingAvatar}
-                size="lg"
-              />
-            </div>
-
-            {/* User Info */}
-            <div className="flex-1 text-center sm:text-left">
-              <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
-                <div>
-                  <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
-                    {tenantUser?.profile?.firstName || 'Mario'} {tenantUser?.profile?.lastName || 'Rossi'}
-                  </h1>
-                  <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2 mt-2 text-gray-500">
-                    <span className="flex items-center gap-1">
-                      <Calendar size={14} />
-                      32 anni
-                    </span>
-                    <span className="hidden sm:inline">•</span>
-                    <span className="flex items-center gap-1">
-                      <Briefcase size={14} />
-                      {tenantUser?.profile?.occupation || 'Software Developer'}
-                    </span>
-                    <span className="hidden sm:inline">•</span>
-                    <span className="flex items-center gap-1">
-                      <MapPin size={14} />
-                      {tenantUser?.profile?.city || 'Milano'}
-                    </span>
-                  </div>
-
-                  {/* Badges */}
-                  <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2 mt-4">
-                    {tenantUser?.profile?.isVerified && (
-                      <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-green-50 text-green-700 border border-green-200">
-                        <CheckCircle size={14} />
-                        Verificato
-                      </span>
-                    )}
-                    {hasVideo && (
-                      <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-blue-50 text-blue-700 border border-blue-200">
-                        <Video size={14} />
-                        Video
-                      </span>
-                    )}
-                    <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-amber-50 text-amber-700 border border-amber-200">
-                      ⭐ 4.8
-                    </span>
-                  </div>
-                </div>
-
-                {/* Edit button - desktop */}
-                <button
-                  onClick={() => setEditProfileOpen(true)}
-                  className="hidden sm:flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 bg-gray-50 hover:bg-gray-100 rounded-xl border border-gray-200 transition-all duration-200 hover:shadow-sm"
-                >
-                  <Settings size={16} />
-                  Modifica
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Stats bar */}
-        <div className="grid grid-cols-3 divide-x divide-gray-100 border-t border-gray-100 bg-gray-50/50">
-          <div className="p-4 sm:p-6 text-center hover:bg-white transition-colors cursor-default">
-            <div className="flex items-center justify-center gap-2 mb-1">
-              <Users size={18} className="text-action-green" />
-              <span className="text-2xl sm:text-3xl font-bold text-gray-900">127</span>
-            </div>
-            <p className="text-xs sm:text-sm text-gray-500">Visualizzazioni</p>
-          </div>
-          <div className="p-4 sm:p-6 text-center hover:bg-white transition-colors cursor-default">
-            <div className="flex items-center justify-center gap-2 mb-1">
-              <Send size={18} className="text-blue-500" />
-              <span className="text-2xl sm:text-3xl font-bold text-gray-900">8</span>
-            </div>
-            <p className="text-xs sm:text-sm text-gray-500">Candidature</p>
-          </div>
-          <div className="p-4 sm:p-6 text-center hover:bg-white transition-colors cursor-default">
-            <div className="flex items-center justify-center gap-2 mb-1">
-              <FileText size={18} className="text-purple-500" />
-              <span className="text-2xl sm:text-3xl font-bold text-gray-900">{documents.length}</span>
-            </div>
-            <p className="text-xs sm:text-sm text-gray-500">Documenti</p>
-          </div>
-        </div>
-
-        {/* Edit button - mobile */}
-        <div className="p-4 border-t border-gray-100 sm:hidden">
-          <button
-            onClick={() => setEditProfileOpen(true)}
-            className="w-full flex items-center justify-center gap-2 px-4 py-3 text-sm font-medium text-white bg-action-green hover:bg-brand-green rounded-xl transition-all duration-200"
-          >
-            <Edit2 size={16} />
-            Modifica Profilo
-          </button>
-        </div>
+      {/* Page Header */}
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-bold text-text-primary">Il Mio Profilo</h1>
+        <button
+          onClick={() => setEditProfileOpen(true)}
+          className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 bg-gray-50 hover:bg-gray-100 rounded-xl border border-gray-200 transition-all duration-200 hover:shadow-sm"
+        >
+          <Settings size={16} />
+          Modifica
+        </button>
       </div>
 
       <div className="grid lg:grid-cols-3 gap-6">
@@ -459,6 +461,28 @@ export default function TenantProfilePage() {
               )}
             </div>
           </Card>
+
+          {/* Rental History (from CV store) */}
+          {cv && (
+            <div className="bg-white rounded-2xl shadow-card p-6">
+              <CVRentalHistorySection
+                entries={cv.rentalHistory}
+                editable={true}
+                onAdd={() => setShowRentalForm(true)}
+              />
+            </div>
+          )}
+
+          {/* References (from CV store) */}
+          {cv && (
+            <div className="bg-white rounded-2xl shadow-card p-6">
+              <CVReferencesSection
+                references={cv.references}
+                editable={true}
+                onAdd={() => setShowReferenceForm(true)}
+              />
+            </div>
+          )}
 
           {/* Documents Section */}
           <Card>
@@ -612,23 +636,6 @@ export default function TenantProfilePage() {
             </div>
           </Card>
 
-          {/* References */}
-          <Card>
-            <CardHeader>
-              <div className="flex items-center gap-2">
-                <span className="text-xl">⭐</span>
-                <CardTitle>Referenze</CardTitle>
-              </div>
-            </CardHeader>
-            <div className="text-center py-6">
-              <p className="text-text-muted mb-4">
-                Nessuna referenza ancora
-              </p>
-              <Button variant="outline" size="sm">
-                Richiedi Referenza
-              </Button>
-            </div>
-          </Card>
         </div>
       </div>
 
@@ -679,6 +686,134 @@ export default function TenantProfilePage() {
         }}
         isLoading={isSavingProfile}
       />
+
+      {/* Rental History Form Modal */}
+      <Modal
+        isOpen={showRentalForm}
+        onClose={() => { setShowRentalForm(false); setRentalForm(EMPTY_RENTAL); }}
+        title="Aggiungi Affitto Precedente"
+        size="lg"
+      >
+        <div className="space-y-4">
+          <Input
+            label="Indirizzo *"
+            value={rentalForm.address}
+            onChange={(e) => setRentalForm({ ...rentalForm, address: e.target.value })}
+            placeholder="Via Roma 10"
+          />
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="label">Citta *</label>
+              <select className="input" value={rentalForm.city} onChange={(e) => setRentalForm({ ...rentalForm, city: e.target.value })}>
+                <option value="">Seleziona...</option>
+                {ITALIAN_CITIES.map(c => <option key={c} value={c}>{c}</option>)}
+              </select>
+            </div>
+            <Input
+              label="Provincia"
+              value={rentalForm.province}
+              onChange={(e) => setRentalForm({ ...rentalForm, province: e.target.value })}
+              placeholder="MI"
+            />
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <Input
+              label="Data inizio *"
+              type="date"
+              value={rentalForm.startDate}
+              onChange={(e) => setRentalForm({ ...rentalForm, startDate: e.target.value })}
+            />
+            <Input
+              label="Data fine"
+              type="date"
+              value={rentalForm.endDate}
+              onChange={(e) => setRentalForm({ ...rentalForm, endDate: e.target.value })}
+              disabled={rentalForm.isCurrent}
+            />
+          </div>
+          <label className="flex items-center gap-2 cursor-pointer">
+            <input
+              type="checkbox"
+              checked={rentalForm.isCurrent}
+              onChange={(e) => setRentalForm({ ...rentalForm, isCurrent: e.target.checked, endDate: '' })}
+              className="rounded border-border"
+            />
+            <span className="text-sm">Affitto attuale</span>
+          </label>
+          <Input
+            label="Affitto mensile (&euro;) *"
+            type="number"
+            value={rentalForm.monthlyRent}
+            onChange={(e) => setRentalForm({ ...rentalForm, monthlyRent: e.target.value })}
+            placeholder="800"
+          />
+          <div className="grid grid-cols-2 gap-4">
+            <Input
+              label="Nome proprietario"
+              value={rentalForm.landlordName}
+              onChange={(e) => setRentalForm({ ...rentalForm, landlordName: e.target.value })}
+            />
+            <Input
+              label="Contatto proprietario"
+              value={rentalForm.landlordContact}
+              onChange={(e) => setRentalForm({ ...rentalForm, landlordContact: e.target.value })}
+              placeholder="Email o telefono"
+            />
+          </div>
+          {!rentalForm.isCurrent && (
+            <Input
+              label="Motivo fine contratto"
+              value={rentalForm.reasonForLeaving}
+              onChange={(e) => setRentalForm({ ...rentalForm, reasonForLeaving: e.target.value })}
+              placeholder="es. Trasferimento per lavoro"
+            />
+          )}
+        </div>
+        <ModalFooter>
+          <Button variant="secondary" onClick={() => { setShowRentalForm(false); setRentalForm(EMPTY_RENTAL); }}>
+            Annulla
+          </Button>
+          <Button onClick={handleAddRental} isLoading={isCVSaving}>Aggiungi</Button>
+        </ModalFooter>
+      </Modal>
+
+      {/* Reference Form Modal */}
+      <Modal
+        isOpen={showReferenceForm}
+        onClose={() => { setShowReferenceForm(false); setReferenceForm(EMPTY_REFERENCE); }}
+        title="Richiedi Referenza"
+      >
+        <div className="space-y-4">
+          <p className="text-sm text-text-secondary">
+            Inserisci i dati del tuo precedente proprietario. Ricevera una email per lasciare una referenza sul tuo profilo.
+          </p>
+          <Input
+            label="Nome proprietario *"
+            value={referenceForm.landlordName}
+            onChange={(e) => setReferenceForm({ ...referenceForm, landlordName: e.target.value })}
+            placeholder="Mario Rossi"
+          />
+          <Input
+            label="Email proprietario *"
+            type="email"
+            value={referenceForm.landlordEmail}
+            onChange={(e) => setReferenceForm({ ...referenceForm, landlordEmail: e.target.value })}
+            placeholder="proprietario@email.it"
+          />
+          <Input
+            label="Indirizzo immobile"
+            value={referenceForm.propertyAddress}
+            onChange={(e) => setReferenceForm({ ...referenceForm, propertyAddress: e.target.value })}
+            placeholder="Via dell'affitto precedente"
+          />
+        </div>
+        <ModalFooter>
+          <Button variant="secondary" onClick={() => { setShowReferenceForm(false); setReferenceForm(EMPTY_REFERENCE); }}>
+            Annulla
+          </Button>
+          <Button onClick={handleAddReference} isLoading={isCVSaving}>Invia Richiesta</Button>
+        </ModalFooter>
+      </Modal>
     </div>
   );
 }

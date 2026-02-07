@@ -40,12 +40,10 @@ interface NavItem {
 const tenantNavItems: NavItem[] = [
   { icon: <Home size={20} />, label: 'Dashboard', path: ROUTES.TENANT_DASHBOARD },
   { icon: <User size={20} />, label: 'Il Mio Profilo', path: ROUTES.TENANT_PROFILE },
-  { icon: <FileText size={20} />, label: 'Il Mio CV', path: ROUTES.TENANT_CV },
   { icon: <FolderOpen size={20} />, label: 'Documenti', path: ROUTES.TENANT_DOCUMENTS },
   { icon: <Search size={20} />, label: 'Cerca Annunci', path: ROUTES.TENANT_LISTINGS },
   { icon: <Building2 size={20} />, label: 'Agenzie', path: ROUTES.TENANT_AGENCIES },
   { icon: <MessageSquare size={20} />, label: 'Messaggi', path: ROUTES.TENANT_MESSAGES },
-  { icon: <Layout size={20} />, label: 'Template', path: ROUTES.TENANT_TEMPLATES },
   { icon: <Bell size={20} />, label: 'Notifiche', path: ROUTES.TENANT_NOTIFICATIONS, badge: 3 },
   { icon: <Settings size={20} />, label: 'Impostazioni', path: ROUTES.TENANT_SETTINGS },
 ];
@@ -272,7 +270,6 @@ function GlobalSearch({ userRole, navigate }: { userRole: string; navigate: (pat
 const PAGE_TITLES: Record<string, string> = {
   '/tenant': 'Dashboard',
   '/tenant/profile': 'Il Mio Profilo',
-  '/tenant/cv': 'Il Mio CV',
   '/tenant/cv/preview': 'Anteprima CV',
   '/tenant/listings': 'Cerca Annunci',
   '/tenant/notifications': 'Notifiche',
@@ -280,7 +277,6 @@ const PAGE_TITLES: Record<string, string> = {
   '/tenant/documents': 'Documenti',
   '/tenant/messages': 'Messaggi',
   '/tenant/settings': 'Impostazioni',
-  '/tenant/templates': 'Template',
   '/agency': 'Dashboard',
   '/agency/tenants': 'Cerca Inquilini',
   '/agency/listings': 'I Miei Annunci',

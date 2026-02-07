@@ -40,7 +40,6 @@ const ForgotPasswordPage = lazy(() => import('./pages/ForgotPasswordPage'));
 // Tenant Pages - lazy loaded
 const TenantDashboardPage = lazy(() => import('./pages/tenant/TenantDashboardPage'));
 const TenantProfilePage = lazy(() => import('./pages/tenant/TenantProfilePage'));
-const TenantCVPage = lazy(() => import('./pages/tenant/TenantCVPage'));
 const TenantCVPreviewPage = lazy(() => import('./pages/tenant/TenantCVPreviewPage'));
 const ListingsPage = lazy(() => import('./pages/tenant/ListingsPage'));
 const NotificationsPage = lazy(() => import('./pages/tenant/NotificationsPage'));
@@ -223,7 +222,6 @@ function App() {
         >
           <Route index element={<TenantDashboardPage />} />
           <Route path="profile" element={<TenantProfilePage />} />
-          <Route path="cv" element={<TenantCVPage />} />
           <Route path="cv/preview" element={<TenantCVPreviewPage />} />
           <Route path="listings" element={<ListingsPage />} />
           <Route path="notifications" element={<NotificationsPage />} />

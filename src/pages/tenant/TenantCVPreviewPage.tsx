@@ -43,9 +43,9 @@ export default function TenantCVPreviewPage() {
     <div className="max-w-3xl mx-auto">
       {/* Toolbar */}
       <div className="flex items-center justify-between mb-6 print:hidden">
-        <Link to="/tenant/cv">
+        <Link to="/tenant/profile">
           <Button variant="ghost" size="sm" leftIcon={<ArrowLeft size={16} />}>
-            Torna al CV
+            Torna al Profilo
           </Button>
         </Link>
         <Button
