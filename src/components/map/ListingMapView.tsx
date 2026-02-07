@@ -12,6 +12,9 @@ import ListingPopupCard from './ListingPopupCard';
 
 // Stili custom per marker prezzo e popup
 const MARKER_STYLES = `
+  .leaflet-container {
+    z-index: 0 !important;
+  }
   .price-marker {
     background: #004832;
     color: white;

@@ -14,6 +14,7 @@ import {
   Filter,
   Globe,
   Users,
+  Lock,
 } from 'lucide-react';
 import { mockAgencies } from '../../utils/mockData';
 import { ITALIAN_CITIES } from '../../utils/constants';
@@ -112,70 +113,89 @@ export default function TenantAgenciesPage() {
       {paginatedAgencies.length > 0 ? (
         <>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {paginatedAgencies.map((agency) => (
-              <Card key={agency.id} className="hover:shadow-md transition-shadow cursor-pointer" onClick={() => setSelectedAgency(agency)}>
-                <div className="space-y-4">
-                  {/* Agency header */}
-                  <div className="flex items-start gap-3">
-                    {agency.logo ? (
-                      <img
-                        src={agency.logo}
-                        alt={agency.name}
-                        className="w-14 h-14 rounded-xl object-cover flex-shrink-0"
-                      />
-                    ) : (
-                      <div className="w-14 h-14 rounded-xl bg-teal-100 flex items-center justify-center flex-shrink-0">
-                        <Building2 size={24} className="text-teal-600" />
-                      </div>
-                    )}
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2">
-                        <h3 className="font-semibold text-text-primary truncate">{agency.name}</h3>
-                        {agency.isVerified && (
-                          <CheckCircle size={16} className="text-success flex-shrink-0" />
+            {paginatedAgencies.map((agency) => {
+              const hasSubscription = agency.plan !== 'free';
+
+              return (
+                <Card
+                  key={agency.id}
+                  className={`transition-shadow relative overflow-hidden ${hasSubscription ? 'hover:shadow-md cursor-pointer' : ''}`}
+                  onClick={() => hasSubscription && setSelectedAgency(agency)}
+                >
+                  <div className={`space-y-4 ${!hasSubscription ? 'blur-[6px] select-none pointer-events-none' : ''}`}>
+                    {/* Agency header */}
+                    <div className="flex items-start gap-3">
+                      {agency.logo ? (
+                        <img
+                          src={agency.logo}
+                          alt={agency.name}
+                          className="w-14 h-14 rounded-xl object-cover flex-shrink-0"
+                        />
+                      ) : (
+                        <div className="w-14 h-14 rounded-xl bg-teal-100 flex items-center justify-center flex-shrink-0">
+                          <Building2 size={24} className="text-teal-600" />
+                        </div>
+                      )}
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2">
+                          <h3 className="font-semibold text-text-primary truncate">{agency.name}</h3>
+                          {agency.isVerified && (
+                            <CheckCircle size={16} className="text-success flex-shrink-0" />
+                          )}
+                        </div>
+                        {agency.address?.city && (
+                          <p className="text-sm text-text-muted flex items-center gap-1 mt-0.5">
+                            <MapPin size={12} />
+                            {agency.address.city}
+                          </p>
                         )}
                       </div>
-                      {agency.address?.city && (
-                        <p className="text-sm text-text-muted flex items-center gap-1 mt-0.5">
-                          <MapPin size={12} />
-                          {agency.address.city}
-                        </p>
+                    </div>
+
+                    {/* Description */}
+                    {agency.description && (
+                      <p className="text-sm text-text-secondary line-clamp-2">{agency.description}</p>
+                    )}
+
+                    {/* Stats */}
+                    <div className="flex items-center gap-4 text-sm">
+                      <div className="flex items-center gap-1 text-text-muted">
+                        <Home size={14} />
+                        <span>{agency.activeListingsCount} annunci</span>
+                      </div>
+                      {agency.rating && (
+                        <div className="flex items-center gap-1 text-text-muted">
+                          <Star size={14} className="text-amber-400 fill-amber-400" />
+                          <span>{agency.rating.toFixed(1)}</span>
+                          <span className="text-text-muted">({agency.reviewsCount})</span>
+                        </div>
                       )}
                     </div>
-                  </div>
 
-                  {/* Description */}
-                  {agency.description && (
-                    <p className="text-sm text-text-secondary line-clamp-2">{agency.description}</p>
-                  )}
-
-                  {/* Stats */}
-                  <div className="flex items-center gap-4 text-sm">
-                    <div className="flex items-center gap-1 text-text-muted">
-                      <Home size={14} />
-                      <span>{agency.activeListingsCount} annunci</span>
+                    {/* Footer */}
+                    <div className="flex items-center justify-between pt-2 border-t border-border">
+                      <Badge variant={PLAN_LABELS[agency.plan]?.variant || 'info'}>
+                        {PLAN_LABELS[agency.plan]?.label || agency.plan}
+                      </Badge>
+                      <Button variant="ghost" size="sm">
+                        Vedi profilo
+                      </Button>
                     </div>
-                    {agency.rating && (
-                      <div className="flex items-center gap-1 text-text-muted">
-                        <Star size={14} className="text-amber-400 fill-amber-400" />
-                        <span>{agency.rating.toFixed(1)}</span>
-                        <span className="text-text-muted">({agency.reviewsCount})</span>
-                      </div>
-                    )}
                   </div>
 
-                  {/* Footer */}
-                  <div className="flex items-center justify-between pt-2 border-t border-border">
-                    <Badge variant={PLAN_LABELS[agency.plan]?.variant || 'info'}>
-                      {PLAN_LABELS[agency.plan]?.label || agency.plan}
-                    </Badge>
-                    <Button variant="ghost" size="sm">
-                      Vedi profilo
-                    </Button>
-                  </div>
-                </div>
-              </Card>
-            ))}
+                  {/* Lock overlay for free agencies */}
+                  {!hasSubscription && (
+                    <div className="absolute inset-0 flex flex-col items-center justify-center bg-white/40 z-10">
+                      <div className="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center mb-3">
+                        <Lock size={22} className="text-gray-400" />
+                      </div>
+                      <p className="text-sm font-semibold text-gray-600">Abbonamento richiesto</p>
+                      <p className="text-xs text-gray-400 mt-1">Questa agenzia non ha un piano attivo</p>
+                    </div>
+                  )}
+                </Card>
+              );
+            })}
           </div>
 
           {/* Pagination */}
