@@ -1,10 +1,14 @@
 import { useState, useMemo } from 'react';
+import { Link } from 'react-router-dom';
 import {
   Calculator, Receipt, Building2, TrendingUp, Landmark, Scale, Users,
   FileText, Home, PiggyBank, Banknote, MapPin, Ruler, Percent,
-  ChevronDown, ChevronUp, Search, RotateCcw,
+  ChevronDown, ChevronUp, Search, RotateCcw, Lock, Crown, ArrowRight,
 } from 'lucide-react';
 import { Card, Badge } from '../../components/ui';
+import { useAuthStore } from '../../store';
+import { AgencyUser } from '../../types';
+import { ROUTES } from '../../utils/constants';
 
 // ─── Helpers ────────────────────────────────────────────────
 const fmt = (n: number) => n.toLocaleString('it-IT', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
@@ -812,6 +816,11 @@ const CALCULATORS: CalcDef[] = [
 
 // ─── Main Page ──────────────────────────────────────────────
 export default function AgencyCalculatorsPage() {
+  const { user } = useAuthStore();
+  const agencyUser = user as AgencyUser;
+  const currentPlan = agencyUser?.agency?.plan || 'free';
+  const isEnterprise = currentPlan === 'enterprise';
+
   const [openId, setOpenId] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -824,6 +833,67 @@ export default function AgencyCalculatorsPage() {
   }, [searchQuery]);
 
   const toggle = (id: string) => setOpenId(openId === id ? null : id);
+
+  if (!isEnterprise) {
+    return (
+      <div className="space-y-6">
+        {/* Locked Banner */}
+        <div className="bg-white rounded-2xl shadow-card overflow-hidden">
+          <div className="bg-gradient-to-r from-amber-500 to-orange-500 px-6 py-8 text-center text-white">
+            <div className="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center mx-auto mb-4">
+              <Crown size={32} />
+            </div>
+            <h2 className="text-2xl font-bold font-poppins mb-2">Funzionalita Enterprise</h2>
+            <p className="text-white/90 max-w-md mx-auto">
+              I calcolatori professionali sono disponibili esclusivamente con il piano Enterprise.
+              Passa al piano massimo per sbloccare tutti gli strumenti.
+            </p>
+          </div>
+          <div className="p-6">
+            <div className="flex items-center justify-between mb-4">
+              <div>
+                <p className="text-sm text-text-muted">Il tuo piano attuale</p>
+                <p className="font-semibold text-text-primary capitalize">{currentPlan}</p>
+              </div>
+              <Link
+                to={ROUTES.AGENCY_PLAN}
+                className="inline-flex items-center gap-2 px-5 py-2.5 bg-amber-500 hover:bg-amber-600 text-white font-medium rounded-xl transition-colors"
+              >
+                Passa a Enterprise
+                <ArrowRight size={16} />
+              </Link>
+            </div>
+          </div>
+        </div>
+
+        {/* Preview (blurred) */}
+        <div className="relative">
+          <div className="absolute inset-0 bg-white/60 backdrop-blur-sm z-10 rounded-2xl flex items-center justify-center">
+            <div className="text-center">
+              <Lock size={32} className="text-text-muted mx-auto mb-2" />
+              <p className="font-medium text-text-secondary">14 calcolatori professionali</p>
+            </div>
+          </div>
+          <div className="space-y-3 pointer-events-none select-none">
+            {CALCULATORS.slice(0, 4).map(calc => {
+              const Icon = calc.icon;
+              return (
+                <div key={calc.id} className="bg-white rounded-xl shadow-card p-4 flex items-center gap-4 opacity-60">
+                  <div className={`w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0 ${calc.color}`}>
+                    <Icon size={22} />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-text-primary">{calc.title}</h3>
+                    <p className="text-sm text-text-muted">{calc.description}</p>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
