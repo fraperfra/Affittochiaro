@@ -31,6 +31,7 @@ export default defineConfig(({ mode }) => {
               'vendor-charts': ['recharts'],
               'vendor-pdf': ['jspdf', 'html2canvas'],
               'vendor-zustand': ['zustand'],
+              'vendor-leaflet': ['leaflet', 'react-leaflet'],
             },
           },
         },

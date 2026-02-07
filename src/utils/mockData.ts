@@ -12,6 +12,7 @@ import {
   NotificationType,
 } from '../types';
 import { ITALIAN_CITIES, OCCUPATIONS } from './constants';
+import { randomCoordinateNear } from '../data/cityCoordinates';
 
 // Helper functions for generating mock data
 const randomId = () => Math.random().toString(36).substring(2, 15);
@@ -261,10 +262,7 @@ export function generateMockListings(count: number, agencies: Agency[]): Listing
         postalCode: `${randomNumber(10, 99)}${randomNumber(100, 999)}`,
         country: 'Italia',
       },
-      coordinates: {
-        lat: 41.9 + Math.random() * 4,
-        lng: 9 + Math.random() * 6,
-      },
+      coordinates: randomCoordinateNear(city),
       zone: randomElement(ZONES),
       price,
       expenses: randomBoolean(0.7) ? randomNumber(50, 200) : undefined,

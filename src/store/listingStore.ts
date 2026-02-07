@@ -14,7 +14,7 @@ interface ListingState {
   pagination: Pagination;
   isLoading: boolean;
   error: string | null;
-  viewMode: 'grid' | 'list';
+  viewMode: 'grid' | 'list' | 'map';
   sortBy: 'newest' | 'price_asc' | 'price_desc' | 'relevance';
 
   // Actions
@@ -29,7 +29,7 @@ interface ListingState {
   setPagination: (pagination: Partial<Pagination>) => void;
   setLoading: (loading: boolean) => void;
   setError: (error: string | null) => void;
-  setViewMode: (mode: 'grid' | 'list') => void;
+  setViewMode: (mode: 'grid' | 'list' | 'map') => void;
   setSortBy: (sort: 'newest' | 'price_asc' | 'price_desc' | 'relevance') => void;
   toggleSavedListing: (listingId: string) => void;
   updateListing: (listingId: string, updates: Partial<Listing>) => void;

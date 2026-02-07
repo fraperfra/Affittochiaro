@@ -1,4 +1,5 @@
 import React, { useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { cityDetails, nearbyCities } from '../data';
 
 interface CityMapProps {
@@ -7,6 +8,7 @@ interface CityMapProps {
 }
 
 export const CityMap: React.FC<CityMapProps> = ({ activeCityName, onCityChange }) => {
+  const navigate = useNavigate();
   const activeCityInfo = useMemo(() => cityDetails[activeCityName], [activeCityName]);
 
   return (
@@ -131,7 +133,10 @@ export const CityMap: React.FC<CityMapProps> = ({ activeCityName, onCityChange }
             </div>
           </div>
 
-          <button className="w-full md:w-auto bg-brand-green text-white px-12 py-6 rounded-3xl font-bold uppercase tracking-widest text-xs shadow-2xl shadow-brand-green/20 hover:bg-black transition-all active:scale-95">
+          <button
+            onClick={() => navigate(`/tenant/listings?city=${encodeURIComponent(activeCityName)}&view=map`)}
+            className="w-full md:w-auto bg-brand-green text-white px-12 py-6 rounded-3xl font-bold uppercase tracking-widest text-xs shadow-2xl shadow-brand-green/20 hover:bg-black transition-all active:scale-95"
+          >
             CERCA A {activeCityName.toUpperCase()} ORA
           </button>
         </div>

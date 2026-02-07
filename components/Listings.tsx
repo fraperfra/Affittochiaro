@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { listings } from '../data';
 import { ApplicationModal, ApplicationData } from './ApplicationModal';
 
@@ -15,6 +16,7 @@ export const Listings: React.FC<ListingsProps> = ({
   onFilterChange,
   onApplicationSubmit
 }) => {
+  const navigate = useNavigate();
   const filters = ['Tutti', 'Appartamento', 'Attico', 'Villa'];
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedListing, setSelectedListing] = useState<{
@@ -121,14 +123,17 @@ export const Listings: React.FC<ListingsProps> = ({
           </div>
 
           <div className="mt-10 group">
-            <a href="#" className="inline-flex items-center gap-3 text-brand-green font-bold text-lg hover:text-action-green transition-all">
+            <button
+              onClick={() => navigate(`/tenant/listings?city=${encodeURIComponent(activeCityName)}`)}
+              className="inline-flex items-center gap-3 text-brand-green font-bold text-lg hover:text-action-green transition-all"
+            >
               <span>Vedi tutti gli annunci disponibili a {activeCityName}</span>
               <div className="w-10 h-10 bg-brand-green/5 rounded-full flex items-center justify-center group-hover:bg-action-green group-hover:text-white transition-all">
                 <svg className="w-5 h-5 translate-x-0 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
                 </svg>
               </div>
-            </a>
+            </button>
           </div>
         </div>
       </section>

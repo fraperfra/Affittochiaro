@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, lazy, Suspense } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import {
   Search,
   MapPin,
@@ -7,6 +8,7 @@ import {
   SlidersHorizontal,
   Grid,
   List,
+  Map,
   Heart,
   Eye,
   Users,
@@ -19,6 +21,8 @@ import {
 } from 'lucide-react';
 import { useListingStore, useAuthStore } from '../../store';
 import { mockListings } from '../../utils/mockData';
+
+const ListingMapView = lazy(() => import('../../components/map/ListingMapView'));
 import { formatCurrency, formatNumber, formatSquareMeters } from '../../utils/formatters';
 import { ITALIAN_CITIES } from '../../utils/constants';
 import { Listing, ListingFilters, TenantUser } from '../../types';
@@ -62,6 +66,7 @@ export default function ListingsPage() {
   const { listings, setListings, filters, setFilters, viewMode, setViewMode, savedListings, toggleSavedListing } = useListingStore();
   const { user } = useAuthStore();
   const tenantUser = user as TenantUser;
+  const [searchParams] = useSearchParams();
 
   const [selectedListing, setSelectedListing] = useState<Listing | null>(null);
   const [showFilters, setShowFilters] = useState(false);
@@ -72,11 +77,31 @@ export default function ListingsPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
-    setListings(mockListings.slice(0, 50));
+    // Read URL params (from landing page navigation)
+    const cityParam = searchParams.get('city');
+    const viewParam = searchParams.get('view');
+
+    if (cityParam) {
+      setFilters({ city: cityParam });
+    }
+    if (viewParam === 'map') {
+      setViewMode('map');
+      setListings(mockListings.slice(0, 500));
+    } else {
+      setListings(mockListings.slice(0, 50));
+    }
+
     // Load previously applied listing IDs
     const stored = localStorage.getItem('affittochiaro_applied_ids');
     if (stored) setAppliedIds(JSON.parse(stored));
   }, []);
+
+  // Load more listings when switching to map view
+  useEffect(() => {
+    if (viewMode === 'map' && listings.length <= 50) {
+      setListings(mockListings.slice(0, 500));
+    }
+  }, [viewMode]);
 
   // Pre-fill form from user profile when opening application modal
   useEffect(() => {
@@ -248,16 +273,25 @@ export default function ListingsPage() {
 
           <div className="flex gap-1 p-1 bg-background-secondary rounded-lg">
             <button
-              className={`p-2 rounded-md ${viewMode === 'grid' ? 'bg-white shadow-sm' : ''}`}
+              className={`p-2 rounded-md transition-colors ${viewMode === 'grid' ? 'bg-white shadow-sm' : 'hover:bg-white/50'}`}
               onClick={() => setViewMode('grid')}
+              title="Vista griglia"
             >
               <Grid size={18} />
             </button>
             <button
-              className={`p-2 rounded-md ${viewMode === 'list' ? 'bg-white shadow-sm' : ''}`}
+              className={`p-2 rounded-md transition-colors ${viewMode === 'list' ? 'bg-white shadow-sm' : 'hover:bg-white/50'}`}
               onClick={() => setViewMode('list')}
+              title="Vista lista"
             >
               <List size={18} />
+            </button>
+            <button
+              className={`p-2 rounded-md transition-colors ${viewMode === 'map' ? 'bg-white shadow-sm' : 'hover:bg-white/50'}`}
+              onClick={() => setViewMode('map')}
+              title="Vista mappa"
+            >
+              <Map size={18} />
             </button>
           </div>
         </div>
@@ -278,8 +312,27 @@ export default function ListingsPage() {
         </div>
       </Card>
 
-      {/* Listings Grid */}
-      {filteredListings.length > 0 ? (
+      {/* Map View */}
+      {viewMode === 'map' ? (
+        <Suspense fallback={
+          <div className="h-[calc(100vh-280px)] bg-background-secondary rounded-xl flex items-center justify-center">
+            <div className="text-center">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-500 mx-auto mb-3"></div>
+              <span className="text-text-secondary">Caricamento mappa...</span>
+            </div>
+          </div>
+        }>
+          <div className="h-[calc(100vh-280px)] rounded-xl overflow-hidden border border-border">
+            <ListingMapView
+              listings={filteredListings}
+              activeCity={filters.city}
+              onListingClick={(listing) => setSelectedListing(listing)}
+              onApply={(listing) => openApplicationForm(listing)}
+              isApplied={isApplied}
+            />
+          </div>
+        </Suspense>
+      ) : filteredListings.length > 0 ? (
         <div className={`grid gap-4 ${viewMode === 'grid' ? 'grid-cols-1 md:grid-cols-2 xl:grid-cols-3' : 'grid-cols-1'}`}>
           {filteredListings.map((listing) => (
             <Card
