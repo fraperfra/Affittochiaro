@@ -16,8 +16,8 @@ import { useTenantStore, useAuthStore } from '../../store';
 import { mockTenants } from '../../utils/mockData';
 import { formatCurrency, formatInitials, formatRelativeTime } from '../../utils/formatters';
 import { calculateTenantScore } from '../../utils/matching';
-import { ITALIAN_CITIES, OCCUPATIONS } from '../../utils/constants';
-import { Tenant, AgencyUser } from '../../types';
+import { ITALIAN_CITIES, CONTRACT_TYPES } from '../../utils/constants';
+import { Tenant, AgencyUser, ContractType } from '../../types';
 import { Card, Button, Badge, Modal, ModalFooter, Input, EmptyState } from '../../components/ui';
 import toast from 'react-hot-toast';
 
@@ -38,7 +38,7 @@ export default function TenantSearchPage() {
   const filteredTenants = tenants
     .filter((tenant) => {
       if (filters.city && tenant.currentCity !== filters.city) return false;
-      if (filters.occupation && tenant.occupation !== filters.occupation) return false;
+      if (filters.contractType && tenant.preferences.preferredContractType !== filters.contractType) return false;
       if (filters.isVerified && !tenant.isVerified) return false;
       if (filters.hasVideo && !tenant.hasVideo) return false;
       if (tenant.status !== 'active') return false;
@@ -104,12 +104,12 @@ export default function TenantSearchPage() {
 
             <select
               className="input w-auto"
-              value={filters.occupation || ''}
-              onChange={(e) => setFilters({ occupation: e.target.value || undefined })}
+              value={filters.contractType || ''}
+              onChange={(e) => setFilters({ contractType: (e.target.value || undefined) as ContractType | undefined })}
             >
-              <option value="">Tutte le occupazioni</option>
-              {OCCUPATIONS.map((occ) => (
-                <option key={occ} value={occ}>{occ}</option>
+              <option value="">Tutti i contratti</option>
+              {CONTRACT_TYPES.map((ct) => (
+                <option key={ct.value} value={ct.value}>{ct.label}</option>
               ))}
             </select>
 
@@ -304,9 +304,11 @@ export default function TenantSearchPage() {
               <div className="p-4 bg-background-secondary rounded-xl">
                 <div className="flex items-center gap-2 text-text-muted mb-1">
                   <Briefcase size={14} />
-                  <span className="text-sm">Occupazione</span>
+                  <span className="text-sm">Tipo Contratto</span>
                 </div>
-                <p className="font-medium">{selectedTenant.occupation}</p>
+                <p className="font-medium">
+                  {CONTRACT_TYPES.find(ct => ct.value === selectedTenant.preferences.preferredContractType)?.label || 'Non specificato'}
+                </p>
               </div>
               <div className="p-4 bg-background-secondary rounded-xl">
                 <div className="flex items-center gap-2 text-text-muted mb-1">

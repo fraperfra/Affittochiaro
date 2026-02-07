@@ -66,8 +66,9 @@ const MessagesPage = lazy(() => import('./pages/MessagesPage'));
 // Additional Pages - lazy loaded
 const TenantDocumentsPage = lazy(() => import('./pages/tenant/TenantDocumentsPage'));
 const TenantTemplatesPage = lazy(() => import('./pages/tenant/TenantTemplatesPage'));
-const AgencyTemplatesPage = lazy(() => import('./pages/agency/AgencyTemplatesPage'));
-const AdminTemplatesPage = lazy(() => import('./pages/admin/AdminTemplatesPage'));
+const AgencyDocumentsPage = lazy(() => import('./pages/agency/AgencyDocumentsPage'));
+const AgencyCalculatorsPage = lazy(() => import('./pages/agency/AgencyCalculatorsPage'));
+
 
 // Auth Guard Component
 function AuthGuard({ children, allowedRoles }: { children: React.ReactNode; allowedRoles?: string[] }) {
@@ -249,7 +250,8 @@ function App() {
           <Route path="plan" element={<PlanPage />} />
           <Route path="messages" element={<MessagesPage />} />
           <Route path="settings" element={<SettingsPage />} />
-          <Route path="templates" element={<AgencyTemplatesPage />} />
+          <Route path="documents" element={<AgencyDocumentsPage />} />
+          <Route path="calculators" element={<AgencyCalculatorsPage />} />
           <Route path="*" element={<Navigate to={ROUTES.AGENCY_DASHBOARD} replace />} />
         </Route>
 
@@ -267,7 +269,6 @@ function App() {
           <Route path="agencies" element={<AgenciesManagementPage />} />
           <Route path="listings" element={<ListingsManagementPage />} />
           <Route path="system" element={<SystemPage />} />
-          <Route path="templates" element={<AdminTemplatesPage />} />
           <Route path="*" element={<Navigate to={ROUTES.ADMIN_DASHBOARD} replace />} />
         </Route>
 

@@ -71,6 +71,14 @@ export type EmploymentType =
   | 'retired'        // Pensionato
   | 'unemployed';    // Disoccupato
 
+export type ContractType =
+  | '4+4'             // Canone libero
+  | '3+2'             // Canone concordato
+  | 'transitorio'     // Contratto transitorio
+  | 'studenti'        // Contratto per studenti
+  | 'uso_foresteria'  // Uso foresteria
+  | 'comodato';       // Comodato d'uso
+
 export interface TenantPreferences {
   maxBudget?: number;
   minRooms?: number;
@@ -85,6 +93,7 @@ export interface TenantPreferences {
   desiredContractMonths?: number; // Durata contratto desiderata in mesi
   minBudget?: number;             // Budget minimo
   acceptsGroundFloor?: boolean;   // Accetta piano terra?
+  preferredContractType?: ContractType; // Tipologia contratto preferita
 }
 
 export interface TenantDocument {
@@ -142,6 +151,7 @@ export interface TenantFilters {
   minAge?: number;
   maxAge?: number;
   occupation?: string;
+  contractType?: ContractType;
   employmentType?: EmploymentType;
   minIncome?: number;
   maxIncome?: number;

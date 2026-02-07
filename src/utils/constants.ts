@@ -106,6 +106,16 @@ export const OCCUPATIONS = [
   'Altro',
 ];
 
+// Contract Types (tipologie di contratto di locazione)
+export const CONTRACT_TYPES = [
+  { value: '4+4', label: '4+4 (Canone libero)' },
+  { value: '3+2', label: '3+2 (Canone concordato)' },
+  { value: 'transitorio', label: 'Transitorio' },
+  { value: 'studenti', label: 'Studenti' },
+  { value: 'uso_foresteria', label: 'Uso foresteria' },
+  { value: 'comodato', label: 'Comodato d\'uso' },
+] as const;
+
 // Routes
 export const ROUTES = {
   // Public
@@ -136,7 +146,8 @@ export const ROUTES = {
   AGENCY_PLAN: '/agency/plan',
   AGENCY_MESSAGES: '/agency/messages',
   AGENCY_SETTINGS: '/agency/settings',
-  AGENCY_TEMPLATES: '/agency/templates',
+  AGENCY_DOCUMENTS: '/agency/documents',
+  AGENCY_CALCULATORS: '/agency/calculators',
 
   // Admin
   ADMIN_DASHBOARD: '/admin',
@@ -144,7 +155,6 @@ export const ROUTES = {
   ADMIN_AGENCIES: '/admin/agencies',
   ADMIN_LISTINGS: '/admin/listings',
   ADMIN_SYSTEM: '/admin/system',
-  ADMIN_TEMPLATES: '/admin/templates',
 } as const;
 
 // Date formats

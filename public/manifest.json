@@ -1,0 +1,50 @@
+{
+  "name": "Affittochiaro - Il Curriculum dell'Inquilino",
+  "short_name": "Affittochiaro",
+  "description": "La piattaforma per affitti immobiliari in Italia. Crea il tuo profilo inquilino e trova casa velocemente.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FFFFFF",
+  "theme_color": "#004832",
+  "orientation": "portrait-primary",
+  "categories": ["business", "lifestyle"],
+  "lang": "it",
+  "icons": [
+    {
+      "src": "/icons/icon-192.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-512.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-maskable.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ],
+  "screenshots": [],
+  "shortcuts": [
+    {
+      "name": "Dashboard",
+      "url": "/tenant",
+      "icons": []
+    },
+    {
+      "name": "Cerca Casa",
+      "url": "/tenant/listings",
+      "icons": []
+    },
+    {
+      "name": "Messaggi",
+      "url": "/tenant/messages",
+      "icons": []
+    }
+  ]
+}

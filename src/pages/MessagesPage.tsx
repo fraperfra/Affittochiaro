@@ -12,6 +12,7 @@ import {
   Smile,
   Phone,
   Trash2,
+  Home,
 } from 'lucide-react';
 import { useAuthStore } from '../store';
 import { TenantUser, AgencyUser } from '../types';
@@ -38,6 +39,8 @@ interface Conversation {
   lastMessageTime: string;
   unreadCount: number;
   isOnline: boolean;
+  listingId?: number;
+  listingTitle?: string;
 }
 
 const STORAGE_KEY = 'affittochiaro_messages';
@@ -99,6 +102,8 @@ function generateMockConversations(userRole: 'tenant' | 'agency'): Conversation[
       lastMessageTime: new Date(Date.now() - 1000 * 60 * 10).toISOString(),
       unreadCount: 1,
       isOnline: true,
+      listingId: 1,
+      listingTitle: 'Bilocale luminoso in zona Navigli',
     },
     {
       id: 'conv_2',
@@ -109,6 +114,8 @@ function generateMockConversations(userRole: 'tenant' | 'agency'): Conversation[
       lastMessageTime: new Date(Date.now() - 1000 * 60 * 60 * 2).toISOString(),
       unreadCount: 0,
       isOnline: false,
+      listingId: 2,
+      listingTitle: 'Trilocale con terrazzo zona Porta Romana',
     },
     {
       id: 'conv_3',
@@ -119,6 +126,8 @@ function generateMockConversations(userRole: 'tenant' | 'agency'): Conversation[
       lastMessageTime: new Date(Date.now() - 1000 * 60 * 60 * 5).toISOString(),
       unreadCount: 3,
       isOnline: true,
+      listingId: 1,
+      listingTitle: 'Bilocale luminoso in zona Navigli',
     },
     {
       id: 'conv_4',
@@ -129,6 +138,8 @@ function generateMockConversations(userRole: 'tenant' | 'agency'): Conversation[
       lastMessageTime: new Date(Date.now() - 1000 * 60 * 60 * 24 * 2).toISOString(),
       unreadCount: 0,
       isOnline: false,
+      listingId: 3,
+      listingTitle: 'Monolocale arredato centro storico',
     },
     {
       id: 'conv_5',
@@ -139,6 +150,8 @@ function generateMockConversations(userRole: 'tenant' | 'agency'): Conversation[
       lastMessageTime: new Date(Date.now() - 1000 * 60 * 60 * 24 * 5).toISOString(),
       unreadCount: 0,
       isOnline: false,
+      listingId: 4,
+      listingTitle: 'Quadrilocale con box zona Isola',
     },
   ];
 }
@@ -199,6 +212,7 @@ export default function MessagesPage() {
   const [newMessage, setNewMessage] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
   const [showMobileList, setShowMobileList] = useState(true);
+  const [filterListingId, setFilterListingId] = useState<string>('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   // Load conversations
@@ -240,15 +254,39 @@ export default function MessagesPage() {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
+  // Unique listings from conversations (for the filter dropdown)
+  const uniqueListings = useMemo(() => {
+    const map = new Map<number, string>();
+    conversations.forEach(c => {
+      if (c.listingId && c.listingTitle) {
+        map.set(c.listingId, c.listingTitle);
+      }
+    });
+    return Array.from(map.entries()).map(([id, title]) => ({ id, title }));
+  }, [conversations]);
+
   const filteredConversations = useMemo(() => {
-    if (!searchQuery) return conversations;
-    const q = searchQuery.toLowerCase();
-    return conversations.filter(
-      (c) =>
-        c.participantName.toLowerCase().includes(q) ||
-        c.lastMessage.toLowerCase().includes(q)
-    );
-  }, [conversations, searchQuery]);
+    let result = conversations;
+
+    // Filter by listing
+    if (filterListingId) {
+      const lid = Number(filterListingId);
+      result = result.filter(c => c.listingId === lid);
+    }
+
+    // Filter by search
+    if (searchQuery) {
+      const q = searchQuery.toLowerCase();
+      result = result.filter(
+        (c) =>
+          c.participantName.toLowerCase().includes(q) ||
+          c.lastMessage.toLowerCase().includes(q) ||
+          (c.listingTitle && c.listingTitle.toLowerCase().includes(q))
+      );
+    }
+
+    return result;
+  }, [conversations, searchQuery, filterListingId]);
 
   const activeConv = conversations.find((c) => c.id === activeConversation);
   const totalUnread = conversations.reduce((sum, c) => sum + c.unreadCount, 0);
@@ -326,8 +364,8 @@ export default function MessagesPage() {
           <div className={`w-full lg:w-80 border-r border-border flex flex-col ${
             !showMobileList && activeConversation ? 'hidden lg:flex' : 'flex'
           }`}>
-            {/* Search */}
-            <div className="p-3 border-b border-border">
+            {/* Search + Filter */}
+            <div className="p-3 border-b border-border space-y-2">
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-text-muted" size={16} />
                 <input
@@ -338,6 +376,23 @@ export default function MessagesPage() {
                   onChange={(e) => setSearchQuery(e.target.value)}
                 />
               </div>
+
+              {/* Listing filter (only for agency role with listings) */}
+              {uniqueListings.length > 0 && (
+                <div className="relative">
+                  <Home className="absolute left-3 top-1/2 -translate-y-1/2 text-text-muted" size={14} />
+                  <select
+                    className="input pl-9 text-sm pr-8"
+                    value={filterListingId}
+                    onChange={(e) => setFilterListingId(e.target.value)}
+                  >
+                    <option value="">Tutti gli immobili</option>
+                    {uniqueListings.map(l => (
+                      <option key={l.id} value={String(l.id)}>{l.title}</option>
+                    ))}
+                  </select>
+                </div>
+              )}
             </div>
 
             {/* Conversation List */}
@@ -375,6 +430,13 @@ export default function MessagesPage() {
                           {formatMessageTime(conv.lastMessageTime)}
                         </span>
                       </div>
+                      {/* Listing tag for agency conversations */}
+                      {conv.listingTitle && (
+                        <p className="text-[10px] text-primary-500 font-medium truncate mt-0.5 flex items-center gap-1">
+                          <Home size={10} className="flex-shrink-0" />
+                          {conv.listingTitle}
+                        </p>
+                      )}
                       <div className="flex items-center justify-between mt-0.5">
                         <p className={`text-xs truncate ${
                           conv.unreadCount > 0 ? 'text-text-primary font-medium' : 'text-text-muted'
@@ -428,6 +490,11 @@ export default function MessagesPage() {
                     <p className="font-semibold text-text-primary">{activeConv.participantName}</p>
                     <p className="text-xs text-text-muted">
                       {activeConv.isOnline ? 'Online' : 'Offline'}
+                      {activeConv.listingTitle && (
+                        <span className="text-primary-500 ml-2">
+                          — {activeConv.listingTitle}
+                        </span>
+                      )}
                     </p>
                   </div>
                 </div>

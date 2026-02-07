@@ -18,7 +18,7 @@ import {
   Inbox,
   MessageSquare,
   FolderOpen,
-  Layout,
+  Calculator,
 } from 'lucide-react';
 import { useAuthStore } from '../../store';
 import { ROUTES } from '../../utils/constants';
@@ -55,7 +55,8 @@ const agencyNavItems: NavItem[] = [
   { icon: <Home size={20} />, label: 'I Miei Annunci', path: ROUTES.AGENCY_LISTINGS },
   { icon: <MessageSquare size={20} />, label: 'Messaggi', path: ROUTES.AGENCY_MESSAGES },
   { icon: <CreditCard size={20} />, label: 'Piano & Crediti', path: ROUTES.AGENCY_PLAN },
-  { icon: <Layout size={20} />, label: 'Template', path: ROUTES.AGENCY_TEMPLATES },
+  { icon: <FolderOpen size={20} />, label: 'Documenti', path: ROUTES.AGENCY_DOCUMENTS },
+  { icon: <Calculator size={20} />, label: 'Calcolatori', path: ROUTES.AGENCY_CALCULATORS },
   { icon: <Settings size={20} />, label: 'Impostazioni', path: ROUTES.AGENCY_SETTINGS },
 ];
 
@@ -64,7 +65,6 @@ const adminNavItems: NavItem[] = [
   { icon: <Users size={20} />, label: 'Inquilini', path: ROUTES.ADMIN_TENANTS },
   { icon: <Building2 size={20} />, label: 'Agenzie', path: ROUTES.ADMIN_AGENCIES },
   { icon: <Home size={20} />, label: 'Annunci', path: ROUTES.ADMIN_LISTINGS },
-  { icon: <Layout size={20} />, label: 'Template', path: ROUTES.ADMIN_TEMPLATES },
   { icon: <Settings size={20} />, label: 'Sistema', path: ROUTES.ADMIN_SYSTEM },
 ];
 
@@ -284,13 +284,13 @@ const PAGE_TITLES: Record<string, string> = {
   '/agency/plan': 'Piano & Crediti',
   '/agency/messages': 'Messaggi',
   '/agency/settings': 'Impostazioni',
-  '/agency/templates': 'Template',
+  '/agency/documents': 'Documenti',
+  '/agency/calculators': 'Calcolatori',
   '/admin': 'Dashboard',
   '/admin/tenants': 'Gestione Inquilini',
   '/admin/agencies': 'Gestione Agenzie',
   '/admin/listings': 'Gestione Annunci',
   '/admin/system': 'Sistema',
-  '/admin/templates': 'Template di Sistema',
 };
 
 export default function DashboardLayout({ userRole }: DashboardLayoutProps) {

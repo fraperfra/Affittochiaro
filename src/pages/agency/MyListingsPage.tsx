@@ -1,6 +1,10 @@
-import { useState } from 'react';
-import { Plus, Edit2, Eye, Trash2, Users, Pause, Play, Save, MapPin } from 'lucide-react';
-import { formatCurrency, formatDate, formatNumber } from '../../utils/formatters';
+import { useState, useEffect, useMemo } from 'react';
+import {
+  Plus, Edit2, Eye, Trash2, Users, Pause, Play, Save, MapPin,
+  Phone, Mail, CheckCircle, XCircle, Clock, ChevronDown, ChevronUp,
+  Briefcase, Calendar, Home, MessageSquare, PawPrint, Cigarette,
+} from 'lucide-react';
+import { formatCurrency, formatDate, formatNumber, formatDateTime } from '../../utils/formatters';
 import { ITALIAN_CITIES } from '../../utils/constants';
 import { PROPERTY_TYPE_LABELS, LISTING_FEATURE_LABELS, HEATING_TYPE_LABELS, PropertyType, ListingFeature, HeatingType } from '../../types/listing';
 import { Card, Button, Badge, Modal, ModalFooter, Input, EmptyState } from '../../components/ui';
@@ -31,6 +35,27 @@ interface AgencyListing {
   createdAt: Date;
 }
 
+interface Application {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  occupation: string;
+  employmentType: string;
+  monthlyIncome: string;
+  moveInDate: string;
+  stayDuration: string;
+  hasPets: boolean;
+  petDetails: string;
+  isSmoker: boolean;
+  message: string;
+  listingId: number;
+  listingTitle: string;
+  submittedAt: string;
+  status: 'pending' | 'accepted' | 'rejected' | 'contacted';
+}
+
 type ListingStatus = 'active' | 'paused' | 'rented' | 'expired' | 'draft';
 
 const statusConfig: Record<ListingStatus, { label: string; variant: 'success' | 'warning' | 'info' | 'error' | 'neutral' }> = {
@@ -39,6 +64,13 @@ const statusConfig: Record<ListingStatus, { label: string; variant: 'success' | 
   rented: { label: 'Affittato', variant: 'info' },
   expired: { label: 'Scaduto', variant: 'error' },
   draft: { label: 'Bozza', variant: 'neutral' },
+};
+
+const appStatusConfig = {
+  pending: { label: 'In Attesa', variant: 'warning' as const, icon: Clock },
+  contacted: { label: 'Contattato', variant: 'info' as const, icon: Phone },
+  accepted: { label: 'Accettato', variant: 'success' as const, icon: CheckCircle },
+  rejected: { label: 'Rifiutato', variant: 'error' as const, icon: XCircle },
 };
 
 const INITIAL_LISTINGS: AgencyListing[] = [
@@ -103,11 +135,66 @@ export default function MyListingsPage() {
   const [formData, setFormData] = useState<ListingFormData>(EMPTY_FORM);
   const [filterStatus, setFilterStatus] = useState<string>('');
 
+  // Applications state
+  const [allApplications, setAllApplications] = useState<Application[]>([]);
+  const [viewingListing, setViewingListing] = useState<AgencyListing | null>(null);
+  const [expandedAppIds, setExpandedAppIds] = useState<Set<string>>(new Set());
+  const [appFilterStatus, setAppFilterStatus] = useState<string>('');
+
+  // Load applications from localStorage
+  useEffect(() => {
+    const loadApplications = () => {
+      const stored = localStorage.getItem('affittochiaro_applications');
+      if (stored) {
+        setAllApplications(JSON.parse(stored));
+      }
+    };
+    loadApplications();
+    const interval = setInterval(loadApplications, 5000);
+    return () => clearInterval(interval);
+  }, []);
+
+  // Real application counts per listing
+  const appCountByListing = useMemo(() => {
+    const counts: Record<number, number> = {};
+    allApplications.forEach(app => {
+      counts[app.listingId] = (counts[app.listingId] || 0) + 1;
+    });
+    return counts;
+  }, [allApplications]);
+
+  const getAppCount = (listingId: number) => {
+    const real = appCountByListing[listingId];
+    // Show real count if there are localStorage apps, otherwise show the initial static count
+    return real !== undefined ? real : listings.find(l => l.id === listingId)?.applications || 0;
+  };
+
   const activeCount = listings.filter((l) => l.status === 'active').length;
   const totalViews = listings.reduce((sum, l) => sum + l.views, 0);
-  const totalApplications = listings.reduce((sum, l) => sum + l.applications, 0);
+  const totalApplications = listings.reduce((sum, l) => sum + getAppCount(l.id), 0);
 
   const filtered = filterStatus ? listings.filter(l => l.status === filterStatus) : listings;
+
+  // Applications for the currently viewed listing
+  const listingApplications = useMemo(() => {
+    if (!viewingListing) return [];
+    let apps = allApplications.filter(app => app.listingId === viewingListing.id);
+    if (appFilterStatus) {
+      apps = apps.filter(app => app.status === appFilterStatus);
+    }
+    return apps;
+  }, [allApplications, viewingListing, appFilterStatus]);
+
+  const listingAppStats = useMemo(() => {
+    if (!viewingListing) return { pending: 0, contacted: 0, accepted: 0, rejected: 0 };
+    const apps = allApplications.filter(app => app.listingId === viewingListing.id);
+    return {
+      pending: apps.filter(a => a.status === 'pending').length,
+      contacted: apps.filter(a => a.status === 'contacted').length,
+      accepted: apps.filter(a => a.status === 'accepted').length,
+      rejected: apps.filter(a => a.status === 'rejected').length,
+    };
+  }, [allApplications, viewingListing]);
 
   const openCreateModal = () => {
     setEditingId(null);
@@ -198,6 +285,28 @@ export default function MyListingsPage() {
     }));
   };
 
+  // Application actions
+  const handleAppStatusChange = (applicationId: string, newStatus: Application['status']) => {
+    const updated = allApplications.map(app =>
+      app.id === applicationId ? { ...app, status: newStatus } : app
+    );
+    setAllApplications(updated);
+    localStorage.setItem('affittochiaro_applications', JSON.stringify(updated));
+    toast.success(`Candidatura segnata come "${appStatusConfig[newStatus].label}"`);
+  };
+
+  const toggleAppExpand = (id: string) => {
+    const next = new Set(expandedAppIds);
+    if (next.has(id)) next.delete(id); else next.add(id);
+    setExpandedAppIds(next);
+  };
+
+  const openApplicationsModal = (listing: AgencyListing) => {
+    setViewingListing(listing);
+    setAppFilterStatus('');
+    setExpandedAppIds(new Set());
+  };
+
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -264,63 +373,70 @@ export default function MyListingsPage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-border">
-                {filtered.map((listing) => (
-                  <tr key={listing.id} className="hover:bg-background-secondary/50">
-                    <td className="px-6 py-4">
-                      <div>
-                        <p className="font-medium text-text-primary">{listing.title}</p>
-                        <p className="text-sm text-text-muted flex items-center gap-1">
-                          <MapPin size={12} />
-                          {listing.city}{listing.zone ? ` - ${listing.zone}` : ''} &bull; {listing.rooms} locali &bull; {listing.sqm}m²
-                        </p>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4">
-                      <span className="font-semibold text-primary-600">
-                        {formatCurrency(listing.price)}/mese
-                      </span>
-                    </td>
-                    <td className="px-6 py-4">
-                      <Badge variant={statusConfig[listing.status].variant}>
-                        {statusConfig[listing.status].label}
-                      </Badge>
-                    </td>
-                    <td className="px-6 py-4">
-                      <div className="flex items-center gap-1">
-                        <Eye size={14} className="text-text-muted" />
-                        <span>{formatNumber(listing.views)}</span>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4">
-                      <div className="flex items-center gap-1">
-                        <Users size={14} className="text-text-muted" />
-                        <span>{listing.applications}</span>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 text-text-muted">
-                      {formatDate(listing.createdAt)}
-                    </td>
-                    <td className="px-6 py-4">
-                      <div className="flex items-center justify-end gap-2">
-                        <Button variant="ghost" size="sm" className="btn-icon" onClick={() => openEditModal(listing)}>
-                          <Edit2 size={16} />
-                        </Button>
-                        {(listing.status === 'active' || listing.status === 'paused') && (
-                          <Button variant="ghost" size="sm" className="btn-icon" onClick={() => handleToggleStatus(listing)}>
-                            {listing.status === 'active' ? <Pause size={16} /> : <Play size={16} />}
-                          </Button>
-                        )}
-                        <Button
-                          variant="ghost" size="sm"
-                          className="btn-icon text-error hover:bg-red-50"
-                          onClick={() => setDeleteTarget(listing.id)}
+                {filtered.map((listing) => {
+                  const appCount = getAppCount(listing.id);
+                  return (
+                    <tr key={listing.id} className="hover:bg-background-secondary/50">
+                      <td className="px-6 py-4">
+                        <div>
+                          <p className="font-medium text-text-primary">{listing.title}</p>
+                          <p className="text-sm text-text-muted flex items-center gap-1">
+                            <MapPin size={12} />
+                            {listing.city}{listing.zone ? ` - ${listing.zone}` : ''} &bull; {listing.rooms} locali &bull; {listing.sqm}m²
+                          </p>
+                        </div>
+                      </td>
+                      <td className="px-6 py-4">
+                        <span className="font-semibold text-primary-600">
+                          {formatCurrency(listing.price)}/mese
+                        </span>
+                      </td>
+                      <td className="px-6 py-4">
+                        <Badge variant={statusConfig[listing.status].variant}>
+                          {statusConfig[listing.status].label}
+                        </Badge>
+                      </td>
+                      <td className="px-6 py-4">
+                        <div className="flex items-center gap-1">
+                          <Eye size={14} className="text-text-muted" />
+                          <span>{formatNumber(listing.views)}</span>
+                        </div>
+                      </td>
+                      <td className="px-6 py-4">
+                        <button
+                          onClick={() => openApplicationsModal(listing)}
+                          className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg hover:bg-primary-50 text-primary-600 font-medium transition-colors group"
+                          title="Vedi candidature"
                         >
-                          <Trash2 size={16} />
-                        </Button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
+                          <Users size={14} className="group-hover:scale-110 transition-transform" />
+                          <span>{appCount}</span>
+                        </button>
+                      </td>
+                      <td className="px-6 py-4 text-text-muted">
+                        {formatDate(listing.createdAt)}
+                      </td>
+                      <td className="px-6 py-4">
+                        <div className="flex items-center justify-end gap-2">
+                          <Button variant="ghost" size="sm" className="btn-icon" onClick={() => openEditModal(listing)}>
+                            <Edit2 size={16} />
+                          </Button>
+                          {(listing.status === 'active' || listing.status === 'paused') && (
+                            <Button variant="ghost" size="sm" className="btn-icon" onClick={() => handleToggleStatus(listing)}>
+                              {listing.status === 'active' ? <Pause size={16} /> : <Play size={16} />}
+                            </Button>
+                          )}
+                          <Button
+                            variant="ghost" size="sm"
+                            className="btn-icon text-error hover:bg-red-50"
+                            onClick={() => setDeleteTarget(listing.id)}
+                          >
+                            <Trash2 size={16} />
+                          </Button>
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>
@@ -342,6 +458,193 @@ export default function MyListingsPage() {
         <ModalFooter>
           <Button variant="secondary" onClick={() => setDeleteTarget(null)}>Annulla</Button>
           <Button variant="danger" onClick={handleDelete}>Elimina</Button>
+        </ModalFooter>
+      </Modal>
+
+      {/* Applications Modal */}
+      <Modal
+        isOpen={!!viewingListing}
+        onClose={() => setViewingListing(null)}
+        title={`Candidature — ${viewingListing?.title || ''}`}
+        size="lg"
+      >
+        {viewingListing && (
+          <div className="space-y-4">
+            {/* Listing summary */}
+            <div className="flex items-center gap-3 p-3 bg-background-secondary rounded-xl text-sm">
+              <MapPin size={16} className="text-text-muted flex-shrink-0" />
+              <span className="text-text-secondary">
+                {viewingListing.city}{viewingListing.zone ? ` - ${viewingListing.zone}` : ''} &bull; {formatCurrency(viewingListing.price)}/mese &bull; {viewingListing.rooms} locali
+              </span>
+            </div>
+
+            {/* Stats row */}
+            <div className="grid grid-cols-4 gap-3">
+              <button
+                onClick={() => setAppFilterStatus(appFilterStatus === 'pending' ? '' : 'pending')}
+                className={`text-center p-2 rounded-xl border transition-colors ${appFilterStatus === 'pending' ? 'border-warning bg-warning/10' : 'border-border'}`}
+              >
+                <p className="text-xl font-bold text-warning">{listingAppStats.pending}</p>
+                <p className="text-xs text-text-muted">In Attesa</p>
+              </button>
+              <button
+                onClick={() => setAppFilterStatus(appFilterStatus === 'contacted' ? '' : 'contacted')}
+                className={`text-center p-2 rounded-xl border transition-colors ${appFilterStatus === 'contacted' ? 'border-info bg-info/10' : 'border-border'}`}
+              >
+                <p className="text-xl font-bold text-info">{listingAppStats.contacted}</p>
+                <p className="text-xs text-text-muted">Contattati</p>
+              </button>
+              <button
+                onClick={() => setAppFilterStatus(appFilterStatus === 'accepted' ? '' : 'accepted')}
+                className={`text-center p-2 rounded-xl border transition-colors ${appFilterStatus === 'accepted' ? 'border-success bg-success/10' : 'border-border'}`}
+              >
+                <p className="text-xl font-bold text-success">{listingAppStats.accepted}</p>
+                <p className="text-xs text-text-muted">Accettati</p>
+              </button>
+              <button
+                onClick={() => setAppFilterStatus(appFilterStatus === 'rejected' ? '' : 'rejected')}
+                className={`text-center p-2 rounded-xl border transition-colors ${appFilterStatus === 'rejected' ? 'border-error bg-error/10' : 'border-border'}`}
+              >
+                <p className="text-xl font-bold text-error">{listingAppStats.rejected}</p>
+                <p className="text-xs text-text-muted">Rifiutati</p>
+              </button>
+            </div>
+
+            {/* Applications list */}
+            {listingApplications.length > 0 ? (
+              <div className="space-y-3 max-h-[400px] overflow-y-auto pr-1">
+                {listingApplications.map((app) => {
+                  const isExpanded = expandedAppIds.has(app.id);
+                  const StatusIcon = appStatusConfig[app.status].icon;
+
+                  return (
+                    <div key={app.id} className="border border-border rounded-xl overflow-hidden">
+                      {/* Application header */}
+                      <button
+                        className="w-full flex items-center gap-3 p-3 hover:bg-background-secondary/50 transition-colors text-left"
+                        onClick={() => toggleAppExpand(app.id)}
+                      >
+                        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary-400 to-teal-500 flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
+                          {app.firstName.charAt(0)}{app.lastName.charAt(0)}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2">
+                            <span className="font-medium text-text-primary text-sm">
+                              {app.firstName} {app.lastName}
+                            </span>
+                            <Badge variant={appStatusConfig[app.status].variant} size="sm">
+                              <StatusIcon size={10} className="mr-1" />
+                              {appStatusConfig[app.status].label}
+                            </Badge>
+                          </div>
+                          <p className="text-xs text-text-muted truncate">
+                            {app.occupation} &bull; {formatDateTime(new Date(app.submittedAt))}
+                          </p>
+                        </div>
+                        {isExpanded ? <ChevronUp size={16} className="text-text-muted" /> : <ChevronDown size={16} className="text-text-muted" />}
+                      </button>
+
+                      {/* Expanded details */}
+                      {isExpanded && (
+                        <div className="border-t border-border p-4 bg-background-secondary/30 space-y-4 animate-slideDown">
+                          <div className="grid grid-cols-2 gap-4">
+                            {/* Contact */}
+                            <div className="space-y-2">
+                              <h5 className="text-xs font-semibold text-text-muted uppercase tracking-wide flex items-center gap-1">
+                                <Mail size={12} /> Contatti
+                              </h5>
+                              <a href={`mailto:${app.email}`} className="block text-sm text-primary-500 hover:underline truncate">{app.email}</a>
+                              <a href={`tel:${app.phone}`} className="block text-sm text-primary-500 hover:underline">{app.phone}</a>
+                            </div>
+
+                            {/* Employment */}
+                            <div className="space-y-2">
+                              <h5 className="text-xs font-semibold text-text-muted uppercase tracking-wide flex items-center gap-1">
+                                <Briefcase size={12} /> Lavoro
+                              </h5>
+                              <p className="text-sm">{app.occupation}</p>
+                              <p className="text-sm text-text-muted">{app.employmentType}</p>
+                              <p className="text-sm font-medium text-success">{app.monthlyIncome}</p>
+                            </div>
+
+                            {/* Preferences */}
+                            <div className="space-y-2">
+                              <h5 className="text-xs font-semibold text-text-muted uppercase tracking-wide flex items-center gap-1">
+                                <Home size={12} /> Preferenze
+                              </h5>
+                              <p className="text-sm"><Calendar size={12} className="inline mr-1" />Ingresso: {app.moveInDate}</p>
+                              <p className="text-sm">Durata: {app.stayDuration}</p>
+                              <div className="flex items-center gap-3 text-sm">
+                                <span className={app.hasPets ? 'text-warning' : 'text-text-muted'}>
+                                  <PawPrint size={12} className="inline mr-0.5" />
+                                  {app.hasPets ? app.petDetails : 'No animali'}
+                                </span>
+                                <span className={app.isSmoker ? 'text-warning' : 'text-text-muted'}>
+                                  <Cigarette size={12} className="inline mr-0.5" />
+                                  {app.isSmoker ? 'Fumatore' : 'Non fumatore'}
+                                </span>
+                              </div>
+                            </div>
+
+                            {/* Message */}
+                            <div className="space-y-2">
+                              <h5 className="text-xs font-semibold text-text-muted uppercase tracking-wide flex items-center gap-1">
+                                <MessageSquare size={12} /> Presentazione
+                              </h5>
+                              <p className="text-sm text-text-secondary bg-white p-2 rounded-lg border border-border italic">
+                                "{app.message}"
+                              </p>
+                            </div>
+                          </div>
+
+                          {/* Actions */}
+                          <div className="flex flex-wrap gap-2 pt-3 border-t border-border">
+                            {app.status === 'pending' && (
+                              <Button size="sm" onClick={() => handleAppStatusChange(app.id, 'contacted')} leftIcon={<Phone size={14} />}>
+                                Segna Contattato
+                              </Button>
+                            )}
+                            {(app.status === 'pending' || app.status === 'contacted') && (
+                              <>
+                                <Button size="sm" variant="outline" onClick={() => handleAppStatusChange(app.id, 'accepted')} leftIcon={<CheckCircle size={14} />}>
+                                  Accetta
+                                </Button>
+                                <Button size="sm" variant="ghost" className="text-error hover:bg-red-50" onClick={() => handleAppStatusChange(app.id, 'rejected')} leftIcon={<XCircle size={14} />}>
+                                  Rifiuta
+                                </Button>
+                              </>
+                            )}
+                            <a
+                              href={`mailto:${app.email}`}
+                              className="ml-auto"
+                            >
+                              <Button size="sm" variant="secondary" leftIcon={<Mail size={14} />}>
+                                Email
+                              </Button>
+                            </a>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            ) : (
+              <div className="py-8 text-center">
+                <Users size={32} className="mx-auto text-text-muted mb-3" />
+                <p className="text-text-muted">
+                  {appFilterStatus
+                    ? 'Nessuna candidatura con questo stato'
+                    : 'Nessuna candidatura ricevuta per questo annuncio'}
+                </p>
+              </div>
+            )}
+          </div>
+        )}
+        <ModalFooter>
+          <Button variant="secondary" onClick={() => setViewingListing(null)}>
+            Chiudi
+          </Button>
         </ModalFooter>
       </Modal>
 
@@ -523,6 +826,14 @@ export default function MyListingsPage() {
           </Button>
         </ModalFooter>
       </Modal>
+
+      <style>{`
+        @keyframes slideDown {
+          from { opacity: 0; max-height: 0; }
+          to { opacity: 1; max-height: 500px; }
+        }
+        .animate-slideDown { animation: slideDown 0.3s ease-out; }
+      `}</style>
     </div>
   );
 }

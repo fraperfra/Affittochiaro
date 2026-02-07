@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import {
   Eye,
@@ -12,6 +12,9 @@ import {
   Clock,
   TrendingUp,
   AlertCircle,
+  Calculator,
+  Euro,
+  Info,
 } from 'lucide-react';
 import { useAuthStore, useCVStore } from '../../store';
 import { TenantUser } from '../../types';
@@ -50,6 +53,211 @@ const recentActivity = [
     icon: '✅',
   },
 ];
+
+function BudgetCalculatorCard() {
+  const [rent, setRent] = useState(800);
+  const [depositMonths, setDepositMonths] = useState(3);
+  const [includeCurrentMonth, setIncludeCurrentMonth] = useState(true);
+  const [includeAgency, setIncludeAgency] = useState(true);
+  const [agencyMode, setAgencyMode] = useState<'month' | 'custom'>('month');
+  const [agencyPercent, setAgencyPercent] = useState(10);
+
+  const totals = useMemo(() => {
+    const deposit = rent * depositMonths;
+    const currentMonth = includeCurrentMonth ? rent : 0;
+    const agencyFee = !includeAgency
+      ? 0
+      : agencyMode === 'month'
+        ? rent
+        : Math.round((rent * 12 * agencyPercent) / 100);
+    const total = deposit + currentMonth + agencyFee;
+    return { deposit, currentMonth, agencyFee, total };
+  }, [rent, depositMonths, includeCurrentMonth, includeAgency, agencyMode, agencyPercent]);
+
+  const formatCurrency = (n: number) =>
+    n.toLocaleString('it-IT', { style: 'currency', currency: 'EUR', minimumFractionDigits: 0, maximumFractionDigits: 0 });
+
+  return (
+    <Card className="overflow-hidden">
+      <div className="flex items-center gap-3 mb-5">
+        <div className="w-10 h-10 rounded-xl bg-primary-100 flex items-center justify-center">
+          <Calculator size={20} className="text-primary-600" />
+        </div>
+        <div>
+          <h3 className="font-poppins font-semibold text-text-primary">Budget Ingresso Casa</h3>
+          <p className="text-sm font-sans text-text-muted">Calcola quanto ti serve per entrare in casa</p>
+        </div>
+      </div>
+
+      <div className="grid md:grid-cols-2 gap-6">
+        {/* Inputs */}
+        <div className="space-y-4">
+          {/* Affitto mensile */}
+          <div>
+            <label className="block text-sm font-medium font-sans text-text-primary mb-1.5">
+              Affitto mensile
+            </label>
+            <div className="relative">
+              <Euro size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-text-muted" />
+              <input
+                type="number"
+                value={rent}
+                onChange={e => setRent(Math.max(0, Number(e.target.value)))}
+                className="w-full pl-9 pr-4 py-2.5 rounded-xl border border-border bg-white font-sans text-text-primary focus:outline-none focus:ring-2 focus:ring-primary-500/30 focus:border-primary-500 transition-colors"
+                min={0}
+                step={50}
+              />
+            </div>
+          </div>
+
+          {/* Mesi di cauzione */}
+          <div>
+            <label className="block text-sm font-medium font-sans text-text-primary mb-1.5">
+              Mesi di cauzione
+            </label>
+            <div className="flex gap-2">
+              {[1, 2, 3, 4].map(m => (
+                <button
+                  key={m}
+                  onClick={() => setDepositMonths(m)}
+                  className={`flex-1 py-2.5 rounded-xl text-sm font-sans font-medium transition-all ${
+                    depositMonths === m
+                      ? 'bg-primary-500 text-white shadow-sm'
+                      : 'bg-background-secondary text-text-primary hover:bg-primary-50'
+                  }`}
+                >
+                  {m} {m === 1 ? 'mese' : 'mesi'}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Mese corrente */}
+          <label className="flex items-center gap-3 cursor-pointer group">
+            <div className="relative">
+              <input
+                type="checkbox"
+                checked={includeCurrentMonth}
+                onChange={e => setIncludeCurrentMonth(e.target.checked)}
+                className="sr-only peer"
+              />
+              <div className="w-10 h-6 bg-gray-200 rounded-full peer-checked:bg-primary-500 transition-colors" />
+              <div className="absolute left-0.5 top-0.5 w-5 h-5 bg-white rounded-full shadow-sm transition-transform peer-checked:translate-x-4" />
+            </div>
+            <span className="text-sm font-sans text-text-primary group-hover:text-primary-600 transition-colors">
+              Includi primo mese di affitto
+            </span>
+          </label>
+
+          {/* Provvigione agenzia */}
+          <div>
+            <label className="flex items-center gap-3 cursor-pointer group mb-2">
+              <div className="relative">
+                <input
+                  type="checkbox"
+                  checked={includeAgency}
+                  onChange={e => {
+                    setIncludeAgency(e.target.checked);
+                    if (e.target.checked) setAgencyMode('month');
+                  }}
+                  className="sr-only peer"
+                />
+                <div className="w-10 h-6 bg-gray-200 rounded-full peer-checked:bg-primary-500 transition-colors" />
+                <div className="absolute left-0.5 top-0.5 w-5 h-5 bg-white rounded-full shadow-sm transition-transform peer-checked:translate-x-4" />
+              </div>
+              <span className="text-sm font-sans text-text-primary group-hover:text-primary-600 transition-colors">
+                Provvigione agenzia
+              </span>
+            </label>
+            {includeAgency && (
+              <div className="ml-[52px] space-y-2">
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => setAgencyMode('month')}
+                    className={`px-3 py-1.5 rounded-lg text-sm font-sans font-medium transition-all ${
+                      agencyMode === 'month'
+                        ? 'bg-primary-500 text-white shadow-sm'
+                        : 'bg-background-secondary text-text-primary hover:bg-primary-50'
+                    }`}
+                  >
+                    1 mese
+                  </button>
+                  <button
+                    onClick={() => setAgencyMode('custom')}
+                    className={`px-3 py-1.5 rounded-lg text-sm font-sans font-medium transition-all ${
+                      agencyMode === 'custom'
+                        ? 'bg-primary-500 text-white shadow-sm'
+                        : 'bg-background-secondary text-text-muted hover:bg-primary-50 hover:text-text-primary'
+                    }`}
+                  >
+                    Altro ({agencyPercent}%)
+                  </button>
+                </div>
+                {agencyMode === 'custom' && (
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="range"
+                        min={5}
+                        max={15}
+                        step={1}
+                        value={agencyPercent}
+                        onChange={e => setAgencyPercent(Number(e.target.value))}
+                        className="flex-1 accent-primary-500 h-2"
+                      />
+                      <span className="text-sm font-sans font-semibold text-primary-600 w-10 text-right">
+                        {agencyPercent}%
+                      </span>
+                    </div>
+                    <p className="text-xs font-sans text-text-muted mt-1">
+                      del canone annuo ({formatCurrency(rent * 12)})
+                    </p>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Results */}
+        <div className="bg-gradient-to-br from-primary-50 to-teal-50 rounded-2xl p-5 flex flex-col justify-between">
+          <div className="space-y-3">
+            <div className="flex items-center justify-between font-sans">
+              <span className="text-sm text-text-muted">Cauzione ({depositMonths} {depositMonths === 1 ? 'mese' : 'mesi'})</span>
+              <span className="font-medium text-text-primary">{formatCurrency(totals.deposit)}</span>
+            </div>
+            {includeCurrentMonth && (
+              <div className="flex items-center justify-between font-sans">
+                <span className="text-sm text-text-muted">Primo mese</span>
+                <span className="font-medium text-text-primary">{formatCurrency(totals.currentMonth)}</span>
+              </div>
+            )}
+            {includeAgency && (
+              <div className="flex items-center justify-between font-sans">
+                <span className="text-sm text-text-muted">
+                  Agenzia ({agencyMode === 'month' ? '1 mese' : `${agencyPercent}%`})
+                </span>
+                <span className="font-medium text-text-primary">{formatCurrency(totals.agencyFee)}</span>
+              </div>
+            )}
+            <div className="border-t border-primary-200 pt-3 mt-1">
+              <div className="flex items-center justify-between">
+                <span className="font-poppins font-semibold text-text-primary">Totale necessario</span>
+                <span className="font-poppins text-2xl font-bold text-primary-600">{formatCurrency(totals.total)}</span>
+              </div>
+            </div>
+          </div>
+          <div className="mt-4 flex items-start gap-2 bg-white/60 rounded-xl p-3">
+            <Info size={14} className="text-primary-500 shrink-0 mt-0.5" />
+            <p className="text-xs font-sans text-text-muted leading-relaxed">
+              Stima indicativa. L'importo effettivo puo variare in base alle condizioni contrattuali e alle richieste del proprietario.
+            </p>
+          </div>
+        </div>
+      </div>
+    </Card>
+  );
+}
 
 export default function TenantDashboardPage() {
   const { user } = useAuthStore();
@@ -289,8 +497,12 @@ export default function TenantDashboardPage() {
               </Link>
             </div>
           </Card>
+
         </div>
       </div>
+
+      {/* Budget Calculator Card */}
+      <BudgetCalculatorCard />
 
       {/* Badges Section */}
       <Card>

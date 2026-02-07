@@ -4,6 +4,7 @@ import {
   Listing,
   Notification,
   EmploymentType,
+  ContractType,
   DocumentType,
   AgencyPlan,
   PropertyType,
@@ -11,7 +12,7 @@ import {
   ListingStatus,
   NotificationType,
 } from '../types';
-import { ITALIAN_CITIES, OCCUPATIONS } from './constants';
+import { ITALIAN_CITIES, OCCUPATIONS, CONTRACT_TYPES } from './constants';
 import { randomCoordinateNear } from '../data/cityCoordinates';
 
 // Helper functions for generating mock data
@@ -135,6 +136,7 @@ export function generateMockTenants(count: number): Tenant[] {
         smokingAllowed: randomBoolean(0.1),
         parkingRequired: randomBoolean(0.3),
         availableFrom: randomDate(new Date(), new Date('2025-06-01')),
+        preferredContractType: randomElement(CONTRACT_TYPES.map(c => c.value)) as ContractType,
       },
       documents: [
         {
