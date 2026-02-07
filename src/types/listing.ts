@@ -45,6 +45,13 @@ export interface Listing {
   smokingAllowed: boolean;
   studentsAllowed: boolean;
   couplesAllowed: boolean;
+  maxOccupants?: number;           // Massimo persone ammesse
+  childrenAllowed?: boolean;      // Default true se non specificato
+  maxContractDuration?: number;   // Durata massima contratto in mesi
+  minIncomeRatio?: number;         // Rapporto minimo reddito/affitto (default 2.5)
+  preferredNationalities?: string[]; // Nazionalità preferite (vuoto = tutte)
+  minTenantAge?: number;
+  maxTenantAge?: number;
 
   // Stats
   views: number;

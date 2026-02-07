@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'react';
+import toast from 'react-hot-toast';
 import {
   FileText, Plus, Edit3, Eye, Trash2, Search, Copy,
   Mail, Bell, Shield, Settings, Check, MoreVertical,
@@ -214,9 +215,16 @@ export default function AdminTemplatesPage() {
   }), [templates]);
 
   const toggleActive = (id: string) => {
-    setTemplates(prev => prev.map(t =>
-      t.id === id ? { ...t, isActive: !t.isActive } : t
-    ));
+    setTemplates(prev => {
+      const updated = prev.map(t =>
+        t.id === id ? { ...t, isActive: !t.isActive } : t
+      );
+      const target = updated.find(t => t.id === id);
+      if (target) {
+        toast.success(target.isActive ? `Template "${target.name}" attivato` : `Template "${target.name}" disattivato`);
+      }
+      return updated;
+    });
   };
 
   const formatDate = (date: string) => {

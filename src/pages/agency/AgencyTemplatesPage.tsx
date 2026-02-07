@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'react';
+import toast from 'react-hot-toast';
 import {
   FileText, Plus, Copy, Eye, Edit3, Trash2, Search,
   Home, Mail, FileCheck, Star, Check, MoreVertical,
@@ -161,6 +162,7 @@ export default function AgencyTemplatesPage() {
   const handleCopy = (template: AgencyTemplate) => {
     navigator.clipboard.writeText(template.content);
     setCopiedId(template.id);
+    toast.success('Contenuto copiato negli appunti');
     setTimeout(() => setCopiedId(null), 2000);
   };
 

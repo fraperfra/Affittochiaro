@@ -1,13 +1,9 @@
 /**
  * Matching Algorithm - Calcola compatibilita' inquilino-annuncio
  *
- * Pesi:
- *  - Budget: 25% (puo' permettersi l'affitto?)
- *  - Citta: 20% (citta' preferita match?)
- *  - Affidabilita: 20% (profilo completo, verificato, documenti)
- *  - Lavoro: 15% (stabilita' lavorativa)
- *  - Preferenze: 10% (animali, fumatore, arredamento)
- *  - Disponibilita: 10% (date compatibili)
+ * Breakdown (13 campi):
+ *  - budget, location, rooms, preferences, availability, contractDuration,
+ *  - incomeRatio, employment, reliability, urgency, age, numPeople, children
  */
 
 import { Tenant, EmploymentType } from '../types/tenant';
@@ -20,26 +16,42 @@ export interface MatchResult {
   breakdown: MatchBreakdown;
   label: MatchLabel;
   color: string;
+  isDealbreaker: boolean;
+  dealbreakers: string[];
 }
 
 export interface MatchBreakdown {
   budget: number;
   location: number;
-  reliability: number;
-  employment: number;
+  rooms: number;
   preferences: number;
   availability: number;
+  contractDuration: number;
+  incomeRatio: number;
+  employment: number;
+  reliability: number;
+  urgency: number;
+  age: number;
+  numPeople: number;
+  children: number;
 }
 
 export type MatchLabel = 'Eccellente' | 'Ottimo' | 'Buono' | 'Sufficiente' | 'Basso';
 
 const WEIGHTS = {
-  budget: 25,
-  location: 20,
-  reliability: 20,
-  employment: 15,
-  preferences: 10,
-  availability: 10,
+  budget: 14,
+  location: 12,
+  rooms: 8,
+  preferences: 8,
+  availability: 6,
+  contractDuration: 6,
+  incomeRatio: 12,
+  employment: 10,
+  reliability: 12,
+  urgency: 4,
+  age: 4,
+  numPeople: 4,
+  children: 2,
 };
 
 // Stabilita' per tipo di contratto
@@ -207,27 +219,164 @@ function scoreAvailability(tenant: Tenant, listing: Listing): number {
 }
 
 /**
+ * Calcola compatibilita' numero locali
+ */
+function scoreRooms(tenant: Tenant, listing: Listing): number {
+  const minR = tenant.preferences.minRooms;
+  const maxR = tenant.preferences.maxRooms;
+  const listingRooms = listing.rooms;
+  if (!minR && !maxR) return 70;
+  if (minR && listingRooms < minR) return Math.max(0, 50 - (minR - listingRooms) * 15);
+  if (maxR && listingRooms > maxR) return Math.max(0, 70 - (listingRooms - maxR) * 10);
+  return 100;
+}
+
+/**
+ * Calcola compatibilita' durata contratto (mesi)
+ */
+function scoreContractDuration(tenant: Tenant, listing: Listing): number {
+  const desiredMonths = tenant.preferences.desiredContractMonths;
+  const minMonths = listing.minContractDuration;
+  const maxMonths = listing.maxContractDuration;
+
+  if (desiredMonths != null && (minMonths != null || maxMonths != null)) {
+    if (minMonths != null && desiredMonths < minMonths) return Math.max(0, 60 - (minMonths - desiredMonths) * 5);
+    if (maxMonths != null && desiredMonths > maxMonths) return Math.max(0, 60 - (desiredMonths - maxMonths) * 5);
+    return 100;
+  }
+  if (!minMonths) return 70;
+  if (minMonths <= 12) return 85;
+  if (minMonths <= 24) return 70;
+  return 50;
+}
+
+const DEFAULT_MIN_INCOME_RATIO = 2.5;
+
+/**
+ * Rapporto reddito/affitto (reddito mensile vs costo mensile)
+ */
+function scoreIncomeRatio(tenant: Tenant, listing: Listing): number {
+  const totalCost = listing.price + (listing.expenses || 0);
+  if (!tenant.annualIncome || totalCost <= 0) return 50;
+  const minRatio = listing.minIncomeRatio ?? DEFAULT_MIN_INCOME_RATIO;
+  const monthlyIncome = tenant.annualIncome / 12;
+  const ratio = monthlyIncome / totalCost;
+  if (ratio >= minRatio + 0.5) return 100;
+  if (ratio >= minRatio) return 90;
+  if (ratio >= minRatio - 0.5) return 75;
+  if (ratio >= 1.5) return 50;
+  if (ratio >= 1) return 25;
+  return 10;
+}
+
+/**
+ * Urgenza / vicinanza date disponibilita'
+ */
+function scoreUrgency(tenant: Tenant, listing: Listing): number {
+  const tenantAvailable = tenant.preferences.availableFrom || tenant.availableFrom;
+  const listingAvailable = listing.availableFrom;
+  if (!tenantAvailable || !listingAvailable) return 70;
+  const diffDays = Math.abs(new Date(tenantAvailable).getTime() - new Date(listingAvailable).getTime()) / (24 * 60 * 60 * 1000);
+  if (diffDays <= 7) return 100;
+  if (diffDays <= 14) return 85;
+  if (diffDays <= 30) return 70;
+  if (diffDays <= 60) return 50;
+  return 30;
+}
+
+/**
+ * Compatibilita' eta' (se annuncio ha preferenze non in tipo: neutro)
+ */
+function scoreAge(_tenant: Tenant, _listing: Listing): number {
+  if (_tenant.age != null) return Math.min(100, 50 + Math.abs(35 - (_tenant.age ?? 0)) * 0.5);
+  return 70;
+}
+
+/**
+ * Numero persone: tenant.numPeople vs listing.maxOccupants
+ */
+function scoreNumPeople(tenant: Tenant, listing: Listing): number {
+  const numPeople = tenant.numPeople;
+  const maxOccupants = listing.maxOccupants;
+  if (numPeople == null || maxOccupants == null) return 70;
+  if (numPeople <= maxOccupants) return 100;
+  const over = numPeople - maxOccupants;
+  return Math.max(0, 50 - over * 25);
+}
+
+/**
+ * Presenza bambini: tenant.hasChildren/numChildren vs listing.childrenAllowed
+ */
+function scoreChildren(tenant: Tenant, listing: Listing): number {
+  const hasChildren = tenant.hasChildren === true || (tenant.numChildren != null && tenant.numChildren > 0);
+  const childrenAllowed = listing.childrenAllowed;
+  if (!hasChildren) return 100;
+  if (childrenAllowed === undefined) return 100; // default true se non specificato
+  return childrenAllowed ? 100 : 0;
+}
+
+/**
+ * Costruisce l'elenco dei dealbreaker in base ai punteggi del breakdown
+ */
+function buildDealbreakers(breakdown: MatchBreakdown, tenant: Tenant, listing: Listing): string[] {
+  const out: string[] = [];
+  if (breakdown.budget <= 20) out.push('Budget insufficiente rispetto al canone');
+  if (breakdown.location <= 20) out.push('Località non nelle preferenze');
+  if (breakdown.rooms <= 20) out.push('Numero locali non compatibile');
+  if (breakdown.preferences <= 30) out.push('Preferenze incompatibili (es. animali, fumo, arredamento)');
+  if (breakdown.incomeRatio <= 20) out.push('Rapporto reddito/affitto troppo basso');
+  if (tenant.preferences.hasPets && !listing.petsAllowed) out.push('Animali non ammessi');
+  if (tenant.preferences.smokingAllowed && !listing.smokingAllowed) out.push('Fumo non ammesso');
+  if (tenant.numPeople != null && listing.maxOccupants != null && tenant.numPeople > listing.maxOccupants) {
+    out.push('Numero persone superiore al massimo ammesso');
+  }
+  const hasChildren = tenant.hasChildren === true || (tenant.numChildren != null && tenant.numChildren > 0);
+  if (hasChildren && listing.childrenAllowed === false) {
+    out.push('Bambini non ammessi');
+  }
+  return out;
+}
+
+/**
  * Calcola il match score tra un inquilino e un annuncio
  */
 export function calculateMatch(tenant: Tenant, listing: Listing): MatchResult {
   const breakdown: MatchBreakdown = {
     budget: scoreBudget(tenant, listing),
     location: scoreLocation(tenant, listing),
-    reliability: scoreReliability(tenant),
-    employment: scoreEmployment(tenant),
+    rooms: scoreRooms(tenant, listing),
     preferences: scorePreferences(tenant, listing),
     availability: scoreAvailability(tenant, listing),
+    contractDuration: scoreContractDuration(tenant, listing),
+    incomeRatio: scoreIncomeRatio(tenant, listing),
+    employment: scoreEmployment(tenant),
+    reliability: scoreReliability(tenant),
+    urgency: scoreUrgency(tenant, listing),
+    age: scoreAge(tenant, listing),
+    numPeople: scoreNumPeople(tenant, listing),
+    children: scoreChildren(tenant, listing),
   };
 
+  const totalWeight = 100;
   const score = Math.round(
     (breakdown.budget * WEIGHTS.budget +
       breakdown.location * WEIGHTS.location +
-      breakdown.reliability * WEIGHTS.reliability +
-      breakdown.employment * WEIGHTS.employment +
+      breakdown.rooms * WEIGHTS.rooms +
       breakdown.preferences * WEIGHTS.preferences +
-      breakdown.availability * WEIGHTS.availability) / 100
+      breakdown.availability * WEIGHTS.availability +
+      breakdown.contractDuration * WEIGHTS.contractDuration +
+      breakdown.incomeRatio * WEIGHTS.incomeRatio +
+      breakdown.employment * WEIGHTS.employment +
+      breakdown.reliability * WEIGHTS.reliability +
+      breakdown.urgency * WEIGHTS.urgency +
+      breakdown.age * WEIGHTS.age +
+      breakdown.numPeople * WEIGHTS.numPeople +
+      breakdown.children * WEIGHTS.children) /
+      totalWeight
   );
 
+  const dealbreakers = buildDealbreakers(breakdown, tenant, listing);
+  const isDealbreaker = dealbreakers.length > 0;
   const { label, color } = getMatchLabel(score);
 
   return {
@@ -237,6 +386,8 @@ export function calculateMatch(tenant: Tenant, listing: Listing): MatchResult {
     breakdown,
     label,
     color,
+    isDealbreaker,
+    dealbreakers,
   };
 }
 
@@ -258,11 +409,17 @@ export function calculateTenantScore(tenant: Tenant): number {
 export function rankTenantsByMatch(
   tenants: Tenant[],
   listing: Listing,
-): (Tenant & { matchScore: number; matchLabel: MatchLabel })[] {
+): (Tenant & { matchScore: number; matchLabel: MatchLabel; isDealbreaker: boolean; dealbreakers: string[] })[] {
   return tenants
     .map((tenant) => {
       const match = calculateMatch(tenant, listing);
-      return { ...tenant, matchScore: match.score, matchLabel: match.label };
+      return {
+        ...tenant,
+        matchScore: match.score,
+        matchLabel: match.label,
+        isDealbreaker: match.isDealbreaker,
+        dealbreakers: match.dealbreakers,
+      };
     })
     .sort((a, b) => b.matchScore - a.matchScore);
 }

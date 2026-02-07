@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'react';
+import toast from 'react-hot-toast';
 import {
   FileText, Upload, Shield, Clock, CheckCircle, XCircle,
   Filter, Search, FolderOpen, AlertTriangle, Info
@@ -93,6 +94,16 @@ export default function TenantDocumentsPage() {
       a.href = doc.file.url;
       a.download = doc.name;
       a.click();
+      toast.success('Download avviato');
+    }
+  };
+
+  const handleDelete = async (id: string) => {
+    try {
+      await deleteDocument(id);
+      toast.success('Documento eliminato');
+    } catch {
+      toast.error('Errore durante l\'eliminazione');
     }
   };
 
@@ -267,7 +278,7 @@ export default function TenantDocumentsPage() {
           documents={filteredDocs}
           isLoading={isLoading}
           error={error}
-          onDelete={deleteDocument}
+          onDelete={handleDelete}
           onView={handleView}
           onDownload={handleDownload}
           onAddNew={() => setShowUpload(true)}

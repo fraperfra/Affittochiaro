@@ -10,6 +10,10 @@ export interface Tenant {
   dateOfBirth?: Date;
   age?: number;
   bio?: string;
+  nationality?: string;   // Codice ISO es: "IT", "RO", "MA"
+  numPeople?: number;     // Persone totali che si trasferiscono
+  hasChildren?: boolean;
+  numChildren?: number;
 
   // Employment
   occupation?: string;
@@ -78,6 +82,9 @@ export interface TenantPreferences {
   smokingAllowed?: boolean;
   parkingRequired?: boolean;
   availableFrom?: Date;
+  desiredContractMonths?: number; // Durata contratto desiderata in mesi
+  minBudget?: number;             // Budget minimo
+  acceptsGroundFloor?: boolean;   // Accetta piano terra?
 }
 
 export interface TenantDocument {
