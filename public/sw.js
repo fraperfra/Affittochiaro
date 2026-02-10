@@ -1,4 +1,4 @@
-const CACHE_NAME = 'affittochiaro-v1';
+const CACHE_NAME = 'affittochiaro-v2';
 const STATIC_ASSETS = [
   '/',
   '/manifest.json',
