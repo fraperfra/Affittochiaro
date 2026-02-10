@@ -30,7 +30,7 @@ export function ProfileEditModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto">
+    <div className="fixed inset-0 z-50 overflow-y-auto overflow-x-hidden">
       {/* Backdrop */}
       <div
         className="fixed inset-0 bg-black/50 transition-opacity"
@@ -38,9 +38,12 @@ export function ProfileEditModal({
       />
 
       {/* Modal */}
-      <div className="flex min-h-full items-center justify-center p-4">
+      <div
+        className="flex min-h-full items-end md:items-center justify-center p-0 md:p-4"
+        style={{ paddingBottom: 'max(88px, calc(76px + env(safe-area-inset-bottom, 0px)))' }}
+      >
         <div
-          className="relative w-full max-w-2xl bg-white rounded-2xl shadow-xl"
+          className="relative w-full max-w-2xl bg-white rounded-t-2xl md:rounded-2xl shadow-xl"
           onClick={(e) => e.stopPropagation()}
         >
           {/* Header */}
@@ -57,7 +60,7 @@ export function ProfileEditModal({
           </div>
 
           {/* Content */}
-          <div className="p-6 max-h-[70vh] overflow-y-auto">
+          <div className="p-6 max-h-[60vh] md:max-h-[70vh] overflow-y-auto overflow-x-hidden">
             <ProfileEditForm
               initialData={initialData}
               onSubmit={handleSubmit}

@@ -102,8 +102,11 @@ export function AvatarUploader({
   // Modal camera
   if (mode === 'camera') {
     return (
-      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4">
-        <div className="bg-white rounded-2xl p-6 max-w-sm w-full">
+      <div
+        className="fixed inset-0 z-50 flex items-end md:items-center justify-center bg-black/70 p-0 md:p-4"
+        style={{ paddingBottom: 'max(88px, calc(76px + env(safe-area-inset-bottom, 0px)))' }}
+      >
+        <div className="bg-white rounded-t-2xl md:rounded-2xl p-6 max-w-sm w-full overflow-x-hidden">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-medium">Scatta foto</h3>
             <button
@@ -148,9 +151,12 @@ export function AvatarUploader({
         </div>
 
         {/* Modal opzioni */}
-        <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/50">
+        <div
+          className="fixed inset-0 z-50 flex items-end md:items-center justify-center bg-black/50"
+          style={{ paddingBottom: 'max(88px, calc(76px + env(safe-area-inset-bottom, 0px)))' }}
+        >
           <div
-            className="bg-white rounded-t-2xl sm:rounded-2xl w-full sm:max-w-sm p-6 animate-slide-up"
+            className="bg-white rounded-t-2xl md:rounded-2xl w-full md:max-w-sm p-6 animate-slide-up overflow-x-hidden"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between mb-4">

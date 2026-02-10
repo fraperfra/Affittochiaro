@@ -54,12 +54,13 @@ export default function Modal({
   return createPortal(
     <div
       ref={overlayRef}
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 animate-fade-in"
+      className="fixed inset-0 z-50 flex items-end md:items-center justify-center p-0 md:p-4 bg-black/50 animate-fade-in"
+      style={{ paddingBottom: 'max(88px, calc(76px + env(safe-area-inset-bottom, 0px)))' }}
       onClick={handleOverlayClick}
     >
       <div
         className={`
-          relative w-full ${sizeClasses[size]} bg-white rounded-2xl shadow-large
+          relative w-full ${sizeClasses[size]} bg-white rounded-t-2xl md:rounded-2xl shadow-large
           animate-scale-in overflow-hidden
         `}
       >
@@ -79,7 +80,7 @@ export default function Modal({
         )}
 
         {/* Content */}
-        <div className="p-6 max-h-[70vh] overflow-y-auto">{children}</div>
+        <div className="p-6 max-h-[60vh] md:max-h-[70vh] overflow-y-auto overflow-x-hidden">{children}</div>
       </div>
     </div>,
     document.body

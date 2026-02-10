@@ -502,7 +502,7 @@ export default function DashboardLayout({ userRole }: DashboardLayoutProps) {
         <header className="sticky top-0 z-30 bg-white border-b border-border">
           <div className="flex items-center justify-between h-16 px-4 lg:px-6">
             {/* Left side: notifications on mobile */}
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3 min-w-[40px]">
               <button className="relative p-2 rounded-lg hover:bg-background-secondary md:hidden"
                 onClick={() => navigate(ROUTES.TENANT_NOTIFICATIONS)}
               >
@@ -511,7 +511,10 @@ export default function DashboardLayout({ userRole }: DashboardLayoutProps) {
               </button>
             </div>
 
-            {/* Global Search - desktop only */}
+            {/* Center: Logo on mobile, Search on desktop */}
+            <div className="md:hidden flex items-center justify-center flex-1">
+              <img src="/assets/logoaffittochiaro_pic.webp" alt="Affittochiaro" className="h-9" />
+            </div>
             <GlobalSearch userRole={userRole} navigate={navigate} />
 
             {/* Right side */}
