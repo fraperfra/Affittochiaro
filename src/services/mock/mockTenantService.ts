@@ -7,7 +7,7 @@ import { TenantDocument, DocumentType, DOCUMENT_TYPE_LABELS } from '@/types/tena
 import { generateFileId, formatFileSize } from '@/utils/fileValidation';
 
 // Controlla se usare mock (da env o fallback automatico)
-export const USE_MOCK_API = import.meta.env.VITE_USE_MOCK_API === 'true';
+export const USE_MOCK_API = import.meta.env.VITE_USE_MOCK_API !== 'false';
 
 // Simula delay di rete
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));

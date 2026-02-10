@@ -92,6 +92,9 @@ export function useFileUpload(options: UseFileUploadOptions): UseFileUploadRetur
    */
   const upload = useCallback(
     async (file: File, metadata?: Record<string, any>): Promise<any> => {
+      // Import dynamic per evitare dipendenze circolari/pesanti se non servono
+      const { USE_MOCK } = await import('@/services');
+
       // Reset state
       updateState({
         status: 'validating',
@@ -118,6 +121,51 @@ export function useFileUpload(options: UseFileUploadOptions): UseFileUploadRetur
 
       updateState({ status: 'uploading' });
 
+      // MOCK MODE HANDLING
+      if (USE_MOCK) {
+        try {
+          const { mockDocumentsApi, mockVideoApi, mockAvatarApi } = await import('@/services/mock/mockTenantService');
+
+          let responseData;
+
+          // Gestione progress simulato
+          const handleProgress = (percent: number) => {
+            updateState({ progress: percent });
+            onProgress?.(percent);
+          };
+
+          // Routing endpoint mock
+          if (endpoint.includes('/documents')) {
+            // Estrai tipo dal metadata o default
+            const type = metadata?.type || 'other';
+            responseData = await mockDocumentsApi.uploadDocument(type, file, handleProgress);
+          } else if (endpoint.includes('/video')) {
+            // Video upload (che in realtà usa presigned ma qui simuliamo)
+            const url = await mockVideoApi.uploadVideo(file, handleProgress);
+            responseData = { uploadUrl: url, videoUrl: url };
+          } else if (endpoint.includes('/avatar')) {
+            const url = await mockAvatarApi.uploadAvatar(file, handleProgress);
+            responseData = { url };
+          } else {
+            // Fallback generico
+            await new Promise(r => setTimeout(r, 1000));
+            handleProgress(100);
+            responseData = { success: true, mock: true };
+          }
+
+          updateState({ status: 'success', progress: 100 });
+          onSuccess?.(responseData);
+          return responseData;
+
+        } catch (error: any) {
+          const errorMessage = error.message || 'Errore mock';
+          updateState({ status: 'error', error: errorMessage });
+          onError?.(errorMessage);
+          return Promise.reject(error);
+        }
+      }
+
+      // REAL API HANDLING
       // Prepara FormData
       const formData = new FormData();
       formData.append('file', file);
