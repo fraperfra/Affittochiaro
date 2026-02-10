@@ -213,102 +213,163 @@ export default function ListingsPage() {
     <div className="space-y-6">
       {/* Search & Filters Bar */}
       <Card padding="sm" className="sticky top-0 z-20">
-        <div className="flex flex-col lg:flex-row gap-4">
+        {/* Mobile: compact single row with search + filter button */}
+        <div className="flex gap-2 md:hidden">
           <div className="flex-1 relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-text-muted" size={18} />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-text-muted" size={16} />
             <input
               type="text"
-              placeholder="Cerca per citta, via, zona..."
-              className="input pl-10"
+              placeholder="Cerca annunci..."
+              className="input pl-9 py-2 text-sm"
               value={filters.search || ''}
               onChange={(e) => setFilters({ search: e.target.value })}
             />
           </div>
-
-          <div className="flex gap-2 flex-wrap">
-            <select
-              className="input w-auto"
-              value={filters.city || ''}
-              onChange={(e) => setFilters({ city: e.target.value || undefined })}
-            >
-              <option value="">Tutte le citta</option>
-              {ITALIAN_CITIES.slice(0, 10).map((city) => (
-                <option key={city} value={city}>{city}</option>
-              ))}
-            </select>
-
-            <select
-              className="input w-auto"
-              value={filters.maxPrice || ''}
-              onChange={(e) => setFilters({ maxPrice: e.target.value ? parseInt(e.target.value) : undefined })}
-            >
-              <option value="">Prezzo max</option>
-              <option value="500">Max €500</option>
-              <option value="800">Max €800</option>
-              <option value="1000">Max €1.000</option>
-              <option value="1500">Max €1.500</option>
-              <option value="2000">Max €2.000</option>
-            </select>
-
-            <select
-              className="input w-auto"
-              value={filters.minRooms || ''}
-              onChange={(e) => setFilters({ minRooms: e.target.value ? parseInt(e.target.value) : undefined })}
-            >
-              <option value="">Locali</option>
-              <option value="1">1+</option>
-              <option value="2">2+</option>
-              <option value="3">3+</option>
-              <option value="4">4+</option>
-            </select>
-
-            <Button
-              variant="secondary"
-              leftIcon={<SlidersHorizontal size={16} />}
-              onClick={() => setShowFilters(true)}
-            >
-              Filtri
-            </Button>
-          </div>
-
-          <div className="flex gap-1 p-1 bg-background-secondary rounded-lg">
+          <Button
+            variant="secondary"
+            leftIcon={<SlidersHorizontal size={16} />}
+            onClick={() => setShowFilters(true)}
+            className="shrink-0"
+          >
+            Filtri
+          </Button>
+          <div className="flex gap-0.5 p-0.5 bg-background-secondary rounded-lg shrink-0">
             <button
-              className={`p-2 rounded-md transition-colors ${viewMode === 'grid' ? 'bg-white shadow-sm' : 'hover:bg-white/50'}`}
+              className={`p-1.5 rounded-md transition-colors ${viewMode === 'grid' ? 'bg-white shadow-sm' : 'hover:bg-white/50'}`}
               onClick={() => setViewMode('grid')}
-              title="Vista griglia"
             >
-              <Grid size={18} />
+              <Grid size={16} />
             </button>
             <button
-              className={`p-2 rounded-md transition-colors ${viewMode === 'list' ? 'bg-white shadow-sm' : 'hover:bg-white/50'}`}
+              className={`p-1.5 rounded-md transition-colors ${viewMode === 'list' ? 'bg-white shadow-sm' : 'hover:bg-white/50'}`}
               onClick={() => setViewMode('list')}
-              title="Vista lista"
             >
-              <List size={18} />
+              <List size={16} />
             </button>
             <button
-              className={`p-2 rounded-md transition-colors ${viewMode === 'map' ? 'bg-white shadow-sm' : 'hover:bg-white/50'}`}
+              className={`p-1.5 rounded-md transition-colors ${viewMode === 'map' ? 'bg-white shadow-sm' : 'hover:bg-white/50'}`}
               onClick={() => setViewMode('map')}
-              title="Vista mappa"
             >
-              <Map size={18} />
+              <Map size={16} />
             </button>
           </div>
         </div>
 
-        <div className="flex items-center justify-between mt-4 pt-4 border-t border-border">
-          <p className="text-text-secondary">
-            <span className="font-semibold text-text-primary">{formatNumber(filteredListings.length)}</span> annunci trovati
+        {/* Mobile: results count inline */}
+        <div className="flex items-center justify-between mt-2 md:hidden">
+          <p className="text-xs text-text-secondary">
+            <span className="font-semibold text-text-primary">{formatNumber(filteredListings.length)}</span> annunci
           </p>
           {(filters.city || filters.maxPrice || filters.minRooms) && (
             <button
               onClick={handleClearFilters}
-              className="text-sm text-primary-500 hover:text-primary-600 flex items-center gap-1"
+              className="text-xs text-primary-500 hover:text-primary-600 flex items-center gap-1"
             >
-              <X size={14} />
-              Rimuovi filtri
+              <X size={12} />
+              Reset
             </button>
           )}
+        </div>
+
+        {/* Desktop: full layout */}
+        <div className="hidden md:block">
+          <div className="flex flex-col lg:flex-row gap-4">
+            <div className="flex-1 relative">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-text-muted" size={18} />
+              <input
+                type="text"
+                placeholder="Cerca per citta, via, zona..."
+                className="input pl-10"
+                value={filters.search || ''}
+                onChange={(e) => setFilters({ search: e.target.value })}
+              />
+            </div>
+
+            <div className="flex gap-2 flex-wrap">
+              <select
+                className="input w-auto"
+                value={filters.city || ''}
+                onChange={(e) => setFilters({ city: e.target.value || undefined })}
+              >
+                <option value="">Tutte le citta</option>
+                {ITALIAN_CITIES.slice(0, 10).map((city) => (
+                  <option key={city} value={city}>{city}</option>
+                ))}
+              </select>
+
+              <select
+                className="input w-auto"
+                value={filters.maxPrice || ''}
+                onChange={(e) => setFilters({ maxPrice: e.target.value ? parseInt(e.target.value) : undefined })}
+              >
+                <option value="">Prezzo max</option>
+                <option value="500">Max €500</option>
+                <option value="800">Max €800</option>
+                <option value="1000">Max €1.000</option>
+                <option value="1500">Max €1.500</option>
+                <option value="2000">Max €2.000</option>
+              </select>
+
+              <select
+                className="input w-auto"
+                value={filters.minRooms || ''}
+                onChange={(e) => setFilters({ minRooms: e.target.value ? parseInt(e.target.value) : undefined })}
+              >
+                <option value="">Locali</option>
+                <option value="1">1+</option>
+                <option value="2">2+</option>
+                <option value="3">3+</option>
+                <option value="4">4+</option>
+              </select>
+
+              <Button
+                variant="secondary"
+                leftIcon={<SlidersHorizontal size={16} />}
+                onClick={() => setShowFilters(true)}
+              >
+                Filtri
+              </Button>
+            </div>
+
+            <div className="flex gap-1 p-1 bg-background-secondary rounded-lg">
+              <button
+                className={`p-2 rounded-md transition-colors ${viewMode === 'grid' ? 'bg-white shadow-sm' : 'hover:bg-white/50'}`}
+                onClick={() => setViewMode('grid')}
+                title="Vista griglia"
+              >
+                <Grid size={18} />
+              </button>
+              <button
+                className={`p-2 rounded-md transition-colors ${viewMode === 'list' ? 'bg-white shadow-sm' : 'hover:bg-white/50'}`}
+                onClick={() => setViewMode('list')}
+                title="Vista lista"
+              >
+                <List size={18} />
+              </button>
+              <button
+                className={`p-2 rounded-md transition-colors ${viewMode === 'map' ? 'bg-white shadow-sm' : 'hover:bg-white/50'}`}
+                onClick={() => setViewMode('map')}
+                title="Vista mappa"
+              >
+                <Map size={18} />
+              </button>
+            </div>
+          </div>
+
+          <div className="flex items-center justify-between mt-4 pt-4 border-t border-border">
+            <p className="text-text-secondary">
+              <span className="font-semibold text-text-primary">{formatNumber(filteredListings.length)}</span> annunci trovati
+            </p>
+            {(filters.city || filters.maxPrice || filters.minRooms) && (
+              <button
+                onClick={handleClearFilters}
+                className="text-sm text-primary-500 hover:text-primary-600 flex items-center gap-1"
+              >
+                <X size={14} />
+                Rimuovi filtri
+              </button>
+            )}
+          </div>
         </div>
       </Card>
 
