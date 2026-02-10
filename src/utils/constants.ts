@@ -137,6 +137,7 @@ export const ROUTES = {
   TENANT_MESSAGES: '/tenant/messages',
   TENANT_SETTINGS: '/tenant/settings',
   TENANT_TEMPLATES: '/tenant/templates',
+  TENANT_MORE: '/tenant/more',
 
   // Agency
   AGENCY_DASHBOARD: '/agency',

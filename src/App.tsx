@@ -44,6 +44,7 @@ const TenantCVPreviewPage = lazy(() => import('./pages/tenant/TenantCVPreviewPag
 const ListingsPage = lazy(() => import('./pages/tenant/ListingsPage'));
 const NotificationsPage = lazy(() => import('./pages/tenant/NotificationsPage'));
 const TenantAgenciesPage = lazy(() => import('./pages/tenant/TenantAgenciesPage'));
+const TenantMorePage = lazy(() => import('./pages/tenant/TenantMorePage'));
 
 // Agency Pages - lazy loaded
 const AgencyDashboardPage = lazy(() => import('./pages/agency/AgencyDashboardPage'));
@@ -231,6 +232,7 @@ function App() {
           <Route path="messages" element={<MessagesPage />} />
           <Route path="settings" element={<SettingsPage />} />
           <Route path="templates" element={<TenantTemplatesPage />} />
+          <Route path="more" element={<TenantMorePage />} />
           <Route path="*" element={<Navigate to={ROUTES.TENANT_DASHBOARD} replace />} />
         </Route>
 

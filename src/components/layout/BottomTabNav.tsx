@@ -11,6 +11,7 @@ import {
   Users,
   Building2,
   Megaphone,
+  MoreHorizontal,
 } from 'lucide-react';
 import { ROUTES } from '../../utils/constants';
 
@@ -31,7 +32,7 @@ const tenantTabs: TabItem[] = [
   { icon: FolderOpen, label: 'Documenti', href: ROUTES.TENANT_DOCUMENTS },
   { icon: Megaphone, label: 'Annunci', href: ROUTES.TENANT_LISTINGS },
   { icon: MessageSquare, label: 'Messaggi', href: ROUTES.TENANT_MESSAGES, badgeKey: 'messages' },
-  { icon: Settings, label: 'Impostazioni', href: ROUTES.TENANT_SETTINGS },
+  { icon: MoreHorizontal, label: 'Altro', href: ROUTES.TENANT_MORE },
 ];
 
 const agencyTabs: TabItem[] = [
@@ -74,6 +75,14 @@ const TabItemComponent = React.memo(function TabItemComponent({
     // Exact match for dashboard roots
     if (item.href === ROUTES.TENANT_DASHBOARD || item.href === ROUTES.AGENCY_DASHBOARD || item.href === ROUTES.ADMIN_DASHBOARD) {
       return path === item.href;
+    }
+    // "Altro" tab highlights for sub-pages it contains
+    if (item.href === ROUTES.TENANT_MORE) {
+      return path === ROUTES.TENANT_MORE
+        || path === ROUTES.TENANT_PROFILE || path.startsWith(ROUTES.TENANT_PROFILE + '/')
+        || path === ROUTES.TENANT_AGENCIES || path.startsWith(ROUTES.TENANT_AGENCIES + '/')
+        || path === ROUTES.TENANT_NOTIFICATIONS || path.startsWith(ROUTES.TENANT_NOTIFICATIONS + '/')
+        || path === ROUTES.TENANT_SETTINGS || path.startsWith(ROUTES.TENANT_SETTINGS + '/');
     }
     return path === item.href || path.startsWith(item.href + '/');
   }, [location.pathname, item.href]);

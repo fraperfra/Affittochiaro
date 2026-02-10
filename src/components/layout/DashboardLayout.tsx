@@ -278,6 +278,7 @@ const PAGE_TITLES: Record<string, string> = {
   '/tenant/documents': 'Documenti',
   '/tenant/messages': 'Messaggi',
   '/tenant/settings': 'Impostazioni',
+  '/tenant/more': 'Altro',
   '/agency': 'Dashboard',
   '/agency/tenants': 'Cerca Inquilini',
   '/agency/listings': 'I Miei Annunci',
