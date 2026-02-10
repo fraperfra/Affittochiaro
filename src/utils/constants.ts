@@ -149,6 +149,7 @@ export const ROUTES = {
   AGENCY_SETTINGS: '/agency/settings',
   AGENCY_DOCUMENTS: '/agency/documents',
   AGENCY_CALCULATORS: '/agency/calculators',
+  AGENCY_MORE: '/agency/more',
 
   // Admin
   ADMIN_DASHBOARD: '/admin',

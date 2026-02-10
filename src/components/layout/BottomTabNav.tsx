@@ -5,13 +5,12 @@ import {
   FolderOpen,
   Search as SearchIcon,
   MessageSquare,
-  Settings,
   LayoutDashboard,
-  Inbox,
   Users,
   Building2,
   Megaphone,
   MoreHorizontal,
+  Settings,
 } from 'lucide-react';
 import { ROUTES } from '../../utils/constants';
 
@@ -37,11 +36,10 @@ const tenantTabs: TabItem[] = [
 
 const agencyTabs: TabItem[] = [
   { icon: LayoutDashboard, label: 'Home', href: ROUTES.AGENCY_DASHBOARD },
-  { icon: Inbox, label: 'Candidature', href: ROUTES.AGENCY_APPLICATIONS, badgeKey: 'applications' },
   { icon: SearchIcon, label: 'Cerca', href: ROUTES.AGENCY_TENANTS },
   { icon: Megaphone, label: 'Annunci', href: ROUTES.AGENCY_LISTINGS },
   { icon: MessageSquare, label: 'Chat', href: ROUTES.AGENCY_MESSAGES, badgeKey: 'messages' },
-  { icon: Settings, label: 'Menu', href: ROUTES.AGENCY_SETTINGS },
+  { icon: MoreHorizontal, label: 'Altro', href: ROUTES.AGENCY_MORE },
 ];
 
 const adminTabs: TabItem[] = [
@@ -83,6 +81,14 @@ const TabItemComponent = React.memo(function TabItemComponent({
         || path === ROUTES.TENANT_AGENCIES || path.startsWith(ROUTES.TENANT_AGENCIES + '/')
         || path === ROUTES.TENANT_NOTIFICATIONS || path.startsWith(ROUTES.TENANT_NOTIFICATIONS + '/')
         || path === ROUTES.TENANT_SETTINGS || path.startsWith(ROUTES.TENANT_SETTINGS + '/');
+    }
+    if (item.href === ROUTES.AGENCY_MORE) {
+      return path === ROUTES.AGENCY_MORE
+        || path === ROUTES.AGENCY_APPLICATIONS || path.startsWith(ROUTES.AGENCY_APPLICATIONS + '/')
+        || path === ROUTES.AGENCY_DOCUMENTS || path.startsWith(ROUTES.AGENCY_DOCUMENTS + '/')
+        || path === ROUTES.AGENCY_CALCULATORS || path.startsWith(ROUTES.AGENCY_CALCULATORS + '/')
+        || path === ROUTES.AGENCY_PLAN || path.startsWith(ROUTES.AGENCY_PLAN + '/')
+        || path === ROUTES.AGENCY_SETTINGS || path.startsWith(ROUTES.AGENCY_SETTINGS + '/');
     }
     return path === item.href || path.startsWith(item.href + '/');
   }, [location.pathname, item.href]);
