@@ -394,86 +394,115 @@ export default function ListingsPage() {
           </div>
         </Suspense>
       ) : filteredListings.length > 0 ? (
-        <div className={`grid gap-4 ${viewMode === 'grid' ? 'grid-cols-1 md:grid-cols-2 xl:grid-cols-3' : 'grid-cols-1'}`}>
-          {filteredListings.map((listing) => (
-            <Card
-              key={listing.id}
-              hover
-              padding="none"
-              className="overflow-hidden"
-              onClick={() => setSelectedListing(listing)}
-            >
-              <div className="relative aspect-[16/10] bg-gradient-to-br from-primary-100 to-teal-100">
-                {listing.createdAt && new Date().getTime() - new Date(listing.createdAt).getTime() < 7 * 24 * 60 * 60 * 1000 && (
-                  <Badge variant="primary" className="absolute top-3 left-3">NUOVO</Badge>
-                )}
-                <button
-                  className={`absolute top-3 right-3 w-8 h-8 rounded-full flex items-center justify-center transition-colors ${
-                    savedListings.includes(listing.id)
-                      ? 'bg-error text-white'
-                      : 'bg-white/90 text-text-secondary hover:text-error'
-                  }`}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    toggleSavedListing(listing.id);
-                  }}
-                >
-                  <Heart size={16} fill={savedListings.includes(listing.id) ? 'currentColor' : 'none'} />
-                </button>
-              </div>
+        <div className={`grid ${viewMode === 'grid' ? 'gap-4 grid-cols-1 md:grid-cols-2 xl:grid-cols-3' : 'gap-4 grid-cols-1'}`}>
+          {filteredListings.map((listing) => {
+            const isNew = listing.createdAt && new Date().getTime() - new Date(listing.createdAt).getTime() < 7 * 24 * 60 * 60 * 1000;
+            const isSaved = savedListings.includes(listing.id);
 
-              <div className="p-4">
-                <h3 className="font-semibold text-text-primary line-clamp-2 mb-2">
-                  {listing.title}
-                </h3>
-
-                <div className="flex items-center gap-1 text-text-secondary text-sm mb-3">
-                  <MapPin size={14} />
-                  <span>{listing.address.city}</span>
-                  {listing.zone && <span>• {listing.zone}</span>}
-                </div>
-
-                <div className="flex flex-wrap gap-2 mb-4">
-                  <Badge variant="neutral">{listing.rooms} locali</Badge>
-                  <Badge variant="neutral">{formatSquareMeters(listing.squareMeters)}</Badge>
-                  {listing.furnished === 'yes' && <Badge variant="neutral">Arredato</Badge>}
-                </div>
-
-                <div className="flex items-center justify-between">
-                  <div>
-                    <span className="text-2xl font-bold text-primary-600">
-                      {formatCurrency(listing.price)}
-                    </span>
-                    <span className="text-text-muted">/mese</span>
+            return (
+              <Card
+                key={listing.id}
+                hover
+                padding="none"
+                className="overflow-hidden"
+                onClick={() => setSelectedListing(listing)}
+              >
+                {/* Mobile: compact horizontal layout */}
+                <div className="flex md:hidden">
+                  <div className="relative w-28 min-h-[100px] shrink-0 bg-gradient-to-br from-primary-100 to-teal-100">
+                    {isNew && (
+                      <span className="absolute top-1.5 left-1.5 px-1.5 py-0.5 text-[10px] font-bold bg-primary-500 text-white rounded">NUOVO</span>
+                    )}
+                    <button
+                      className={`absolute top-1.5 right-1.5 w-6 h-6 rounded-full flex items-center justify-center transition-colors ${
+                        isSaved ? 'bg-error text-white' : 'bg-white/90 text-text-secondary'
+                      }`}
+                      onClick={(e) => { e.stopPropagation(); toggleSavedListing(listing.id); }}
+                    >
+                      <Heart size={12} fill={isSaved ? 'currentColor' : 'none'} />
+                    </button>
                   </div>
-                  <div className="flex items-center gap-3 text-xs text-text-muted">
-                    <span className="flex items-center gap-1">
-                      <Users size={12} />
-                      {listing.applicationsCount}
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <Eye size={12} />
-                      {listing.views}
-                    </span>
+                  <div className="flex-1 p-3 min-w-0 flex flex-col justify-between">
+                    <div>
+                      <h3 className="font-semibold text-sm text-text-primary line-clamp-1">{listing.title}</h3>
+                      <div className="flex items-center gap-1 text-text-secondary text-xs mt-0.5">
+                        <MapPin size={11} />
+                        <span className="truncate">{listing.address.city}{listing.zone ? ` • ${listing.zone}` : ''}</span>
+                      </div>
+                      <div className="flex gap-1.5 mt-1.5">
+                        <span className="text-[10px] px-1.5 py-0.5 bg-background-secondary rounded text-text-secondary">{listing.rooms} loc</span>
+                        <span className="text-[10px] px-1.5 py-0.5 bg-background-secondary rounded text-text-secondary">{listing.squareMeters}m²</span>
+                        {listing.furnished === 'yes' && <span className="text-[10px] px-1.5 py-0.5 bg-background-secondary rounded text-text-secondary">Arr.</span>}
+                      </div>
+                    </div>
+                    <div className="flex items-center justify-between mt-2">
+                      <span className="text-base font-bold text-primary-600">{formatCurrency(listing.price)}<span className="text-[10px] font-normal text-text-muted">/mese</span></span>
+                      {isApplied(listing.id) ? (
+                        <span className="text-[10px] text-text-muted flex items-center gap-0.5"><CheckCircle size={11} /> Inviata</span>
+                      ) : (
+                        <button
+                          className="text-[11px] font-semibold text-primary-500 flex items-center gap-0.5"
+                          onClick={(e) => openApplicationForm(listing, e)}
+                        >
+                          <Send size={11} /> Candidati
+                        </button>
+                      )}
+                    </div>
                   </div>
                 </div>
 
-                {isApplied(listing.id) ? (
-                  <Button className="w-full mt-4" variant="secondary" disabled leftIcon={<CheckCircle size={16} />}>
-                    Candidatura Inviata
-                  </Button>
-                ) : (
-                  <Button
-                    className="w-full mt-4"
-                    leftIcon={<Send size={16} />}
-                    onClick={(e) => openApplicationForm(listing, e)}
-                  >
-                    Candidati Ora
-                  </Button>
-                )}
-              </div>
-            </Card>
-          ))}
+                {/* Desktop: original vertical layout */}
+                <div className="hidden md:block">
+                  <div className="relative aspect-[16/10] bg-gradient-to-br from-primary-100 to-teal-100">
+                    {isNew && (
+                      <Badge variant="primary" className="absolute top-3 left-3">NUOVO</Badge>
+                    )}
+                    <button
+                      className={`absolute top-3 right-3 w-8 h-8 rounded-full flex items-center justify-center transition-colors ${
+                        isSaved ? 'bg-error text-white' : 'bg-white/90 text-text-secondary hover:text-error'
+                      }`}
+                      onClick={(e) => { e.stopPropagation(); toggleSavedListing(listing.id); }}
+                    >
+                      <Heart size={16} fill={isSaved ? 'currentColor' : 'none'} />
+                    </button>
+                  </div>
+
+                  <div className="p-4">
+                    <h3 className="font-semibold text-text-primary line-clamp-2 mb-2">{listing.title}</h3>
+                    <div className="flex items-center gap-1 text-text-secondary text-sm mb-3">
+                      <MapPin size={14} />
+                      <span>{listing.address.city}</span>
+                      {listing.zone && <span>• {listing.zone}</span>}
+                    </div>
+                    <div className="flex flex-wrap gap-2 mb-4">
+                      <Badge variant="neutral">{listing.rooms} locali</Badge>
+                      <Badge variant="neutral">{formatSquareMeters(listing.squareMeters)}</Badge>
+                      {listing.furnished === 'yes' && <Badge variant="neutral">Arredato</Badge>}
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <span className="text-2xl font-bold text-primary-600">{formatCurrency(listing.price)}</span>
+                        <span className="text-text-muted">/mese</span>
+                      </div>
+                      <div className="flex items-center gap-3 text-xs text-text-muted">
+                        <span className="flex items-center gap-1"><Users size={12} />{listing.applicationsCount}</span>
+                        <span className="flex items-center gap-1"><Eye size={12} />{listing.views}</span>
+                      </div>
+                    </div>
+                    {isApplied(listing.id) ? (
+                      <Button className="w-full mt-4" variant="secondary" disabled leftIcon={<CheckCircle size={16} />}>
+                        Candidatura Inviata
+                      </Button>
+                    ) : (
+                      <Button className="w-full mt-4" leftIcon={<Send size={16} />} onClick={(e) => openApplicationForm(listing, e)}>
+                        Candidati Ora
+                      </Button>
+                    )}
+                  </div>
+                </div>
+              </Card>
+            );
+          })}
         </div>
       ) : (
         <EmptyState
