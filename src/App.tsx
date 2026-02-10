@@ -14,6 +14,7 @@ import {
   ChatButton,
   ExitIntentPopup,
 } from '../components';
+import { AddToHomeScreenModal } from './components/ui';
 import {
   HomePage,
   AnnunciPage,
@@ -119,6 +120,7 @@ function LandingWrapper({ children }: { children: React.ReactNode }) {
       <StickyBottomBar onMenuToggle={() => setIsMenuOpen(!isMenuOpen)} />
       <ChatButton />
       <ExitIntentPopup />
+      <AddToHomeScreenModal />
     </div>
   );
 }

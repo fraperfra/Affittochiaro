@@ -80,9 +80,22 @@ export function clearTokens(): void {
 
 // Token refresh (placeholder - implement with Cognito)
 async function refreshAccessToken(): Promise<boolean> {
-  // This will be implemented with Cognito SDK
-  // For now, return false to force re-login
-  return false;
+  try {
+    // Dynamic import to avoid circular dependency
+    const { authService } = await import('../index');
+
+    const currentToken = getAccessToken();
+    if (!currentToken) return false;
+
+    const newToken = await authService.refreshToken(currentToken);
+    if (newToken) {
+      setTokens(newToken);
+      return true;
+    }
+    return false;
+  } catch (error) {
+    return false;
+  }
 }
 
 // Error extraction

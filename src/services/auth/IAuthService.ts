@@ -11,6 +11,7 @@ export interface IAuthService {
   getCurrentSession(): Promise<User | null>;
   register(data: RegisterData): Promise<User>;
   updateProfile(updates: Partial<any>): Promise<User>;
+  refreshToken(token: string): Promise<string>;
   confirmEmail(email: string, code: string): Promise<void>;
   resendCode(email: string): Promise<void>;
   resetPassword(email: string): Promise<void>;

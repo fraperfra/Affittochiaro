@@ -6,3 +6,4 @@ export * from './agency';
 export * from './listing';
 export * from './notification';
 export * from './cv';
+export * from './chat';

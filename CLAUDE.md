@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Affittochiaro landing page - an Italian property rental platform focused on tenant profiles ("Curriculum dell'Inquilino"). React + TypeScript SPA with AI-powered features via Google Gemini.
+Affittochiaro landing page - an Italian property rental platform focused on tenant profiles ("Curriculum dell'Inquilino"). React + TypeScript SPA with AI-powered features via open ai.
 
 ## Development Commands
 

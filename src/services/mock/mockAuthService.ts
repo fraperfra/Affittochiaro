@@ -288,6 +288,22 @@ export const mockAuthApi = {
   },
 
   /**
+   * Refresh token
+   */
+  async refreshToken(token: string): Promise<string> {
+    await delay(200);
+    // In mock, just return a new token if session exists
+    if (!currentSession.user) {
+      throw new Error('Sessione scaduta');
+    }
+    const newToken = `mock_token_${Date.now()}`;
+    currentSession.token = newToken;
+    localStorage.setItem('mock_auth_token', newToken);
+    console.log('[MockAuth] Token refreshed');
+    return newToken;
+  },
+
+  /**
    * Conferma email con codice OTP
    */
   async confirmEmail(email: string, code: string): Promise<void> {

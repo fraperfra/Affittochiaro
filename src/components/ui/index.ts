@@ -16,3 +16,4 @@ export {
   ProfileSkeleton,
   ChatSkeleton,
 } from './Skeleton';
+export { default as AddToHomeScreenModal } from './AddToHomeScreenModal';
