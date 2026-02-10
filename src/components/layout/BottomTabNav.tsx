@@ -129,16 +129,23 @@ export default function BottomTabNav({ userRole, badges = {} }: BottomTabNavProp
 
   return (
     <nav
-      className="fixed bottom-0 left-0 right-0 z-[100] bg-white border-t border-gray-200 md:hidden"
+      className="fixed z-[100] md:hidden"
       style={{
-        height: '72px',
-        boxShadow: '0 -2px 10px rgba(0, 0, 0, 0.05)',
+        bottom: '12px',
+        left: '12px',
+        right: '12px',
         paddingBottom: 'env(safe-area-inset-bottom, 0px)',
       }}
       role="tablist"
       aria-label="Navigazione principale"
     >
-      <div className="flex justify-around items-center h-full">
+      <div
+        className="flex justify-around items-center bg-white border border-gray-100 rounded-2xl"
+        style={{
+          height: '64px',
+          boxShadow: '0 4px 20px rgba(0, 0, 0, 0.08), 0 1px 4px rgba(0, 0, 0, 0.04)',
+        }}
+      >
         {tabs.map((tab) => (
           <TabItemComponent
             key={tab.href}
