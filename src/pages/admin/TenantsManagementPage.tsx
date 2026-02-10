@@ -129,154 +129,294 @@ export default function TenantsManagementPage() {
 
       {/* Table */}
       {paginatedTenants.length > 0 ? (
-        <Card padding="none">
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead className="bg-background-secondary">
-                <tr>
-                  <th className="text-left px-6 py-4 text-sm font-medium text-text-secondary">Utente</th>
-                  <th className="text-left px-6 py-4 text-sm font-medium text-text-secondary">Email</th>
-                  <th className="text-left px-6 py-4 text-sm font-medium text-text-secondary">Citta</th>
-                  <th className="text-left px-6 py-4 text-sm font-medium text-text-secondary">Stato</th>
-                  <th className="text-left px-6 py-4 text-sm font-medium text-text-secondary">Profilo</th>
-                  <th className="text-left px-6 py-4 text-sm font-medium text-text-secondary">Registrato</th>
-                  <th className="text-right px-6 py-4 text-sm font-medium text-text-secondary">Azioni</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-border">
-                {paginatedTenants.map((tenant) => (
-                  <tr key={tenant.id} className="hover:bg-background-secondary/50">
-                    <td className="px-6 py-4">
-                      <div className="flex items-center gap-3">
-                        {tenant.avatar ? (
-                          <img
-                            src={tenant.avatar}
-                            alt={tenant.firstName}
-                            className="w-10 h-10 rounded-full object-cover"
-                          />
-                        ) : (
-                          <div className="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center text-primary-600 font-semibold">
-                            {formatInitials(tenant.firstName, tenant.lastName)}
-                          </div>
-                        )}
-                        <div>
-                          <p className="font-medium text-text-primary">
-                            {tenant.firstName} {tenant.lastName}
-                          </p>
-                          <p className="text-sm text-text-muted">{tenant.occupation}</p>
-                        </div>
+        <>
+          {/* Mobile Card View */}
+          <div className="grid gap-4 md:hidden">
+            {paginatedTenants.map((tenant) => (
+              <Card key={tenant.id} padding="md">
+                <div className="flex items-start justify-between mb-3">
+                  <div className="flex items-center gap-3">
+                    {tenant.avatar ? (
+                      <img
+                        src={tenant.avatar}
+                        alt={tenant.firstName}
+                        className="w-10 h-10 rounded-full object-cover"
+                      />
+                    ) : (
+                      <div className="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center text-primary-600 font-semibold">
+                        {formatInitials(tenant.firstName, tenant.lastName)}
                       </div>
-                    </td>
-                    <td className="px-6 py-4 text-text-secondary">{tenant.email}</td>
-                    <td className="px-6 py-4 text-text-secondary">{tenant.currentCity || '-'}</td>
-                    <td className="px-6 py-4">
-                      <Badge variant={tenant.status === 'active' ? 'success' : tenant.status === 'suspended' ? 'error' : 'warning'}>
-                        {tenant.status === 'active' ? 'Attivo' : tenant.status === 'suspended' ? 'Sospeso' : 'Inattivo'}
-                      </Badge>
-                    </td>
-                    <td className="px-6 py-4">
-                      <div className="flex items-center gap-2">
-                        {tenant.isVerified && (
-                          <span className="text-success" title="Verificato">
-                            <Check size={16} />
-                          </span>
-                        )}
-                        {tenant.hasVideo && (
-                          <span className="text-info" title="Ha video">
-                            <Video size={16} />
-                          </span>
-                        )}
-                        <span className="text-xs text-text-muted">
-                          {tenant.profileCompleteness}%
-                        </span>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 text-text-muted">
-                      {formatDate(tenant.createdAt)}
-                    </td>
-                    <td className="px-6 py-4">
-                      <div className="flex items-center justify-end gap-2 relative">
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          className="btn-icon"
-                          onClick={() => setSelectedTenant(tenant)}
-                        >
-                          <Eye size={16} />
-                        </Button>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          className="btn-icon"
-                          onClick={() => setShowActions(showActions === tenant.id ? null : tenant.id)}
-                        >
-                          <MoreVertical size={16} />
-                        </Button>
+                    )}
+                    <div>
+                      <h3 className="font-semibold text-text-primary">
+                        {tenant.firstName} {tenant.lastName}
+                      </h3>
+                      <p className="text-sm text-text-muted">{tenant.occupation}</p>
+                    </div>
+                  </div>
+                  <Badge variant={tenant.status === 'active' ? 'success' : tenant.status === 'suspended' ? 'error' : 'warning'}>
+                    {tenant.status === 'active' ? 'Attivo' : tenant.status === 'suspended' ? 'Sospeso' : 'Inattivo'}
+                  </Badge>
+                </div>
 
-                        {/* Actions Dropdown */}
-                        {showActions === tenant.id && (
-                          <div className="absolute right-0 top-full mt-1 w-48 bg-white rounded-xl shadow-lg border border-border z-10">
-                            <div className="p-1">
-                              {!tenant.isVerified && (
+                <div className="space-y-1 mb-4">
+                  <p className="text-sm text-text-secondary flex items-center gap-2">
+                    <span className="text-text-muted">Email:</span> {tenant.email}
+                  </p>
+                  <p className="text-sm text-text-secondary flex items-center gap-2">
+                    <span className="text-text-muted">Citta:</span> {tenant.currentCity || '-'}
+                  </p>
+                </div>
+
+                <div className="flex items-center justify-between py-3 border-y border-border mb-4">
+                  <div className="text-center">
+                    <p className="text-xs text-text-muted mb-1">Completo</p>
+                    <span className="font-semibold text-text-primary">{tenant.profileCompleteness}%</span>
+                  </div>
+                  <div className="text-center">
+                    <p className="text-xs text-text-muted mb-1">Verificato</p>
+                    {tenant.isVerified ? (
+                      <Check size={18} className="text-success mx-auto" />
+                    ) : (
+                      <X size={18} className="text-text-muted mx-auto" />
+                    )}
+                  </div>
+                  <div className="text-center">
+                    <p className="text-xs text-text-muted mb-1">Video</p>
+                    {tenant.hasVideo ? (
+                      <Video size={18} className="text-info mx-auto" />
+                    ) : (
+                      <span className="text-text-muted">-</span>
+                    )}
+                  </div>
+                  <div className="text-center">
+                    <p className="text-xs text-text-muted mb-1">Data</p>
+                    <span className="text-sm font-medium">{formatDate(tenant.createdAt)}</span>
+                  </div>
+                </div>
+
+                <div className="flex gap-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="flex-1"
+                    onClick={() => setSelectedTenant(tenant)}
+                    leftIcon={<Eye size={14} />}
+                  >
+                    Dettagli
+                  </Button>
+
+                  <div className="flex gap-2">
+                    {!tenant.isVerified && (
+                      <Button
+                        variant="secondary"
+                        size="sm"
+                        className="px-2"
+                        onClick={() => handleVerify(tenant)}
+                        title="Verifica"
+                      >
+                        <Check size={16} className="text-success" />
+                      </Button>
+                    )}
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="px-2"
+                      onClick={() => setShowActions(showActions === tenant.id ? null : tenant.id)}
+                    >
+                      <MoreVertical size={16} />
+                    </Button>
+                  </div>
+                </div>
+
+                {/* Mobile Dropdown Actions */}
+                {showActions === tenant.id && (
+                  <div className="mt-2 p-2 bg-background-secondary rounded-lg animate-slideDown">
+                    <div className="flex flex-col gap-2">
+                      {!tenant.isVerified && (
+                        <button
+                          onClick={() => handleVerify(tenant)}
+                          className="w-full px-3 py-2 text-left text-sm rounded-lg bg-white shadow-sm flex items-center gap-2"
+                        >
+                          <Check size={14} className="text-success" />
+                          Verifica Profilo
+                        </button>
+                      )}
+                      <button
+                        onClick={() => handleSuspend(tenant)}
+                        className="w-full px-3 py-2 text-left text-sm rounded-lg bg-white shadow-sm flex items-center gap-2"
+                      >
+                        <Ban size={14} className="text-warning" />
+                        Sospendi
+                      </button>
+                      <button
+                        className="w-full px-3 py-2 text-left text-sm rounded-lg bg-white shadow-sm flex items-center gap-2 text-error"
+                        onClick={() => {
+                          const updated = tenants.filter(t => t.id !== tenant.id);
+                          setTenants(updated);
+                          setShowActions(null);
+                          toast.success('Inquilino eliminato');
+                        }}
+                      >
+                        <Trash2 size={14} />
+                        Elimina
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </Card>
+            ))}
+          </div>
+
+          <Card padding="none" className="hidden md:block">
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead className="bg-background-secondary">
+                  <tr>
+                    <th className="text-left px-6 py-4 text-sm font-medium text-text-secondary">Utente</th>
+                    <th className="text-left px-6 py-4 text-sm font-medium text-text-secondary">Email</th>
+                    <th className="text-left px-6 py-4 text-sm font-medium text-text-secondary">Citta</th>
+                    <th className="text-left px-6 py-4 text-sm font-medium text-text-secondary">Stato</th>
+                    <th className="text-left px-6 py-4 text-sm font-medium text-text-secondary">Profilo</th>
+                    <th className="text-left px-6 py-4 text-sm font-medium text-text-secondary">Registrato</th>
+                    <th className="text-right px-6 py-4 text-sm font-medium text-text-secondary">Azioni</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-border">
+                  {paginatedTenants.map((tenant) => (
+                    <tr key={tenant.id} className="hover:bg-background-secondary/50">
+                      <td className="px-6 py-4">
+                        <div className="flex items-center gap-3">
+                          {tenant.avatar ? (
+                            <img
+                              src={tenant.avatar}
+                              alt={tenant.firstName}
+                              className="w-10 h-10 rounded-full object-cover"
+                            />
+                          ) : (
+                            <div className="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center text-primary-600 font-semibold">
+                              {formatInitials(tenant.firstName, tenant.lastName)}
+                            </div>
+                          )}
+                          <div>
+                            <p className="font-medium text-text-primary">
+                              {tenant.firstName} {tenant.lastName}
+                            </p>
+                            <p className="text-sm text-text-muted">{tenant.occupation}</p>
+                          </div>
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 text-text-secondary">{tenant.email}</td>
+                      <td className="px-6 py-4 text-text-secondary">{tenant.currentCity || '-'}</td>
+                      <td className="px-6 py-4">
+                        <Badge variant={tenant.status === 'active' ? 'success' : tenant.status === 'suspended' ? 'error' : 'warning'}>
+                          {tenant.status === 'active' ? 'Attivo' : tenant.status === 'suspended' ? 'Sospeso' : 'Inattivo'}
+                        </Badge>
+                      </td>
+                      <td className="px-6 py-4">
+                        <div className="flex items-center gap-2">
+                          {tenant.isVerified && (
+                            <span className="text-success" title="Verificato">
+                              <Check size={16} />
+                            </span>
+                          )}
+                          {tenant.hasVideo && (
+                            <span className="text-info" title="Ha video">
+                              <Video size={16} />
+                            </span>
+                          )}
+                          <span className="text-xs text-text-muted">
+                            {tenant.profileCompleteness}%
+                          </span>
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 text-text-muted">
+                        {formatDate(tenant.createdAt)}
+                      </td>
+                      <td className="px-6 py-4">
+                        <div className="flex items-center justify-end gap-2 relative">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="btn-icon"
+                            onClick={() => setSelectedTenant(tenant)}
+                          >
+                            <Eye size={16} />
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="btn-icon"
+                            onClick={() => setShowActions(showActions === tenant.id ? null : tenant.id)}
+                          >
+                            <MoreVertical size={16} />
+                          </Button>
+
+                          {/* Actions Dropdown */}
+                          {showActions === tenant.id && (
+                            <div className="absolute right-0 top-full mt-1 w-48 bg-white rounded-xl shadow-lg border border-border z-10">
+                              <div className="p-1">
+                                {!tenant.isVerified && (
+                                  <button
+                                    onClick={() => handleVerify(tenant)}
+                                    className="w-full px-3 py-2 text-left text-sm rounded-lg hover:bg-background-secondary flex items-center gap-2"
+                                  >
+                                    <Check size={14} className="text-success" />
+                                    Verifica Profilo
+                                  </button>
+                                )}
                                 <button
-                                  onClick={() => handleVerify(tenant)}
+                                  onClick={() => handleSuspend(tenant)}
                                   className="w-full px-3 py-2 text-left text-sm rounded-lg hover:bg-background-secondary flex items-center gap-2"
                                 >
-                                  <Check size={14} className="text-success" />
-                                  Verifica Profilo
+                                  <Ban size={14} className="text-warning" />
+                                  Sospendi
                                 </button>
-                              )}
-                              <button
-                                onClick={() => handleSuspend(tenant)}
-                                className="w-full px-3 py-2 text-left text-sm rounded-lg hover:bg-background-secondary flex items-center gap-2"
-                              >
-                                <Ban size={14} className="text-warning" />
-                                Sospendi
-                              </button>
-                              <button className="w-full px-3 py-2 text-left text-sm rounded-lg hover:bg-red-50 text-error flex items-center gap-2">
-                                <Trash2 size={14} />
-                                Elimina
-                              </button>
+                                <button className="w-full px-3 py-2 text-left text-sm rounded-lg hover:bg-red-50 text-error flex items-center gap-2">
+                                  <Trash2 size={14} />
+                                  Elimina
+                                </button>
+                              </div>
                             </div>
-                          </div>
-                        )}
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-
-          {/* Pagination */}
-          <div className="flex items-center justify-between px-6 py-4 border-t border-border">
-            <p className="text-sm text-text-muted">
-              Mostrando {(pagination.page - 1) * pagination.limit + 1}-
-              {Math.min(pagination.page * pagination.limit, filteredTenants.length)} di {filteredTenants.length}
-            </p>
-            <div className="flex items-center gap-2">
-              <Button
-                variant="secondary"
-                size="sm"
-                disabled={pagination.page === 1}
-                onClick={() => setPagination({ page: pagination.page - 1 })}
-              >
-                <ChevronLeft size={16} />
-              </Button>
-              <span className="text-sm text-text-secondary px-2">
-                Pagina {pagination.page} di {Math.ceil(filteredTenants.length / pagination.limit)}
-              </span>
-              <Button
-                variant="secondary"
-                size="sm"
-                disabled={pagination.page >= Math.ceil(filteredTenants.length / pagination.limit)}
-                onClick={() => setPagination({ page: pagination.page + 1 })}
-              >
-                <ChevronRight size={16} />
-              </Button>
+                          )}
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
-          </div>
-        </Card>
+
+            {/* Pagination */}
+            <div className="flex items-center justify-between px-6 py-4 border-t border-border">
+              <p className="text-sm text-text-muted">
+                Mostrando {(pagination.page - 1) * pagination.limit + 1}-
+                {Math.min(pagination.page * pagination.limit, filteredTenants.length)} di {filteredTenants.length}
+              </p>
+              <div className="flex items-center gap-2">
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  disabled={pagination.page === 1}
+                  onClick={() => setPagination({ page: pagination.page - 1 })}
+                >
+                  <ChevronLeft size={16} />
+                </Button>
+                <span className="text-sm text-text-secondary px-2">
+                  Pagina {pagination.page} di {Math.ceil(filteredTenants.length / pagination.limit)}
+                </span>
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  disabled={pagination.page >= Math.ceil(filteredTenants.length / pagination.limit)}
+                  onClick={() => setPagination({ page: pagination.page + 1 })}
+                >
+                  <ChevronRight size={16} />
+                </Button>
+              </div>
+            </div>
+          </Card>
+        </>
       ) : (
         <EmptyState
           icon="👥"

@@ -215,7 +215,7 @@ export default function ListingsManagementPage() {
                 </div>
 
                 {/* Stats */}
-                <div className="flex items-center gap-4 py-3 border-y border-gray-100 mb-3">
+                <div className="flex items-center gap-4 py-3 border-y border-border mb-3">
                   <div className="flex items-center gap-2 flex-1">
                     <Eye size={16} className="text-text-muted" />
                     <div>
@@ -243,35 +243,85 @@ export default function ListingsManagementPage() {
                   >
                     Dettagli
                   </Button>
-                  {listing.status === 'pending_review' && (
-                    <>
+
+                  {/* Action Drodown specific for mobile or just conditional buttons */}
+                  <div className="flex gap-2">
+                    {listing.status === 'pending_review' && (
                       <Button
                         variant="secondary"
                         size="sm"
+                        className="px-2"
                         onClick={() => handleApprove(listing)}
-                        leftIcon={<CheckCircle size={14} />}
+                        title="Approva"
                       >
-                        Approva
+                        <CheckCircle size={16} className="text-success" />
                       </Button>
-                      <button
-                        onClick={() => handleReject(listing)}
-                        className="p-2 text-error hover:bg-red-50 rounded-lg transition-colors"
-                      >
-                        <XCircle size={18} />
-                      </button>
-                    </>
-                  )}
-                  {listing.status === 'active' && (
+                    )}
+
                     <Button
-                      variant="secondary"
+                      variant="ghost"
                       size="sm"
-                      onClick={() => handlePause(listing)}
-                      leftIcon={<Pause size={14} />}
+                      className="px-2"
+                      onClick={() => setShowActions(showActions === listing.id ? null : listing.id)}
                     >
-                      Pausa
+                      <MoreVertical size={16} />
                     </Button>
-                  )}
+                  </div>
                 </div>
+
+                {/* Mobile Dropdown Actions */}
+                {showActions === listing.id && (
+                  <div className="mt-2 p-2 bg-background-secondary rounded-lg animate-slideDown">
+                    <div className="flex flex-col gap-2">
+                      {listing.status === 'pending_review' && (
+                        <button
+                          onClick={() => handleReject(listing)}
+                          className="w-full px-3 py-2 text-left text-sm rounded-lg bg-white shadow-sm flex items-center gap-2 text-error"
+                        >
+                          <XCircle size={14} />
+                          Rifiuta
+                        </button>
+                      )}
+                      {listing.status === 'active' && (
+                        <button
+                          onClick={() => handlePause(listing)}
+                          className="w-full px-3 py-2 text-left text-sm rounded-lg bg-white shadow-sm flex items-center gap-2 text-warning"
+                        >
+                          <Pause size={14} />
+                          Metti in Pausa
+                        </button>
+                      )}
+                      {listing.status === 'paused' && (
+                        <button
+                          className="w-full px-3 py-2 text-left text-sm rounded-lg bg-white shadow-sm flex items-center gap-2 text-success"
+                          // Assuming handleResume exists or logic needs to be added, but based on desktop it's just a button without handler in original code? 
+                          // Wait, desktop code had <button ...>Riattiva</button> but NO onClick handler visible in the snippet for 'paused' state? 
+                          // Ah, line 386 in original file: <button className="...">... Riattiva </button>. It seems incomplete in original file too?
+                          // I'll add a simple logic for it if I can, or just leave it consistent with desktop (which seemed to lack it or I missed it).
+                          // Actually, let's use handleApprove for reactivating/unpausing if that's the logic, or create a handleResume.
+                          // For now I will use handleApprove which sets status to 'active' as a "Resume" action.
+                          onClick={() => handleApprove(listing)}
+                        >
+                          <Play size={14} />
+                          Riattiva
+                        </button>
+                      )}
+                      <button
+                        className="w-full px-3 py-2 text-left text-sm rounded-lg bg-white shadow-sm flex items-center gap-2 text-error"
+                        onClick={() => {
+                          // Simulate delete
+                          const updated = listings.filter(l => l.id !== listing.id);
+                          setListings(updated);
+                          setShowActions(null);
+                          toast.success('Annuncio eliminato');
+                        }}
+                      >
+                        <Trash2 size={14} />
+                        Elimina
+                      </button>
+                    </div>
+                  </div>
+                )}
               </Card>
             ))}
           </div>

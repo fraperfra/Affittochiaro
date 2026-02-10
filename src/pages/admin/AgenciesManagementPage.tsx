@@ -18,6 +18,7 @@ import { formatDate, formatCurrency, formatNumber } from '../../utils/formatters
 import { ITALIAN_CITIES } from '../../utils/constants';
 import { Agency, AgencyPlan } from '../../types';
 import { Card, Button, Badge, Modal, ModalFooter, EmptyState } from '../../components/ui';
+import toast from 'react-hot-toast';
 
 const planColors: Record<AgencyPlan, 'neutral' | 'success' | 'primary' | 'warning'> = {
   free: 'neutral',
@@ -140,147 +141,274 @@ export default function AgenciesManagementPage() {
 
       {/* Table */}
       {paginatedAgencies.length > 0 ? (
-        <Card padding="none">
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead className="bg-background-secondary">
-                <tr>
-                  <th className="text-left px-6 py-4 text-sm font-medium text-text-secondary">Agenzia</th>
-                  <th className="text-left px-6 py-4 text-sm font-medium text-text-secondary">Piano</th>
-                  <th className="text-left px-6 py-4 text-sm font-medium text-text-secondary">Crediti</th>
-                  <th className="text-left px-6 py-4 text-sm font-medium text-text-secondary">Annunci</th>
-                  <th className="text-left px-6 py-4 text-sm font-medium text-text-secondary">Stato</th>
-                  <th className="text-left px-6 py-4 text-sm font-medium text-text-secondary">Registrata</th>
-                  <th className="text-right px-6 py-4 text-sm font-medium text-text-secondary">Azioni</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-border">
-                {paginatedAgencies.map((agency) => (
-                  <tr key={agency.id} className="hover:bg-background-secondary/50">
-                    <td className="px-6 py-4">
-                      <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-full bg-teal-100 flex items-center justify-center text-teal-600 font-semibold">
-                          {agency.name.charAt(0)}
-                        </div>
-                        <div>
-                          <p className="font-medium text-text-primary">{agency.name}</p>
-                          <p className="text-sm text-text-muted">{agency.email}</p>
-                        </div>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4">
-                      <Badge variant={planColors[agency.plan]} className="capitalize">
-                        {agency.plan}
-                      </Badge>
-                    </td>
-                    <td className="px-6 py-4">
-                      <div className="flex items-center gap-1">
-                        <CreditCard size={14} className="text-text-muted" />
-                        <span>{agency.credits}</span>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4">
-                      <div className="flex items-center gap-1">
-                        <Home size={14} className="text-text-muted" />
-                        <span>{agency.activeListingsCount}/{agency.listingsCount}</span>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4">
-                      <div className="flex items-center gap-2">
-                        {agency.isVerified && (
-                          <Badge variant="success" size="sm">✓ Verificata</Badge>
-                        )}
-                        <Badge
-                          variant={agency.status === 'active' ? 'success' : 'warning'}
-                          size="sm"
-                        >
-                          {agency.status === 'active' ? 'Attiva' : 'Inattiva'}
+        <>
+          {/* Mobile Card View */}
+          <div className="grid gap-4 md:hidden">
+            {paginatedAgencies.map((agency) => (
+              <Card key={agency.id} padding="md">
+                <div className="flex items-start justify-between mb-3">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full bg-teal-100 flex items-center justify-center text-teal-600 font-semibold">
+                      {agency.name.charAt(0)}
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-text-primary">
+                        {agency.name}
+                      </h3>
+                      <div className="flex gap-1 mt-0.5">
+                        <Badge variant={planColors[agency.plan]} className="capitalize" size="sm">
+                          {agency.plan}
                         </Badge>
+                        {agency.isVerified && <Badge variant="success" size="sm">✓</Badge>}
                       </div>
-                    </td>
-                    <td className="px-6 py-4 text-text-muted">
-                      {formatDate(agency.createdAt)}
-                    </td>
-                    <td className="px-6 py-4">
-                      <div className="flex items-center justify-end gap-2 relative">
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          className="btn-icon"
-                          onClick={() => setSelectedAgency(agency)}
-                        >
-                          <Eye size={16} />
-                        </Button>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          className="btn-icon"
-                          onClick={() => setShowActions(showActions === agency.id ? null : agency.id)}
-                        >
-                          <MoreVertical size={16} />
-                        </Button>
+                    </div>
+                  </div>
+                  <Badge variant={agency.status === 'active' ? 'success' : 'warning'}>
+                    {agency.status === 'active' ? 'Attiva' : 'Inattiva'}
+                  </Badge>
+                </div>
 
-                        {showActions === agency.id && (
-                          <div className="absolute right-0 top-full mt-1 w-48 bg-white rounded-xl shadow-lg border border-border z-10">
-                            <div className="p-1">
-                              {!agency.isVerified && (
-                                <button className="w-full px-3 py-2 text-left text-sm rounded-lg hover:bg-background-secondary flex items-center gap-2">
-                                  <Check size={14} className="text-success" />
-                                  Verifica
-                                </button>
-                              )}
-                              <button className="w-full px-3 py-2 text-left text-sm rounded-lg hover:bg-background-secondary flex items-center gap-2">
-                                <CreditCard size={14} className="text-primary-500" />
-                                Aggiungi Crediti
-                              </button>
-                              <button className="w-full px-3 py-2 text-left text-sm rounded-lg hover:bg-background-secondary flex items-center gap-2">
-                                <Ban size={14} className="text-warning" />
-                                Sospendi
-                              </button>
-                              <button className="w-full px-3 py-2 text-left text-sm rounded-lg hover:bg-red-50 text-error flex items-center gap-2">
-                                <Trash2 size={14} />
-                                Elimina
-                              </button>
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                    </td>
+                <div className="space-y-1 mb-4">
+                  <p className="text-sm text-text-secondary flex items-center gap-2">
+                    <span className="text-text-muted">Email:</span> {agency.email}
+                  </p>
+                  <p className="text-sm text-text-secondary flex items-center gap-2">
+                    <span className="text-text-muted">Citta:</span> {agency.address?.city || '-'}
+                  </p>
+                </div>
+
+                <div className="flex items-center justify-between py-3 border-y border-border mb-4">
+                  <div className="text-center bg-background-secondary p-2 rounded-lg flex-1 mr-2">
+                    <p className="text-xs text-text-muted mb-1 flex items-center justify-center gap-1"><CreditCard size={12} /> Crediti</p>
+                    <span className="font-bold text-primary-600">{agency.credits}</span>
+                  </div>
+                  <div className="text-center bg-background-secondary p-2 rounded-lg flex-1 ml-2">
+                    <p className="text-xs text-text-muted mb-1 flex items-center justify-center gap-1"><Home size={12} /> Annunci</p>
+                    <span className="font-bold text-text-primary">{agency.activeListingsCount}/{agency.listingsCount}</span>
+                  </div>
+                </div>
+
+                <div className="flex gap-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="flex-1"
+                    onClick={() => setSelectedAgency(agency)}
+                    leftIcon={<Eye size={14} />}
+                  >
+                    Dettagli
+                  </Button>
+
+                  <div className="flex gap-2">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="px-2"
+                      onClick={() => setShowActions(showActions === agency.id ? null : agency.id)}
+                    >
+                      <MoreVertical size={16} />
+                    </Button>
+                  </div>
+                </div>
+
+                {/* Mobile Dropdown Actions */}
+                {showActions === agency.id && (
+                  <div className="mt-2 p-2 bg-background-secondary rounded-lg animate-slideDown">
+                    <div className="flex flex-col gap-2">
+                      {!agency.isVerified && (
+                        <button
+                          className="w-full px-3 py-2 text-left text-sm rounded-lg bg-white shadow-sm flex items-center gap-2"
+                          onClick={() => {
+                            // Simulate verify
+                            toast.success('Agenzia verificata');
+                            setShowActions(null);
+                          }}
+                        >
+                          <Check size={14} className="text-success" />
+                          Verifica
+                        </button>
+                      )}
+                      <button
+                        className="w-full px-3 py-2 text-left text-sm rounded-lg bg-white shadow-sm flex items-center gap-2"
+                        onClick={() => {
+                          toast.success('Crediti aggiunti');
+                          setShowActions(null);
+                        }}
+                      >
+                        <CreditCard size={14} className="text-primary-500" />
+                        Aggiungi Crediti
+                      </button>
+                      <button
+                        className="w-full px-3 py-2 text-left text-sm rounded-lg bg-white shadow-sm flex items-center gap-2"
+                        onClick={() => {
+                          toast.success('Agenzia sospesa');
+                          setShowActions(null);
+                        }}
+                      >
+                        <Ban size={14} className="text-warning" />
+                        Sospendi
+                      </button>
+                      <button
+                        className="w-full px-3 py-2 text-left text-sm rounded-lg bg-white shadow-sm flex items-center gap-2 text-error"
+                        onClick={() => {
+                          const updated = agencies.filter(a => a.id !== agency.id);
+                          setAgencies(updated);
+                          setShowActions(null);
+                          toast.success('Agenzia eliminata');
+                        }}
+                      >
+                        <Trash2 size={14} />
+                        Elimina
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </Card>
+            ))}
+          </div>
+
+          <Card padding="none" className="hidden md:block">
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead className="bg-background-secondary">
+                  <tr>
+                    <th className="text-left px-6 py-4 text-sm font-medium text-text-secondary">Agenzia</th>
+                    <th className="text-left px-6 py-4 text-sm font-medium text-text-secondary">Piano</th>
+                    <th className="text-left px-6 py-4 text-sm font-medium text-text-secondary">Crediti</th>
+                    <th className="text-left px-6 py-4 text-sm font-medium text-text-secondary">Annunci</th>
+                    <th className="text-left px-6 py-4 text-sm font-medium text-text-secondary">Stato</th>
+                    <th className="text-left px-6 py-4 text-sm font-medium text-text-secondary">Registrata</th>
+                    <th className="text-right px-6 py-4 text-sm font-medium text-text-secondary">Azioni</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody className="divide-y divide-border">
+                  {paginatedAgencies.map((agency) => (
+                    <tr key={agency.id} className="hover:bg-background-secondary/50">
+                      <td className="px-6 py-4">
+                        <div className="flex items-center gap-3">
+                          <div className="w-10 h-10 rounded-full bg-teal-100 flex items-center justify-center text-teal-600 font-semibold">
+                            {agency.name.charAt(0)}
+                          </div>
+                          <div>
+                            <p className="font-medium text-text-primary">{agency.name}</p>
+                            <p className="text-sm text-text-muted">{agency.email}</p>
+                          </div>
+                        </div>
+                      </td>
+                      <td className="px-6 py-4">
+                        <Badge variant={planColors[agency.plan]} className="capitalize">
+                          {agency.plan}
+                        </Badge>
+                      </td>
+                      <td className="px-6 py-4">
+                        <div className="flex items-center gap-1">
+                          <CreditCard size={14} className="text-text-muted" />
+                          <span>{agency.credits}</span>
+                        </div>
+                      </td>
+                      <td className="px-6 py-4">
+                        <div className="flex items-center gap-1">
+                          <Home size={14} className="text-text-muted" />
+                          <span>{agency.activeListingsCount}/{agency.listingsCount}</span>
+                        </div>
+                      </td>
+                      <td className="px-6 py-4">
+                        <div className="flex items-center gap-2">
+                          {agency.isVerified && (
+                            <Badge variant="success" size="sm">✓ Verificata</Badge>
+                          )}
+                          <Badge
+                            variant={agency.status === 'active' ? 'success' : 'warning'}
+                            size="sm"
+                          >
+                            {agency.status === 'active' ? 'Attiva' : 'Inattiva'}
+                          </Badge>
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 text-text-muted">
+                        {formatDate(agency.createdAt)}
+                      </td>
+                      <td className="px-6 py-4">
+                        <div className="flex items-center justify-end gap-2 relative">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="btn-icon"
+                            onClick={() => setSelectedAgency(agency)}
+                          >
+                            <Eye size={16} />
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="btn-icon"
+                            onClick={() => setShowActions(showActions === agency.id ? null : agency.id)}
+                          >
+                            <MoreVertical size={16} />
+                          </Button>
 
-          {/* Pagination */}
-          <div className="flex items-center justify-between px-6 py-4 border-t border-border">
-            <p className="text-sm text-text-muted">
-              Mostrando {(pagination.page - 1) * pagination.limit + 1}-
-              {Math.min(pagination.page * pagination.limit, filteredAgencies.length)} di {filteredAgencies.length}
-            </p>
-            <div className="flex items-center gap-2">
-              <Button
-                variant="secondary"
-                size="sm"
-                disabled={pagination.page === 1}
-                onClick={() => setPagination({ page: pagination.page - 1 })}
-              >
-                <ChevronLeft size={16} />
-              </Button>
-              <span className="text-sm text-text-secondary px-2">
-                Pagina {pagination.page}
-              </span>
-              <Button
-                variant="secondary"
-                size="sm"
-                disabled={pagination.page >= Math.ceil(filteredAgencies.length / pagination.limit)}
-                onClick={() => setPagination({ page: pagination.page + 1 })}
-              >
-                <ChevronRight size={16} />
-              </Button>
+                          {showActions === agency.id && (
+                            <div className="absolute right-0 top-full mt-1 w-48 bg-white rounded-xl shadow-lg border border-border z-10">
+                              <div className="p-1">
+                                {!agency.isVerified && (
+                                  <button className="w-full px-3 py-2 text-left text-sm rounded-lg hover:bg-background-secondary flex items-center gap-2">
+                                    <Check size={14} className="text-success" />
+                                    Verifica
+                                  </button>
+                                )}
+                                <button className="w-full px-3 py-2 text-left text-sm rounded-lg hover:bg-background-secondary flex items-center gap-2">
+                                  <CreditCard size={14} className="text-primary-500" />
+                                  Aggiungi Crediti
+                                </button>
+                                <button className="w-full px-3 py-2 text-left text-sm rounded-lg hover:bg-background-secondary flex items-center gap-2">
+                                  <Ban size={14} className="text-warning" />
+                                  Sospendi
+                                </button>
+                                <button className="w-full px-3 py-2 text-left text-sm rounded-lg hover:bg-red-50 text-error flex items-center gap-2">
+                                  <Trash2 size={14} />
+                                  Elimina
+                                </button>
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
-          </div>
-        </Card>
+
+            {/* Pagination */}
+            <div className="flex items-center justify-between px-6 py-4 border-t border-border">
+              <p className="text-sm text-text-muted">
+                Mostrando {(pagination.page - 1) * pagination.limit + 1}-
+                {Math.min(pagination.page * pagination.limit, filteredAgencies.length)} di {filteredAgencies.length}
+              </p>
+              <div className="flex items-center gap-2">
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  disabled={pagination.page === 1}
+                  onClick={() => setPagination({ page: pagination.page - 1 })}
+                >
+                  <ChevronLeft size={16} />
+                </Button>
+                <span className="text-sm text-text-secondary px-2">
+                  Pagina {pagination.page}
+                </span>
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  disabled={pagination.page >= Math.ceil(filteredAgencies.length / pagination.limit)}
+                  onClick={() => setPagination({ page: pagination.page + 1 })}
+                >
+                  <ChevronRight size={16} />
+                </Button>
+              </div>
+            </div>
+          </Card>
+        </>
       ) : (
         <EmptyState
           icon="🏢"
