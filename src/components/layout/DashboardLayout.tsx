@@ -501,21 +501,23 @@ export default function DashboardLayout({ userRole }: DashboardLayoutProps) {
         {/* Top Bar */}
         <header className="sticky top-0 z-30 bg-white border-b border-border">
           <div className="flex items-center justify-between h-16 px-4 lg:px-6">
-            {/* Mobile menu button - hidden when bottom tab nav is active */}
-            <button
-              className="hidden p-2 rounded-lg hover:bg-background-secondary"
-              onClick={() => setSidebarOpen(true)}
-            >
-              <Menu size={24} />
-            </button>
+            {/* Left side: notifications on mobile */}
+            <div className="flex items-center gap-3">
+              <button className="relative p-2 rounded-lg hover:bg-background-secondary md:hidden"
+                onClick={() => navigate(ROUTES.TENANT_NOTIFICATIONS)}
+              >
+                <Bell size={20} className="text-text-secondary" />
+                <span className="absolute top-1 right-1 w-2 h-2 bg-accent-500 rounded-full" />
+              </button>
+            </div>
 
-            {/* Global Search */}
+            {/* Global Search - desktop only */}
             <GlobalSearch userRole={userRole} navigate={navigate} />
 
             {/* Right side */}
             <div className="flex items-center gap-3">
-              {/* Notifications */}
-              <button className="relative p-2 rounded-lg hover:bg-background-secondary">
+              {/* Notifications - desktop only */}
+              <button className="relative p-2 rounded-lg hover:bg-background-secondary hidden md:block">
                 <Bell size={20} className="text-text-secondary" />
                 <span className="absolute top-1 right-1 w-2 h-2 bg-accent-500 rounded-full" />
               </button>
