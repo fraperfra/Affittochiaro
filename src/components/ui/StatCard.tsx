@@ -22,8 +22,13 @@ export default function StatCard({
 
   return (
     <Card className={className}>
-      <div className="flex items-start justify-between">
-        <div>
+      <div className="flex items-start gap-4">
+        {icon && (
+          <div className="text-3xl shrink-0">
+            {typeof icon === 'string' ? icon : icon}
+          </div>
+        )}
+        <div className="flex-1">
           <p className="text-sm text-text-secondary mb-1">{label}</p>
           <p className="text-3xl font-bold text-text-primary">{value}</p>
           {change !== undefined && (
@@ -34,9 +39,8 @@ export default function StatCard({
                 <TrendingDown size={14} className="text-red-600" />
               )}
               <span
-                className={`text-sm font-medium ${
-                  isPositive ? 'text-green-600' : 'text-red-600'
-                }`}
+                className={`text-sm font-medium ${isPositive ? 'text-green-600' : 'text-red-600'
+                  }`}
               >
                 {isPositive ? '+' : ''}
                 {change}%
@@ -47,11 +51,6 @@ export default function StatCard({
             </div>
           )}
         </div>
-        {icon && (
-          <div className="text-3xl">
-            {typeof icon === 'string' ? icon : icon}
-          </div>
-        )}
       </div>
     </Card>
   );
