@@ -254,9 +254,9 @@ export default function ListingsPage() {
   return (
     <div className="space-y-6">
       {/* Search & Filters Bar */}
-      <Card padding="sm" className="sticky top-0 z-20">
-        {/* Mobile: compact single row with search + filter button */}
-        <div className="flex gap-2 md:hidden">
+      <Card padding="sm" className="sticky top-0 z-20 !p-2 md:!p-4">
+        {/* Mobile: compact single row with search + geo + filter */}
+        <div className="flex gap-1.5 md:hidden">
           <div className="flex-1 relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-text-muted" size={16} />
             <input
@@ -277,28 +277,17 @@ export default function ListingsPage() {
           </button>
           <button
             onClick={() => setShowFilters(true)}
-            className="shrink-0 p-2 rounded-lg bg-background-secondary hover:bg-gray-200 transition-colors"
+            className="shrink-0 p-2 rounded-lg bg-background-secondary hover:bg-gray-200 transition-colors relative"
           >
             <SlidersHorizontal size={16} />
+            {(filters.city || filters.maxPrice || filters.minRooms) && (
+              <span className="absolute -top-1 -right-1 w-2 h-2 bg-primary-500 rounded-full" />
+            )}
           </button>
-          <div className="flex gap-0.5 p-0.5 bg-background-secondary rounded-lg shrink-0">
-            <button
-              className={`p-1.5 rounded-md transition-colors ${viewMode === 'list' ? 'bg-white shadow-sm' : 'hover:bg-white/50'}`}
-              onClick={() => setViewMode('list')}
-            >
-              <List size={16} />
-            </button>
-            <button
-              className={`p-1.5 rounded-md transition-colors ${viewMode === 'map' ? 'bg-white shadow-sm' : 'hover:bg-white/50'}`}
-              onClick={() => setViewMode('map')}
-            >
-              <Map size={16} />
-            </button>
-          </div>
         </div>
 
         {/* Mobile: results count inline */}
-        <div className="flex items-center justify-between mt-2 md:hidden">
+        <div className="flex items-center justify-between mt-1 md:hidden">
           <p className="text-xs text-text-secondary">
             <span className="font-semibold text-text-primary">{formatNumber(filteredListings.length)}</span> annunci
           </p>

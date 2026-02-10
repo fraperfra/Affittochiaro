@@ -36,12 +36,12 @@ const tenantTabs: TabItem[] = [
 ];
 
 const agencyTabs: TabItem[] = [
-  { icon: LayoutDashboard, label: 'Dashboard', href: ROUTES.AGENCY_DASHBOARD },
+  { icon: LayoutDashboard, label: 'Home', href: ROUTES.AGENCY_DASHBOARD },
   { icon: Inbox, label: 'Candidature', href: ROUTES.AGENCY_APPLICATIONS, badgeKey: 'applications' },
   { icon: SearchIcon, label: 'Cerca', href: ROUTES.AGENCY_TENANTS },
   { icon: Megaphone, label: 'Annunci', href: ROUTES.AGENCY_LISTINGS },
-  { icon: MessageSquare, label: 'Messaggi', href: ROUTES.AGENCY_MESSAGES, badgeKey: 'messages' },
-  { icon: Settings, label: 'Impostazioni', href: ROUTES.AGENCY_SETTINGS },
+  { icon: MessageSquare, label: 'Chat', href: ROUTES.AGENCY_MESSAGES, badgeKey: 'messages' },
+  { icon: Settings, label: 'Menu', href: ROUTES.AGENCY_SETTINGS },
 ];
 
 const adminTabs: TabItem[] = [
@@ -105,7 +105,7 @@ const TabItemComponent = React.memo(function TabItemComponent({
     >
       <div className="relative">
         <Icon
-          size={24}
+          size={20}
           className={`transition-colors duration-150 ${
             isActive ? 'text-teal-500' : 'text-gray-400'
           }`}
@@ -119,7 +119,7 @@ const TabItemComponent = React.memo(function TabItemComponent({
         )}
       </div>
       <span
-        className={`mt-1 text-[11px] leading-tight truncate max-w-full transition-colors duration-150 tracking-[0.01em] ${
+        className={`mt-0.5 text-[9px] leading-tight truncate max-w-full transition-colors duration-150 tracking-[0.02em] ${
           isActive
             ? 'text-teal-500 font-semibold'
             : 'text-gray-500 font-normal'
@@ -157,7 +157,7 @@ export default function BottomTabNav({ userRole, badges = {} }: BottomTabNavProp
       <div
         className="flex justify-around items-center bg-white border border-gray-100 rounded-2xl"
         style={{
-          height: '64px',
+          height: '56px',
           boxShadow: '0 4px 20px rgba(0, 0, 0, 0.08), 0 1px 4px rgba(0, 0, 0, 0.04)',
         }}
       >
