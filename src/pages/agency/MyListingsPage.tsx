@@ -323,22 +323,22 @@ export default function MyListingsPage() {
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <Card className="text-center">
-          <p className="text-3xl font-bold text-text-primary">{listings.length}</p>
-          <p className="text-text-muted">Annunci Totali</p>
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
+        <Card className="text-center p-4 md:p-6" padding="none">
+          <p className="text-xl md:text-3xl font-bold text-text-primary">{listings.length}</p>
+          <p className="text-xs md:text-base text-text-muted">Annunci Totali</p>
         </Card>
-        <Card className="text-center">
-          <p className="text-3xl font-bold text-success">{activeCount}</p>
-          <p className="text-text-muted">Attivi</p>
+        <Card className="text-center p-4 md:p-6" padding="none">
+          <p className="text-xl md:text-3xl font-bold text-success">{activeCount}</p>
+          <p className="text-xs md:text-base text-text-muted">Attivi</p>
         </Card>
-        <Card className="text-center">
-          <p className="text-3xl font-bold text-text-primary">{formatNumber(totalViews)}</p>
-          <p className="text-text-muted">Visualizzazioni</p>
+        <Card className="text-center p-4 md:p-6" padding="none">
+          <p className="text-xl md:text-3xl font-bold text-text-primary">{formatNumber(totalViews)}</p>
+          <p className="text-xs md:text-base text-text-muted">Visualizzazioni</p>
         </Card>
-        <Card className="text-center">
-          <p className="text-3xl font-bold text-primary-600">{totalApplications}</p>
-          <p className="text-text-muted">Candidature</p>
+        <Card className="text-center p-4 md:p-6" padding="none">
+          <p className="text-xl md:text-3xl font-bold text-primary-600">{totalApplications}</p>
+          <p className="text-xs md:text-base text-text-muted">Candidature</p>
         </Card>
       </div>
 
@@ -864,8 +864,8 @@ export default function MyListingsPage() {
                 <button
                   key={key}
                   className={`px-3 py-1.5 rounded-lg border text-sm transition-colors ${formData.features.includes(key as ListingFeature)
-                      ? 'border-primary-500 bg-primary-50 text-primary-600'
-                      : 'border-border hover:border-primary-300 text-text-secondary'
+                    ? 'border-primary-500 bg-primary-50 text-primary-600'
+                    : 'border-border hover:border-primary-300 text-text-secondary'
                     }`}
                   onClick={() => toggleFeature(key as ListingFeature)}
                 >
