@@ -111,7 +111,7 @@ const TabItemComponent = React.memo(function TabItemComponent({
     >
       <div className="relative">
         <Icon
-          size={20}
+          size={22}
           className={`transition-colors duration-150 ${
             isActive ? 'text-teal-500' : 'text-gray-400'
           }`}
