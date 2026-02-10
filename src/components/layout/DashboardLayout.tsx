@@ -384,12 +384,7 @@ export default function DashboardLayout({ userRole }: DashboardLayoutProps) {
 
       {/* Sidebar */}
       <aside
-        className={`
-          fixed top-0 left-0 z-50 h-full w-72 bg-white border-r border-border
-          transform transition-transform duration-300 ease-in-out
-          hidden md:block md:translate-x-0
-          ${sidebarOpen ? '!block translate-x-0' : '-translate-x-full'}
-        `}
+        className="dashboard-sidebar fixed top-0 left-0 z-50 h-full w-72 bg-white border-r border-border"
       >
         <div className="flex flex-col h-full">
           {/* Logo & Role Badge */}

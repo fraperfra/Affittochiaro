@@ -138,11 +138,13 @@ export default function BottomTabNav({ userRole, badges = {} }: BottomTabNavProp
 
   return (
     <nav
-      className="fixed z-[100] md:hidden"
+      className="bottom-tab-nav"
       style={{
+        position: 'fixed',
         bottom: '12px',
         left: '12px',
         right: '12px',
+        zIndex: 100,
         paddingBottom: 'env(safe-area-inset-bottom, 0px)',
       }}
       role="tablist"
