@@ -395,40 +395,12 @@ export default function TenantDashboardPage() {
       </div>
 
       <div className="grid lg:grid-cols-3 gap-6">
-        {/* Recent Activity */}
-        <Card className="lg:col-span-2">
-          <CardHeader>
-            <div className="flex items-center justify-between">
-              <CardTitle>Attivita Recenti</CardTitle>
-              <Link to={ROUTES.TENANT_NOTIFICATIONS} className="text-sm text-primary-500 hover:text-primary-600">
-                Vedi tutte
-              </Link>
-            </div>
-          </CardHeader>
-          <div className="space-y-4">
-            {recentActivity.map((activity, index) => (
-              <div
-                key={activity.id}
-                className={`flex items-start gap-4 ${
-                  index < recentActivity.length - 1 ? 'pb-4 border-b border-border' : ''
-                }`}
-              >
-                <div className="flex-shrink-0 w-10 h-10 rounded-full bg-background-secondary flex items-center justify-center text-lg">
-                  {activity.icon}
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-text-primary">{activity.message}</p>
-                  <p className="text-sm text-text-muted flex items-center gap-1 mt-1">
-                    <Clock size={12} />
-                    {formatRelativeTime(activity.time)}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </Card>
+        {/* Budget Calculator - Main Area */}
+        <div className="lg:col-span-2 space-y-6">
+          <BudgetCalculatorCard />
+        </div>
 
-        {/* Profile Completion Card */}
+        {/* Sidebar */}
         <div className="space-y-6">
           <ProfileCompletionCard profile={profile} />
 
@@ -498,11 +470,40 @@ export default function TenantDashboardPage() {
             </div>
           </Card>
 
+          {/* Recent Activity */}
+          <Card>
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <CardTitle>Attivita Recenti</CardTitle>
+                <Link to={ROUTES.TENANT_NOTIFICATIONS} className="text-sm text-primary-500 hover:text-primary-600">
+                  Vedi tutte
+                </Link>
+              </div>
+            </CardHeader>
+            <div className="space-y-4">
+              {recentActivity.map((activity, index) => (
+                <div
+                  key={activity.id}
+                  className={`flex items-start gap-4 ${
+                    index < recentActivity.length - 1 ? 'pb-4 border-b border-border' : ''
+                  }`}
+                >
+                  <div className="flex-shrink-0 w-10 h-10 rounded-full bg-background-secondary flex items-center justify-center text-lg">
+                    {activity.icon}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-text-primary">{activity.message}</p>
+                    <p className="text-sm text-text-muted flex items-center gap-1 mt-1">
+                      <Clock size={12} />
+                      {formatRelativeTime(activity.time)}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </Card>
         </div>
       </div>
-
-      {/* Budget Calculator Card */}
-      <BudgetCalculatorCard />
 
       {/* Badges Section */}
       <Card>
