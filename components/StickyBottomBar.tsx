@@ -22,8 +22,8 @@ export const StickyBottomBar: React.FC<StickyBottomBarProps> = ({ onMenuToggle, 
         >
           Accedi
         </Link>
-        <button onClick={onMenuToggle} className="w-14 h-14 flex items-center justify-center bg-gray-100 rounded-2xl active:scale-95 transition-transform" aria-label="Menu">
-          <svg className="w-8 h-8 text-brand-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <button onClick={onMenuToggle} className="w-16 h-16 flex items-center justify-center bg-gray-100 rounded-2xl active:scale-95 transition-transform" aria-label="Menu">
+          <svg className="w-10 h-10 text-brand-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M4 8h16M4 16h16" />
           </svg>
         </button>
