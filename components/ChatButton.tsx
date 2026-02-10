@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { useChat } from '../src/hooks/useChat';
 import { ChatWindow, ConversationList } from '../src/components/chat';
+import { useAuthStore } from '../src/store';
 import { X } from 'lucide-react';
 
 export const ChatButton: React.FC = () => {
+  const { isAuthenticated } = useAuthStore();
   const [isOpen, setIsOpen] = useState(false);
   const {
     conversations,
@@ -24,9 +26,12 @@ export const ChatButton: React.FC = () => {
   return (
     <>
       {/* Widget Window */}
+      {/* Widget Window */}
       {isOpen && (
-        <div className="fixed z-[200] bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden flex flex-col transition-all animate-slide-up
-          left-4 right-4 top-24 bottom-[200px] md:left-auto md:top-auto md:bottom-[200px] md:right-10 md:w-[380px] md:h-[600px]">
+        <div className={`fixed z-[200] bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden flex flex-col transition-all animate-slide-up
+          left-4 right-4 top-24 md:left-auto md:top-auto md:right-10 md:w-[380px] md:h-[600px]
+          ${isAuthenticated ? 'bottom-[140px] md:bottom-[150px]' : 'bottom-[240px] md:bottom-[250px]'}`}
+        >
 
           {/* Header del Widget se siamo nella lista conversazioni (per chiudere o titolo) */}
           {!activeConversationId && (
@@ -69,7 +74,8 @@ export const ChatButton: React.FC = () => {
       {/* FAB */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed bottom-[104px] right-4 z-[100] bg-[#00D094] text-white px-8 py-5 rounded-full shadow-2xl flex items-center gap-3 hover:scale-110 transition-transform md:bottom-[104px] md:right-10"
+        className={`fixed right-4 z-[100] bg-[#00D094] text-white px-8 py-5 rounded-full shadow-2xl flex items-center gap-3 hover:scale-110 transition-transform md:right-10
+          ${isAuthenticated ? 'bottom-6 md:bottom-10' : 'bottom-[104px] md:bottom-[104px]'}`}
         aria-label="Chat"
       >
         {isOpen ? (
