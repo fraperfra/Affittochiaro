@@ -16,6 +16,7 @@ import {
   CheckCircle,
   XCircle,
   Clock,
+  Calendar,
 } from 'lucide-react';
 import { useListingStore } from '../../store';
 import { mockListings } from '../../utils/mockData';
@@ -177,164 +178,262 @@ export default function ListingsManagementPage() {
         </div>
       </Card>
 
-      {/* Table */}
+      {/* Listings Display */}
       {paginatedListings.length > 0 ? (
-        <Card padding="none">
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead className="bg-background-secondary">
-                <tr>
-                  <th className="text-left px-6 py-4 text-sm font-medium text-text-secondary">Annuncio</th>
-                  <th className="text-left px-6 py-4 text-sm font-medium text-text-secondary">Agenzia</th>
-                  <th className="text-left px-6 py-4 text-sm font-medium text-text-secondary">Prezzo</th>
-                  <th className="text-left px-6 py-4 text-sm font-medium text-text-secondary">Stato</th>
-                  <th className="text-left px-6 py-4 text-sm font-medium text-text-secondary">Views</th>
-                  <th className="text-left px-6 py-4 text-sm font-medium text-text-secondary">Data</th>
-                  <th className="text-right px-6 py-4 text-sm font-medium text-text-secondary">Azioni</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-border">
-                {paginatedListings.map((listing) => (
-                  <tr key={listing.id} className="hover:bg-background-secondary/50">
-                    <td className="px-6 py-4">
-                      <div className="flex items-center gap-3">
-                        <div className="w-16 h-12 rounded-lg bg-gradient-to-br from-primary-100 to-teal-100 flex items-center justify-center">
-                          <Home size={20} className="text-primary-600" />
-                        </div>
-                        <div>
-                          <p className="font-medium text-text-primary line-clamp-1 max-w-xs">
-                            {listing.title}
-                          </p>
-                          <p className="text-sm text-text-muted flex items-center gap-1">
-                            <MapPin size={12} />
-                            {listing.address.city} • {listing.rooms} locali • {formatSquareMeters(listing.squareMeters)}
-                          </p>
-                        </div>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 text-text-secondary">
-                      <p className="text-sm">{listing.agencyName}</p>
-                    </td>
-                    <td className="px-6 py-4">
-                      <span className="font-semibold text-primary-600">
-                        {formatCurrency(listing.price)}/mese
-                      </span>
-                    </td>
-                    <td className="px-6 py-4">
-                      <Badge variant={statusConfig[listing.status]?.variant || 'neutral'}>
-                        {statusConfig[listing.status]?.label || listing.status}
-                      </Badge>
-                    </td>
-                    <td className="px-6 py-4">
-                      <div className="flex items-center gap-1 text-text-muted">
-                        <Eye size={14} />
-                        <span>{formatNumber(listing.views)}</span>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 text-text-muted">
-                      {formatDate(listing.createdAt)}
-                    </td>
-                    <td className="px-6 py-4">
-                      <div className="flex items-center justify-end gap-2 relative">
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          className="btn-icon"
-                          onClick={() => setSelectedListing(listing)}
-                        >
-                          <Eye size={16} />
-                        </Button>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          className="btn-icon"
-                          onClick={() => setShowActions(showActions === listing.id ? null : listing.id)}
-                        >
-                          <MoreVertical size={16} />
-                        </Button>
+        <>
+          {/* Mobile Card View */}
+          <div className="grid gap-4 md:hidden">
+            {paginatedListings.map((listing) => (
+              <Card key={listing.id} padding="md">
+                {/* Header */}
+                <div className="flex items-start justify-between mb-3">
+                  <div className="flex-1">
+                    <h3 className="font-semibold text-text-primary line-clamp-2 mb-1">
+                      {listing.title}
+                    </h3>
+                    <p className="text-sm text-text-muted flex items-center gap-1">
+                      <MapPin size={12} />
+                      {listing.address.city} • {listing.rooms} locali • {formatSquareMeters(listing.squareMeters)}
+                    </p>
+                  </div>
+                  <Badge variant={statusConfig[listing.status]?.variant || 'neutral'}>
+                    {statusConfig[listing.status]?.label || listing.status}
+                  </Badge>
+                </div>
 
-                        {showActions === listing.id && (
-                          <div className="absolute right-0 top-full mt-1 w-48 bg-white rounded-xl shadow-lg border border-border z-10">
-                            <div className="p-1">
-                              {listing.status === 'pending_review' && (
-                                <>
-                                  <button
-                                    onClick={() => handleApprove(listing)}
-                                    className="w-full px-3 py-2 text-left text-sm rounded-lg hover:bg-background-secondary flex items-center gap-2"
-                                  >
-                                    <CheckCircle size={14} className="text-success" />
-                                    Approva
-                                  </button>
-                                  <button
-                                    onClick={() => handleReject(listing)}
-                                    className="w-full px-3 py-2 text-left text-sm rounded-lg hover:bg-background-secondary flex items-center gap-2"
-                                  >
-                                    <XCircle size={14} className="text-error" />
-                                    Rifiuta
-                                  </button>
-                                </>
-                              )}
-                              {listing.status === 'active' && (
-                                <button
-                                  onClick={() => handlePause(listing)}
-                                  className="w-full px-3 py-2 text-left text-sm rounded-lg hover:bg-background-secondary flex items-center gap-2"
-                                >
-                                  <Pause size={14} className="text-warning" />
-                                  Metti in Pausa
-                                </button>
-                              )}
-                              {listing.status === 'paused' && (
-                                <button
-                                  className="w-full px-3 py-2 text-left text-sm rounded-lg hover:bg-background-secondary flex items-center gap-2"
-                                >
-                                  <Play size={14} className="text-success" />
-                                  Riattiva
-                                </button>
-                              )}
-                              <button className="w-full px-3 py-2 text-left text-sm rounded-lg hover:bg-red-50 text-error flex items-center gap-2">
-                                <Trash2 size={14} />
-                                Elimina
-                              </button>
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                    </td>
+                {/* Agenzia */}
+                <p className="text-sm text-text-secondary mb-3">
+                  📍 <span className="font-medium">{listing.agencyName}</span>
+                </p>
+
+                {/* Price */}
+                <div className="mb-3">
+                  <span className="text-2xl font-bold text-primary-600">
+                    {formatCurrency(listing.price)}
+                  </span>
+                  <span className="text-sm text-text-muted">/mese</span>
+                </div>
+
+                {/* Stats */}
+                <div className="flex items-center gap-4 py-3 border-y border-gray-100 mb-3">
+                  <div className="flex items-center gap-2 flex-1">
+                    <Eye size={16} className="text-text-muted" />
+                    <div>
+                      <p className="text-xs text-text-muted">Views</p>
+                      <p className="font-semibold text-text-primary">{formatNumber(listing.views)}</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2 flex-1">
+                    <Calendar size={16} className="text-text-muted" />
+                    <div>
+                      <p className="text-xs text-text-muted">Data</p>
+                      <p className="font-semibold text-text-primary text-sm">{formatDate(listing.createdAt)}</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Actions */}
+                <div className="flex gap-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="flex-1"
+                    onClick={() => setSelectedListing(listing)}
+                    leftIcon={<Eye size={14} />}
+                  >
+                    Dettagli
+                  </Button>
+                  {listing.status === 'pending_review' && (
+                    <>
+                      <Button
+                        variant="secondary"
+                        size="sm"
+                        onClick={() => handleApprove(listing)}
+                        leftIcon={<CheckCircle size={14} />}
+                      >
+                        Approva
+                      </Button>
+                      <button
+                        onClick={() => handleReject(listing)}
+                        className="p-2 text-error hover:bg-red-50 rounded-lg transition-colors"
+                      >
+                        <XCircle size={18} />
+                      </button>
+                    </>
+                  )}
+                  {listing.status === 'active' && (
+                    <Button
+                      variant="secondary"
+                      size="sm"
+                      onClick={() => handlePause(listing)}
+                      leftIcon={<Pause size={14} />}
+                    >
+                      Pausa
+                    </Button>
+                  )}
+                </div>
+              </Card>
+            ))}
+          </div>
+
+          {/* Desktop Table View */}
+          <Card padding="none" className="hidden md:block">
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead className="bg-background-secondary">
+                  <tr>
+                    <th className="text-left px-6 py-4 text-sm font-medium text-text-secondary">Annuncio</th>
+                    <th className="text-left px-6 py-4 text-sm font-medium text-text-secondary">Agenzia</th>
+                    <th className="text-left px-6 py-4 text-sm font-medium text-text-secondary">Prezzo</th>
+                    <th className="text-left px-6 py-4 text-sm font-medium text-text-secondary">Stato</th>
+                    <th className="text-left px-6 py-4 text-sm font-medium text-text-secondary">Views</th>
+                    <th className="text-left px-6 py-4 text-sm font-medium text-text-secondary">Data</th>
+                    <th className="text-right px-6 py-4 text-sm font-medium text-text-secondary">Azioni</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody className="divide-y divide-border">
+                  {paginatedListings.map((listing) => (
+                    <tr key={listing.id} className="hover:bg-background-secondary/50">
+                      <td className="px-6 py-4">
+                        <div className="flex items-center gap-3">
+                          <div className="w-16 h-12 rounded-lg bg-gradient-to-br from-primary-100 to-teal-100 flex items-center justify-center">
+                            <Home size={20} className="text-primary-600" />
+                          </div>
+                          <div>
+                            <p className="font-medium text-text-primary line-clamp-1 max-w-xs">
+                              {listing.title}
+                            </p>
+                            <p className="text-sm text-text-muted flex items-center gap-1">
+                              <MapPin size={12} />
+                              {listing.address.city} • {listing.rooms} locali • {formatSquareMeters(listing.squareMeters)}
+                            </p>
+                          </div>
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 text-text-secondary">
+                        <p className="text-sm">{listing.agencyName}</p>
+                      </td>
+                      <td className="px-6 py-4">
+                        <span className="font-semibold text-primary-600">
+                          {formatCurrency(listing.price)}/mese
+                        </span>
+                      </td>
+                      <td className="px-6 py-4">
+                        <Badge variant={statusConfig[listing.status]?.variant || 'neutral'}>
+                          {statusConfig[listing.status]?.label || listing.status}
+                        </Badge>
+                      </td>
+                      <td className="px-6 py-4">
+                        <div className="flex items-center gap-1 text-text-muted">
+                          <Eye size={14} />
+                          <span>{formatNumber(listing.views)}</span>
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 text-text-muted">
+                        {formatDate(listing.createdAt)}
+                      </td>
+                      <td className="px-6 py-4">
+                        <div className="flex items-center justify-end gap-2 relative">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="btn-icon"
+                            onClick={() => setSelectedListing(listing)}
+                          >
+                            <Eye size={16} />
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="btn-icon"
+                            onClick={() => setShowActions(showActions === listing.id ? null : listing.id)}
+                          >
+                            <MoreVertical size={16} />
+                          </Button>
 
-          {/* Pagination */}
-          <div className="flex items-center justify-between px-6 py-4 border-t border-border">
-            <p className="text-sm text-text-muted">
-              Mostrando {(pagination.page - 1) * pagination.limit + 1}-
-              {Math.min(pagination.page * pagination.limit, filteredListings.length)} di {filteredListings.length}
-            </p>
-            <div className="flex items-center gap-2">
-              <Button
-                variant="secondary"
-                size="sm"
-                disabled={pagination.page === 1}
-                onClick={() => setPagination({ page: pagination.page - 1 })}
-              >
-                <ChevronLeft size={16} />
-              </Button>
-              <span className="text-sm text-text-secondary px-2">
-                Pagina {pagination.page} di {Math.ceil(filteredListings.length / pagination.limit)}
-              </span>
-              <Button
-                variant="secondary"
-                size="sm"
-                disabled={pagination.page >= Math.ceil(filteredListings.length / pagination.limit)}
-                onClick={() => setPagination({ page: pagination.page + 1 })}
-              >
-                <ChevronRight size={16} />
-              </Button>
+                          {showActions === listing.id && (
+                            <div className="absolute right-0 top-full mt-1 w-48 bg-white rounded-xl shadow-lg border border-border z-10">
+                              <div className="p-1">
+                                {listing.status === 'pending_review' && (
+                                  <>
+                                    <button
+                                      onClick={() => handleApprove(listing)}
+                                      className="w-full px-3 py-2 text-left text-sm rounded-lg hover:bg-background-secondary flex items-center gap-2"
+                                    >
+                                      <CheckCircle size={14} className="text-success" />
+                                      Approva
+                                    </button>
+                                    <button
+                                      onClick={() => handleReject(listing)}
+                                      className="w-full px-3 py-2 text-left text-sm rounded-lg hover:bg-background-secondary flex items-center gap-2"
+                                    >
+                                      <XCircle size={14} className="text-error" />
+                                      Rifiuta
+                                    </button>
+                                  </>
+                                )}
+                                {listing.status === 'active' && (
+                                  <button
+                                    onClick={() => handlePause(listing)}
+                                    className="w-full px-3 py-2 text-left text-sm rounded-lg hover:bg-background-secondary flex items-center gap-2"
+                                  >
+                                    <Pause size={14} className="text-warning" />
+                                    Metti in Pausa
+                                  </button>
+                                )}
+                                {listing.status === 'paused' && (
+                                  <button
+                                    className="w-full px-3 py-2 text-left text-sm rounded-lg hover:bg-background-secondary flex items-center gap-2"
+                                  >
+                                    <Play size={14} className="text-success" />
+                                    Riattiva
+                                  </button>
+                                )}
+                                <button className="w-full px-3 py-2 text-left text-sm rounded-lg hover:bg-red-50 text-error flex items-center gap-2">
+                                  <Trash2 size={14} />
+                                  Elimina
+                                </button>
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
-          </div>
-        </Card>
+
+            {/* Pagination */}
+            <div className="flex items-center justify-between px-6 py-4 border-t border-border">
+              <p className="text-sm text-text-muted">
+                Mostrando {(pagination.page - 1) * pagination.limit + 1}-
+                {Math.min(pagination.page * pagination.limit, filteredListings.length)} di {filteredListings.length}
+              </p>
+              <div className="flex items-center gap-2">
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  disabled={pagination.page === 1}
+                  onClick={() => setPagination({ page: pagination.page - 1 })}
+                >
+                  <ChevronLeft size={16} />
+                </Button>
+                <span className="text-sm text-text-secondary px-2">
+                  Pagina {pagination.page} di {Math.ceil(filteredListings.length / pagination.limit)}
+                </span>
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  disabled={pagination.page >= Math.ceil(filteredListings.length / pagination.limit)}
+                  onClick={() => setPagination({ page: pagination.page + 1 })}
+                >
+                  <ChevronRight size={16} />
+                </Button>
+              </div>
+            </div>
+          </Card>
+        </>
       ) : (
         <EmptyState
           icon="🏠"
