@@ -25,6 +25,7 @@ import { ROUTES } from '../../utils/constants';
 import { formatInitials } from '../../utils/formatters';
 import { mockTenants, mockAgencies, mockListings } from '../../utils/mockData';
 import { TenantUser, AgencyUser, AdminUser } from '../../types';
+import BottomTabNav from './BottomTabNav';
 
 interface DashboardLayoutProps {
   userRole: 'tenant' | 'agency' | 'admin';
@@ -375,7 +376,7 @@ export default function DashboardLayout({ userRole }: DashboardLayoutProps) {
       {/* Mobile sidebar backdrop */}
       {sidebarOpen && (
         <div
-          className="fixed inset-0 bg-black/50 z-40 lg:hidden"
+          className="fixed inset-0 bg-black/50 z-40 md:hidden"
           onClick={() => setSidebarOpen(false)}
         />
       )}
@@ -385,8 +386,8 @@ export default function DashboardLayout({ userRole }: DashboardLayoutProps) {
         className={`
           fixed top-0 left-0 z-50 h-full w-72 bg-white border-r border-border
           transform transition-transform duration-300 ease-in-out
-          lg:translate-x-0
-          ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}
+          hidden md:block md:translate-x-0
+          ${sidebarOpen ? '!block translate-x-0' : '-translate-x-full'}
         `}
       >
         <div className="flex flex-col h-full">
@@ -401,7 +402,7 @@ export default function DashboardLayout({ userRole }: DashboardLayoutProps) {
                 />
               </div>
               <button
-                className="lg:hidden p-2 rounded-lg hover:bg-background-secondary"
+                className="md:hidden p-2 rounded-lg hover:bg-background-secondary"
                 onClick={() => setSidebarOpen(false)}
               >
                 <X size={20} />
@@ -500,13 +501,13 @@ export default function DashboardLayout({ userRole }: DashboardLayoutProps) {
       </aside>
 
       {/* Main Content */}
-      <div className="lg:pl-72">
+      <div className="md:pl-72">
         {/* Top Bar */}
         <header className="sticky top-0 z-30 bg-white border-b border-border">
           <div className="flex items-center justify-between h-16 px-4 lg:px-6">
-            {/* Mobile menu button */}
+            {/* Mobile menu button - hidden when bottom tab nav is active */}
             <button
-              className="lg:hidden p-2 rounded-lg hover:bg-background-secondary"
+              className="hidden p-2 rounded-lg hover:bg-background-secondary"
               onClick={() => setSidebarOpen(true)}
             >
               <Menu size={24} />
@@ -589,10 +590,19 @@ export default function DashboardLayout({ userRole }: DashboardLayoutProps) {
         </header>
 
         {/* Page Content */}
-        <main className="p-4 lg:p-6">
+        <main className="p-4 md:p-6 pb-24 md:pb-6">
           <Outlet />
         </main>
       </div>
+
+      {/* Bottom Tab Navigation - Mobile only */}
+      <BottomTabNav
+        userRole={userRole}
+        badges={{
+          messages: 3,
+          applications: unreadApplications,
+        }}
+      />
     </div>
   );
 }
