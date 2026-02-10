@@ -275,21 +275,13 @@ export default function ListingsPage() {
           >
             {geoLoading ? <Loader2 size={16} className="animate-spin" /> : <Locate size={16} />}
           </button>
-          <Button
-            variant="secondary"
-            leftIcon={<SlidersHorizontal size={16} />}
+          <button
             onClick={() => setShowFilters(true)}
-            className="shrink-0"
+            className="shrink-0 p-2 rounded-lg bg-background-secondary hover:bg-gray-200 transition-colors"
           >
-            Filtri
-          </Button>
+            <SlidersHorizontal size={16} />
+          </button>
           <div className="flex gap-0.5 p-0.5 bg-background-secondary rounded-lg shrink-0">
-            <button
-              className={`p-1.5 rounded-md transition-colors ${viewMode === 'grid' ? 'bg-white shadow-sm' : 'hover:bg-white/50'}`}
-              onClick={() => setViewMode('grid')}
-            >
-              <Grid size={16} />
-            </button>
             <button
               className={`p-1.5 rounded-md transition-colors ${viewMode === 'list' ? 'bg-white shadow-sm' : 'hover:bg-white/50'}`}
               onClick={() => setViewMode('list')}
