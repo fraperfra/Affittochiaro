@@ -146,6 +146,10 @@ export default function BottomTabNav({ userRole, badges = {} }: BottomTabNavProp
         right: '12px',
         zIndex: 100,
         paddingBottom: 'env(safe-area-inset-bottom, 0px)',
+        transform: 'translateZ(0)',
+        WebkitTransform: 'translateZ(0)',
+        backfaceVisibility: 'hidden',
+        WebkitBackfaceVisibility: 'hidden',
       }}
       role="tablist"
       aria-label="Navigazione principale"
