@@ -39,11 +39,11 @@ export function ProfileEditModal({
 
       {/* Modal */}
       <div
-        className="flex min-h-full items-end md:items-center justify-center p-0 md:p-4"
-        style={{ paddingBottom: 'max(88px, calc(76px + env(safe-area-inset-bottom, 0px)))' }}
+        className="flex min-h-full items-end md:items-center justify-center px-3 md:p-4"
+        style={{ paddingBottom: 'max(96px, calc(84px + env(safe-area-inset-bottom, 0px)))' }}
       >
         <div
-          className="relative w-full max-w-2xl bg-white rounded-t-2xl md:rounded-2xl shadow-xl"
+          className="relative w-full max-w-2xl bg-white rounded-2xl shadow-xl"
           onClick={(e) => e.stopPropagation()}
         >
           {/* Header */}

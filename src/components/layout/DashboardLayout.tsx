@@ -499,7 +499,7 @@ export default function DashboardLayout({ userRole }: DashboardLayoutProps) {
       {/* Main Content */}
       <div className="md:pl-72">
         {/* Top Bar */}
-        <header className="sticky top-0 z-30 bg-white border-b border-border">
+        <header className="sticky top-0 z-30 bg-white border-b border-border" style={{ paddingTop: 'env(safe-area-inset-top, 0px)' }}>
           <div className="flex items-center justify-between h-16 px-4 lg:px-6">
             {/* Left side: notifications on mobile */}
             <div className="flex items-center gap-3 min-w-[40px]">

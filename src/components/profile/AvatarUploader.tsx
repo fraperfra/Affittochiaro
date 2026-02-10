@@ -103,10 +103,10 @@ export function AvatarUploader({
   if (mode === 'camera') {
     return (
       <div
-        className="fixed inset-0 z-50 flex items-end md:items-center justify-center bg-black/70 p-0 md:p-4"
-        style={{ paddingBottom: 'max(88px, calc(76px + env(safe-area-inset-bottom, 0px)))' }}
+        className="fixed inset-0 z-50 flex items-end md:items-center justify-center bg-black/70 px-3 md:p-4"
+        style={{ paddingBottom: 'max(96px, calc(84px + env(safe-area-inset-bottom, 0px)))' }}
       >
-        <div className="bg-white rounded-t-2xl md:rounded-2xl p-6 max-w-sm w-full overflow-x-hidden">
+        <div className="bg-white rounded-2xl p-6 max-w-sm w-full overflow-x-hidden">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-medium">Scatta foto</h3>
             <button
@@ -152,11 +152,11 @@ export function AvatarUploader({
 
         {/* Modal opzioni */}
         <div
-          className="fixed inset-0 z-50 flex items-end md:items-center justify-center bg-black/50"
-          style={{ paddingBottom: 'max(88px, calc(76px + env(safe-area-inset-bottom, 0px)))' }}
+          className="fixed inset-0 z-50 flex items-end md:items-center justify-center bg-black/50 px-3"
+          style={{ paddingBottom: 'max(96px, calc(84px + env(safe-area-inset-bottom, 0px)))' }}
         >
           <div
-            className="bg-white rounded-t-2xl md:rounded-2xl w-full md:max-w-sm p-6 animate-slide-up overflow-x-hidden"
+            className="bg-white rounded-2xl w-full md:max-w-sm p-6 animate-slide-up overflow-x-hidden"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between mb-4">
