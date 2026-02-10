@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import {
   Search,
   SlidersHorizontal,
@@ -11,6 +11,8 @@ import {
   Euro,
   Download,
   X,
+  Locate,
+  Loader2,
 } from 'lucide-react';
 import { useTenantStore, useAuthStore } from '../../store';
 import { mockTenants } from '../../utils/mockData';
@@ -28,6 +30,46 @@ export default function TenantSearchPage() {
   const [selectedTenant, setSelectedTenant] = useState<Tenant | null>(null);
   const [showFilters, setShowFilters] = useState(false);
   const [unlockedIds, setUnlockedIds] = useState<string[]>([]);
+  const [geoLoading, setGeoLoading] = useState(false);
+
+  const handleGeolocate = useCallback(() => {
+    if (!navigator.geolocation) {
+      toast.error('Geolocalizzazione non supportata');
+      return;
+    }
+    setGeoLoading(true);
+    navigator.geolocation.getCurrentPosition(
+      async (pos) => {
+        try {
+          const res = await fetch(
+            `https://nominatim.openstreetmap.org/reverse?lat=${pos.coords.latitude}&lon=${pos.coords.longitude}&format=json&accept-language=it`
+          );
+          const data = await res.json();
+          const city = data.address?.city || data.address?.town || data.address?.village || data.address?.municipality || '';
+          if (city) {
+            const match = ITALIAN_CITIES.find((c) => c.toLowerCase() === city.toLowerCase());
+            if (match) {
+              setFilters({ city: match });
+              toast.success(`Posizione: ${match}`);
+            } else {
+              setFilters({ search: city });
+              toast.success(`Posizione: ${city}`);
+            }
+          } else {
+            toast.error('Città non trovata');
+          }
+        } catch {
+          toast.error('Errore geolocalizzazione');
+        }
+        setGeoLoading(false);
+      },
+      () => {
+        toast.error('Permesso posizione negato');
+        setGeoLoading(false);
+      },
+      { enableHighAccuracy: true, timeout: 10000 }
+    );
+  }, [setFilters]);
   const [sortBy, setSortBy] = useState<'score' | 'recent' | 'name'>('score');
 
   useEffect(() => {
@@ -101,6 +143,15 @@ export default function TenantSearchPage() {
                 <option key={city} value={city}>{city}</option>
               ))}
             </select>
+
+            <button
+              onClick={handleGeolocate}
+              disabled={geoLoading}
+              className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-primary-50 text-primary-600 hover:bg-primary-100 text-sm font-medium transition-colors disabled:opacity-50"
+            >
+              {geoLoading ? <Loader2 size={16} className="animate-spin" /> : <Locate size={16} />}
+              Vicino a me
+            </button>
 
             <select
               className="input w-auto"

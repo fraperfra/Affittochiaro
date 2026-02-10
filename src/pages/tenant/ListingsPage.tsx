@@ -1,4 +1,4 @@
-import { useState, useEffect, lazy, Suspense } from 'react';
+import { useState, useEffect, useCallback, lazy, Suspense } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import {
   Search,
@@ -18,6 +18,8 @@ import {
   Calendar,
   PawPrint,
   Cigarette,
+  Locate,
+  Loader2,
 } from 'lucide-react';
 import { useListingStore, useAuthStore } from '../../store';
 import { mockListings } from '../../utils/mockData';
@@ -75,6 +77,46 @@ export default function ListingsPage() {
   const [appliedIds, setAppliedIds] = useState<string[]>([]);
   const [formData, setFormData] = useState<ApplicationFormData>(INITIAL_FORM);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [geoLoading, setGeoLoading] = useState(false);
+
+  const handleGeolocate = useCallback(() => {
+    if (!navigator.geolocation) {
+      toast.error('Geolocalizzazione non supportata');
+      return;
+    }
+    setGeoLoading(true);
+    navigator.geolocation.getCurrentPosition(
+      async (pos) => {
+        try {
+          const res = await fetch(
+            `https://nominatim.openstreetmap.org/reverse?lat=${pos.coords.latitude}&lon=${pos.coords.longitude}&format=json&accept-language=it`
+          );
+          const data = await res.json();
+          const city = data.address?.city || data.address?.town || data.address?.village || data.address?.municipality || '';
+          if (city) {
+            const match = ITALIAN_CITIES.find((c) => c.toLowerCase() === city.toLowerCase());
+            if (match) {
+              setFilters({ city: match });
+              toast.success(`Posizione: ${match}`);
+            } else {
+              setFilters({ search: city });
+              toast.success(`Posizione: ${city}`);
+            }
+          } else {
+            toast.error('Città non trovata');
+          }
+        } catch {
+          toast.error('Errore geolocalizzazione');
+        }
+        setGeoLoading(false);
+      },
+      () => {
+        toast.error('Permesso posizione negato');
+        setGeoLoading(false);
+      },
+      { enableHighAccuracy: true, timeout: 10000 }
+    );
+  }, [setFilters]);
 
   useEffect(() => {
     // Read URL params (from landing page navigation)
@@ -225,6 +267,14 @@ export default function ListingsPage() {
               onChange={(e) => setFilters({ search: e.target.value })}
             />
           </div>
+          <button
+            onClick={handleGeolocate}
+            disabled={geoLoading}
+            className="shrink-0 p-2 rounded-lg bg-primary-50 text-primary-600 hover:bg-primary-100 transition-colors disabled:opacity-50"
+            title="Vicino a me"
+          >
+            {geoLoading ? <Loader2 size={16} className="animate-spin" /> : <Locate size={16} />}
+          </button>
           <Button
             variant="secondary"
             leftIcon={<SlidersHorizontal size={16} />}
@@ -296,6 +346,15 @@ export default function ListingsPage() {
                   <option key={city} value={city}>{city}</option>
                 ))}
               </select>
+
+              <button
+                onClick={handleGeolocate}
+                disabled={geoLoading}
+                className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-primary-50 text-primary-600 hover:bg-primary-100 text-sm font-medium transition-colors disabled:opacity-50"
+              >
+                {geoLoading ? <Loader2 size={16} className="animate-spin" /> : <Locate size={16} />}
+                Vicino a me
+              </button>
 
               <select
                 className="input w-auto"
