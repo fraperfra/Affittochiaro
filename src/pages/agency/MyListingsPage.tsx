@@ -358,89 +358,179 @@ export default function MyListingsPage() {
 
       {/* Listings Table */}
       {filtered.length > 0 ? (
-        <Card padding="none">
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead className="bg-background-secondary">
-                <tr>
-                  <th className="text-left px-6 py-4 text-sm font-medium text-text-secondary">Annuncio</th>
-                  <th className="text-left px-6 py-4 text-sm font-medium text-text-secondary">Prezzo</th>
-                  <th className="text-left px-6 py-4 text-sm font-medium text-text-secondary">Stato</th>
-                  <th className="text-left px-6 py-4 text-sm font-medium text-text-secondary">Visualizzazioni</th>
-                  <th className="text-left px-6 py-4 text-sm font-medium text-text-secondary">Candidature</th>
-                  <th className="text-left px-6 py-4 text-sm font-medium text-text-secondary">Data</th>
-                  <th className="text-right px-6 py-4 text-sm font-medium text-text-secondary">Azioni</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-border">
-                {filtered.map((listing) => {
-                  const appCount = getAppCount(listing.id);
-                  return (
-                    <tr key={listing.id} className="hover:bg-background-secondary/50">
-                      <td className="px-6 py-4">
-                        <div>
-                          <p className="font-medium text-text-primary">{listing.title}</p>
-                          <p className="text-sm text-text-muted flex items-center gap-1">
-                            <MapPin size={12} />
-                            {listing.city}{listing.zone ? ` - ${listing.zone}` : ''} &bull; {listing.rooms} locali &bull; {listing.sqm}m²
-                          </p>
-                        </div>
-                      </td>
-                      <td className="px-6 py-4">
-                        <span className="font-semibold text-primary-600">
-                          {formatCurrency(listing.price)}/mese
-                        </span>
-                      </td>
-                      <td className="px-6 py-4">
-                        <Badge variant={statusConfig[listing.status].variant}>
-                          {statusConfig[listing.status].label}
-                        </Badge>
-                      </td>
-                      <td className="px-6 py-4">
-                        <div className="flex items-center gap-1">
-                          <Eye size={14} className="text-text-muted" />
-                          <span>{formatNumber(listing.views)}</span>
-                        </div>
-                      </td>
-                      <td className="px-6 py-4">
-                        <button
-                          onClick={() => openApplicationsModal(listing)}
-                          className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg hover:bg-primary-50 text-primary-600 font-medium transition-colors group"
-                          title="Vedi candidature"
-                        >
-                          <Users size={14} className="group-hover:scale-110 transition-transform" />
-                          <span>{appCount}</span>
-                        </button>
-                      </td>
-                      <td className="px-6 py-4 text-text-muted">
-                        {formatDate(listing.createdAt)}
-                      </td>
-                      <td className="px-6 py-4">
-                        <div className="flex items-center justify-end gap-2">
-                          <Button variant="ghost" size="sm" className="btn-icon" onClick={() => openEditModal(listing)}>
-                            <Edit2 size={16} />
-                          </Button>
-                          {(listing.status === 'active' || listing.status === 'paused') && (
-                            <Button variant="ghost" size="sm" className="btn-icon" onClick={() => handleToggleStatus(listing)}>
-                              {listing.status === 'active' ? <Pause size={16} /> : <Play size={16} />}
-                            </Button>
-                          )}
-                          <Button
-                            variant="ghost" size="sm"
-                            className="btn-icon text-error hover:bg-red-50"
-                            onClick={() => setDeleteTarget(listing.id)}
-                          >
-                            <Trash2 size={16} />
-                          </Button>
-                        </div>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
+        <>
+          {/* Mobile View - Cards */}
+          <div className="md:hidden space-y-4">
+            {filtered.map((listing) => {
+              const appCount = getAppCount(listing.id);
+              return (
+                <div key={listing.id} className="bg-white p-4 rounded-xl shadow-sm border border-border">
+                  {/* Header */}
+                  <div className="flex justify-between items-start mb-3">
+                    <div>
+                      <h3 className="font-semibold text-text-primary line-clamp-1">{listing.title}</h3>
+                      <div className="flex items-center gap-1 text-xs text-text-muted mt-1">
+                        <MapPin size={12} />
+                        {listing.city}{listing.zone ? ` - ${listing.zone}` : ''}
+                      </div>
+                    </div>
+                    <Badge variant={statusConfig[listing.status].variant} size="sm">
+                      {statusConfig[listing.status].label}
+                    </Badge>
+                  </div>
+
+                  {/* Price & Details */}
+                  <div className="flex items-end justify-between mb-4 border-b border-border pb-3">
+                    <div>
+                      <p className="text-xl font-bold text-primary-600">{formatCurrency(listing.price)}<span className="text-xs font-normal text-text-muted">/mese</span></p>
+                      <p className="text-xs text-text-muted">+{formatCurrency(listing.expenses)} spese</p>
+                    </div>
+                    <div className="text-right text-xs text-text-secondary">
+                      <p>{listing.rooms} locali &bull; {listing.sqm}m²</p>
+                      <p>{listing.propertyType === 'apartment' ? 'Appartamento' : 'Altro'}</p>
+                    </div>
+                  </div>
+
+                  {/* Stats Grid */}
+                  <div className="grid grid-cols-2 gap-3 mb-4">
+                    <div className="bg-background-secondary p-2.5 rounded-lg flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <Eye size={16} className="text-text-muted" />
+                        <span className="text-xs text-text-secondary">Viste</span>
+                      </div>
+                      <span className="font-bold text-text-primary">{formatNumber(listing.views)}</span>
+                    </div>
+                    <button
+                      onClick={() => openApplicationsModal(listing)}
+                      className="bg-primary-50 p-2.5 rounded-lg flex items-center justify-between hover:bg-primary-100 transition-colors group"
+                    >
+                      <div className="flex items-center gap-2">
+                        <Users size={16} className="text-primary-600" />
+                        <span className="text-xs text-primary-700 font-medium">Candidature</span>
+                      </div>
+                      <span className="font-bold text-primary-700 group-hover:scale-110 transition-transform">{appCount}</span>
+                    </button>
+                  </div>
+
+                  {/* Actions */}
+                  <div className="flex gap-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="flex-1"
+                      onClick={() => openEditModal(listing)}
+                      leftIcon={<Edit2 size={14} />}
+                    >
+                      Modifica
+                    </Button>
+                    {(listing.status === 'active' || listing.status === 'paused') && (
+                      <Button
+                        variant="secondary"
+                        size="sm"
+                        className="flex-1"
+                        onClick={() => handleToggleStatus(listing)}
+                        leftIcon={listing.status === 'active' ? <Pause size={14} /> : <Play size={14} />}
+                      >
+                        {listing.status === 'active' ? 'Pausa' : 'Attiva'}
+                      </Button>
+                    )}
+                    <button
+                      onClick={() => setDeleteTarget(listing.id)}
+                      className="p-2 text-error hover:bg-red-50 rounded-lg transition-colors"
+                    >
+                      <Trash2 size={18} />
+                    </button>
+                  </div>
+                </div>
+              );
+            })}
           </div>
-        </Card>
+
+          {/* Desktop View - Table */}
+          <Card padding="none" className="hidden md:block">
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead className="bg-background-secondary">
+                  <tr>
+                    <th className="text-left px-6 py-4 text-sm font-medium text-text-secondary">Annuncio</th>
+                    <th className="text-left px-6 py-4 text-sm font-medium text-text-secondary">Prezzo</th>
+                    <th className="text-left px-6 py-4 text-sm font-medium text-text-secondary">Stato</th>
+                    <th className="text-left px-6 py-4 text-sm font-medium text-text-secondary">Visualizzazioni</th>
+                    <th className="text-left px-6 py-4 text-sm font-medium text-text-secondary">Candidature</th>
+                    <th className="text-left px-6 py-4 text-sm font-medium text-text-secondary">Data</th>
+                    <th className="text-right px-6 py-4 text-sm font-medium text-text-secondary">Azioni</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-border">
+                  {filtered.map((listing) => {
+                    const appCount = getAppCount(listing.id);
+                    return (
+                      <tr key={listing.id} className="hover:bg-background-secondary/50">
+                        <td className="px-6 py-4">
+                          <div>
+                            <p className="font-medium text-text-primary">{listing.title}</p>
+                            <p className="text-sm text-text-muted flex items-center gap-1">
+                              <MapPin size={12} />
+                              {listing.city}{listing.zone ? ` - ${listing.zone}` : ''} &bull; {listing.rooms} locali &bull; {listing.sqm}m²
+                            </p>
+                          </div>
+                        </td>
+                        <td className="px-6 py-4">
+                          <span className="font-semibold text-primary-600">
+                            {formatCurrency(listing.price)}/mese
+                          </span>
+                        </td>
+                        <td className="px-6 py-4">
+                          <Badge variant={statusConfig[listing.status].variant}>
+                            {statusConfig[listing.status].label}
+                          </Badge>
+                        </td>
+                        <td className="px-6 py-4">
+                          <div className="flex items-center gap-1">
+                            <Eye size={14} className="text-text-muted" />
+                            <span>{formatNumber(listing.views)}</span>
+                          </div>
+                        </td>
+                        <td className="px-6 py-4">
+                          <button
+                            onClick={() => openApplicationsModal(listing)}
+                            className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg hover:bg-primary-50 text-primary-600 font-medium transition-colors group"
+                            title="Vedi candidature"
+                          >
+                            <Users size={14} className="group-hover:scale-110 transition-transform" />
+                            <span>{appCount}</span>
+                          </button>
+                        </td>
+                        <td className="px-6 py-4 text-text-muted">
+                          {formatDate(listing.createdAt)}
+                        </td>
+                        <td className="px-6 py-4">
+                          <div className="flex items-center justify-end gap-2">
+                            <Button variant="ghost" size="sm" className="btn-icon" onClick={() => openEditModal(listing)}>
+                              <Edit2 size={16} />
+                            </Button>
+                            {(listing.status === 'active' || listing.status === 'paused') && (
+                              <Button variant="ghost" size="sm" className="btn-icon" onClick={() => handleToggleStatus(listing)}>
+                                {listing.status === 'active' ? <Pause size={16} /> : <Play size={16} />}
+                              </Button>
+                            )}
+                            <Button
+                              variant="ghost" size="sm"
+                              className="btn-icon text-error hover:bg-red-50"
+                              onClick={() => setDeleteTarget(listing.id)}
+                            >
+                              <Trash2 size={16} />
+                            </Button>
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          </Card>
+        </>
       ) : (
         <EmptyState
           icon="🏠"
@@ -773,11 +863,10 @@ export default function MyListingsPage() {
               {Object.entries(LISTING_FEATURE_LABELS).map(([key, label]) => (
                 <button
                   key={key}
-                  className={`px-3 py-1.5 rounded-lg border text-sm transition-colors ${
-                    formData.features.includes(key as ListingFeature)
+                  className={`px-3 py-1.5 rounded-lg border text-sm transition-colors ${formData.features.includes(key as ListingFeature)
                       ? 'border-primary-500 bg-primary-50 text-primary-600'
                       : 'border-border hover:border-primary-300 text-text-secondary'
-                  }`}
+                    }`}
                   onClick={() => toggleFeature(key as ListingFeature)}
                 >
                   {formData.features.includes(key as ListingFeature) ? '✓ ' : ''}{label}
