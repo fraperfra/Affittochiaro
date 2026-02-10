@@ -394,116 +394,113 @@ export default function TenantDashboardPage() {
         />
       </div>
 
+      {/* Recent Activity + Profile Completion + Quick Actions */}
       <div className="grid lg:grid-cols-3 gap-6">
-        {/* Budget Calculator - Main Area */}
-        <div className="lg:col-span-2 space-y-6">
-          <BudgetCalculatorCard />
-        </div>
-
-        {/* Sidebar */}
-        <div className="space-y-6">
-          <ProfileCompletionCard profile={profile} />
-
-          {/* Quick Actions */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Azioni Rapide</CardTitle>
-            </CardHeader>
-            <div className="space-y-3">
-              {!profile?.hasVideo && (
-                <Link
-                  to={ROUTES.TENANT_PROFILE}
-                  className="flex items-center gap-4 p-4 rounded-xl bg-background-secondary hover:bg-primary-50 transition-colors group"
-                >
-                  <div className="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center">
-                    <Video size={20} className="text-primary-600" />
-                  </div>
-                  <div className="flex-1">
-                    <p className="font-medium group-hover:text-primary-600">Aggiungi Video</p>
-                    <p className="text-sm text-text-muted">+78% risposte</p>
-                  </div>
-                  <ArrowRight size={18} className="text-text-muted group-hover:text-primary-500" />
-                </Link>
-              )}
-
-              <Link
-                to={ROUTES.TENANT_DOCUMENTS}
-                className="flex items-center gap-4 p-4 rounded-xl bg-background-secondary hover:bg-primary-50 transition-colors group"
-              >
-                <div className="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center">
-                  <Upload size={20} className="text-primary-600" />
-                </div>
-                <div className="flex-1">
-                  <p className="font-medium group-hover:text-primary-600">Carica Documenti</p>
-                  <p className="text-sm text-text-muted">Gestisci i tuoi documenti</p>
-                </div>
-                <ArrowRight size={18} className="text-text-muted group-hover:text-primary-500" />
+        {/* Recent Activity */}
+        <Card>
+          <CardHeader>
+            <div className="flex items-center justify-between">
+              <CardTitle>Attivita Recenti</CardTitle>
+              <Link to={ROUTES.TENANT_NOTIFICATIONS} className="text-sm text-primary-500 hover:text-primary-600">
+                Vedi tutte
               </Link>
+            </div>
+          </CardHeader>
+          <div className="space-y-4">
+            {recentActivity.map((activity, index) => (
+              <div
+                key={activity.id}
+                className={`flex items-start gap-4 ${
+                  index < recentActivity.length - 1 ? 'pb-4 border-b border-border' : ''
+                }`}
+              >
+                <div className="flex-shrink-0 w-10 h-10 rounded-full bg-background-secondary flex items-center justify-center text-lg">
+                  {activity.icon}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-text-primary">{activity.message}</p>
+                  <p className="text-sm text-text-muted flex items-center gap-1 mt-1">
+                    <Clock size={12} />
+                    {formatRelativeTime(activity.time)}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </Card>
 
+        {/* Profile Completion */}
+        <ProfileCompletionCard profile={profile} />
+
+        {/* Quick Actions */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Azioni Rapide</CardTitle>
+          </CardHeader>
+          <div className="space-y-3">
+            {!profile?.hasVideo && (
               <Link
                 to={ROUTES.TENANT_PROFILE}
                 className="flex items-center gap-4 p-4 rounded-xl bg-background-secondary hover:bg-primary-50 transition-colors group"
               >
                 <div className="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center">
-                  <FileText size={20} className="text-primary-600" />
+                  <Video size={20} className="text-primary-600" />
                 </div>
                 <div className="flex-1">
-                  <p className="font-medium group-hover:text-primary-600">Il Mio Profilo</p>
-                  <p className="text-sm text-text-muted">{cv ? `${cv.completeness.total}% completo` : 'Gestisci il tuo profilo'}</p>
+                  <p className="font-medium group-hover:text-primary-600">Aggiungi Video</p>
+                  <p className="text-sm text-text-muted">+78% risposte</p>
                 </div>
                 <ArrowRight size={18} className="text-text-muted group-hover:text-primary-500" />
               </Link>
+            )}
 
-              <Link
-                to={ROUTES.TENANT_LISTINGS}
-                className="flex items-center gap-4 p-4 rounded-xl bg-background-secondary hover:bg-primary-50 transition-colors group"
-              >
-                <div className="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center">
-                  <Search size={20} className="text-primary-600" />
-                </div>
-                <div className="flex-1">
-                  <p className="font-medium group-hover:text-primary-600">Cerca Casa</p>
-                  <p className="text-sm text-text-muted">15.243 annunci</p>
-                </div>
-                <ArrowRight size={18} className="text-text-muted group-hover:text-primary-500" />
-              </Link>
-            </div>
-          </Card>
-
-          {/* Recent Activity */}
-          <Card>
-            <CardHeader>
-              <div className="flex items-center justify-between">
-                <CardTitle>Attivita Recenti</CardTitle>
-                <Link to={ROUTES.TENANT_NOTIFICATIONS} className="text-sm text-primary-500 hover:text-primary-600">
-                  Vedi tutte
-                </Link>
+            <Link
+              to={ROUTES.TENANT_DOCUMENTS}
+              className="flex items-center gap-4 p-4 rounded-xl bg-background-secondary hover:bg-primary-50 transition-colors group"
+            >
+              <div className="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center">
+                <Upload size={20} className="text-primary-600" />
               </div>
-            </CardHeader>
-            <div className="space-y-4">
-              {recentActivity.map((activity, index) => (
-                <div
-                  key={activity.id}
-                  className={`flex items-start gap-4 ${
-                    index < recentActivity.length - 1 ? 'pb-4 border-b border-border' : ''
-                  }`}
-                >
-                  <div className="flex-shrink-0 w-10 h-10 rounded-full bg-background-secondary flex items-center justify-center text-lg">
-                    {activity.icon}
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-text-primary">{activity.message}</p>
-                    <p className="text-sm text-text-muted flex items-center gap-1 mt-1">
-                      <Clock size={12} />
-                      {formatRelativeTime(activity.time)}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </Card>
-        </div>
+              <div className="flex-1">
+                <p className="font-medium group-hover:text-primary-600">Carica Documenti</p>
+                <p className="text-sm text-text-muted">Gestisci i tuoi documenti</p>
+              </div>
+              <ArrowRight size={18} className="text-text-muted group-hover:text-primary-500" />
+            </Link>
+
+            <Link
+              to={ROUTES.TENANT_PROFILE}
+              className="flex items-center gap-4 p-4 rounded-xl bg-background-secondary hover:bg-primary-50 transition-colors group"
+            >
+              <div className="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center">
+                <FileText size={20} className="text-primary-600" />
+              </div>
+              <div className="flex-1">
+                <p className="font-medium group-hover:text-primary-600">Il Mio Profilo</p>
+                <p className="text-sm text-text-muted">{cv ? `${cv.completeness.total}% completo` : 'Gestisci il tuo profilo'}</p>
+              </div>
+              <ArrowRight size={18} className="text-text-muted group-hover:text-primary-500" />
+            </Link>
+
+            <Link
+              to={ROUTES.TENANT_LISTINGS}
+              className="flex items-center gap-4 p-4 rounded-xl bg-background-secondary hover:bg-primary-50 transition-colors group"
+            >
+              <div className="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center">
+                <Search size={20} className="text-primary-600" />
+              </div>
+              <div className="flex-1">
+                <p className="font-medium group-hover:text-primary-600">Cerca Casa</p>
+                <p className="text-sm text-text-muted">15.243 annunci</p>
+              </div>
+              <ArrowRight size={18} className="text-text-muted group-hover:text-primary-500" />
+            </Link>
+          </div>
+        </Card>
       </div>
+
+      {/* Budget Calculator */}
+      <BudgetCalculatorCard />
 
       {/* Badges Section */}
       <Card>
