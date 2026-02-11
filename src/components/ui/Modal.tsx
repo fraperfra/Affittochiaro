@@ -54,8 +54,7 @@ export default function Modal({
   return createPortal(
     <div
       ref={overlayRef}
-      className="fixed inset-0 z-50 flex items-end md:items-center justify-center px-3 md:p-4 bg-black/50 animate-fade-in"
-      style={{ paddingBottom: 'max(96px, calc(84px + env(safe-area-inset-bottom, 0px)))' }}
+      className="fixed inset-0 z-50 flex items-center justify-center px-4 py-6 bg-black/50 animate-fade-in"
       onClick={handleOverlayClick}
     >
       <div
