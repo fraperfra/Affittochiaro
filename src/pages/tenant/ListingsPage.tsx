@@ -379,6 +379,13 @@ export default function ListingsPage() {
             {geoLoading ? <Loader2 size={24} className="animate-spin" /> : <Locate size={24} />}
           </button>
           <button
+            onClick={() => setViewMode(viewMode === 'map' ? 'list' : 'map')}
+            className={`shrink-0 p-3 rounded-lg transition-colors ${viewMode === 'map' ? 'bg-primary-600 text-white shadow-md' : 'bg-background-secondary text-text-secondary hover:bg-gray-200'}`}
+            title={viewMode === 'map' ? "Vista lista" : "Vista mappa"}
+          >
+            {viewMode === 'map' ? <List size={24} /> : <Map size={24} />}
+          </button>
+          <button
             onClick={() => setShowFilters(true)}
             className="shrink-0 p-3 rounded-lg bg-background-secondary hover:bg-gray-200 transition-colors relative"
           >
