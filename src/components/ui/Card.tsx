@@ -9,9 +9,9 @@ const Card = forwardRef<HTMLDivElement, CardProps>(
   ({ hover = false, padding = 'md', className = '', children, ...props }, ref) => {
     const paddingClasses = {
       none: '',
-      sm: 'p-4',
-      md: 'p-6',
-      lg: 'p-8',
+      sm: 'p-2 md:p-4',
+      md: 'p-3 md:p-6',
+      lg: 'p-5 md:p-8',
     };
 
     return (

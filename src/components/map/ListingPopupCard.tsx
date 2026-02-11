@@ -11,7 +11,7 @@ interface ListingPopupCardProps {
 
 export default function ListingPopupCard({ listing, onApply, isApplied, onClick }: ListingPopupCardProps) {
   return (
-    <div className="w-[270px] cursor-pointer" onClick={onClick}>
+    <div className="w-[240px] md:w-[270px] cursor-pointer" onClick={onClick}>
       {/* Image placeholder */}
       <div className="h-32 bg-gradient-to-br from-primary-100 to-teal-100 relative">
         <div className="absolute bottom-2 left-2 bg-white/90 text-primary-600 font-bold text-sm px-2 py-1 rounded-lg">

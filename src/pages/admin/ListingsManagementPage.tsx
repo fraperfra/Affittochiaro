@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo, useDeferredValue, useCallback } from 'react';
 import {
   Search,
   Download,
@@ -37,7 +37,7 @@ const statusConfig: Record<ListingStatus, { label: string; variant: 'success' | 
 };
 
 export default function ListingsManagementPage() {
-  const { listings, setListings, filters, setFilters, pagination, setPagination } = useListingStore();
+  const { listings, setListings, updateListing, removeListing, filters, setFilters, pagination, setPagination } = useListingStore();
   const [selectedListing, setSelectedListing] = useState<Listing | null>(null);
   const [showActions, setShowActions] = useState<string | null>(null);
   const [statusFilter, setStatusFilter] = useState<string>('');
@@ -47,21 +47,25 @@ export default function ListingsManagementPage() {
     setPagination({ total: mockListings.length, totalPages: Math.ceil(mockListings.length / 20) });
   }, []);
 
-  const filteredListings = listings.filter((listing) => {
-    if (filters.search) {
-      const search = filters.search.toLowerCase();
-      if (
-        !listing.title.toLowerCase().includes(search) &&
-        !listing.address.city.toLowerCase().includes(search) &&
-        !listing.agencyName.toLowerCase().includes(search)
-      ) {
-        return false;
+  const deferredSearch = useDeferredValue(filters.search);
+
+  const filteredListings = useMemo(() => {
+    return listings.filter((listing) => {
+      if (deferredSearch) {
+        const search = deferredSearch.toLowerCase();
+        if (
+          !listing.title.toLowerCase().includes(search) &&
+          !listing.address.city.toLowerCase().includes(search) &&
+          !listing.agencyName.toLowerCase().includes(search)
+        ) {
+          return false;
+        }
       }
-    }
-    if (filters.city && listing.address.city !== filters.city) return false;
-    if (statusFilter && listing.status !== statusFilter) return false;
-    return true;
-  });
+      if (filters.city && listing.address.city !== filters.city) return false;
+      if (statusFilter && listing.status !== statusFilter) return false;
+      return true;
+    });
+  }, [listings, deferredSearch, filters.city, statusFilter]);
 
   const paginatedListings = filteredListings.slice(
     (pagination.page - 1) * pagination.limit,
@@ -74,32 +78,23 @@ export default function ListingsManagementPage() {
   const totalRented = listings.filter(l => l.status === 'rented').length;
   const avgPrice = Math.round(listings.reduce((sum, l) => sum + l.price, 0) / listings.length);
 
-  const handleApprove = (listing: Listing) => {
-    const updated = listings.map(l =>
-      l.id === listing.id ? { ...l, status: 'active' as ListingStatus } : l
-    );
-    setListings(updated);
+  const handleApprove = useCallback((listing: Listing) => {
+    updateListing(listing.id, { status: 'active' });
     setShowActions(null);
     toast.success(`Annuncio "${listing.title}" approvato!`);
-  };
+  }, [updateListing]);
 
-  const handleReject = (listing: Listing) => {
-    const updated = listings.map(l =>
-      l.id === listing.id ? { ...l, status: 'rejected' as ListingStatus } : l
-    );
-    setListings(updated);
+  const handleReject = useCallback((listing: Listing) => {
+    updateListing(listing.id, { status: 'rejected' });
     setShowActions(null);
     toast.success(`Annuncio "${listing.title}" rifiutato`);
-  };
+  }, [updateListing]);
 
-  const handlePause = (listing: Listing) => {
-    const updated = listings.map(l =>
-      l.id === listing.id ? { ...l, status: 'paused' as ListingStatus } : l
-    );
-    setListings(updated);
+  const handlePause = useCallback((listing: Listing) => {
+    updateListing(listing.id, { status: 'paused' });
     setShowActions(null);
     toast.success(`Annuncio "${listing.title}" messo in pausa`);
-  };
+  }, [updateListing]);
 
   return (
     <div className="space-y-6">
@@ -182,51 +177,51 @@ export default function ListingsManagementPage() {
       {paginatedListings.length > 0 ? (
         <>
           {/* Mobile Card View */}
-          <div className="grid gap-4 md:hidden">
+          <div className="grid gap-3 md:hidden">
             {paginatedListings.map((listing) => (
               <Card key={listing.id} padding="md">
                 {/* Header */}
-                <div className="flex items-start justify-between mb-3">
+                <div className="flex items-start justify-between mb-2">
                   <div className="flex-1">
-                    <h3 className="font-bold text-lg text-text-primary line-clamp-2 mb-1">
+                    <h3 className="font-bold text-base text-text-primary line-clamp-2 mb-1">
                       {listing.title}
                     </h3>
-                    <p className="text-sm text-text-muted flex items-center gap-1">
-                      <MapPin size={14} />
+                    <p className="text-xs text-text-muted flex items-center gap-1">
+                      <MapPin size={12} />
                       {listing.address.city} • {listing.rooms} locali • {formatSquareMeters(listing.squareMeters)}
                     </p>
                   </div>
-                  <Badge variant={statusConfig[listing.status]?.variant || 'neutral'}>
+                  <Badge variant={statusConfig[listing.status]?.variant || 'neutral'} size="sm">
                     {statusConfig[listing.status]?.label || listing.status}
                   </Badge>
                 </div>
 
                 {/* Agenzia */}
-                <p className="text-sm text-text-secondary mb-3">
+                <p className="text-xs text-text-secondary mb-2">
                   📍 <span className="font-medium">{listing.agencyName}</span>
                 </p>
 
                 {/* Price */}
-                <div className="mb-3">
-                  <span className="text-2xl font-bold text-primary-600">
+                <div className="mb-2">
+                  <span className="text-xl font-bold text-primary-600">
                     {formatCurrency(listing.price)}
                   </span>
-                  <span className="text-base text-text-muted">/mese</span>
+                  <span className="text-sm text-text-muted">/mese</span>
                 </div>
 
                 {/* Stats */}
-                <div className="flex items-center gap-4 py-3 border-y border-border mb-3">
+                <div className="flex items-center gap-3 py-2 border-y border-border mb-3">
                   <div className="flex items-center gap-2 flex-1">
-                    <Eye size={18} className="text-text-muted" />
+                    <Eye size={16} className="text-text-muted" />
                     <div>
-                      <p className="text-xs text-text-muted">Views</p>
-                      <p className="font-semibold text-text-primary text-base">{formatNumber(listing.views)}</p>
+                      <p className="text-[10px] text-text-muted uppercase">Views</p>
+                      <p className="font-semibold text-text-primary text-sm">{formatNumber(listing.views)}</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-2 flex-1">
-                    <Calendar size={18} className="text-text-muted" />
+                    <Calendar size={16} className="text-text-muted" />
                     <div>
-                      <p className="text-xs text-text-muted">Data</p>
+                      <p className="text-[10px] text-text-muted uppercase">Data</p>
                       <p className="font-semibold text-text-primary text-sm">{formatDate(listing.createdAt)}</p>
                     </div>
                   </div>
@@ -236,10 +231,10 @@ export default function ListingsManagementPage() {
                 <div className="flex gap-2">
                   <Button
                     variant="outline"
-                    size="md"
+                    size="sm"
                     className="flex-1"
                     onClick={() => setSelectedListing(listing)}
-                    leftIcon={<Eye size={18} />}
+                    leftIcon={<Eye size={16} />}
                   >
                     Dettagli
                   </Button>
@@ -260,11 +255,11 @@ export default function ListingsManagementPage() {
 
                     <Button
                       variant="ghost"
-                      size="md"
+                      size="sm"
                       className="px-2"
                       onClick={() => setShowActions(showActions === listing.id ? null : listing.id)}
                     >
-                      <MoreVertical size={20} />
+                      <MoreVertical size={16} />
                     </Button>
                   </div>
                 </div>
@@ -294,12 +289,6 @@ export default function ListingsManagementPage() {
                       {listing.status === 'paused' && (
                         <button
                           className="w-full px-3 py-2 text-left text-sm rounded-lg bg-white shadow-sm flex items-center gap-2 text-success"
-                          // Assuming handleResume exists or logic needs to be added, but based on desktop it's just a button without handler in original code? 
-                          // Wait, desktop code had <button ...>Riattiva</button> but NO onClick handler visible in the snippet for 'paused' state? 
-                          // Ah, line 386 in original file: <button className="...">... Riattiva </button>. It seems incomplete in original file too?
-                          // I'll add a simple logic for it if I can, or just leave it consistent with desktop (which seemed to lack it or I missed it).
-                          // Actually, let's use handleApprove for reactivating/unpausing if that's the logic, or create a handleResume.
-                          // For now I will use handleApprove which sets status to 'active' as a "Resume" action.
                           onClick={() => handleApprove(listing)}
                         >
                           <Play size={14} />
@@ -310,8 +299,7 @@ export default function ListingsManagementPage() {
                         className="w-full px-3 py-2 text-left text-sm rounded-lg bg-white shadow-sm flex items-center gap-2 text-error"
                         onClick={() => {
                           // Simulate delete
-                          const updated = listings.filter(l => l.id !== listing.id);
-                          setListings(updated);
+                          removeListing(listing.id);
                           setShowActions(null);
                           toast.success('Annuncio eliminato');
                         }}

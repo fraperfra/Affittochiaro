@@ -17,6 +17,13 @@
     height: 100dvh;
   }
 
+  /* Responsive base font size */
+  @media (max-width: 640px) {
+    html {
+      font-size: 14px;
+    }
+  }
+
   body {
     @apply bg-background text-text-primary;
     overflow-x: hidden;
@@ -51,7 +58,7 @@
 
   /* Card styles */
   .card {
-    @apply bg-white rounded-2xl shadow-card p-6;
+    @apply bg-white rounded-2xl shadow-card p-4 md:p-6;
   }
 
   .card-hover {
@@ -60,7 +67,7 @@
 
   /* Button variants */
   .btn {
-    @apply inline-flex items-center justify-center gap-2 px-4 py-2.5 font-medium rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed;
+    @apply inline-flex items-center justify-center gap-2 px-3 py-2 md:px-4 md:py-2.5 font-medium rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed;
   }
 
   .btn-primary {
@@ -84,11 +91,11 @@
   }
 
   .btn-sm {
-    @apply px-4 py-3 text-sm;
+    @apply px-3 py-2 text-xs md:px-4 md:py-3 md:text-sm;
   }
 
   .btn-lg {
-    @apply px-6 py-3 text-lg;
+    @apply px-5 py-2.5 text-base md:px-6 md:py-3 md:text-lg;
   }
 
   .btn-icon {
@@ -97,7 +104,7 @@
 
   /* Input styles */
   .input {
-    @apply w-full px-4 py-2.5 rounded-xl border border-border bg-white text-text-primary placeholder-text-muted focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200;
+    @apply w-full px-3 py-2 md:px-4 md:py-2.5 rounded-xl border border-border bg-white text-text-primary placeholder-text-muted focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200;
   }
 
   .input-error {

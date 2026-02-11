@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import {
   Plus, Edit2, Eye, Trash2, Users, Pause, Play, Save, MapPin,
   Phone, Mail, CheckCircle, XCircle, Clock, ChevronDown, ChevronUp,
@@ -140,52 +140,51 @@ const MobileListingCard = React.memo(({
   handleToggleStatus,
   setDeleteTarget
 }: any) => (
-  <div className="bg-white p-4 rounded-xl shadow-sm border border-border">
+  <div className="bg-white p-3 rounded-xl shadow-sm border border-border">
     {/* Header */}
-    <div className="flex justify-between items-start mb-3">
+    <div className="flex justify-between items-start mb-2">
       <div>
-        <h3 className="text-lg font-bold text-text-primary line-clamp-1">{listing.title}</h3>
-        <div className="flex items-center gap-1 text-sm text-text-muted mt-1">
-          <MapPin size={14} />
+        <h3 className="text-base font-bold text-text-primary line-clamp-1">{listing.title}</h3>
+        <div className="flex items-center gap-1 text-xs text-text-muted mt-1">
+          <MapPin size={12} />
           {listing.city}{listing.zone ? ` - ${listing.zone}` : ''}
         </div>
       </div>
-      <Badge variant={statusConfig[listing.status].variant} size="md">
+      <Badge variant={statusConfig[listing.status].variant} size="sm">
         {statusConfig[listing.status].label}
       </Badge>
     </div>
 
     {/* Price & Details */}
-    {/* Price & Details */}
-    <div className="flex items-end justify-between mb-4 border-b border-border pb-3">
+    <div className="flex items-end justify-between mb-3 border-b border-border pb-2">
       <div>
-        <p className="text-2xl font-bold text-primary-600">{formatCurrency(listing.price)}<span className="text-sm font-normal text-text-muted">/mese</span></p>
-        <p className="text-sm text-text-muted">+{formatCurrency(listing.expenses)} spese</p>
+        <p className="text-lg font-bold text-primary-600">{formatCurrency(listing.price)}<span className="text-xs font-normal text-text-muted">/mese</span></p>
+        <p className="text-xs text-text-muted">+{formatCurrency(listing.expenses)} spese</p>
       </div>
-      <div className="text-right text-sm text-text-secondary">
+      <div className="text-right text-xs text-text-secondary">
         <p>{listing.rooms} locali &bull; {listing.sqm}m²</p>
         <p>{listing.propertyType === 'apartment' ? 'Appartamento' : 'Altro'}</p>
       </div>
     </div>
 
     {/* Stats Grid */}
-    <div className="grid grid-cols-2 gap-3 mb-4">
-      <div className="bg-background-secondary p-3 rounded-lg flex items-center justify-between">
+    <div className="grid grid-cols-2 gap-2 mb-3">
+      <div className="bg-background-secondary p-2 rounded-lg flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <Eye size={18} className="text-text-muted" />
-          <span className="text-sm text-text-secondary">Viste</span>
+          <Eye size={16} className="text-text-muted" />
+          <span className="text-xs text-text-secondary">Viste</span>
         </div>
-        <span className="font-bold text-text-primary text-lg">{formatNumber(listing.views)}</span>
+        <span className="font-bold text-text-primary text-base">{formatNumber(listing.views)}</span>
       </div>
       <button
         onClick={() => openApplicationsModal(listing)}
-        className="bg-primary-50 p-3 rounded-lg flex items-center justify-between hover:bg-primary-100 transition-colors group"
+        className="bg-primary-50 p-2 rounded-lg flex items-center justify-between hover:bg-primary-100 transition-colors group"
       >
         <div className="flex items-center gap-2">
-          <Users size={18} className="text-primary-600" />
-          <span className="text-sm text-primary-700 font-medium">Candidature</span>
+          <Users size={16} className="text-primary-600" />
+          <span className="text-xs text-primary-700 font-medium">Candidature</span>
         </div>
-        <span className="font-bold text-primary-700 text-lg group-hover:scale-110 transition-transform">{appCount}</span>
+        <span className="font-bold text-primary-700 text-base group-hover:scale-110 transition-transform">{appCount}</span>
       </button>
     </div>
 
@@ -193,29 +192,29 @@ const MobileListingCard = React.memo(({
     <div className="flex gap-2">
       <Button
         variant="outline"
-        size="md"
+        size="sm"
         className="flex-1"
         onClick={() => openEditModal(listing)}
-        leftIcon={<Edit2 size={18} />}
+        leftIcon={<Edit2 size={14} />}
       >
         Modifica
       </Button>
       {(listing.status === 'active' || listing.status === 'paused') && (
         <Button
           variant="secondary"
-          size="md"
+          size="sm"
           className="flex-1"
           onClick={() => handleToggleStatus(listing)}
-          leftIcon={listing.status === 'active' ? <Pause size={18} /> : <Play size={18} />}
+          leftIcon={listing.status === 'active' ? <Pause size={14} /> : <Play size={14} />}
         >
           {listing.status === 'active' ? 'Pausa' : 'Attiva'}
         </Button>
       )}
       <button
         onClick={() => setDeleteTarget(listing.id)}
-        className="p-3 text-error hover:bg-red-50 rounded-lg transition-colors"
+        className="p-2 text-error hover:bg-red-50 rounded-lg transition-colors"
       >
-        <Trash2 size={24} />
+        <Trash2 size={20} />
       </button>
     </div>
   </div>
@@ -385,13 +384,13 @@ export default function MyListingsPage() {
     };
   }, [allApplications, viewingListing]);
 
-  const openCreateModal = () => {
+  const openCreateModal = useCallback(() => {
     setEditingId(null);
     setFormData(EMPTY_FORM);
     setShowFormModal(true);
-  };
+  }, []);
 
-  const openEditModal = (listing: AgencyListing) => {
+  const openEditModal = useCallback((listing: AgencyListing) => {
     setEditingId(listing.id);
     setFormData({
       title: listing.title,
@@ -413,7 +412,7 @@ export default function MyListingsPage() {
       smokingAllowed: listing.smokingAllowed,
     });
     setShowFormModal(true);
-  };
+  }, []);
 
   const handleSave = (asDraft = false) => {
     if (!formData.title.trim()) { toast.error('Inserisci un titolo'); return; }
@@ -452,18 +451,18 @@ export default function MyListingsPage() {
     setFormData(EMPTY_FORM);
   };
 
-  const handleDelete = () => {
+  const handleDelete = useCallback(() => {
     if (!deleteTarget) return;
-    setListings(listings.filter(l => l.id !== deleteTarget));
+    setListings(current => current.filter(l => l.id !== deleteTarget));
     setDeleteTarget(null);
     toast.success('Annuncio eliminato');
-  };
+  }, [deleteTarget]);
 
-  const handleToggleStatus = (listing: AgencyListing) => {
+  const handleToggleStatus = useCallback((listing: AgencyListing) => {
     const newStatus = listing.status === 'active' ? 'paused' : 'active';
-    setListings(listings.map(l => l.id === listing.id ? { ...l, status: newStatus } : l));
+    setListings(current => current.map(l => l.id === listing.id ? { ...l, status: newStatus } : l));
     toast.success(newStatus === 'active' ? 'Annuncio riattivato' : 'Annuncio messo in pausa');
-  };
+  }, []);
 
   const toggleFeature = (feature: ListingFeature) => {
     setFormData(prev => ({
@@ -491,11 +490,11 @@ export default function MyListingsPage() {
     setExpandedAppIds(next);
   };
 
-  const openApplicationsModal = (listing: AgencyListing) => {
+  const openApplicationsModal = useCallback((listing: AgencyListing) => {
     setViewingListing(listing);
     setAppFilterStatus('');
     setExpandedAppIds(new Set());
-  };
+  }, []);
 
   return (
     <div className="space-y-6">

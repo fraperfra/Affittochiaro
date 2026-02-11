@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, lazy, Suspense } from 'react';
+import { useState, useEffect, useCallback, lazy, Suspense, useDeferredValue, memo, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import {
   Search,
@@ -25,12 +25,93 @@ import { useListingStore, useAuthStore } from '../../store';
 import { mockListings } from '../../utils/mockData';
 
 const ListingMapView = lazy(() => import('../../components/map/ListingMapView'));
-import { formatCurrency, formatNumber, formatSquareMeters } from '../../utils/formatters';
+import { formatCurrency, formatNumber } from '../../utils/formatters';
 import { ITALIAN_CITIES } from '../../utils/constants';
 import { Listing, ListingFilters, TenantUser } from '../../types';
 import { EMPLOYMENT_TYPE_LABELS } from '../../types/cv';
 import { Card, Button, Badge, Modal, ModalFooter, Input, EmptyState } from '../../components/ui';
 import toast from 'react-hot-toast';
+
+// Memoized Listing Card Component
+const ListingCard = memo(({
+  listing,
+  viewMode,
+  isSaved,
+  isApplied,
+  onToggleSaved,
+  onClick,
+  onApply
+}: {
+  listing: Listing;
+  viewMode: 'grid' | 'list' | 'map';
+  isSaved: boolean;
+  isApplied: boolean;
+  onToggleSaved: (id: string, e: React.MouseEvent) => void;
+  onClick: (listing: Listing) => void;
+  onApply: (listing: Listing, e: React.MouseEvent) => void;
+}) => {
+  const isNew = listing.createdAt && new Date().getTime() - new Date(listing.createdAt).getTime() < 7 * 24 * 60 * 60 * 1000;
+
+  return (
+    <Card
+      hover
+      padding="none"
+      className="overflow-hidden"
+      onClick={() => onClick(listing)}
+    >
+      <div className="flex">
+        {/* Thumbnail */}
+        <div className="relative w-24 md:w-36 min-h-[100px] shrink-0 bg-gradient-to-br from-primary-100 to-teal-100">
+          {isNew && (
+            <span className="absolute top-1.5 left-1.5 px-1.5 py-0.5 text-[10px] font-bold bg-primary-500 text-white rounded">NUOVO</span>
+          )}
+          <button
+            className={`absolute top-1.5 right-1.5 w-6 h-6 rounded-full flex items-center justify-center transition-colors ${isSaved ? 'bg-error text-white' : 'bg-white/90 text-text-secondary hover:text-error'
+              }`}
+            onClick={(e) => onToggleSaved(listing.id, e)}
+          >
+            <Heart size={12} fill={isSaved ? 'currentColor' : 'none'} />
+          </button>
+        </div>
+
+        {/* Info */}
+        <div className="flex-1 p-3 min-w-0 flex flex-col justify-between">
+          <div>
+            <h3 className="font-bold text-base md:text-lg text-text-primary line-clamp-1">{listing.title}</h3>
+            <div className="flex items-center gap-1 text-text-secondary text-xs md:text-sm mt-1">
+              <MapPin size={12} className="shrink-0" />
+              <span className="truncate">{listing.address.city}{listing.zone ? ` • ${listing.zone}` : ''}</span>
+            </div>
+            <div className="flex gap-1.5 mt-2 flex-wrap">
+              <span className="text-xs px-1.5 py-0.5 md:py-1 bg-background-secondary rounded text-text-secondary">{listing.rooms} locali</span>
+              <span className="text-xs px-1.5 py-0.5 md:py-1 bg-background-secondary rounded text-text-secondary">{listing.squareMeters}m²</span>
+              {listing.furnished === 'yes' && <span className="text-xs px-1.5 py-0.5 md:py-1 bg-background-secondary rounded text-text-secondary">Arredato</span>}
+            </div>
+          </div>
+          <div className="flex items-center justify-between mt-2">
+            <span className="text-lg md:text-xl font-bold text-primary-600">
+              {formatCurrency(listing.price)}<span className="text-xs md:text-sm font-normal text-text-muted">/mese</span>
+            </span>
+            <div className="flex items-center gap-2">
+              <span className="hidden md:flex items-center gap-1 text-xs text-text-muted"><Users size={14} />{listing.applicationsCount}</span>
+              <span className="hidden md:flex items-center gap-1 text-xs text-text-muted"><Eye size={14} />{listing.views}</span>
+              {isApplied ? (
+                <span className="text-xs text-text-muted flex items-center gap-1"><CheckCircle size={14} /> Inviata</span>
+              ) : (
+                <button
+                  className="text-xs md:text-sm font-semibold text-primary-500 flex items-center gap-1 p-1.5 md:p-2 -mr-2"
+                  onClick={(e) => onApply(listing, e)}
+                >
+                  <Send size={14} className="md:w-4 md:h-4" /> Candidati
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+    </Card>
+  );
+});
 
 interface ApplicationFormData {
   firstName: string;
@@ -162,13 +243,26 @@ export default function ListingsPage() {
     }
   }, [applyingTo]);
 
-  const filteredListings = listings.filter((listing) => {
-    if (filters.city && listing.address.city !== filters.city) return false;
-    if (filters.maxPrice && listing.price > filters.maxPrice) return false;
-    if (filters.minRooms && listing.rooms < filters.minRooms) return false;
-    if (listing.status !== 'active') return false;
-    return true;
-  });
+  // Defer the search update to unblock main thread during typing
+  const deferredSearch = useDeferredValue(filters.search);
+
+  const filteredListings = useMemo(() => {
+    return listings.filter((listing) => {
+      // Use deferred search value for the heavy filtering
+      if (deferredSearch && !listing.title.toLowerCase().includes(deferredSearch.toLowerCase()) &&
+        !listing.address.city.toLowerCase().includes(deferredSearch.toLowerCase()) &&
+        !listing.zone?.toLowerCase().includes(deferredSearch.toLowerCase())) {
+        return false;
+      }
+
+      // Use non-deferred values for other filters (they are usually discrete clicks)
+      if (filters.city && listing.address.city !== filters.city) return false;
+      if (filters.maxPrice && listing.price > filters.maxPrice) return false;
+      if (filters.minRooms && listing.rooms < filters.minRooms) return false;
+      if (listing.status !== 'active') return false;
+      return true;
+    });
+  }, [listings, deferredSearch, filters.city, filters.maxPrice, filters.minRooms]);
 
   const handleApplyFilters = () => {
     setFilters(localFilters);
@@ -180,14 +274,23 @@ export default function ListingsPage() {
     setFilters({});
   };
 
-  const openApplicationForm = (listing: Listing, e?: React.MouseEvent) => {
+  const openApplicationForm = useCallback((listing: Listing, e?: React.MouseEvent) => {
     if (e) e.stopPropagation();
     if (appliedIds.includes(listing.id)) {
       toast('Hai gia inviato la candidatura per questo annuncio', { icon: '📝' });
       return;
     }
     setApplyingTo(listing);
-  };
+  }, [appliedIds]);
+
+  const handleToggleSaved = useCallback((id: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    toggleSavedListing(id);
+  }, [toggleSavedListing]);
+
+  const handleListingClick = useCallback((listing: Listing) => {
+    setSelectedListing(listing);
+  }, []);
 
   const handleSubmitApplication = async () => {
     if (!applyingTo) return;
@@ -249,7 +352,7 @@ export default function ListingsPage() {
     toast.success('Candidatura inviata con successo!');
   };
 
-  const isApplied = (listingId: string) => appliedIds.includes(listingId);
+  const isApplied = useCallback((listingId: string) => appliedIds.includes(listingId), [appliedIds]);
 
   return (
     <div className="space-y-6">
@@ -435,71 +538,18 @@ export default function ListingsPage() {
         </Suspense>
       ) : filteredListings.length > 0 ? (
         <div className={`grid ${viewMode === 'grid' ? 'gap-3 grid-cols-1 md:grid-cols-2 xl:grid-cols-3' : 'gap-2 grid-cols-1'}`}>
-          {filteredListings.map((listing) => {
-            const isNew = listing.createdAt && new Date().getTime() - new Date(listing.createdAt).getTime() < 7 * 24 * 60 * 60 * 1000;
-            const isSaved = savedListings.includes(listing.id);
-
-            return (
-              <Card
-                key={listing.id}
-                hover
-                padding="none"
-                className="overflow-hidden"
-                onClick={() => setSelectedListing(listing)}
-              >
-                <div className="flex">
-                  {/* Thumbnail */}
-                  <div className="relative w-28 md:w-36 min-h-[100px] shrink-0 bg-gradient-to-br from-primary-100 to-teal-100">
-                    {isNew && (
-                      <span className="absolute top-1.5 left-1.5 px-1.5 py-0.5 text-[10px] font-bold bg-primary-500 text-white rounded">NUOVO</span>
-                    )}
-                    <button
-                      className={`absolute top-1.5 right-1.5 w-6 h-6 rounded-full flex items-center justify-center transition-colors ${isSaved ? 'bg-error text-white' : 'bg-white/90 text-text-secondary hover:text-error'
-                        }`}
-                      onClick={(e) => { e.stopPropagation(); toggleSavedListing(listing.id); }}
-                    >
-                      <Heart size={12} fill={isSaved ? 'currentColor' : 'none'} />
-                    </button>
-                  </div>
-
-                  {/* Info */}
-                  <div className="flex-1 p-3 min-w-0 flex flex-col justify-between">
-                    <div>
-                      <h3 className="font-bold text-lg text-text-primary line-clamp-1">{listing.title}</h3>
-                      <div className="flex items-center gap-1 text-text-secondary text-sm mt-1">
-                        <MapPin size={14} className="shrink-0" />
-                        <span className="truncate">{listing.address.city}{listing.zone ? ` • ${listing.zone}` : ''}</span>
-                      </div>
-                      <div className="flex gap-1.5 mt-2 flex-wrap">
-                        <span className="text-xs px-2 py-1 bg-background-secondary rounded text-text-secondary">{listing.rooms} locali</span>
-                        <span className="text-xs px-2 py-1 bg-background-secondary rounded text-text-secondary">{listing.squareMeters}m²</span>
-                        {listing.furnished === 'yes' && <span className="text-xs px-2 py-1 bg-background-secondary rounded text-text-secondary">Arredato</span>}
-                      </div>
-                    </div>
-                    <div className="flex items-center justify-between mt-3">
-                      <span className="text-xl font-bold text-primary-600">
-                        {formatCurrency(listing.price)}<span className="text-sm font-normal text-text-muted">/mese</span>
-                      </span>
-                      <div className="flex items-center gap-3">
-                        <span className="hidden md:flex items-center gap-1 text-xs text-text-muted"><Users size={14} />{listing.applicationsCount}</span>
-                        <span className="hidden md:flex items-center gap-1 text-xs text-text-muted"><Eye size={14} />{listing.views}</span>
-                        {isApplied(listing.id) ? (
-                          <span className="text-xs text-text-muted flex items-center gap-1"><CheckCircle size={14} /> Inviata</span>
-                        ) : (
-                          <button
-                            className="text-sm font-semibold text-primary-500 flex items-center gap-1 p-2 -mr-2"
-                            onClick={(e) => openApplicationForm(listing, e)}
-                          >
-                            <Send size={16} /> Candidati
-                          </button>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </Card>
-            );
-          })}
+          {filteredListings.map((listing) => (
+            <ListingCard
+              key={listing.id}
+              listing={listing}
+              viewMode={viewMode}
+              isSaved={savedListings.includes(listing.id)}
+              isApplied={isApplied(listing.id)}
+              onToggleSaved={handleToggleSaved}
+              onClick={handleListingClick}
+              onApply={openApplicationForm}
+            />
+          ))}
         </div>
       ) : (
         <EmptyState
@@ -839,8 +889,8 @@ export default function ListingsPage() {
                 <button
                   key={num}
                   className={`flex-1 py-2 rounded-lg border ${localFilters.minRooms === num
-                      ? 'border-primary-500 bg-primary-50 text-primary-600'
-                      : 'border-border hover:border-primary-300'
+                    ? 'border-primary-500 bg-primary-50 text-primary-600'
+                    : 'border-border hover:border-primary-300'
                     }`}
                   onClick={() => setLocalFilters({ ...localFilters, minRooms: num })}
                 >
@@ -861,8 +911,8 @@ export default function ListingsPage() {
                 <button
                   key={opt.label}
                   className={`flex-1 py-2 rounded-lg border ${localFilters.furnished === opt.value
-                      ? 'border-primary-500 bg-primary-50 text-primary-600'
-                      : 'border-border hover:border-primary-300'
+                    ? 'border-primary-500 bg-primary-50 text-primary-600'
+                    : 'border-border hover:border-primary-300'
                     }`}
                   onClick={() => setLocalFilters({ ...localFilters, furnished: opt.value as any })}
                 >
