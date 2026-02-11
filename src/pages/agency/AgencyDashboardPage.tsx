@@ -149,8 +149,6 @@ export default function AgencyDashboardPage() {
           icon="👁️"
           label="Visualizzazioni Annunci"
           value={formatNumber(1234)}
-          change={15}
-          changeLabel="vs settimana scorsa"
         />
         <Link to={ROUTES.AGENCY_APPLICATIONS}>
           <StatCard
