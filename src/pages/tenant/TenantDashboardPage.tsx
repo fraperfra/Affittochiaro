@@ -121,8 +121,8 @@ function BudgetCalculatorCard() {
                   key={m}
                   onClick={() => setDepositMonths(m)}
                   className={`flex-1 py-2.5 rounded-xl text-sm font-sans font-medium transition-all ${depositMonths === m
-                      ? 'bg-primary-500 text-white shadow-sm'
-                      : 'bg-background-secondary text-text-primary hover:bg-primary-50'
+                    ? 'bg-primary-500 text-white shadow-sm'
+                    : 'bg-background-secondary text-text-primary hover:bg-primary-50'
                     }`}
                 >
                   {m} {m === 1 ? 'mese' : 'mesi'}
@@ -174,8 +174,8 @@ function BudgetCalculatorCard() {
                   <button
                     onClick={() => setAgencyMode('month')}
                     className={`px-3 py-1.5 rounded-lg text-sm font-sans font-medium transition-all ${agencyMode === 'month'
-                        ? 'bg-primary-500 text-white shadow-sm'
-                        : 'bg-background-secondary text-text-primary hover:bg-primary-50'
+                      ? 'bg-primary-500 text-white shadow-sm'
+                      : 'bg-background-secondary text-text-primary hover:bg-primary-50'
                       }`}
                   >
                     1 mese
@@ -183,8 +183,8 @@ function BudgetCalculatorCard() {
                   <button
                     onClick={() => setAgencyMode('custom')}
                     className={`px-3 py-1.5 rounded-lg text-sm font-sans font-medium transition-all ${agencyMode === 'custom'
-                        ? 'bg-primary-500 text-white shadow-sm'
-                        : 'bg-background-secondary text-text-muted hover:bg-primary-50 hover:text-text-primary'
+                      ? 'bg-primary-500 text-white shadow-sm'
+                      : 'bg-background-secondary text-text-muted hover:bg-primary-50 hover:text-text-primary'
                       }`}
                   >
                     Altro ({agencyPercent}%)
@@ -348,8 +348,6 @@ export default function TenantDashboardPage() {
           icon="👁️"
           label="Visualizzazioni Profilo"
           value={profile?.profileViews ?? (calculatedCompletion >= 50 ? 127 : 3)}
-          change={calculatedCompletion >= 50 ? 12 : undefined}
-          changeLabel={calculatedCompletion >= 50 ? "vs mese scorso" : undefined}
         />
         <StatCard
           icon="📩"
