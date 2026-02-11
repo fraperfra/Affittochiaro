@@ -120,67 +120,119 @@ export default function TenantSearchPage() {
 
       {/* Search & Filters */}
       <Card padding="sm">
-        <div className="flex flex-col lg:flex-row gap-4">
+        <div className="flex flex-row gap-3">
           <div className="flex-1 relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-text-muted" size={18} />
             <input
               type="text"
-              placeholder="Cerca per nome, citta, professione..."
+              placeholder="Cerca per nome, citta..."
               className="input pl-10"
               value={filters.search || ''}
               onChange={(e) => setFilters({ search: e.target.value })}
             />
           </div>
 
-          <div className="flex gap-2 flex-wrap">
-            <select
-              className="input w-auto"
-              value={filters.city || ''}
-              onChange={(e) => setFilters({ city: e.target.value || undefined })}
-            >
-              <option value="">Tutte le citta</option>
-              {ITALIAN_CITIES.slice(0, 15).map((city) => (
-                <option key={city} value={city}>{city}</option>
-              ))}
-            </select>
+          <button
+            onClick={handleGeolocate}
+            disabled={geoLoading}
+            className="hidden md:flex items-center gap-1.5 px-3 py-2 rounded-xl bg-primary-50 text-primary-600 hover:bg-primary-100 font-medium transition-colors disabled:opacity-50 whitespace-nowrap"
+          >
+            {geoLoading ? <Loader2 size={18} className="animate-spin" /> : <Locate size={18} />}
+            <span>Vicino a me</span>
+          </button>
 
-            <button
-              onClick={handleGeolocate}
-              disabled={geoLoading}
-              className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-primary-50 text-primary-600 hover:bg-primary-100 text-sm font-medium transition-colors disabled:opacity-50"
-            >
-              {geoLoading ? <Loader2 size={16} className="animate-spin" /> : <Locate size={16} />}
-              Vicino a me
-            </button>
+          <Button
+            variant="secondary"
+            className="md:hidden !p-2.5"
+            onClick={handleGeolocate}
+            disabled={geoLoading}
+          >
+            {geoLoading ? <Loader2 size={20} className="animate-spin" /> : <Locate size={20} />}
+          </Button>
 
-            <select
-              className="input w-auto"
-              value={filters.contractType || ''}
-              onChange={(e) => setFilters({ contractType: (e.target.value || undefined) as ContractType | undefined })}
-            >
-              <option value="">Tutti i contratti</option>
-              {CONTRACT_TYPES.map((ct) => (
-                <option key={ct.value} value={ct.value}>{ct.label}</option>
-              ))}
-            </select>
-
-            <Button
-              variant={filters.isVerified ? 'primary' : 'secondary'}
-              size="sm"
-              onClick={() => setFilters({ isVerified: !filters.isVerified })}
-            >
-              ✓ Verificati
-            </Button>
-
-            <Button
-              variant={filters.hasVideo ? 'primary' : 'secondary'}
-              size="sm"
-              onClick={() => setFilters({ hasVideo: !filters.hasVideo })}
-            >
-              🎥 Con Video
-            </Button>
-          </div>
+          <Button
+            variant={showFilters ? 'primary' : 'secondary'}
+            className="!p-2.5 aspect-square"
+            onClick={() => setShowFilters(true)}
+          >
+            <SlidersHorizontal size={20} />
+          </Button>
         </div>
+
+        {/* Filters Modal */}
+        <Modal
+          isOpen={showFilters}
+          onClose={() => setShowFilters(false)}
+          title="Filtri Ricerca"
+        >
+          <div className="space-y-4">
+            <div>
+              <label className="label">Città</label>
+              <select
+                className="input"
+                value={filters.city || ''}
+                onChange={(e) => setFilters({ city: e.target.value || undefined })}
+              >
+                <option value="">Tutte le citta</option>
+                {ITALIAN_CITIES.map((city) => (
+                  <option key={city} value={city}>{city}</option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <label className="label">Tipo di Contratto</label>
+              <select
+                className="input"
+                value={filters.contractType || ''}
+                onChange={(e) => setFilters({ contractType: (e.target.value || undefined) as ContractType | undefined })}
+              >
+                <option value="">Tutti i contratti</option>
+                {CONTRACT_TYPES.map((ct) => (
+                  <option key={ct.value} value={ct.value}>{ct.label}</option>
+                ))}
+              </select>
+            </div>
+
+            <div className="flex flex-col gap-3 pt-2">
+              <label className="flex items-center justify-between p-3 rounded-xl border border-border bg-white cursor-pointer hover:border-primary-500 transition-colors">
+                <span className="font-medium">Solo profili verificati</span>
+                <input
+                  type="checkbox"
+                  className="w-5 h-5 accent-primary-500"
+                  checked={filters.isVerified || false}
+                  onChange={(e) => setFilters({ isVerified: e.target.checked })}
+                />
+              </label>
+
+              <label className="flex items-center justify-between p-3 rounded-xl border border-border bg-white cursor-pointer hover:border-primary-500 transition-colors">
+                <span className="font-medium">Solo con video presentazione</span>
+                <input
+                  type="checkbox"
+                  className="w-5 h-5 accent-primary-500"
+                  checked={filters.hasVideo || false}
+                  onChange={(e) => setFilters({ hasVideo: e.target.checked })}
+                />
+              </label>
+            </div>
+          </div>
+          <ModalFooter>
+            <Button variant="secondary" onClick={() => {
+              setFilters({});
+              setShowFilters(false);
+            }}>
+              Resetta
+            </Button>
+            <Button onClick={() => setShowFilters(false)}>
+              Applica Filtri ({[
+                filters.city,
+                filters.contractType,
+                filters.isVerified,
+                filters.hasVideo
+              ].filter(Boolean).length})
+            </Button>
+          </ModalFooter>
+        </Modal>
 
         <div className="flex items-center justify-between mt-4 pt-4 border-t border-border">
           <p className="text-text-secondary">
