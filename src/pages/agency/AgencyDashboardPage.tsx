@@ -89,59 +89,34 @@ export default function AgencyDashboardPage() {
   return (
     <div className="space-y-6">
       {/* Welcome & Credits Card */}
-      <div className="grid lg:grid-cols-3 gap-6">
-        <Card className="lg:col-span-2 bg-gradient-to-r from-teal-600 to-primary-500 text-white">
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-            <div>
-              <h1 className="text-2xl font-bold mb-2">
-                Ciao, {agencyUser?.agency?.name || 'Agenzia'}!
-              </h1>
-              <p className="text-white/80">
-                Il tuo piano <span className="font-semibold capitalize">{plan}</span> e attivo
-              </p>
-              <div className="flex items-center gap-4 mt-4">
-                <div className="flex items-center gap-2">
-                  <CreditCard size={18} />
-                  <span>{credits} crediti disponibili</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Home size={18} />
-                  <span>{agencyUser?.agency?.activeListingsCount ?? 12} annunci attivi</span>
-                </div>
+      {/* Welcome & Credits Card */}
+      <Card className="bg-gradient-to-r from-teal-600 to-primary-500 text-white">
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+          <div>
+            <h1 className="text-2xl font-bold mb-2">
+              Ciao, {agencyUser?.agency?.name || 'Agenzia'}!
+            </h1>
+            <p className="text-white/80">
+              Il tuo piano <span className="font-semibold capitalize">{plan}</span> e attivo
+            </p>
+            <div className="flex items-center gap-4 mt-4">
+              <div className="flex items-center gap-2">
+                <CreditCard size={18} />
+                <span>{credits} crediti disponibili</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Home size={18} />
+                <span>{agencyUser?.agency?.activeListingsCount ?? 12} annunci attivi</span>
               </div>
             </div>
-            <Link to={ROUTES.AGENCY_PLAN}>
-              <Button variant="secondary" rightIcon={<ArrowRight size={18} />}>
-                Gestisci Piano
-              </Button>
-            </Link>
           </div>
-        </Card>
-
-        {/* Credits Card */}
-        <Card>
-          <CardHeader>
-            <div className="flex items-center gap-2">
-              <CreditCard size={20} className="text-primary-500" />
-              <CardTitle>Crediti</CardTitle>
-            </div>
-          </CardHeader>
-          <div className="text-center">
-            <p className="text-4xl font-bold text-primary-600">{credits}</p>
-            <p className="text-text-muted mt-1">crediti disponibili</p>
-            <div className="mt-4 pt-4 border-t border-border">
-              <p className="text-sm text-text-secondary">
-                Usati questo mese: <span className="font-medium">{agencyUser?.agency?.creditsUsedThisMonth ?? 18}</span>
-              </p>
-            </div>
-            <Link to={ROUTES.AGENCY_PLAN}>
-              <Button variant="outline" size="sm" className="mt-4">
-                Acquista Crediti
-              </Button>
-            </Link>
-          </div>
-        </Card>
-      </div>
+          <Link to={ROUTES.AGENCY_PLAN}>
+            <Button variant="secondary" rightIcon={<ArrowRight size={18} />}>
+              Gestisci Piano
+            </Button>
+          </Link>
+        </div>
+      </Card>
 
       {/* Stats Grid */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
