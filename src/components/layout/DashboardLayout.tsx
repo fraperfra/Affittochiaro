@@ -149,7 +149,7 @@ function GlobalSearch({ userRole, navigate }: { userRole: string; navigate: (pat
           subtitle: `${l.address.city} - €${l.price}/mese`,
           category: 'Annunci',
           path: userRole === 'tenant' ? ROUTES.TENANT_LISTINGS :
-                userRole === 'agency' ? ROUTES.AGENCY_LISTINGS : ROUTES.ADMIN_LISTINGS,
+            userRole === 'agency' ? ROUTES.AGENCY_LISTINGS : ROUTES.ADMIN_LISTINGS,
         });
       });
 
@@ -244,8 +244,8 @@ function GlobalSearch({ userRole, navigate }: { userRole: string; navigate: (pat
                     >
                       <div className="w-8 h-8 rounded-lg bg-background-secondary flex items-center justify-center flex-shrink-0 mt-0.5">
                         {item.category === 'Inquilini' ? <Users size={14} className="text-primary-500" /> :
-                         item.category === 'Annunci' ? <Home size={14} className="text-accent-500" /> :
-                         <Building2 size={14} className="text-teal-500" />}
+                          item.category === 'Annunci' ? <Home size={14} className="text-accent-500" /> :
+                            <Building2 size={14} className="text-teal-500" />}
                       </div>
                       <div className="min-w-0">
                         <p className="text-sm font-medium truncate">{item.title}</p>
@@ -591,7 +591,7 @@ export default function DashboardLayout({ userRole }: DashboardLayoutProps) {
         </header>
 
         {/* Page Content */}
-        <main className="p-4 md:p-6 pb-24 md:pb-6">
+        <main className="p-4 md:p-6 pb-32 md:pb-6">
           <Outlet />
         </main>
       </div>

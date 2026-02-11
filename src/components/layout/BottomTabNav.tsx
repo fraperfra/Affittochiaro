@@ -111,10 +111,9 @@ const TabItemComponent = React.memo(function TabItemComponent({
     >
       <div className="relative">
         <Icon
-          size={22}
-          className={`transition-colors duration-150 ${
-            isActive ? 'text-teal-500' : 'text-gray-400'
-          }`}
+          size={26}
+          className={`transition-colors duration-150 ${isActive ? 'text-teal-500' : 'text-gray-400'
+            }`}
         />
         {badge !== undefined && badge > 0 && (
           <span
@@ -125,11 +124,10 @@ const TabItemComponent = React.memo(function TabItemComponent({
         )}
       </div>
       <span
-        className={`mt-0.5 text-[9px] leading-tight truncate max-w-full transition-colors duration-150 tracking-[0.02em] ${
-          isActive
-            ? 'text-teal-500 font-semibold'
-            : 'text-gray-500 font-normal'
-        }`}
+        className={`mt-1 text-[11px] leading-tight truncate max-w-full transition-colors duration-150 tracking-[0.02em] ${isActive
+          ? 'text-teal-500 font-semibold'
+          : 'text-gray-500 font-normal'
+          }`}
         style={{ fontFamily: 'system-ui, -apple-system, sans-serif' }}
       >
         {item.label}
@@ -163,7 +161,7 @@ export default function BottomTabNav({ userRole, badges = {} }: BottomTabNavProp
       <div
         className="flex justify-around items-center bg-white border border-gray-100 rounded-2xl"
         style={{
-          height: '56px',
+          height: '72px',
           boxShadow: '0 4px 20px rgba(0, 0, 0, 0.08), 0 1px 4px rgba(0, 0, 0, 0.04)',
         }}
       >
