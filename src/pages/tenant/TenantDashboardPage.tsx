@@ -120,11 +120,10 @@ function BudgetCalculatorCard() {
                 <button
                   key={m}
                   onClick={() => setDepositMonths(m)}
-                  className={`flex-1 py-2.5 rounded-xl text-sm font-sans font-medium transition-all ${
-                    depositMonths === m
+                  className={`flex-1 py-2.5 rounded-xl text-sm font-sans font-medium transition-all ${depositMonths === m
                       ? 'bg-primary-500 text-white shadow-sm'
                       : 'bg-background-secondary text-text-primary hover:bg-primary-50'
-                  }`}
+                    }`}
                 >
                   {m} {m === 1 ? 'mese' : 'mesi'}
                 </button>
@@ -174,21 +173,19 @@ function BudgetCalculatorCard() {
                 <div className="flex items-center gap-2">
                   <button
                     onClick={() => setAgencyMode('month')}
-                    className={`px-3 py-1.5 rounded-lg text-sm font-sans font-medium transition-all ${
-                      agencyMode === 'month'
+                    className={`px-3 py-1.5 rounded-lg text-sm font-sans font-medium transition-all ${agencyMode === 'month'
                         ? 'bg-primary-500 text-white shadow-sm'
                         : 'bg-background-secondary text-text-primary hover:bg-primary-50'
-                    }`}
+                      }`}
                   >
                     1 mese
                   </button>
                   <button
                     onClick={() => setAgencyMode('custom')}
-                    className={`px-3 py-1.5 rounded-lg text-sm font-sans font-medium transition-all ${
-                      agencyMode === 'custom'
+                    className={`px-3 py-1.5 rounded-lg text-sm font-sans font-medium transition-all ${agencyMode === 'custom'
                         ? 'bg-primary-500 text-white shadow-sm'
                         : 'bg-background-secondary text-text-muted hover:bg-primary-50 hover:text-text-primary'
-                    }`}
+                      }`}
                   >
                     Altro ({agencyPercent}%)
                   </button>
@@ -322,36 +319,13 @@ export default function TenantDashboardPage() {
       <Card className="bg-gradient-to-r from-teal-600 to-primary-500 text-white">
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-bold mb-2">
+            <h1 className="text-2xl font-bold mb-1">
               Benvenuto, {profile?.firstName || tenantUser?.profile?.firstName || 'Utente'}!
             </h1>
-            <p className="text-white/80">
-              {calculatedCompletion >= 100
-                ? 'Il tuo profilo e completo. Sei pronto per trovare casa!'
-                : calculatedCompletion >= 80
-                  ? 'Ottimo lavoro! Il tuo profilo e quasi completo.'
-                  : `Il tuo profilo e completo al ${calculatedCompletion}%`}
+            <p className="text-white/90 text-lg flex items-center gap-2">
+              come va oggi? spero tutto bene <span className="text-2xl">🙂</span>
             </p>
-            {calculatedCompletion < 100 && (
-              <div className="mt-3">
-                <div className="h-2 bg-white/20 rounded-full overflow-hidden w-64">
-                  <div
-                    className={`h-full rounded-full transition-all duration-500 ${
-                      calculatedCompletion >= 80 ? 'bg-green-400' : calculatedCompletion >= 50 ? 'bg-amber-400' : 'bg-red-400'
-                    }`}
-                    style={{ width: `${calculatedCompletion}%` }}
-                  />
-                </div>
-              </div>
-            )}
           </div>
-          {calculatedCompletion < 80 && (
-            <Link to={ROUTES.TENANT_PROFILE}>
-              <Button variant="secondary" rightIcon={<ArrowRight size={18} />}>
-                Completa il profilo
-              </Button>
-            </Link>
-          )}
         </div>
       </Card>
 
@@ -410,9 +384,8 @@ export default function TenantDashboardPage() {
             {recentActivity.map((activity, index) => (
               <div
                 key={activity.id}
-                className={`flex items-start gap-4 ${
-                  index < recentActivity.length - 1 ? 'pb-4 border-b border-border' : ''
-                }`}
+                className={`flex items-start gap-4 ${index < recentActivity.length - 1 ? 'pb-4 border-b border-border' : ''
+                  }`}
               >
                 <div className="flex-shrink-0 w-10 h-10 rounded-full bg-background-secondary flex items-center justify-center text-lg">
                   {activity.icon}
