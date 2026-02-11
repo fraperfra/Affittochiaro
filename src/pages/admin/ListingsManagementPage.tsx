@@ -188,11 +188,11 @@ export default function ListingsManagementPage() {
                 {/* Header */}
                 <div className="flex items-start justify-between mb-3">
                   <div className="flex-1">
-                    <h3 className="font-semibold text-text-primary line-clamp-2 mb-1">
+                    <h3 className="font-bold text-lg text-text-primary line-clamp-2 mb-1">
                       {listing.title}
                     </h3>
                     <p className="text-sm text-text-muted flex items-center gap-1">
-                      <MapPin size={12} />
+                      <MapPin size={14} />
                       {listing.address.city} • {listing.rooms} locali • {formatSquareMeters(listing.squareMeters)}
                     </p>
                   </div>
@@ -211,20 +211,20 @@ export default function ListingsManagementPage() {
                   <span className="text-2xl font-bold text-primary-600">
                     {formatCurrency(listing.price)}
                   </span>
-                  <span className="text-sm text-text-muted">/mese</span>
+                  <span className="text-base text-text-muted">/mese</span>
                 </div>
 
                 {/* Stats */}
                 <div className="flex items-center gap-4 py-3 border-y border-border mb-3">
                   <div className="flex items-center gap-2 flex-1">
-                    <Eye size={16} className="text-text-muted" />
+                    <Eye size={18} className="text-text-muted" />
                     <div>
                       <p className="text-xs text-text-muted">Views</p>
-                      <p className="font-semibold text-text-primary">{formatNumber(listing.views)}</p>
+                      <p className="font-semibold text-text-primary text-base">{formatNumber(listing.views)}</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-2 flex-1">
-                    <Calendar size={16} className="text-text-muted" />
+                    <Calendar size={18} className="text-text-muted" />
                     <div>
                       <p className="text-xs text-text-muted">Data</p>
                       <p className="font-semibold text-text-primary text-sm">{formatDate(listing.createdAt)}</p>
@@ -236,10 +236,10 @@ export default function ListingsManagementPage() {
                 <div className="flex gap-2">
                   <Button
                     variant="outline"
-                    size="sm"
+                    size="md"
                     className="flex-1"
                     onClick={() => setSelectedListing(listing)}
-                    leftIcon={<Eye size={14} />}
+                    leftIcon={<Eye size={18} />}
                   >
                     Dettagli
                   </Button>
@@ -260,11 +260,11 @@ export default function ListingsManagementPage() {
 
                     <Button
                       variant="ghost"
-                      size="sm"
+                      size="md"
                       className="px-2"
                       onClick={() => setShowActions(showActions === listing.id ? null : listing.id)}
                     >
-                      <MoreVertical size={16} />
+                      <MoreVertical size={20} />
                     </Button>
                   </div>
                 </div>

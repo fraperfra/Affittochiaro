@@ -262,7 +262,7 @@ export default function ListingsPage() {
             <input
               type="text"
               placeholder="Cerca annunci..."
-              className="input pl-9 py-2 text-sm"
+              className="input pl-9 py-3 text-base"
               value={filters.search || ''}
               onChange={(e) => setFilters({ search: e.target.value })}
             />
@@ -270,16 +270,16 @@ export default function ListingsPage() {
           <button
             onClick={handleGeolocate}
             disabled={geoLoading}
-            className="shrink-0 p-2 rounded-lg bg-primary-50 text-primary-600 hover:bg-primary-100 transition-colors disabled:opacity-50"
+            className="shrink-0 p-3 rounded-lg bg-primary-50 text-primary-600 hover:bg-primary-100 transition-colors disabled:opacity-50"
             title="Vicino a me"
           >
-            {geoLoading ? <Loader2 size={16} className="animate-spin" /> : <Locate size={16} />}
+            {geoLoading ? <Loader2 size={24} className="animate-spin" /> : <Locate size={24} />}
           </button>
           <button
             onClick={() => setShowFilters(true)}
-            className="shrink-0 p-2 rounded-lg bg-background-secondary hover:bg-gray-200 transition-colors relative"
+            className="shrink-0 p-3 rounded-lg bg-background-secondary hover:bg-gray-200 transition-colors relative"
           >
-            <SlidersHorizontal size={16} />
+            <SlidersHorizontal size={24} />
             {(filters.city || filters.maxPrice || filters.minRooms) && (
               <span className="absolute -top-1 -right-1 w-2 h-2 bg-primary-500 rounded-full" />
             )}
@@ -294,9 +294,9 @@ export default function ListingsPage() {
           {(filters.city || filters.maxPrice || filters.minRooms) && (
             <button
               onClick={handleClearFilters}
-              className="text-xs text-primary-500 hover:text-primary-600 flex items-center gap-1"
+              className="p-2 text-sm text-primary-500 hover:text-primary-600 flex items-center gap-1"
             >
-              <X size={12} />
+              <X size={16} />
               Reset
             </button>
           )}
@@ -454,9 +454,8 @@ export default function ListingsPage() {
                       <span className="absolute top-1.5 left-1.5 px-1.5 py-0.5 text-[10px] font-bold bg-primary-500 text-white rounded">NUOVO</span>
                     )}
                     <button
-                      className={`absolute top-1.5 right-1.5 w-6 h-6 rounded-full flex items-center justify-center transition-colors ${
-                        isSaved ? 'bg-error text-white' : 'bg-white/90 text-text-secondary hover:text-error'
-                      }`}
+                      className={`absolute top-1.5 right-1.5 w-6 h-6 rounded-full flex items-center justify-center transition-colors ${isSaved ? 'bg-error text-white' : 'bg-white/90 text-text-secondary hover:text-error'
+                        }`}
                       onClick={(e) => { e.stopPropagation(); toggleSavedListing(listing.id); }}
                     >
                       <Heart size={12} fill={isSaved ? 'currentColor' : 'none'} />
@@ -466,32 +465,32 @@ export default function ListingsPage() {
                   {/* Info */}
                   <div className="flex-1 p-3 min-w-0 flex flex-col justify-between">
                     <div>
-                      <h3 className="font-semibold text-sm text-text-primary line-clamp-1">{listing.title}</h3>
-                      <div className="flex items-center gap-1 text-text-secondary text-xs mt-0.5">
-                        <MapPin size={11} className="shrink-0" />
+                      <h3 className="font-bold text-lg text-text-primary line-clamp-1">{listing.title}</h3>
+                      <div className="flex items-center gap-1 text-text-secondary text-sm mt-1">
+                        <MapPin size={14} className="shrink-0" />
                         <span className="truncate">{listing.address.city}{listing.zone ? ` • ${listing.zone}` : ''}</span>
                       </div>
-                      <div className="flex gap-1.5 mt-1.5 flex-wrap">
-                        <span className="text-[10px] px-1.5 py-0.5 bg-background-secondary rounded text-text-secondary">{listing.rooms} locali</span>
-                        <span className="text-[10px] px-1.5 py-0.5 bg-background-secondary rounded text-text-secondary">{listing.squareMeters}m²</span>
-                        {listing.furnished === 'yes' && <span className="text-[10px] px-1.5 py-0.5 bg-background-secondary rounded text-text-secondary">Arredato</span>}
+                      <div className="flex gap-1.5 mt-2 flex-wrap">
+                        <span className="text-xs px-2 py-1 bg-background-secondary rounded text-text-secondary">{listing.rooms} locali</span>
+                        <span className="text-xs px-2 py-1 bg-background-secondary rounded text-text-secondary">{listing.squareMeters}m²</span>
+                        {listing.furnished === 'yes' && <span className="text-xs px-2 py-1 bg-background-secondary rounded text-text-secondary">Arredato</span>}
                       </div>
                     </div>
-                    <div className="flex items-center justify-between mt-2">
-                      <span className="text-base font-bold text-primary-600">
-                        {formatCurrency(listing.price)}<span className="text-[10px] font-normal text-text-muted">/mese</span>
+                    <div className="flex items-center justify-between mt-3">
+                      <span className="text-xl font-bold text-primary-600">
+                        {formatCurrency(listing.price)}<span className="text-sm font-normal text-text-muted">/mese</span>
                       </span>
-                      <div className="flex items-center gap-2">
-                        <span className="hidden md:flex items-center gap-1 text-[10px] text-text-muted"><Users size={11} />{listing.applicationsCount}</span>
-                        <span className="hidden md:flex items-center gap-1 text-[10px] text-text-muted"><Eye size={11} />{listing.views}</span>
+                      <div className="flex items-center gap-3">
+                        <span className="hidden md:flex items-center gap-1 text-xs text-text-muted"><Users size={14} />{listing.applicationsCount}</span>
+                        <span className="hidden md:flex items-center gap-1 text-xs text-text-muted"><Eye size={14} />{listing.views}</span>
                         {isApplied(listing.id) ? (
-                          <span className="text-[10px] text-text-muted flex items-center gap-0.5"><CheckCircle size={11} /> Inviata</span>
+                          <span className="text-xs text-text-muted flex items-center gap-1"><CheckCircle size={14} /> Inviata</span>
                         ) : (
                           <button
-                            className="text-[11px] font-semibold text-primary-500 flex items-center gap-0.5"
+                            className="text-sm font-semibold text-primary-500 flex items-center gap-1 p-2 -mr-2"
                             onClick={(e) => openApplicationForm(listing, e)}
                           >
-                            <Send size={11} /> Candidati
+                            <Send size={16} /> Candidati
                           </button>
                         )}
                       </div>
@@ -839,11 +838,10 @@ export default function ListingsPage() {
               {[1, 2, 3, 4, 5].map((num) => (
                 <button
                   key={num}
-                  className={`flex-1 py-2 rounded-lg border ${
-                    localFilters.minRooms === num
+                  className={`flex-1 py-2 rounded-lg border ${localFilters.minRooms === num
                       ? 'border-primary-500 bg-primary-50 text-primary-600'
                       : 'border-border hover:border-primary-300'
-                  }`}
+                    }`}
                   onClick={() => setLocalFilters({ ...localFilters, minRooms: num })}
                 >
                   {num}+
@@ -862,11 +860,10 @@ export default function ListingsPage() {
               ].map((opt) => (
                 <button
                   key={opt.label}
-                  className={`flex-1 py-2 rounded-lg border ${
-                    localFilters.furnished === opt.value
+                  className={`flex-1 py-2 rounded-lg border ${localFilters.furnished === opt.value
                       ? 'border-primary-500 bg-primary-50 text-primary-600'
                       : 'border-border hover:border-primary-300'
-                  }`}
+                    }`}
                   onClick={() => setLocalFilters({ ...localFilters, furnished: opt.value as any })}
                 >
                   {opt.label}

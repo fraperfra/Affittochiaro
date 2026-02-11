@@ -144,24 +144,25 @@ const MobileListingCard = React.memo(({
     {/* Header */}
     <div className="flex justify-between items-start mb-3">
       <div>
-        <h3 className="font-semibold text-text-primary line-clamp-1">{listing.title}</h3>
-        <div className="flex items-center gap-1 text-xs text-text-muted mt-1">
-          <MapPin size={12} />
+        <h3 className="text-lg font-bold text-text-primary line-clamp-1">{listing.title}</h3>
+        <div className="flex items-center gap-1 text-sm text-text-muted mt-1">
+          <MapPin size={14} />
           {listing.city}{listing.zone ? ` - ${listing.zone}` : ''}
         </div>
       </div>
-      <Badge variant={statusConfig[listing.status].variant} size="sm">
+      <Badge variant={statusConfig[listing.status].variant} size="md">
         {statusConfig[listing.status].label}
       </Badge>
     </div>
 
     {/* Price & Details */}
+    {/* Price & Details */}
     <div className="flex items-end justify-between mb-4 border-b border-border pb-3">
       <div>
-        <p className="text-xl font-bold text-primary-600">{formatCurrency(listing.price)}<span className="text-xs font-normal text-text-muted">/mese</span></p>
-        <p className="text-xs text-text-muted">+{formatCurrency(listing.expenses)} spese</p>
+        <p className="text-2xl font-bold text-primary-600">{formatCurrency(listing.price)}<span className="text-sm font-normal text-text-muted">/mese</span></p>
+        <p className="text-sm text-text-muted">+{formatCurrency(listing.expenses)} spese</p>
       </div>
-      <div className="text-right text-xs text-text-secondary">
+      <div className="text-right text-sm text-text-secondary">
         <p>{listing.rooms} locali &bull; {listing.sqm}m²</p>
         <p>{listing.propertyType === 'apartment' ? 'Appartamento' : 'Altro'}</p>
       </div>
@@ -169,22 +170,22 @@ const MobileListingCard = React.memo(({
 
     {/* Stats Grid */}
     <div className="grid grid-cols-2 gap-3 mb-4">
-      <div className="bg-background-secondary p-2.5 rounded-lg flex items-center justify-between">
+      <div className="bg-background-secondary p-3 rounded-lg flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <Eye size={16} className="text-text-muted" />
-          <span className="text-xs text-text-secondary">Viste</span>
+          <Eye size={18} className="text-text-muted" />
+          <span className="text-sm text-text-secondary">Viste</span>
         </div>
-        <span className="font-bold text-text-primary">{formatNumber(listing.views)}</span>
+        <span className="font-bold text-text-primary text-lg">{formatNumber(listing.views)}</span>
       </div>
       <button
         onClick={() => openApplicationsModal(listing)}
-        className="bg-primary-50 p-2.5 rounded-lg flex items-center justify-between hover:bg-primary-100 transition-colors group"
+        className="bg-primary-50 p-3 rounded-lg flex items-center justify-between hover:bg-primary-100 transition-colors group"
       >
         <div className="flex items-center gap-2">
-          <Users size={16} className="text-primary-600" />
-          <span className="text-xs text-primary-700 font-medium">Candidature</span>
+          <Users size={18} className="text-primary-600" />
+          <span className="text-sm text-primary-700 font-medium">Candidature</span>
         </div>
-        <span className="font-bold text-primary-700 group-hover:scale-110 transition-transform">{appCount}</span>
+        <span className="font-bold text-primary-700 text-lg group-hover:scale-110 transition-transform">{appCount}</span>
       </button>
     </div>
 
@@ -192,29 +193,29 @@ const MobileListingCard = React.memo(({
     <div className="flex gap-2">
       <Button
         variant="outline"
-        size="sm"
+        size="md"
         className="flex-1"
         onClick={() => openEditModal(listing)}
-        leftIcon={<Edit2 size={14} />}
+        leftIcon={<Edit2 size={18} />}
       >
         Modifica
       </Button>
       {(listing.status === 'active' || listing.status === 'paused') && (
         <Button
           variant="secondary"
-          size="sm"
+          size="md"
           className="flex-1"
           onClick={() => handleToggleStatus(listing)}
-          leftIcon={listing.status === 'active' ? <Pause size={14} /> : <Play size={14} />}
+          leftIcon={listing.status === 'active' ? <Pause size={18} /> : <Play size={18} />}
         >
           {listing.status === 'active' ? 'Pausa' : 'Attiva'}
         </Button>
       )}
       <button
         onClick={() => setDeleteTarget(listing.id)}
-        className="p-2 text-error hover:bg-red-50 rounded-lg transition-colors"
+        className="p-3 text-error hover:bg-red-50 rounded-lg transition-colors"
       >
-        <Trash2 size={18} />
+        <Trash2 size={24} />
       </button>
     </div>
   </div>
