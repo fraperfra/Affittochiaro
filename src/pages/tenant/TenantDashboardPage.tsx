@@ -4,8 +4,6 @@ import {
   Eye,
   Send,
   FileText,
-  Video,
-  Upload,
   Search,
   ArrowRight,
   Clock,
@@ -300,6 +298,16 @@ function BudgetCalculatorCard() {
   );
 }
 
+const EMPLOYMENT_LABELS: Record<string, string> = {
+  permanent:   'Tempo Indeterminato',
+  fixed_term:  'Tempo Determinato',
+  freelance:   'Libero Professionista',
+  internship:  'Stage/Tirocinio',
+  student:     'Studente',
+  retired:     'Pensionato',
+  unemployed:  'In cerca di occupazione',
+};
+
 function ProfileHeaderCard({
   profile,
   tenantUser,
@@ -313,6 +321,8 @@ function ProfileHeaderCard({
   const lastName = profile?.lastName || tenantUser?.profile?.lastName || '';
   const avatarUrl = profile?.avatarUrl || tenantUser?.profile?.avatarUrl;
   const occupation = profile?.occupation || tenantUser?.profile?.occupation;
+  const employmentType = profile?.employmentType || tenantUser?.profile?.employmentType;
+  const employmentLabel = employmentType ? (EMPLOYMENT_LABELS[employmentType] ?? employmentType) : null;
   const city =
     profile?.preferences?.preferredCity ||
     profile?.city ||
@@ -391,6 +401,12 @@ function ProfileHeaderCard({
                 <span className="inline-flex items-center gap-1 text-xs bg-gray-100 text-gray-600 px-2.5 py-1 rounded-full">
                   <Briefcase size={11} />
                   {occupation}
+                </span>
+              )}
+              {employmentLabel && (
+                <span className="inline-flex items-center gap-1 text-xs bg-gray-100 text-gray-600 px-2.5 py-1 rounded-full">
+                  <FileText size={11} />
+                  {employmentLabel}
                 </span>
               )}
               {age !== null && (
@@ -590,8 +606,8 @@ export default function TenantDashboardPage() {
 
       </div>
 
-      {/* Recent Activity + Profile Completion + Quick Actions */}
-      <div className="grid lg:grid-cols-3 gap-6">
+      {/* Recent Activity + Profile Completion */}
+      <div className="grid lg:grid-cols-2 gap-6">
         {/* Recent Activity */}
         <Card>
           <CardHeader>
@@ -666,71 +682,6 @@ export default function TenantDashboardPage() {
           );
         })()}
 
-        {/* Quick Actions */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Azioni Rapide</CardTitle>
-          </CardHeader>
-          <div className="space-y-3">
-            {!profile?.hasVideo && (
-              <Link
-                to={ROUTES.TENANT_PROFILE}
-                className="flex items-center gap-4 p-4 rounded-xl bg-background-secondary hover:bg-primary-50 transition-colors group"
-              >
-                <div className="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center">
-                  <Video size={20} className="text-primary-600" />
-                </div>
-                <div className="flex-1">
-                  <p className="font-medium group-hover:text-primary-600">Aggiungi Video</p>
-                  <p className="text-sm text-text-muted">+78% risposte</p>
-                </div>
-                <ArrowRight size={18} className="text-text-muted group-hover:text-primary-500" />
-              </Link>
-            )}
-
-            <Link
-              to={ROUTES.TENANT_DOCUMENTS}
-              className="flex items-center gap-4 p-4 rounded-xl bg-background-secondary hover:bg-primary-50 transition-colors group"
-            >
-              <div className="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center">
-                <Upload size={20} className="text-primary-600" />
-              </div>
-              <div className="flex-1">
-                <p className="font-medium group-hover:text-primary-600">Carica Documenti</p>
-                <p className="text-sm text-text-muted">Gestisci i tuoi documenti</p>
-              </div>
-              <ArrowRight size={18} className="text-text-muted group-hover:text-primary-500" />
-            </Link>
-
-            <Link
-              to={ROUTES.TENANT_PROFILE}
-              className="flex items-center gap-4 p-4 rounded-xl bg-background-secondary hover:bg-primary-50 transition-colors group"
-            >
-              <div className="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center">
-                <FileText size={20} className="text-primary-600" />
-              </div>
-              <div className="flex-1">
-                <p className="font-medium group-hover:text-primary-600">Il Mio Profilo</p>
-                <p className="text-sm text-text-muted">{cv ? `${cv.completeness.total}% completo` : 'Gestisci il tuo profilo'}</p>
-              </div>
-              <ArrowRight size={18} className="text-text-muted group-hover:text-primary-500" />
-            </Link>
-
-            <Link
-              to={ROUTES.TENANT_LISTINGS}
-              className="flex items-center gap-4 p-4 rounded-xl bg-background-secondary hover:bg-primary-50 transition-colors group"
-            >
-              <div className="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center">
-                <Search size={20} className="text-primary-600" />
-              </div>
-              <div className="flex-1">
-                <p className="font-medium group-hover:text-primary-600">Cerca Casa</p>
-                <p className="text-sm text-text-muted">15.243 annunci</p>
-              </div>
-              <ArrowRight size={18} className="text-text-muted group-hover:text-primary-500" />
-            </Link>
-          </div>
-        </Card>
       </div>
 
       {/* Budget Calculator */}
