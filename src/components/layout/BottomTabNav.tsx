@@ -4,7 +4,6 @@ import {
   Home,
   Sparkles,
   Search as SearchIcon,
-  MessageSquare,
   LayoutDashboard,
   Users,
   Building2,
@@ -18,19 +17,18 @@ interface TabItem {
   icon: React.ComponentType<{ size?: number; className?: string }>;
   label: string;
   href: string;
-  badgeKey?: 'messages' | 'applications';
+  badgeKey?: 'applications';
 }
 
 interface BottomTabNavProps {
   userRole: 'tenant' | 'agency' | 'admin';
-  badges?: { messages?: number; applications?: number };
+  badges?: { applications?: number };
 }
 
 const tenantTabs: TabItem[] = [
   { icon: Home, label: 'Home', href: ROUTES.TENANT_DASHBOARD },
   { icon: Sparkles, label: 'Servizi', href: ROUTES.TENANT_SERVICES },
   { icon: Megaphone, label: 'Annunci', href: ROUTES.TENANT_LISTINGS },
-  { icon: MessageSquare, label: 'Messaggi', href: ROUTES.TENANT_MESSAGES, badgeKey: 'messages' },
   { icon: MoreHorizontal, label: 'Altro', href: ROUTES.TENANT_MORE },
 ];
 
@@ -38,7 +36,6 @@ const agencyTabs: TabItem[] = [
   { icon: LayoutDashboard, label: 'Home', href: ROUTES.AGENCY_DASHBOARD },
   { icon: SearchIcon, label: 'Cerca', href: ROUTES.AGENCY_TENANTS },
   { icon: Megaphone, label: 'Annunci', href: ROUTES.AGENCY_LISTINGS },
-  { icon: MessageSquare, label: 'Chat', href: ROUTES.AGENCY_MESSAGES, badgeKey: 'messages' },
   { icon: MoreHorizontal, label: 'Altro', href: ROUTES.AGENCY_MORE },
 ];
 

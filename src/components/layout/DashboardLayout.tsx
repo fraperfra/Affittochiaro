@@ -16,7 +16,6 @@ import {
   CreditCard,
   ChevronDown,
   Inbox,
-  MessageSquare,
   FolderOpen,
   Calculator,
   Sparkles,
@@ -44,7 +43,6 @@ const tenantNavItems: NavItem[] = [
   { icon: <User size={20} />, label: 'Il Mio Profilo', path: ROUTES.TENANT_PROFILE },
   { icon: <Search size={20} />, label: 'Cerca Annunci', path: ROUTES.TENANT_LISTINGS },
   { icon: <Sparkles size={20} />, label: 'Servizi', path: ROUTES.TENANT_SERVICES },
-  { icon: <MessageSquare size={20} />, label: 'Messaggi', path: ROUTES.TENANT_MESSAGES },
   { icon: <Bell size={20} />, label: 'Notifiche', path: ROUTES.TENANT_NOTIFICATIONS, badge: 3 },
   { icon: <Settings size={20} />, label: 'Impostazioni', path: ROUTES.TENANT_SETTINGS },
 ];
@@ -54,7 +52,6 @@ const agencyNavItems: NavItem[] = [
   { icon: <Inbox size={20} />, label: 'Candidature', path: ROUTES.AGENCY_APPLICATIONS, badge: 0 },
   { icon: <Users size={20} />, label: 'Cerca Inquilini', path: ROUTES.AGENCY_TENANTS },
   { icon: <Home size={20} />, label: 'I Miei Annunci', path: ROUTES.AGENCY_LISTINGS },
-  { icon: <MessageSquare size={20} />, label: 'Messaggi', path: ROUTES.AGENCY_MESSAGES },
   { icon: <CreditCard size={20} />, label: 'Piano & Crediti', path: ROUTES.AGENCY_PLAN },
   { icon: <FolderOpen size={20} />, label: 'Documenti', path: ROUTES.AGENCY_DOCUMENTS },
   { icon: <Calculator size={20} />, label: 'Calcolatori', path: ROUTES.AGENCY_CALCULATORS },
@@ -600,7 +597,6 @@ export default function DashboardLayout({ userRole }: DashboardLayoutProps) {
       <BottomTabNav
         userRole={userRole}
         badges={{
-          messages: 3,
           applications: unreadApplications,
         }}
       />
