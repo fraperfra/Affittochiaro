@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import {
   Eye,
   Send,
-  Star,
   FileText,
   Video,
   Upload,
@@ -16,12 +15,13 @@ import {
   Euro,
   Info,
   ChevronDown,
+  Sparkles,
 } from 'lucide-react';
 import { useAuthStore, useCVStore } from '../../store';
 import { TenantUser } from '../../types';
 import { ROUTES } from '../../utils/constants';
 import { formatRelativeTime } from '../../utils/formatters';
-import { Card, CardHeader, CardTitle, Button, StatCard, Badge, ProfileCompletionCard } from '../../components/ui';
+import { Card, CardHeader, CardTitle, Button, Badge, ProfileCompletionCard } from '../../components/ui';
 
 // Mock recent activity
 const recentActivity = [
@@ -359,28 +359,73 @@ export default function TenantDashboardPage() {
         </div>
       )}
 
-      {/* Stats Grid */}
+      {/* Quick Actions Grid */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatCard
-          icon="👁️"
-          label="Visualizzazioni Profilo"
-          value={profile?.profileViews ?? (calculatedCompletion >= 50 ? 127 : 3)}
-        />
-        <StatCard
-          icon="📩"
-          label="Candidature Inviate"
-          value={profile?.applicationsSent ?? 8}
-        />
-        <StatCard
-          icon={<Star className="text-yellow-500" size={28} />}
-          label="Match Ricevuti"
-          value={profile?.matchesReceived ?? (calculatedCompletion >= 50 ? 3 : 0)}
-        />
-        <StatCard
-          icon="📄"
-          label="CV Completezza"
-          value={cv ? `${cv.completeness.total}%` : `${calculatedCompletion}%`}
-        />
+
+        {/* Cerca Casa */}
+        <Link
+          to={ROUTES.TENANT_LISTINGS}
+          className="bg-white rounded-2xl shadow-card p-4 flex items-center gap-3 hover:shadow-md transition-all group"
+        >
+          <div className="w-10 h-10 rounded-xl bg-teal-50 flex items-center justify-center shrink-0">
+            <Search size={20} className="text-teal-600" />
+          </div>
+          <div className="min-w-0">
+            <p className="font-semibold text-sm text-gray-900 group-hover:text-teal-600 transition-colors">Cerca Casa</p>
+            <p className="text-xs text-gray-500 mt-0.5">15.243 annunci</p>
+          </div>
+        </Link>
+
+        {/* Candidature inviate */}
+        <div className="bg-white rounded-2xl shadow-card p-4 space-y-3">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center shrink-0">
+              <Send size={18} className="text-blue-600" />
+            </div>
+            <div>
+              <p className="font-semibold text-sm text-gray-900">Candidature</p>
+              <p className="text-xs text-gray-500">{profile?.applicationsSent ?? 8} inviate</p>
+            </div>
+          </div>
+          <div className="space-y-1.5">
+            <div className="flex items-center justify-between gap-1">
+              <p className="text-xs text-gray-600 truncate">Bilocale Milano</p>
+              <span className="text-[10px] bg-amber-100 text-amber-700 px-1.5 py-0.5 rounded-full shrink-0">In attesa</span>
+            </div>
+            <div className="flex items-center justify-between gap-1">
+              <p className="text-xs text-gray-600 truncate">Trilocale Roma</p>
+              <span className="text-[10px] bg-green-100 text-green-700 px-1.5 py-0.5 rounded-full shrink-0">Accettata</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Visualizzazione profilo */}
+        <div className="bg-white rounded-2xl shadow-card p-4 flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-violet-50 flex items-center justify-center shrink-0">
+            <Eye size={20} className="text-violet-600" />
+          </div>
+          <div>
+            <p className="font-semibold text-sm text-gray-900">Visualizzazioni</p>
+            <p className="text-xs text-gray-500 mt-0.5">
+              {profile?.profileViews ?? (calculatedCompletion >= 50 ? 127 : 3)} questo mese
+            </p>
+          </div>
+        </div>
+
+        {/* Extra Visibilità */}
+        <Link
+          to={ROUTES.TENANT_SERVICES}
+          className="bg-white rounded-2xl shadow-card p-4 flex items-center gap-3 hover:shadow-md transition-all group"
+        >
+          <div className="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center shrink-0">
+            <Sparkles size={20} className="text-amber-500" />
+          </div>
+          <div className="min-w-0">
+            <p className="font-semibold text-sm text-gray-900 group-hover:text-amber-600 transition-colors">Extra Visibilità</p>
+            <p className="text-xs text-gray-500 mt-0.5">Potenzia il profilo</p>
+          </div>
+        </Link>
+
       </div>
 
       {/* Recent Activity + Profile Completion + Quick Actions */}
