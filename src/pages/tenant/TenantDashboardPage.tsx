@@ -16,6 +16,12 @@ import {
   Info,
   ChevronDown,
   Sparkles,
+  Camera,
+  Briefcase,
+  MapPin,
+  Calendar,
+  CheckCircle,
+  Shield,
 } from 'lucide-react';
 import { useAuthStore, useCVStore } from '../../store';
 import { TenantUser } from '../../types';
@@ -273,6 +279,155 @@ function BudgetCalculatorCard() {
   );
 }
 
+function ProfileHeaderCard({
+  profile,
+  tenantUser,
+  calculatedCompletion,
+}: {
+  profile: any;
+  tenantUser: TenantUser;
+  calculatedCompletion: number;
+}) {
+  const firstName = profile?.firstName || tenantUser?.profile?.firstName || 'Utente';
+  const lastName = profile?.lastName || tenantUser?.profile?.lastName || '';
+  const avatarUrl = profile?.avatarUrl || tenantUser?.profile?.avatarUrl;
+  const occupation = profile?.occupation || tenantUser?.profile?.occupation;
+  const city =
+    profile?.preferences?.preferredCity ||
+    profile?.city ||
+    tenantUser?.profile?.city;
+  const isVerified = profile?.isVerified ?? tenantUser?.profile?.isVerified;
+  const hasVideo = profile?.hasVideo ?? tenantUser?.profile?.hasVideo;
+
+  const getAge = (): number | null => {
+    const dob = profile?.dateOfBirth || tenantUser?.profile?.dateOfBirth;
+    if (!dob) return null;
+    const d = new Date(dob);
+    const today = new Date();
+    let age = today.getFullYear() - d.getFullYear();
+    const m = today.getMonth() - d.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < d.getDate())) age--;
+    return age > 0 ? age : null;
+  };
+  const age = getAge();
+  const initials = `${firstName?.[0] || ''}${lastName?.[0] || ''}`.toUpperCase();
+
+  return (
+    <div className="bg-white rounded-2xl shadow-card overflow-hidden">
+      {/* Accent strip */}
+      <div className="h-1 bg-gradient-to-r from-teal-500 to-emerald-400" />
+
+      <div className="p-4 md:p-5">
+        <div className="flex items-start gap-4">
+
+          {/* Avatar column */}
+          <Link to={ROUTES.TENANT_PROFILE} className="relative shrink-0 group">
+            <div className="w-[68px] h-[68px] md:w-[84px] md:h-[84px] rounded-2xl overflow-hidden bg-gradient-to-br from-teal-100 to-emerald-200 flex items-center justify-center">
+              {avatarUrl ? (
+                <img src={avatarUrl} alt={firstName} className="w-full h-full object-cover" />
+              ) : (
+                <span className="text-2xl md:text-3xl font-bold text-teal-700 select-none leading-none">
+                  {initials || '?'}
+                </span>
+              )}
+            </div>
+            {/* Camera button */}
+            <div className="absolute -bottom-2 -right-2 w-7 h-7 bg-teal-500 rounded-full flex items-center justify-center shadow border-2 border-white group-hover:bg-teal-600 transition-colors">
+              <Camera size={13} className="text-white" />
+            </div>
+            {/* "Aggiungi foto" nudge */}
+            {!avatarUrl && (
+              <p className="mt-3 text-center text-[10px] text-gray-400 leading-tight whitespace-nowrap">
+                Aggiungi foto
+              </p>
+            )}
+          </Link>
+
+          {/* Info column */}
+          <div className="flex-1 min-w-0">
+            {/* Name + completion */}
+            <div className="flex items-start justify-between gap-2">
+              <div className="min-w-0">
+                <h2 className="text-lg md:text-xl font-bold text-gray-900 leading-tight truncate">
+                  {firstName} {lastName}
+                </h2>
+                <p className="text-xs text-gray-400 mt-0.5">Benvenuto! come va oggi? 🙂</p>
+              </div>
+              <span className={`shrink-0 text-xs font-semibold px-2.5 py-1 rounded-full whitespace-nowrap ${
+                calculatedCompletion >= 80
+                  ? 'bg-green-100 text-green-700'
+                  : calculatedCompletion >= 50
+                  ? 'bg-amber-100 text-amber-700'
+                  : 'bg-red-100 text-red-600'
+              }`}>
+                {calculatedCompletion}% completo
+              </span>
+            </div>
+
+            {/* Info pills */}
+            <div className="mt-3 flex flex-wrap gap-1.5">
+              {occupation && (
+                <span className="inline-flex items-center gap-1 text-xs bg-gray-100 text-gray-600 px-2.5 py-1 rounded-full">
+                  <Briefcase size={11} />
+                  {occupation}
+                </span>
+              )}
+              {age !== null && (
+                <span className="inline-flex items-center gap-1 text-xs bg-gray-100 text-gray-600 px-2.5 py-1 rounded-full">
+                  <Calendar size={11} />
+                  {age} anni
+                </span>
+              )}
+              {city && (
+                <span className="inline-flex items-center gap-1 text-xs bg-gray-100 text-gray-600 px-2.5 py-1 rounded-full">
+                  <MapPin size={11} />
+                  {city}
+                </span>
+              )}
+              {!occupation && !city && (
+                <Link
+                  to={ROUTES.TENANT_PROFILE}
+                  className="text-xs text-teal-600 hover:underline"
+                >
+                  + Completa le tue info
+                </Link>
+              )}
+            </div>
+
+            {/* Badges */}
+            <div className="mt-2 flex flex-wrap gap-1.5">
+              {isVerified ? (
+                <span className="inline-flex items-center gap-1 text-[11px] font-medium bg-emerald-50 text-emerald-700 border border-emerald-200 px-2 py-0.5 rounded-full">
+                  <CheckCircle size={10} />
+                  Verificato
+                </span>
+              ) : (
+                <Link
+                  to={ROUTES.TENANT_PROFILE}
+                  className="inline-flex items-center gap-1 text-[11px] font-medium bg-gray-50 text-gray-500 border border-dashed border-gray-300 px-2 py-0.5 rounded-full hover:border-teal-400 hover:text-teal-600 transition-colors"
+                >
+                  <Shield size={10} />
+                  Verifica profilo
+                </Link>
+              )}
+              {hasVideo && (
+                <span className="inline-flex items-center gap-1 text-[11px] font-medium bg-blue-50 text-blue-700 border border-blue-200 px-2 py-0.5 rounded-full">
+                  🎥 Video
+                </span>
+              )}
+              {calculatedCompletion >= 80 && (
+                <span className="inline-flex items-center gap-1 text-[11px] font-medium bg-amber-50 text-amber-700 border border-amber-200 px-2 py-0.5 rounded-full">
+                  ⭐ Profilo completo
+                </span>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function TenantDashboardPage() {
   const { user } = useAuthStore();
   const { cv, loadCV } = useCVStore();
@@ -332,19 +487,12 @@ export default function TenantDashboardPage() {
 
   return (
     <div className="space-y-6">
-      {/* Welcome Card */}
-      <Card className="bg-gradient-to-r from-teal-600 to-primary-500 text-white">
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-          <div>
-            <h1 className="text-2xl font-bold mb-1">
-              Benvenuto, {profile?.firstName || tenantUser?.profile?.firstName || 'Utente'}!
-            </h1>
-            <p className="text-white/90 text-lg flex items-center gap-2">
-              come va oggi? spero tutto bene <span className="text-2xl">🙂</span>
-            </p>
-          </div>
-        </div>
-      </Card>
+      {/* Profile Header */}
+      <ProfileHeaderCard
+        profile={profile}
+        tenantUser={tenantUser}
+        calculatedCompletion={calculatedCompletion}
+      />
 
       {/* Alert for low completion */}
       {calculatedCompletion < 50 && (
