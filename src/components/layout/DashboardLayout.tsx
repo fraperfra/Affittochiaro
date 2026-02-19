@@ -19,6 +19,7 @@ import {
   MessageSquare,
   FolderOpen,
   Calculator,
+  Sparkles,
 } from 'lucide-react';
 import { useAuthStore } from '../../store';
 import { ROUTES } from '../../utils/constants';
@@ -41,9 +42,8 @@ interface NavItem {
 const tenantNavItems: NavItem[] = [
   { icon: <Home size={20} />, label: 'Dashboard', path: ROUTES.TENANT_DASHBOARD },
   { icon: <User size={20} />, label: 'Il Mio Profilo', path: ROUTES.TENANT_PROFILE },
-  { icon: <FolderOpen size={20} />, label: 'Documenti', path: ROUTES.TENANT_DOCUMENTS },
   { icon: <Search size={20} />, label: 'Cerca Annunci', path: ROUTES.TENANT_LISTINGS },
-  { icon: <Building2 size={20} />, label: 'Agenzie', path: ROUTES.TENANT_AGENCIES },
+  { icon: <Sparkles size={20} />, label: 'Servizi', path: ROUTES.TENANT_SERVICES },
   { icon: <MessageSquare size={20} />, label: 'Messaggi', path: ROUTES.TENANT_MESSAGES },
   { icon: <Bell size={20} />, label: 'Notifiche', path: ROUTES.TENANT_NOTIFICATIONS, badge: 3 },
   { icon: <Settings size={20} />, label: 'Impostazioni', path: ROUTES.TENANT_SETTINGS },

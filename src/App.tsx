@@ -2,16 +2,15 @@ import { useState, lazy, Suspense } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { useAuthStore } from './store';
 import { ROUTES } from './utils/constants';
+import { Analytics } from '@vercel/analytics/react';
 
 // Landing Page Components (from root) - eagerly loaded (entry point)
 import { useNotifications } from '../hooks';
 import {
   Header as LandingHeader,
-  MobileMenu,
   LiveNotifications,
   Footer,
   StickyBottomBar,
-  ChatButton,
   ExitIntentPopup,
 } from '../components';
 import { AddToHomeScreenModal } from './components/ui';
@@ -21,6 +20,13 @@ import {
   ComeFunzionaPage,
   FAQPage,
   NotFoundPage,
+  RicercaInquilinoPage,
+  ServiziCasaPage,
+  AgenziePartnerPage,
+  AffittoNewsPage,
+  ChiSiamoPage,
+  ArticlePresentarsiProprietario,
+  ComponentLibraryPage,
 } from '../pages';
 
 // App Layouts - eagerly loaded (shared shell)
@@ -50,6 +56,7 @@ const TenantMorePage = lazy(() => import('./pages/tenant/TenantMorePage'));
 // Agency Pages - lazy loaded
 const AgencyDashboardPage = lazy(() => import('./pages/agency/AgencyDashboardPage'));
 const TenantSearchPage = lazy(() => import('./pages/agency/TenantSearchPage'));
+const AgencyUnlockedProfilesPage = lazy(() => import('./pages/agency/AgencyUnlockedProfilesPage'));
 const MyListingsPage = lazy(() => import('./pages/agency/MyListingsPage'));
 const ApplicationsPage = lazy(() => import('./pages/agency/ApplicationsPage'));
 const PlanPage = lazy(() => import('./pages/agency/PlanPage'));
@@ -69,6 +76,7 @@ const MessagesPage = lazy(() => import('./pages/MessagesPage'));
 // Additional Pages - lazy loaded
 const TenantDocumentsPage = lazy(() => import('./pages/tenant/TenantDocumentsPage'));
 const TenantTemplatesPage = lazy(() => import('./pages/tenant/TenantTemplatesPage'));
+const TenantServicesPage = lazy(() => import('./pages/tenant/TenantServicesPage'));
 const AgencyDocumentsPage = lazy(() => import('./pages/agency/AgencyDocumentsPage'));
 const AgencyCalculatorsPage = lazy(() => import('./pages/agency/AgencyCalculatorsPage'));
 
@@ -110,20 +118,22 @@ function LandingWrapper({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="min-h-screen bg-white font-sans selection:bg-action-green/30 overflow-x-hidden relative">
-      <MobileMenu isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} />
       <LandingHeader />
       <LiveNotifications notifications={notifications} onDismiss={dismissNotification} />
       <main className="pt-20">
         {children}
       </main>
       <Footer />
-      <StickyBottomBar onMenuToggle={() => setIsMenuOpen(!isMenuOpen)} />
-      <ChatButton />
+      <StickyBottomBar onMenuToggle={() => { }} />
       <ExitIntentPopup />
       <AddToHomeScreenModal />
     </div>
   );
 }
+
+
+
+const isMaintenanceMode = import.meta.env.VITE_MAINTENANCE_MODE === 'true';
 
 // Home Page with state
 function HomePageWithState() {
@@ -142,153 +152,213 @@ function HomePageWithState() {
   );
 }
 
-const isMaintenanceMode = import.meta.env.VITE_MAINTENANCE_MODE === 'true';
-
 function App() {
   if (isMaintenanceMode) {
     return <MaintenancePage />;
   }
 
   return (
-    <Suspense fallback={<FullPageSpinner />}>
-      <Routes>
-        {/* Landing Pages (public with landing layout) */}
-        <Route
-          path="/"
-          element={
-            <LandingWrapper>
-              <HomePageWithState />
-            </LandingWrapper>
-          }
-        />
-        <Route
-          path="/annunci"
-          element={
-            <LandingWrapper>
-              <AnnunciPage />
-            </LandingWrapper>
-          }
-        />
-        <Route
-          path="/come-funziona"
-          element={
-            <LandingWrapper>
-              <ComeFunzionaPage />
-            </LandingWrapper>
-          }
-        />
-        <Route
-          path="/faq"
-          element={
-            <LandingWrapper>
-              <FAQPage />
-            </LandingWrapper>
-          }
-        />
+    <>
+      <Suspense fallback={<FullPageSpinner />}>
+        <Routes>
+          {/* Landing Pages (public with landing layout) */}
+          <Route
+            path="/"
+            element={
+              <LandingWrapper>
+                <HomePageWithState />
+              </LandingWrapper>
+            }
+          />
+          <Route
+            path="/annunci"
+            element={
+              <LandingWrapper>
+                <AnnunciPage />
+              </LandingWrapper>
+            }
+          />
+          <Route
+            path="/come-funziona"
+            element={
+              <LandingWrapper>
+                <ComeFunzionaPage />
+              </LandingWrapper>
+            }
+          />
+          <Route
+            path="/faq"
+            element={
+              <LandingWrapper>
+                <FAQPage />
+              </LandingWrapper>
+            }
+          />
+          <Route
+            path="/ricerca-inquilino"
+            element={
+              <LandingWrapper>
+                <RicercaInquilinoPage />
+              </LandingWrapper>
+            }
+          />
+          <Route
+            path="/servizi"
+            element={
+              <LandingWrapper>
+                <ServiziCasaPage />
+              </LandingWrapper>
+            }
+          />
+          <Route
+            path="/agenzie"
+            element={
+              <LandingWrapper>
+                <AgenziePartnerPage />
+              </LandingWrapper>
+            }
+          />
+          <Route
+            path="/affittonews"
+            element={
+              <LandingWrapper>
+                <AffittoNewsPage />
+              </LandingWrapper>
+            }
+          />
+          <Route
+            path="/chi-siamo"
+            element={
+              <LandingWrapper>
+                <ChiSiamoPage />
+              </LandingWrapper>
+            }
+          />
 
-        {/* Auth Pages (no layout) */}
-        <Route
-          path={ROUTES.LOGIN}
-          element={
-            <PublicGuard>
-              <LoginPage />
-            </PublicGuard>
-          }
-        />
-        <Route
-          path={ROUTES.REGISTER}
-          element={
-            <PublicGuard>
-              <RegisterPage />
-            </PublicGuard>
-          }
-        />
-        <Route
-          path={ROUTES.CONFIRM_EMAIL}
-          element={<ConfirmEmailPage />}
-        />
-        <Route
-          path={ROUTES.FORGOT_PASSWORD}
-          element={
-            <PublicGuard>
-              <ForgotPasswordPage />
-            </PublicGuard>
-          }
-        />
+          <Route
+            path="/design-system"
+            element={
+              <LandingWrapper>
+                <ComponentLibraryPage />
+              </LandingWrapper>
+            }
+          />
+          <Route
+            path="/guida-affitto/inquilini/come-presentarsi-proprietario"
+            element={
+              <LandingWrapper>
+                <ArticlePresentarsiProprietario />
+              </LandingWrapper>
+            }
+          />
 
-        {/* Tenant Routes */}
-        <Route
-          path="/tenant"
-          element={
-            <AuthGuard allowedRoles={['tenant']}>
-              <DashboardLayout userRole="tenant" />
-            </AuthGuard>
-          }
-        >
-          <Route index element={<TenantDashboardPage />} />
-          <Route path="profile" element={<TenantProfilePage />} />
-          <Route path="cv/preview" element={<TenantCVPreviewPage />} />
-          <Route path="listings" element={<ListingsPage />} />
-          <Route path="notifications" element={<NotificationsPage />} />
-          <Route path="agencies" element={<TenantAgenciesPage />} />
-          <Route path="documents" element={<TenantDocumentsPage />} />
-          <Route path="messages" element={<MessagesPage />} />
-          <Route path="settings" element={<SettingsPage />} />
-          <Route path="templates" element={<TenantTemplatesPage />} />
-          <Route path="more" element={<TenantMorePage />} />
-          <Route path="*" element={<Navigate to={ROUTES.TENANT_DASHBOARD} replace />} />
-        </Route>
+          {/* Auth Pages (no layout) */}
+          <Route
+            path={ROUTES.LOGIN}
+            element={
+              <PublicGuard>
+                <LoginPage />
+              </PublicGuard>
+            }
+          />
+          <Route
+            path={ROUTES.REGISTER}
+            element={
+              <PublicGuard>
+                <RegisterPage />
+              </PublicGuard>
+            }
+          />
+          <Route
+            path={ROUTES.CONFIRM_EMAIL}
+            element={<ConfirmEmailPage />}
+          />
+          <Route
+            path={ROUTES.FORGOT_PASSWORD}
+            element={
+              <PublicGuard>
+                <ForgotPasswordPage />
+              </PublicGuard>
+            }
+          />
 
-        {/* Agency Routes */}
-        <Route
-          path="/agency"
-          element={
-            <AuthGuard allowedRoles={['agency']}>
-              <DashboardLayout userRole="agency" />
-            </AuthGuard>
-          }
-        >
-          <Route index element={<AgencyDashboardPage />} />
-          <Route path="tenants" element={<TenantSearchPage />} />
-          <Route path="listings" element={<MyListingsPage />} />
-          <Route path="applications" element={<ApplicationsPage />} />
-          <Route path="plan" element={<PlanPage />} />
-          <Route path="messages" element={<MessagesPage />} />
-          <Route path="settings" element={<SettingsPage />} />
-          <Route path="documents" element={<AgencyDocumentsPage />} />
-          <Route path="calculators" element={<AgencyCalculatorsPage />} />
-          <Route path="more" element={<AgencyMorePage />} />
-          <Route path="*" element={<Navigate to={ROUTES.AGENCY_DASHBOARD} replace />} />
-        </Route>
+          {/* Tenant Routes */}
+          <Route
+            path="/tenant"
+            element={
+              <AuthGuard allowedRoles={['tenant']}>
+                <DashboardLayout userRole="tenant" />
+              </AuthGuard>
+            }
+          >
+            <Route index element={<TenantDashboardPage />} />
+            <Route path="profile" element={<TenantProfilePage />} />
+            <Route path="cv/preview" element={<TenantCVPreviewPage />} />
+            <Route path="listings" element={<ListingsPage />} />
+            <Route path="notifications" element={<NotificationsPage />} />
+            <Route path="agencies" element={<TenantAgenciesPage />} />
+            <Route path="documents" element={<TenantDocumentsPage />} />
+            <Route path="services" element={<TenantServicesPage />} />
+            <Route path="messages" element={<MessagesPage />} />
+            <Route path="settings" element={<SettingsPage />} />
+            <Route path="templates" element={<TenantTemplatesPage />} />
+            <Route path="more" element={<TenantMorePage />} />
+            <Route path="*" element={<Navigate to={ROUTES.TENANT_DASHBOARD} replace />} />
+          </Route>
 
-        {/* Admin Routes */}
-        <Route
-          path="/admin"
-          element={
-            <AuthGuard allowedRoles={['admin']}>
-              <DashboardLayout userRole="admin" />
-            </AuthGuard>
-          }
-        >
-          <Route index element={<AdminDashboardPage />} />
-          <Route path="tenants" element={<TenantsManagementPage />} />
-          <Route path="agencies" element={<AgenciesManagementPage />} />
-          <Route path="listings" element={<ListingsManagementPage />} />
-          <Route path="system" element={<SystemPage />} />
-          <Route path="*" element={<Navigate to={ROUTES.ADMIN_DASHBOARD} replace />} />
-        </Route>
+          {/* Agency Routes */}
+          <Route
+            path="/agency"
+            element={
+              <AuthGuard allowedRoles={['agency']}>
+                <DashboardLayout userRole="agency" />
+              </AuthGuard>
+            }
+          >
+            <Route index element={<AgencyDashboardPage />} />
+            <Route path="tenants" element={<TenantSearchPage />} />
+            <Route path="unlocked-profiles" element={<AgencyUnlockedProfilesPage />} />
+            <Route path="listings" element={<MyListingsPage />} />
+            <Route path="applications" element={<ApplicationsPage />} />
+            <Route path="plan" element={<PlanPage />} />
+            <Route path="messages" element={<MessagesPage />} />
+            <Route path="settings" element={<SettingsPage />} />
+            <Route path="documents" element={<AgencyDocumentsPage />} />
+            <Route path="calculators" element={<AgencyCalculatorsPage />} />
+            <Route path="more" element={<AgencyMorePage />} />
+            <Route path="*" element={<Navigate to={ROUTES.AGENCY_DASHBOARD} replace />} />
+          </Route>
 
-        {/* 404 */}
-        <Route
-          path="*"
-          element={
-            <LandingWrapper>
-              <NotFoundPage />
-            </LandingWrapper>
-          }
-        />
-      </Routes>
-    </Suspense>
+          {/* Admin Routes */}
+          <Route
+            path="/admin"
+            element={
+              <AuthGuard allowedRoles={['admin']}>
+                <DashboardLayout userRole="admin" />
+              </AuthGuard>
+            }
+          >
+            <Route index element={<AdminDashboardPage />} />
+            <Route path="tenants" element={<TenantsManagementPage />} />
+            <Route path="agencies" element={<AgenciesManagementPage />} />
+            <Route path="listings" element={<ListingsManagementPage />} />
+            <Route path="system" element={<SystemPage />} />
+            <Route path="*" element={<Navigate to={ROUTES.ADMIN_DASHBOARD} replace />} />
+          </Route>
+
+          {/* 404 */}
+          <Route
+            path="*"
+            element={
+              <LandingWrapper>
+                <NotFoundPage />
+              </LandingWrapper>
+            }
+          />
+        </Routes>
+      </Suspense>
+      <Analytics />
+    </>
   );
 }
 

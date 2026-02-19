@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import {
   Home,
-  FolderOpen,
+  Sparkles,
   Search as SearchIcon,
   MessageSquare,
   LayoutDashboard,
@@ -28,7 +28,7 @@ interface BottomTabNavProps {
 
 const tenantTabs: TabItem[] = [
   { icon: Home, label: 'Home', href: ROUTES.TENANT_DASHBOARD },
-  { icon: FolderOpen, label: 'Documenti', href: ROUTES.TENANT_DOCUMENTS },
+  { icon: Sparkles, label: 'Servizi', href: ROUTES.TENANT_SERVICES },
   { icon: Megaphone, label: 'Annunci', href: ROUTES.TENANT_LISTINGS },
   { icon: MessageSquare, label: 'Messaggi', href: ROUTES.TENANT_MESSAGES, badgeKey: 'messages' },
   { icon: MoreHorizontal, label: 'Altro', href: ROUTES.TENANT_MORE },
@@ -78,7 +78,6 @@ const TabItemComponent = React.memo(function TabItemComponent({
     if (item.href === ROUTES.TENANT_MORE) {
       return path === ROUTES.TENANT_MORE
         || path === ROUTES.TENANT_PROFILE || path.startsWith(ROUTES.TENANT_PROFILE + '/')
-        || path === ROUTES.TENANT_AGENCIES || path.startsWith(ROUTES.TENANT_AGENCIES + '/')
         || path === ROUTES.TENANT_NOTIFICATIONS || path.startsWith(ROUTES.TENANT_NOTIFICATIONS + '/')
         || path === ROUTES.TENANT_SETTINGS || path.startsWith(ROUTES.TENANT_SETTINGS + '/');
     }

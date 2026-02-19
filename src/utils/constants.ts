@@ -136,6 +136,7 @@ export const ROUTES = {
   TENANT_DOCUMENTS: '/tenant/documents',
   TENANT_MESSAGES: '/tenant/messages',
   TENANT_SETTINGS: '/tenant/settings',
+  TENANT_SERVICES: '/tenant/services',
   TENANT_TEMPLATES: '/tenant/templates',
   TENANT_MORE: '/tenant/more',
 
@@ -149,6 +150,7 @@ export const ROUTES = {
   AGENCY_SETTINGS: '/agency/settings',
   AGENCY_DOCUMENTS: '/agency/documents',
   AGENCY_CALCULATORS: '/agency/calculators',
+  AGENCY_UNLOCKED_PROFILES: '/agency/unlocked-profiles',
   AGENCY_MORE: '/agency/more',
 
   // Admin
