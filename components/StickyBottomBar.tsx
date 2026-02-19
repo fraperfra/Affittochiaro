@@ -1,32 +1,38 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { Search } from 'lucide-react';
 
 interface StickyBottomBarProps {
   onMenuToggle: () => void;
   onRegister?: () => void;
 }
 
-export const StickyBottomBar: React.FC<StickyBottomBarProps> = ({ onMenuToggle, onRegister }) => {
+export const StickyBottomBar: React.FC<StickyBottomBarProps> = ({ onRegister }) => {
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-[200] bg-white border-t border-gray-100 p-4 flex items-center justify-center gap-4 h-[88px] shadow-[0_-10px_40px_rgba(0,0,0,0.1)] md:hidden">
-      <div className="max-w-4xl w-full flex items-center gap-4">
+    <div
+      className="fixed left-0 right-0 z-[200] px-4 md:hidden"
+      style={{ bottom: 'calc(env(safe-area-inset-bottom, 0px) + 12px)' }}
+    >
+      <div className="bg-white/95 backdrop-blur-md rounded-2xl shadow-[0_4px_30px_rgba(0,0,0,0.15)] border border-gray-100 p-3 flex items-center gap-2 max-w-md mx-auto">
         <button
           onClick={onRegister}
-          className="flex-grow h-14 bg-brand-green text-white rounded-2xl font-bold text-base active:scale-95 transition-transform shadow-lg uppercase tracking-tight"
+          className="flex-1 h-12 bg-brand-green text-white rounded-xl font-bold text-sm active:scale-95 transition-transform shadow-lg uppercase tracking-tight"
         >
           Iscriviti Gratis
         </button>
         <Link
+          to="/annunci"
+          className="h-12 px-4 bg-action-green/10 text-action-green border border-action-green/30 rounded-xl font-bold text-sm flex items-center justify-center gap-1.5 active:scale-95 transition-transform whitespace-nowrap"
+        >
+          <Search size={15} strokeWidth={2.5} />
+          Annunci
+        </Link>
+        <Link
           to="/login"
-          className="h-14 px-6 bg-white text-brand-green border-2 border-brand-green rounded-2xl font-bold text-base flex items-center justify-center active:scale-95 transition-transform"
+          className="h-12 px-4 bg-white text-brand-green border-2 border-brand-green rounded-xl font-bold text-sm flex items-center justify-center active:scale-95 transition-transform"
         >
           Accedi
         </Link>
-        <button onClick={onMenuToggle} className="w-20 h-20 flex items-center justify-center bg-gray-100 rounded-2xl active:scale-95 transition-transform" aria-label="Menu">
-          <svg className="w-12 h-12 text-brand-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M4 8h16M4 16h16" />
-          </svg>
-        </button>
       </div>
     </div>
   );
