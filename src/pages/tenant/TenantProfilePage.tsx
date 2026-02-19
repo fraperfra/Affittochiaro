@@ -118,17 +118,18 @@ function ChipSelector({
   );
 }
 
-function FieldGroup({ label, required, hint, children }: {
-  label: string; required?: boolean; hint?: string; children: React.ReactNode;
+function FieldGroup({ label, required, hint, children, error }: {
+  label: string; required?: boolean; hint?: string; children: React.ReactNode; error?: boolean;
 }) {
   return (
     <div>
-      <label className="block text-sm font-medium text-gray-700 mb-1.5">
+      <label className={`block text-sm font-medium mb-1.5 ${error ? 'text-red-600' : 'text-gray-700'}`}>
         {label}
         {required && <span className="text-red-500 ml-0.5">*</span>}
       </label>
       {children}
-      {hint && <p className="mt-1 text-xs text-gray-400">{hint}</p>}
+      {error && <p className="mt-1 text-xs text-red-500">Campo obbligatorio</p>}
+      {hint && !error && <p className="mt-1 text-xs text-gray-400">{hint}</p>}
     </div>
   );
 }
@@ -185,12 +186,19 @@ export default function TenantProfilePage() {
     hasPets:      'no',
     bio:          profile?.bio || '',
   });
-  const [isSavingForm, setIsSavingForm]       = useState(false);
-  const [isGeneratingBio, setIsGeneratingBio] = useState(false);
+  const [isSavingForm, setIsSavingForm]         = useState(false);
+  const [isGeneratingBio, setIsGeneratingBio]   = useState(false);
   const [isEditingProfile, setIsEditingProfile] = useState(true);
+  const [showErrors, setShowErrors]             = useState(false);
 
-  const upd = (key: string, value: string) =>
+  const upd = (key: string, value: string) => {
     setForm(prev => ({ ...prev, [key]: value }));
+    // clear error highlight as soon as user types
+    if (showErrors) setShowErrors(false);
+  };
+
+  /** true when showErrors is on and the field is empty */
+  const fe = (key: keyof typeof form) => showErrors && !form[key].trim();
 
   const needsFamilyCount = form.familyUnit === 'famiglia' || form.familyUnit === 'coinquilini';
 
@@ -260,10 +268,14 @@ export default function TenantProfilePage() {
   };
 
   const handleFormSave = async () => {
-    if (!form.firstName || !form.lastName || !form.phone || !form.searchCity || !form.occupation || !form.ageRange) {
+    const isValid = !!(form.firstName.trim() && form.lastName.trim() && form.phone.trim()
+      && form.searchCity && form.occupation && form.ageRange);
+    if (!isValid) {
+      setShowErrors(true);
       toast.error('Compila tutti i campi obbligatori');
       return;
     }
+    setShowErrors(false);
     setIsSavingForm(true);
     try {
       await new Promise(r => setTimeout(r, 700));
@@ -370,7 +382,7 @@ export default function TenantProfilePage() {
                 </div>
                 {!isEditingProfile && (
                   <button
-                    onClick={() => setIsEditingProfile(true)}
+                    onClick={() => { setIsEditingProfile(true); setShowErrors(false); }}
                     className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-primary-600 bg-primary-50 hover:bg-primary-100 rounded-lg transition-colors"
                   >
                     <Pencil size={13} />
@@ -429,24 +441,40 @@ export default function TenantProfilePage() {
                 <div>
                   <SectionTitle>Dati personali</SectionTitle>
                   <div className="grid sm:grid-cols-2 gap-4">
-                    <FieldGroup label="Nome" required>
-                      <input className="input w-full" value={form.firstName}
-                        onChange={e => upd('firstName', e.target.value)} placeholder="Francesco" />
+                    <FieldGroup label="Nome" required error={fe('firstName')}>
+                      <input
+                        className={`input w-full ${fe('firstName') ? 'border-red-400 bg-red-50 focus:border-red-400 focus:ring-red-300/30' : ''}`}
+                        value={form.firstName}
+                        onChange={e => upd('firstName', e.target.value)}
+                        placeholder="Francesco"
+                      />
                     </FieldGroup>
-                    <FieldGroup label="Cognome" required>
-                      <input className="input w-full" value={form.lastName}
-                        onChange={e => upd('lastName', e.target.value)} placeholder="Coppola" />
+                    <FieldGroup label="Cognome" required error={fe('lastName')}>
+                      <input
+                        className={`input w-full ${fe('lastName') ? 'border-red-400 bg-red-50 focus:border-red-400 focus:ring-red-300/30' : ''}`}
+                        value={form.lastName}
+                        onChange={e => upd('lastName', e.target.value)}
+                        placeholder="Coppola"
+                      />
                     </FieldGroup>
-                    <FieldGroup label="N° di cellulare" required>
+                    <FieldGroup label="N° di cellulare" required error={fe('phone')}>
                       <div className="relative">
                         <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm select-none">+39</span>
-                        <input className="input w-full pl-11" type="tel" value={form.phone}
-                          onChange={e => upd('phone', e.target.value)} placeholder="333 123 4567" />
+                        <input
+                          className={`input w-full pl-11 ${fe('phone') ? 'border-red-400 bg-red-50 focus:border-red-400 focus:ring-red-300/30' : ''}`}
+                          type="tel"
+                          value={form.phone}
+                          onChange={e => upd('phone', e.target.value)}
+                          placeholder="333 123 4567"
+                        />
                       </div>
                     </FieldGroup>
-                    <FieldGroup label="Età" required>
-                      <select className="input w-full" value={form.ageRange}
-                        onChange={e => upd('ageRange', e.target.value)}>
+                    <FieldGroup label="Età" required error={fe('ageRange')}>
+                      <select
+                        className={`input w-full ${fe('ageRange') ? 'border-red-400 bg-red-50 focus:border-red-400 focus:ring-red-300/30' : ''}`}
+                        value={form.ageRange}
+                        onChange={e => upd('ageRange', e.target.value)}
+                      >
                         <option value="">Seleziona età</option>
                         {AGE_RANGES.map(a => <option key={a} value={a}>{a} anni</option>)}
                       </select>
@@ -461,9 +489,12 @@ export default function TenantProfilePage() {
                   <SectionTitle>Dove e cosa cerchi</SectionTitle>
                   <div className="space-y-4">
 
-                    <FieldGroup label="Dove stai cercando" required>
-                      <select className="input w-full" value={form.searchCity}
-                        onChange={e => upd('searchCity', e.target.value)}>
+                    <FieldGroup label="Dove stai cercando" required error={fe('searchCity')}>
+                      <select
+                        className={`input w-full ${fe('searchCity') ? 'border-red-400 bg-red-50 focus:border-red-400 focus:ring-red-300/30' : ''}`}
+                        value={form.searchCity}
+                        onChange={e => upd('searchCity', e.target.value)}
+                      >
                         <option value="">Seleziona città...</option>
                         {ITALIAN_CITIES.map(c => <option key={c} value={c}>{c}</option>)}
                       </select>
@@ -514,9 +545,12 @@ export default function TenantProfilePage() {
                   <SectionTitle>Su di te</SectionTitle>
                   <div className="space-y-4">
 
-                    <FieldGroup label="Occupazione" required>
-                      <select className="input w-full" value={form.occupation}
-                        onChange={e => upd('occupation', e.target.value)}>
+                    <FieldGroup label="Occupazione" required error={fe('occupation')}>
+                      <select
+                        className={`input w-full ${fe('occupation') ? 'border-red-400 bg-red-50 focus:border-red-400 focus:ring-red-300/30' : ''}`}
+                        value={form.occupation}
+                        onChange={e => upd('occupation', e.target.value)}
+                      >
                         <option value="">Seleziona...</option>
                         {OCCUPATIONS.map(o => <option key={o} value={o}>{o}</option>)}
                       </select>
