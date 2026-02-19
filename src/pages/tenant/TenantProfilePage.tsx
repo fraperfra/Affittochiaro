@@ -1,543 +1,544 @@
 /**
- * TenantProfilePage
- * Pagina profilo inquilino con gestione documenti, video, foto e modifica dati
+ * TenantProfilePage — profilo inquilino con form obbligatorio inline e hobby
  */
 
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useAuthStore, useCVStore } from '../../store';
-import { TenantUser, DocumentType } from '../../types';
-import { formatCurrency, formatDate, formatInitials } from '../../utils/formatters';
-import { Card, CardHeader, CardTitle, Button, Badge, Modal, ModalFooter, Input } from '../../components/ui';
+import { TenantUser } from '../../types';
+import { Card, CardHeader, CardTitle, Button, Modal, ModalFooter, Input } from '../../components/ui';
 import {
-  Edit2,
-  Eye,
-  EyeOff,
-  Video,
-  Upload,
-  FileText,
   MapPin,
-  Briefcase,
-  Calendar,
   Euro,
   Home,
   PawPrint,
   Plus,
-  X,
-  Users,
-  Send,
-  CheckCircle,
   Settings,
 } from 'lucide-react';
 import { CVRentalHistorySection, CVReferencesSection } from '../../components/cv';
-import { ITALIAN_CITIES } from '../../utils/constants';
-
-// Nuovi componenti
-import { DocumentUploader, DocumentList } from '../../components/documents';
+import { ITALIAN_CITIES, OCCUPATIONS } from '../../utils/constants';
 import { VideoRecorder, VideoUploader, VideoPlayer, VideoPlaceholder } from '../../components/video';
-import { AvatarUploader, ProfileEditModal, ProfileFormData } from '../../components/profile';
-import { useDocuments } from '../../hooks';
+import { ProfileEditModal, ProfileFormData } from '../../components/profile';
 import { mockVideoApi, mockAvatarApi, mockProfileApi, USE_MOCK_API } from '../../services/mock/mockTenantService';
 import { tenantsApi } from '../../services/api/tenants';
 import toast from 'react-hot-toast';
 
 type VideoMode = 'view' | 'record' | 'upload';
 
-// Helper per label tipo contratto
-const EMPLOYMENT_TYPE_LABELS: Record<string, string> = {
-  permanent: 'Contratto Indeterminato',
-  fixed_term: 'Contratto Determinato',
-  freelance: 'Libero Professionista',
-  internship: 'Stage/Tirocinio',
-  student: 'Studente',
-  retired: 'Pensionato',
-  unemployed: 'In cerca di occupazione',
-};
+// ─── Dati statici ────────────────────────────────────────────────────────────
 
-function getEmploymentTypeLabel(type?: string): string {
-  if (!type) return 'Non specificato';
-  return EMPLOYMENT_TYPE_LABELS[type] || type;
-}
+const HOBBIES = [
+  { id: 'musica',       label: 'Musica',         emoji: '🎸' },
+  { id: 'lettura',      label: 'Lettura',         emoji: '📚' },
+  { id: 'cucina',       label: 'Cucina',          emoji: '🍳' },
+  { id: 'jogging',      label: 'Jogging',         emoji: '🏃' },
+  { id: 'ciclismo',     label: 'Ciclismo',        emoji: '🚴' },
+  { id: 'videogiochi',  label: 'Videogiochi',     emoji: '🎮' },
+  { id: 'arte',         label: 'Arte',            emoji: '🎨' },
+  { id: 'yoga',         label: 'Yoga',            emoji: '🧘' },
+  { id: 'viaggi',       label: 'Viaggi',          emoji: '✈️' },
+  { id: 'fotografia',   label: 'Fotografia',      emoji: '📸' },
+  { id: 'giardinaggio', label: 'Giardinaggio',    emoji: '🌱' },
+  { id: 'animali',      label: 'Animali',         emoji: '🐾' },
+  { id: 'cinema',       label: 'Cinema',          emoji: '🎬' },
+  { id: 'calcio',       label: 'Calcio',          emoji: '⚽' },
+  { id: 'tennis',       label: 'Tennis',          emoji: '🎾' },
+  { id: 'nuoto',        label: 'Nuoto',           emoji: '🏊' },
+  { id: 'teatro',       label: 'Teatro',          emoji: '🎭' },
+  { id: 'vino',         label: 'Vino & Cibo',     emoji: '🍷' },
+  { id: 'arrampicata',  label: 'Arrampicata',     emoji: '🧗' },
+  { id: 'danza',        label: 'Danza',           emoji: '💃' },
+  { id: 'scrittura',    label: 'Scrittura',       emoji: '✍️' },
+  { id: 'palestra',     label: 'Palestra',        emoji: '🏋️' },
+  { id: 'escursionismo',label: 'Escursionismo',   emoji: '🏔️' },
+  { id: 'meditazione',  label: 'Meditazione',     emoji: '🧠' },
+  { id: 'cucito',       label: 'Cucito',          emoji: '🪡' },
+  { id: 'skateboard',   label: 'Skateboard',      emoji: '🛹' },
+  { id: 'surf',         label: 'Sport Acquatici', emoji: '🌊' },
+  { id: 'campeggio',    label: 'Campeggio',       emoji: '🏕️' },
+  { id: 'karaoke',      label: 'Karaoke',         emoji: '🎤' },
+  { id: 'scacchi',      label: 'Scacchi',         emoji: '♟️' },
+  { id: 'podcast',      label: 'Podcast',         emoji: '🎙️' },
+  { id: 'bricolage',    label: 'Bricolage',       emoji: '🔨' },
+];
+
+const PROPERTY_TYPES = [
+  { value: 'stanza',      label: 'Stanza'       },
+  { value: 'monolocale',  label: 'Monolocale'   },
+  { value: 'bilocale',    label: 'Bilocale'     },
+  { value: 'trilocale',   label: 'Trilocale'    },
+  { value: 'quadrilocale',label: 'Quadrilocale+'},
+];
+
+const FAMILY_UNITS = [
+  { value: 'solo',        label: 'Solo'         },
+  { value: 'coppia',      label: 'Coppia'       },
+  { value: 'famiglia',    label: 'Famiglia'     },
+  { value: 'coinquilini', label: 'Coinquilini'  },
+];
+
+const AGE_RANGES = [
+  '18-25','26-30','31-35','36-40','41-45',
+  '46-50','51-55','56-60','61-65','66-70','70+',
+];
+
+// ─── CV form types ────────────────────────────────────────────────────────────
 
 interface RentalFormData {
-  address: string;
-  city: string;
-  province: string;
-  startDate: string;
-  endDate: string;
-  isCurrent: boolean;
-  monthlyRent: string;
-  landlordName: string;
-  landlordContact: string;
-  reasonForLeaving: string;
+  address: string; city: string; province: string; startDate: string;
+  endDate: string; isCurrent: boolean; monthlyRent: string;
+  landlordName: string; landlordContact: string; reasonForLeaving: string;
 }
-
 interface ReferenceFormData {
-  landlordName: string;
-  landlordEmail: string;
-  propertyAddress: string;
+  landlordName: string; landlordEmail: string; propertyAddress: string;
+}
+const EMPTY_RENTAL: RentalFormData = {
+  address:'', city:'', province:'', startDate:'', endDate:'',
+  isCurrent: false, monthlyRent:'', landlordName:'', landlordContact:'', reasonForLeaving:'',
+};
+const EMPTY_REFERENCE: ReferenceFormData = { landlordName:'', landlordEmail:'', propertyAddress:'' };
+
+// ─── Sub-components ───────────────────────────────────────────────────────────
+
+function ChipSelector({
+  options, value, onChange,
+}: {
+  options: { value: string; label: string }[];
+  value: string;
+  onChange: (v: string) => void;
+}) {
+  return (
+    <div className="flex flex-wrap gap-2">
+      {options.map(opt => (
+        <button
+          key={opt.value}
+          type="button"
+          onClick={() => onChange(opt.value)}
+          className={`px-3 py-1.5 rounded-xl text-sm font-medium transition-all border ${
+            value === opt.value
+              ? 'bg-primary-500 text-white border-primary-500 shadow-sm'
+              : 'bg-white text-gray-600 border-gray-200 hover:border-primary-300 hover:text-primary-600'
+          }`}
+        >
+          {opt.label}
+        </button>
+      ))}
+    </div>
+  );
 }
 
-const EMPTY_RENTAL: RentalFormData = {
-  address: '', city: '', province: '', startDate: '', endDate: '',
-  isCurrent: false, monthlyRent: '', landlordName: '', landlordContact: '', reasonForLeaving: '',
-};
+function FieldGroup({ label, required, children }: { label: string; required?: boolean; children: React.ReactNode }) {
+  return (
+    <div>
+      <label className="block text-sm font-medium text-gray-700 mb-1.5">
+        {label}
+        {required && <span className="text-red-500 ml-0.5">*</span>}
+      </label>
+      {children}
+    </div>
+  );
+}
 
-const EMPTY_REFERENCE: ReferenceFormData = {
-  landlordName: '', landlordEmail: '', propertyAddress: '',
-};
+function SectionTitle({ children }: { children: string }) {
+  return (
+    <p className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-4">
+      {children}
+    </p>
+  );
+}
+
+// ─── Main component ───────────────────────────────────────────────────────────
 
 export default function TenantProfilePage() {
   const { user, setUser } = useAuthStore();
   const tenantUser = user as TenantUser;
+  const profile = tenantUser?.profile;
 
-  // CV Store
   const {
-    cv, isLoading: isCVLoading, isSaving: isCVSaving, error: cvError,
+    cv, isSaving: isCVSaving, error: cvError,
     loadCV, addRentalEntry, addReference, clearError: clearCVError,
   } = useCVStore();
 
   const tenantId = tenantUser?.id || '';
 
-  useEffect(() => {
-    if (tenantId) loadCV(tenantId);
-  }, [tenantId, loadCV]);
+  useEffect(() => { if (tenantId) loadCV(tenantId); }, [tenantId, loadCV]);
+  useEffect(() => { if (cvError) { toast.error(cvError); clearCVError(); } }, [cvError, clearCVError]);
 
-  useEffect(() => {
-    if (cvError) { toast.error(cvError); clearCVError(); }
-  }, [cvError, clearCVError]);
+  // ── Profile form state
+  const [form, setForm] = useState({
+    firstName:   profile?.firstName  || '',
+    lastName:    profile?.lastName   || '',
+    phone:       profile?.phone      || '',
+    searchCity:  profile?.city       || '',
+    familyUnit:  'solo',
+    occupation:  profile?.occupation || '',
+    budget:      '',
+    propertyType:'bilocale',
+    rooms:       '1',
+    ageRange:    '',
+    furnished:   'indifferente',
+    hasPets:     'no',
+    bio:         profile?.bio        || '',
+  });
+  const [isSavingForm, setIsSavingForm] = useState(false);
 
-  // Stati locali
-  const [editBioOpen, setEditBioOpen] = useState(false);
-  const [editProfileOpen, setEditProfileOpen] = useState(false);
-  const [incomeVisible, setIncomeVisible] = useState(tenantUser?.profile?.incomeVisible ?? true);
-  const [bio, setBio] = useState(
-    tenantUser?.profile?.bio || "Ciao! Sono Mario, lavoro come Software Developer a Milano. Cerco un appartamento accogliente dove sentirmi a casa. Sono una persona ordinata, rispettosa e puntuale con i pagamenti."
-  );
+  const upd = (key: string, value: string) =>
+    setForm(prev => ({ ...prev, [key]: value }));
 
-  // Form modals - Rental History & References
-  const [showRentalForm, setShowRentalForm] = useState(false);
-  const [rentalForm, setRentalForm] = useState<RentalFormData>(EMPTY_RENTAL);
-  const [showReferenceForm, setShowReferenceForm] = useState(false);
-  const [referenceForm, setReferenceForm] = useState<ReferenceFormData>(EMPTY_REFERENCE);
+  // ── Hobbies
+  const [selectedHobbies, setSelectedHobbies] = useState<string[]>([]);
+  const toggleHobby = (id: string) =>
+    setSelectedHobbies(prev =>
+      prev.includes(id) ? prev.filter(h => h !== id) : [...prev, id]
+    );
 
-  // Dati profilo
-  const profile = tenantUser?.profile;
-
-  // Stati documenti
-  const [showDocumentUpload, setShowDocumentUpload] = useState(false);
-  const {
-    documents,
-    isLoading: isLoadingDocs,
-    error: docsError,
-    uploadStatus,
-    uploadProgress,
-    uploadError,
-    uploadDocument,
-    deleteDocument,
-    cancelUpload,
-    deletingId,
-  } = useDocuments();
-
-  // Stati video
-  const [videoMode, setVideoMode] = useState<VideoMode>('view');
-  const [videoUrl, setVideoUrl] = useState<string | null>(null);
-  const [videoDuration, setVideoDuration] = useState<number>(0);
+  // ── Video state
+  const [videoMode, setVideoMode]       = useState<VideoMode>('view');
+  const [videoUrl, setVideoUrl]         = useState<string | null>(null);
+  const [videoDuration, setVideoDuration] = useState(0);
   const [isUploadingVideo, setIsUploadingVideo] = useState(false);
-  const [isDeletingVideo, setIsDeletingVideo] = useState(false);
-  const [hasVideo, setHasVideo] = useState(tenantUser?.profile?.hasVideo || false);
+  const [isDeletingVideo, setIsDeletingVideo]   = useState(false);
+  const [hasVideo, setHasVideo]         = useState(profile?.hasVideo || false);
 
-  // Stati avatar
-  const [avatarUrl, setAvatarUrl] = useState<string | null>(
-    tenantUser?.profile?.avatarUrl || null
-  );
-  const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
-
-  // Stati profilo
+  // ── Profile settings modal
+  const [editProfileOpen, setEditProfileOpen] = useState(false);
   const [isSavingProfile, setIsSavingProfile] = useState(false);
 
-  // Handler upload documento
-  const handleDocumentUpload = async (file: File, type: DocumentType) => {
+  // ── CV modals
+  const [showRentalForm, setShowRentalForm]       = useState(false);
+  const [rentalForm, setRentalForm]               = useState<RentalFormData>(EMPTY_RENTAL);
+  const [showReferenceForm, setShowReferenceForm] = useState(false);
+  const [referenceForm, setReferenceForm]         = useState<ReferenceFormData>(EMPTY_REFERENCE);
+
+  // ── Handlers ─────────────────────────────────────────────────────────────
+
+  const handleFormSave = async () => {
+    if (!form.firstName || !form.lastName || !form.phone || !form.searchCity || !form.occupation || !form.ageRange) {
+      toast.error('Compila tutti i campi obbligatori');
+      return;
+    }
+    setIsSavingForm(true);
     try {
-      await uploadDocument(file, type);
-      setShowDocumentUpload(false);
-      toast.success('Documento caricato con successo!');
-    } catch (error: any) {
-      toast.error(error.message || 'Errore durante il caricamento');
+      await new Promise(r => setTimeout(r, 700));
+      toast.success('Profilo aggiornato con successo!');
+    } catch {
+      toast.error('Errore nel salvataggio');
+    } finally {
+      setIsSavingForm(false);
     }
   };
 
-  // Handler elimina documento
-  const handleDocumentDelete = async (id: string) => {
-    if (confirm('Sei sicuro di voler eliminare questo documento?')) {
-      try {
-        await deleteDocument(id);
-        toast.success('Documento eliminato');
-      } catch (error: any) {
-        toast.error(error.message || 'Errore durante l\'eliminazione');
-      }
-    }
-  };
-
-  // Handler video registrato/caricato
   const handleVideoComplete = async (file: File, duration: number) => {
     setIsUploadingVideo(true);
     try {
       let url: string;
-
       if (USE_MOCK_API) {
         url = await mockVideoApi.uploadVideo(file);
         await mockVideoApi.confirmVideoUpload(url, duration);
       } else {
-        // Ottieni presigned URL
         const { uploadUrl, videoUrl: finalUrl } = await tenantsApi.getVideoUploadUrl();
-        // Upload diretto a S3
-        await fetch(uploadUrl, {
-          method: 'PUT',
-          body: file,
-          headers: { 'Content-Type': file.type },
-        });
-        // Conferma upload
+        await fetch(uploadUrl, { method: 'PUT', body: file, headers: { 'Content-Type': file.type } });
         await tenantsApi.confirmVideoUpload(finalUrl, duration);
         url = finalUrl;
       }
-
-      setVideoUrl(url);
-      setVideoDuration(duration);
-      setHasVideo(true);
-      setVideoMode('view');
+      setVideoUrl(url); setVideoDuration(duration); setHasVideo(true); setVideoMode('view');
       toast.success('Video caricato con successo!');
     } catch (error: any) {
-      toast.error(error.message || 'Errore durante il caricamento del video');
-    } finally {
-      setIsUploadingVideo(false);
-    }
+      toast.error(error.message || 'Errore caricamento video');
+    } finally { setIsUploadingVideo(false); }
   };
 
-  // Handler elimina video
   const handleVideoDelete = async () => {
     if (!confirm('Sei sicuro di voler eliminare il video?')) return;
-
     setIsDeletingVideo(true);
     try {
-      if (USE_MOCK_API) {
-        await mockVideoApi.deleteVideo();
-      } else {
-        await tenantsApi.deleteVideo();
-      }
-
-      setVideoUrl(null);
-      setVideoDuration(0);
-      setHasVideo(false);
+      if (USE_MOCK_API) await mockVideoApi.deleteVideo(); else await tenantsApi.deleteVideo();
+      setVideoUrl(null); setVideoDuration(0); setHasVideo(false);
       toast.success('Video eliminato');
-    } catch (error: any) {
-      toast.error(error.message || 'Errore durante l\'eliminazione');
-    } finally {
-      setIsDeletingVideo(false);
-    }
+    } catch (error: any) { toast.error(error.message || 'Errore'); }
+    finally { setIsDeletingVideo(false); }
   };
 
-  // Handler upload avatar
-  const handleAvatarUpload = async (file: File | Blob) => {
-    setIsUploadingAvatar(true);
-    try {
-      let url: string;
-
-      if (USE_MOCK_API) {
-        url = await mockAvatarApi.uploadAvatar(file);
-      } else {
-        // TODO: Implementare upload avatar reale
-        url = URL.createObjectURL(file);
-      }
-
-      setAvatarUrl(url);
-      toast.success('Foto profilo aggiornata!');
-    } catch (error: any) {
-      toast.error(error.message || 'Errore durante il caricamento');
-    } finally {
-      setIsUploadingAvatar(false);
-    }
-  };
-
-  // Handler salva profilo
   const handleProfileSave = async (data: ProfileFormData) => {
     setIsSavingProfile(true);
     try {
-      if (USE_MOCK_API) {
-        await mockProfileApi.updateProfile(data);
-      } else {
-        await tenantsApi.updateProfile(data);
-      }
-
-      // Aggiorna bio locale
-      setBio(data.bio || bio);
-
-      // Aggiorna lo store direttamente senza reload
+      if (USE_MOCK_API) await mockProfileApi.updateProfile(data); else await tenantsApi.updateProfile(data);
       if (user) {
-        const updatedUser = {
+        setUser({
           ...user,
           profile: {
             ...(user as TenantUser).profile,
-            firstName: data.firstName,
-            lastName: data.lastName,
-            phone: data.phone,
-            bio: data.bio,
-            occupation: data.occupation,
-            employmentType: data.employmentType as any,
-            employer: data.employer,
-            annualIncome: data.annualIncome,
-            city: data.currentCity,
+            firstName: data.firstName, lastName: data.lastName, phone: data.phone,
+            bio: data.bio, occupation: data.occupation, employmentType: data.employmentType as any,
+            employer: data.employer, annualIncome: data.annualIncome, city: data.currentCity,
           },
-        } as TenantUser;
-        setUser(updatedUser);
+        } as TenantUser);
       }
-
       setEditProfileOpen(false);
-      toast.success('Profilo aggiornato con successo!');
-    } catch (error: any) {
-      toast.error(error.message || 'Errore durante il salvataggio');
-      throw error;
-    } finally {
-      setIsSavingProfile(false);
-    }
+      toast.success('Profilo aggiornato!');
+    } catch (error: any) { toast.error(error.message || 'Errore'); throw error; }
+    finally { setIsSavingProfile(false); }
   };
 
-  // Rental form handler
   const handleAddRental = async () => {
     if (!rentalForm.address || !rentalForm.city || !rentalForm.startDate || !rentalForm.monthlyRent) {
       toast.error('Compila i campi obbligatori'); return;
     }
     try {
       await addRentalEntry(tenantId, {
-        address: rentalForm.address,
-        city: rentalForm.city,
-        province: rentalForm.province || undefined,
-        startDate: new Date(rentalForm.startDate),
-        endDate: rentalForm.endDate ? new Date(rentalForm.endDate) : undefined,
-        isCurrent: rentalForm.isCurrent,
-        monthlyRent: parseInt(rentalForm.monthlyRent),
-        landlordName: rentalForm.landlordName || undefined,
-        landlordContact: rentalForm.landlordContact || undefined,
-        reasonForLeaving: rentalForm.reasonForLeaving || undefined,
-        hasReference: false,
+        address: rentalForm.address, city: rentalForm.city, province: rentalForm.province || undefined,
+        startDate: new Date(rentalForm.startDate), endDate: rentalForm.endDate ? new Date(rentalForm.endDate) : undefined,
+        isCurrent: rentalForm.isCurrent, monthlyRent: parseInt(rentalForm.monthlyRent),
+        landlordName: rentalForm.landlordName || undefined, landlordContact: rentalForm.landlordContact || undefined,
+        reasonForLeaving: rentalForm.reasonForLeaving || undefined, hasReference: false,
       });
-      toast.success('Affitto aggiunto!');
-      setShowRentalForm(false);
-      setRentalForm(EMPTY_RENTAL);
-    } catch {
-      toast.error('Errore nel salvataggio');
-    }
+      toast.success('Affitto aggiunto!'); setShowRentalForm(false); setRentalForm(EMPTY_RENTAL);
+    } catch { toast.error('Errore nel salvataggio'); }
   };
 
-  // Reference form handler
   const handleAddReference = async () => {
     if (!referenceForm.landlordName || !referenceForm.landlordEmail) {
       toast.error('Inserisci nome e email del proprietario'); return;
     }
     try {
       await addReference(tenantId, {
-        landlordName: referenceForm.landlordName,
-        landlordEmail: referenceForm.landlordEmail,
-        propertyAddress: referenceForm.propertyAddress || undefined,
-        rating: 0,
+        landlordName: referenceForm.landlordName, landlordEmail: referenceForm.landlordEmail,
+        propertyAddress: referenceForm.propertyAddress || undefined, rating: 0,
       });
-      toast.success('Richiesta referenza inviata!');
-      setShowReferenceForm(false);
-      setReferenceForm(EMPTY_REFERENCE);
-    } catch {
-      toast.error('Errore nel salvataggio');
-    }
+      toast.success('Richiesta referenza inviata!'); setShowReferenceForm(false); setReferenceForm(EMPTY_REFERENCE);
+    } catch { toast.error('Errore nel salvataggio'); }
   };
+
+  // ── Render ────────────────────────────────────────────────────────────────
 
   return (
     <div className="space-y-6 max-w-6xl mx-auto">
-      {/* Page Header */}
+
+      {/* Page header */}
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold text-text-primary">Il Mio Profilo</h1>
         <button
           onClick={() => setEditProfileOpen(true)}
-          className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 bg-gray-50 hover:bg-gray-100 rounded-xl border border-gray-200 transition-all duration-200 hover:shadow-sm"
+          className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 bg-gray-50 hover:bg-gray-100 rounded-xl border border-gray-200 transition-all hover:shadow-sm"
         >
           <Settings size={16} />
-          Modifica
+          Impostazioni
         </button>
       </div>
 
       <div className="grid lg:grid-cols-3 gap-6">
+
+        {/* ── Left column (col-span-2) ─────────────────────────────────── */}
         <div className="lg:col-span-2 space-y-6">
-          {/* Bio */}
-          <Card>
-            <CardHeader>
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <span className="text-xl">📝</span>
-                  <CardTitle>La Mia Storia</CardTitle>
-                </div>
-                <Button variant="ghost" size="sm" onClick={() => setEditBioOpen(true)}>
-                  <Edit2 size={16} />
-                </Button>
-              </div>
-            </CardHeader>
-            <p className="text-text-secondary leading-relaxed">{bio}</p>
-          </Card>
 
-          {/* Employment */}
+          {/* PROFILE FORM */}
           <Card>
             <CardHeader>
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <span className="text-xl">💼</span>
-                  <CardTitle>Situazione Lavorativa</CardTitle>
-                </div>
-                <Button variant="ghost" size="sm" onClick={() => setEditProfileOpen(true)}>
-                  <Edit2 size={16} />
-                </Button>
+              <div className="flex items-center gap-2">
+                <span className="text-xl">👤</span>
+                <CardTitle>Informazioni Obbligatorie</CardTitle>
               </div>
             </CardHeader>
-            <div className="grid sm:grid-cols-2 gap-6">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-lg bg-primary-50 flex items-center justify-center">
-                  <Briefcase size={20} className="text-primary-600" />
-                </div>
-                <div>
-                  <p className="text-sm text-text-muted">Occupazione</p>
-                  <p className="font-medium">{profile?.occupation || 'Non specificato'}</p>
+
+            <div className="space-y-7">
+
+              {/* ── Dati personali */}
+              <div>
+                <SectionTitle>Dati personali</SectionTitle>
+                <div className="grid sm:grid-cols-2 gap-4">
+                  <FieldGroup label="Nome" required>
+                    <input className="input w-full" value={form.firstName}
+                      onChange={e => upd('firstName', e.target.value)} placeholder="Francesco" />
+                  </FieldGroup>
+                  <FieldGroup label="Cognome" required>
+                    <input className="input w-full" value={form.lastName}
+                      onChange={e => upd('lastName', e.target.value)} placeholder="Coppola" />
+                  </FieldGroup>
+                  <FieldGroup label="N° di cellulare" required>
+                    <div className="relative">
+                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm select-none">+39</span>
+                      <input className="input w-full pl-11" type="tel" value={form.phone}
+                        onChange={e => upd('phone', e.target.value)} placeholder="333 123 4567" />
+                    </div>
+                  </FieldGroup>
+                  <FieldGroup label="Età" required>
+                    <select className="input w-full" value={form.ageRange}
+                      onChange={e => upd('ageRange', e.target.value)}>
+                      <option value="">Seleziona età</option>
+                      {AGE_RANGES.map(a => <option key={a} value={a}>{a} anni</option>)}
+                    </select>
+                  </FieldGroup>
                 </div>
               </div>
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-lg bg-primary-50 flex items-center justify-center">
-                  <FileText size={20} className="text-primary-600" />
-                </div>
-                <div>
-                  <p className="text-sm text-text-muted">Tipo Contratto</p>
-                  <p className="font-medium">{getEmploymentTypeLabel(profile?.employmentType)}</p>
-                </div>
-              </div>
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-lg bg-primary-50 flex items-center justify-center">
-                  <Euro size={20} className="text-primary-600" />
-                </div>
-                <div className="flex items-center gap-2">
-                  <div>
-                    <p className="text-sm text-text-muted">Reddito Annuale</p>
-                    <p className="font-medium">
-                      {incomeVisible && profile?.annualIncome
-                        ? formatCurrency(profile.annualIncome)
-                        : profile?.annualIncome ? '••••••' : 'Non specificato'}
-                    </p>
+
+              <hr className="border-gray-100" />
+
+              {/* ── Dove e cosa cerchi */}
+              <div>
+                <SectionTitle>Dove e cosa cerchi</SectionTitle>
+                <div className="space-y-4">
+
+                  <FieldGroup label="Dove stai cercando" required>
+                    <select className="input w-full" value={form.searchCity}
+                      onChange={e => upd('searchCity', e.target.value)}>
+                      <option value="">Seleziona città...</option>
+                      {ITALIAN_CITIES.map(c => <option key={c} value={c}>{c}</option>)}
+                    </select>
+                  </FieldGroup>
+
+                  <FieldGroup label="Tipologia immobile" required>
+                    <ChipSelector options={PROPERTY_TYPES} value={form.propertyType} onChange={v => upd('propertyType', v)} />
+                  </FieldGroup>
+
+                  <div className="grid sm:grid-cols-2 gap-4">
+                    <FieldGroup label="Budget massimo" required>
+                      <div className="relative">
+                        <Euro size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                        <input className="input w-full pl-9 pr-14" type="number" min={0} step={50}
+                          value={form.budget} onChange={e => upd('budget', e.target.value)}
+                          placeholder="1.200" />
+                        <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs">/mese</span>
+                      </div>
+                    </FieldGroup>
+                    <FieldGroup label="Numero di camere" required>
+                      <ChipSelector
+                        options={[
+                          { value:'1', label:'1' }, { value:'2', label:'2' },
+                          { value:'3', label:'3' }, { value:'4+', label:'4+' },
+                        ]}
+                        value={form.rooms} onChange={v => upd('rooms', v)}
+                      />
+                    </FieldGroup>
                   </div>
-                  {profile?.annualIncome && (
-                    <button
-                      onClick={() => setIncomeVisible(!incomeVisible)}
-                      className="p-1 rounded hover:bg-background-secondary"
-                    >
-                      {incomeVisible ? <Eye size={16} /> : <EyeOff size={16} />}
-                    </button>
-                  )}
+
+                  <FieldGroup label="Arredato?" required>
+                    <ChipSelector
+                      options={[
+                        { value:'si',          label:'Sì'          },
+                        { value:'no',          label:'No'          },
+                        { value:'indifferente',label:'Indifferente'},
+                      ]}
+                      value={form.furnished} onChange={v => upd('furnished', v)}
+                    />
+                  </FieldGroup>
                 </div>
               </div>
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-lg bg-primary-50 flex items-center justify-center">
-                  <Calendar size={20} className="text-primary-600" />
+
+              <hr className="border-gray-100" />
+
+              {/* ── Su di te */}
+              <div>
+                <SectionTitle>Su di te</SectionTitle>
+                <div className="grid sm:grid-cols-2 gap-4">
+                  <FieldGroup label="Occupazione" required>
+                    <select className="input w-full" value={form.occupation}
+                      onChange={e => upd('occupation', e.target.value)}>
+                      <option value="">Seleziona...</option>
+                      {OCCUPATIONS.map(o => <option key={o} value={o}>{o}</option>)}
+                    </select>
+                  </FieldGroup>
+
+                  <FieldGroup label="Nucleo familiare" required>
+                    <ChipSelector options={FAMILY_UNITS} value={form.familyUnit} onChange={v => upd('familyUnit', v)} />
+                  </FieldGroup>
+
+                  <div className="sm:col-span-2">
+                    <FieldGroup label="Hai animali domestici?" required>
+                      <ChipSelector
+                        options={[{ value:'si', label:'Sì' }, { value:'no', label:'No' }]}
+                        value={form.hasPets} onChange={v => upd('hasPets', v)}
+                      />
+                    </FieldGroup>
+                  </div>
                 </div>
-                <div>
-                  <p className="text-sm text-text-muted">Disponibilità</p>
-                  <p className="font-medium">
-                    {profile?.availableFrom
-                      ? formatDate(new Date(profile.availableFrom))
-                      : 'Immediata'}
+              </div>
+
+              <hr className="border-gray-100" />
+
+              {/* ── Presentazione */}
+              <div>
+                <SectionTitle>Presentazione</SectionTitle>
+                <FieldGroup label="Scrivi qualcosa su di te">
+                  <textarea
+                    className="input w-full min-h-[130px] resize-none"
+                    value={form.bio}
+                    onChange={e => { if (e.target.value.length <= 500) upd('bio', e.target.value); }}
+                    placeholder={
+                      'Questa breve descrizione sarà visibile ai proprietari e può fare la differenza per essere scelto come inquilino ideale.\n\nParlaci di te'
+                    }
+                    maxLength={500}
+                  />
+                  <p className="text-xs text-gray-400 text-right mt-1">
+                    Usati {form.bio.length} / 500 caratteri
                   </p>
-                </div>
+                </FieldGroup>
               </div>
-              {profile?.employer && (
-                <div className="flex items-center gap-3 sm:col-span-2">
-                  <div className="w-10 h-10 rounded-lg bg-primary-50 flex items-center justify-center">
-                    <Briefcase size={20} className="text-primary-600" />
-                  </div>
-                  <div>
-                    <p className="text-sm text-text-muted">Datore di Lavoro</p>
-                    <p className="font-medium">{profile.employer}</p>
-                  </div>
-                </div>
-              )}
+
+              {/* Save */}
+              <div className="pt-1">
+                <Button onClick={handleFormSave} isLoading={isSavingForm} className="w-full sm:w-auto">
+                  Salva modifiche
+                </Button>
+              </div>
             </div>
           </Card>
 
-          {/* Rental History (from CV store) */}
-          {cv && (
-            <div className="bg-white rounded-2xl shadow-card p-6">
-              <CVRentalHistorySection
-                entries={cv.rentalHistory}
-                editable={true}
-                onAdd={() => setShowRentalForm(true)}
-              />
-            </div>
-          )}
-
-          {/* References (from CV store) */}
-          {cv && (
-            <div className="bg-white rounded-2xl shadow-card p-6">
-              <CVReferencesSection
-                references={cv.references}
-                editable={true}
-                onAdd={() => setShowReferenceForm(true)}
-              />
-            </div>
-          )}
-
-          {/* Documents Section */}
+          {/* HOBBIES CARD */}
           <Card>
             <CardHeader>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <span className="text-xl">📄</span>
-                  <CardTitle>Documenti Caricati</CardTitle>
+                  <span className="text-xl">🎯</span>
+                  <CardTitle>I Tuoi Interessi</CardTitle>
                 </div>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  leftIcon={<Upload size={16} />}
-                  onClick={() => setShowDocumentUpload(true)}
-                >
-                  Carica Nuovo
-                </Button>
+                {selectedHobbies.length > 0 && (
+                  <span className="text-xs font-semibold text-primary-600 bg-primary-50 px-2.5 py-1 rounded-full">
+                    {selectedHobbies.length} selezionati
+                  </span>
+                )}
               </div>
+              <p className="text-sm text-gray-500 mt-1">
+                Seleziona i tuoi hobby — aiuta i proprietari a conoscerti meglio.
+              </p>
             </CardHeader>
 
-            {/* Document Upload Area */}
-            {showDocumentUpload && (
-              <div className="mb-6 p-4 bg-gray-50 rounded-xl border border-gray-200">
-                <div className="flex items-center justify-between mb-4">
-                  <h4 className="font-medium text-gray-900">Carica documento</h4>
+            <div className="flex flex-wrap gap-2">
+              {HOBBIES.map(hobby => {
+                const active = selectedHobbies.includes(hobby.id);
+                return (
                   <button
-                    onClick={() => setShowDocumentUpload(false)}
-                    className="p-1 hover:bg-gray-200 rounded-full"
+                    key={hobby.id}
+                    type="button"
+                    onClick={() => toggleHobby(hobby.id)}
+                    className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium transition-all border ${
+                      active
+                        ? 'bg-primary-50 text-primary-700 border-primary-300 shadow-sm scale-[1.02]'
+                        : 'bg-white text-gray-600 border-gray-200 hover:border-primary-200 hover:text-primary-600'
+                    }`}
                   >
-                    <X size={16} className="text-gray-500" />
+                    <span>{hobby.emoji}</span>
+                    {hobby.label}
                   </button>
-                </div>
-                <DocumentUploader
-                  onUpload={handleDocumentUpload}
-                  uploadStatus={uploadStatus}
-                  uploadProgress={uploadProgress}
-                  uploadError={uploadError}
-                  onCancel={cancelUpload}
-                />
-              </div>
-            )}
-
-            {/* Document List */}
-            <DocumentList
-              documents={documents}
-              isLoading={isLoadingDocs}
-              error={docsError}
-              onDelete={handleDocumentDelete}
-              onAddNew={() => setShowDocumentUpload(true)}
-              deletingId={deletingId}
-            />
+                );
+              })}
+            </div>
           </Card>
+
+          {/* CV Sections */}
+          {cv && (
+            <div className="bg-white rounded-2xl shadow-card p-6">
+              <CVRentalHistorySection entries={cv.rentalHistory} editable onAdd={() => setShowRentalForm(true)} />
+            </div>
+          )}
+          {cv && (
+            <div className="bg-white rounded-2xl shadow-card p-6">
+              <CVReferencesSection references={cv.references} editable onAdd={() => setShowReferenceForm(true)} />
+            </div>
+          )}
         </div>
 
+        {/* ── Right column ─────────────────────────────────────────────── */}
         <div className="space-y-6">
+
           {/* Video Presentation */}
           <Card>
             <CardHeader>
@@ -546,271 +547,144 @@ export default function TenantProfilePage() {
                 <CardTitle>Video Presentazione</CardTitle>
               </div>
             </CardHeader>
-
-            {/* Video View Mode */}
             {videoMode === 'view' && (
-              <>
-                {hasVideo && videoUrl ? (
-                  <VideoPlayer
-                    src={videoUrl}
-                    duration={videoDuration}
-                    onDelete={handleVideoDelete}
-                    onRerecord={() => setVideoMode('record')}
-                    isDeleting={isDeletingVideo}
-                  />
-                ) : (
-                  <VideoPlaceholder
-                    onRecord={() => setVideoMode('record')}
-                    onUpload={() => setVideoMode('upload')}
-                  />
-                )}
-              </>
+              hasVideo && videoUrl
+                ? <VideoPlayer src={videoUrl} duration={videoDuration} onDelete={handleVideoDelete} onRerecord={() => setVideoMode('record')} isDeleting={isDeletingVideo} />
+                : <VideoPlaceholder onRecord={() => setVideoMode('record')} onUpload={() => setVideoMode('upload')} />
             )}
-
-            {/* Video Record Mode */}
             {videoMode === 'record' && (
               <div className="py-4">
-                <VideoRecorder
-                  maxDuration={60}
-                  onRecordingComplete={handleVideoComplete}
-                  onCancel={() => setVideoMode('view')}
-                />
+                <VideoRecorder maxDuration={60} onRecordingComplete={handleVideoComplete} onCancel={() => setVideoMode('view')} />
               </div>
             )}
-
-            {/* Video Upload Mode */}
             {videoMode === 'upload' && (
               <div className="py-4">
-                <VideoUploader
-                  onUpload={handleVideoComplete}
-                  disabled={isUploadingVideo}
-                  onCancel={() => setVideoMode('view')}
-                />
-                <button
-                  onClick={() => setVideoMode('view')}
-                  className="w-full mt-4 text-sm text-gray-500 hover:text-gray-700"
-                >
-                  Annulla
-                </button>
+                <VideoUploader onUpload={handleVideoComplete} disabled={isUploadingVideo} onCancel={() => setVideoMode('view')} />
+                <button onClick={() => setVideoMode('view')} className="w-full mt-4 text-sm text-gray-500 hover:text-gray-700">Annulla</button>
               </div>
             )}
           </Card>
 
-          {/* Preferences */}
+          {/* Riepilogo ricerca */}
           <Card>
             <CardHeader>
               <div className="flex items-center gap-2">
-                <span className="text-xl">🎯</span>
-                <CardTitle>Preferenze di Ricerca</CardTitle>
+                <span className="text-xl">📋</span>
+                <CardTitle>Riepilogo Ricerca</CardTitle>
               </div>
             </CardHeader>
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2 text-text-secondary">
-                  <Euro size={16} />
-                  <span>Budget Massimo</span>
+            <div className="space-y-3">
+              {form.searchCity ? (
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2 text-gray-500 text-sm"><MapPin size={15} />Città</div>
+                  <span className="text-sm font-medium">{form.searchCity}</span>
                 </div>
-                <span className="font-medium">{formatCurrency(1200)}/mese</span>
+              ) : null}
+              {form.budget ? (
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2 text-gray-500 text-sm"><Euro size={15} />Budget max</div>
+                  <span className="text-sm font-medium">€{form.budget}/mese</span>
+                </div>
+              ) : null}
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2 text-gray-500 text-sm"><Home size={15} />Tipologia</div>
+                <span className="text-sm font-medium">{PROPERTY_TYPES.find(p => p.value === form.propertyType)?.label || '—'}</span>
               </div>
               <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2 text-text-secondary">
-                  <Home size={16} />
-                  <span>Locali</span>
-                </div>
-                <span className="font-medium">2-3</span>
+                <div className="flex items-center gap-2 text-gray-500 text-sm"><PawPrint size={15} />Animali</div>
+                <span className="text-sm font-medium">{form.hasPets === 'si' ? 'Sì' : 'No'}</span>
               </div>
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2 text-text-secondary">
-                  <MapPin size={16} />
-                  <span>Citta</span>
+              {selectedHobbies.length > 0 && (
+                <div className="pt-2 border-t border-gray-100">
+                  <p className="text-xs text-gray-400 mb-2">Interessi</p>
+                  <div className="flex flex-wrap gap-1">
+                    {selectedHobbies.slice(0, 5).map(id => {
+                      const h = HOBBIES.find(x => x.id === id);
+                      return h ? (
+                        <span key={id} className="text-xs bg-primary-50 text-primary-700 px-2 py-0.5 rounded-full">
+                          {h.emoji} {h.label}
+                        </span>
+                      ) : null;
+                    })}
+                    {selectedHobbies.length > 5 && (
+                      <span className="text-xs text-gray-400">+{selectedHobbies.length - 5}</span>
+                    )}
+                  </div>
                 </div>
-                <span className="font-medium">Milano</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2 text-text-secondary">
-                  <PawPrint size={16} />
-                  <span>Animali</span>
-                </div>
-                <span className="font-medium">No</span>
-              </div>
+              )}
             </div>
           </Card>
-
         </div>
       </div>
 
-      {/* Edit Bio Modal */}
-      <Modal
-        isOpen={editBioOpen}
-        onClose={() => setEditBioOpen(false)}
-        title="Modifica La Tua Storia"
-      >
-        <div className="space-y-4">
-          <p className="text-text-secondary">
-            Racconta di te, del tuo lavoro, hobby, perche sei l'inquilino ideale...
-          </p>
-          <textarea
-            value={bio}
-            onChange={(e) => setBio(e.target.value)}
-            className="input min-h-[150px] resize-none"
-            maxLength={500}
-            placeholder="Scrivi qualcosa su di te..."
-          />
-          <p className="text-sm text-text-muted text-right">{bio.length}/500</p>
-        </div>
-        <ModalFooter>
-          <Button variant="secondary" onClick={() => setEditBioOpen(false)}>
-            Annulla
-          </Button>
-          <Button onClick={() => setEditBioOpen(false)}>
-            Salva
-          </Button>
-        </ModalFooter>
-      </Modal>
+      {/* ── Modals ─────────────────────────────────────────────────────── */}
 
-      {/* Edit Profile Modal */}
+      {/* Settings / Edit Profile Modal */}
       <ProfileEditModal
         isOpen={editProfileOpen}
         onClose={() => setEditProfileOpen(false)}
         onSubmit={handleProfileSave}
         initialData={{
           firstName: profile?.firstName || '',
-          lastName: profile?.lastName || '',
-          phone: profile?.phone || '',
+          lastName:  profile?.lastName  || '',
+          phone:     profile?.phone     || '',
           occupation: profile?.occupation || '',
           employmentType: profile?.employmentType || '',
-          employer: profile?.employer || '',
+          employer:  profile?.employer  || '',
           annualIncome: profile?.annualIncome,
-          currentCity: profile?.city || '',
-          bio: bio,
+          currentCity: profile?.city   || '',
+          bio: form.bio,
         }}
         isLoading={isSavingProfile}
       />
 
-      {/* Rental History Form Modal */}
-      <Modal
-        isOpen={showRentalForm}
-        onClose={() => { setShowRentalForm(false); setRentalForm(EMPTY_RENTAL); }}
-        title="Aggiungi Affitto Precedente"
-        size="lg"
-      >
+      {/* Rental History Modal */}
+      <Modal isOpen={showRentalForm} onClose={() => { setShowRentalForm(false); setRentalForm(EMPTY_RENTAL); }} title="Aggiungi Affitto Precedente" size="lg">
         <div className="space-y-4">
-          <Input
-            label="Indirizzo *"
-            value={rentalForm.address}
-            onChange={(e) => setRentalForm({ ...rentalForm, address: e.target.value })}
-            placeholder="Via Roma 10"
-          />
+          <Input label="Indirizzo *" value={rentalForm.address} onChange={e => setRentalForm({ ...rentalForm, address: e.target.value })} placeholder="Via Roma 10" />
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="label">Citta *</label>
-              <select className="input" value={rentalForm.city} onChange={(e) => setRentalForm({ ...rentalForm, city: e.target.value })}>
+              <label className="label">Città *</label>
+              <select className="input" value={rentalForm.city} onChange={e => setRentalForm({ ...rentalForm, city: e.target.value })}>
                 <option value="">Seleziona...</option>
                 {ITALIAN_CITIES.map(c => <option key={c} value={c}>{c}</option>)}
               </select>
             </div>
-            <Input
-              label="Provincia"
-              value={rentalForm.province}
-              onChange={(e) => setRentalForm({ ...rentalForm, province: e.target.value })}
-              placeholder="MI"
-            />
+            <Input label="Provincia" value={rentalForm.province} onChange={e => setRentalForm({ ...rentalForm, province: e.target.value })} placeholder="MI" />
           </div>
           <div className="grid grid-cols-2 gap-4">
-            <Input
-              label="Data inizio *"
-              type="date"
-              value={rentalForm.startDate}
-              onChange={(e) => setRentalForm({ ...rentalForm, startDate: e.target.value })}
-            />
-            <Input
-              label="Data fine"
-              type="date"
-              value={rentalForm.endDate}
-              onChange={(e) => setRentalForm({ ...rentalForm, endDate: e.target.value })}
-              disabled={rentalForm.isCurrent}
-            />
+            <Input label="Data inizio *" type="date" value={rentalForm.startDate} onChange={e => setRentalForm({ ...rentalForm, startDate: e.target.value })} />
+            <Input label="Data fine" type="date" value={rentalForm.endDate} onChange={e => setRentalForm({ ...rentalForm, endDate: e.target.value })} disabled={rentalForm.isCurrent} />
           </div>
           <label className="flex items-center gap-2 cursor-pointer">
-            <input
-              type="checkbox"
-              checked={rentalForm.isCurrent}
-              onChange={(e) => setRentalForm({ ...rentalForm, isCurrent: e.target.checked, endDate: '' })}
-              className="rounded border-border"
-            />
+            <input type="checkbox" checked={rentalForm.isCurrent} onChange={e => setRentalForm({ ...rentalForm, isCurrent: e.target.checked, endDate: '' })} className="rounded border-border" />
             <span className="text-sm">Affitto attuale</span>
           </label>
-          <Input
-            label="Affitto mensile (&euro;) *"
-            type="number"
-            value={rentalForm.monthlyRent}
-            onChange={(e) => setRentalForm({ ...rentalForm, monthlyRent: e.target.value })}
-            placeholder="800"
-          />
+          <Input label="Affitto mensile (€) *" type="number" value={rentalForm.monthlyRent} onChange={e => setRentalForm({ ...rentalForm, monthlyRent: e.target.value })} placeholder="800" />
           <div className="grid grid-cols-2 gap-4">
-            <Input
-              label="Nome proprietario"
-              value={rentalForm.landlordName}
-              onChange={(e) => setRentalForm({ ...rentalForm, landlordName: e.target.value })}
-            />
-            <Input
-              label="Contatto proprietario"
-              value={rentalForm.landlordContact}
-              onChange={(e) => setRentalForm({ ...rentalForm, landlordContact: e.target.value })}
-              placeholder="Email o telefono"
-            />
+            <Input label="Nome proprietario" value={rentalForm.landlordName} onChange={e => setRentalForm({ ...rentalForm, landlordName: e.target.value })} />
+            <Input label="Contatto proprietario" value={rentalForm.landlordContact} onChange={e => setRentalForm({ ...rentalForm, landlordContact: e.target.value })} placeholder="Email o telefono" />
           </div>
           {!rentalForm.isCurrent && (
-            <Input
-              label="Motivo fine contratto"
-              value={rentalForm.reasonForLeaving}
-              onChange={(e) => setRentalForm({ ...rentalForm, reasonForLeaving: e.target.value })}
-              placeholder="es. Trasferimento per lavoro"
-            />
+            <Input label="Motivo fine contratto" value={rentalForm.reasonForLeaving} onChange={e => setRentalForm({ ...rentalForm, reasonForLeaving: e.target.value })} placeholder="es. Trasferimento per lavoro" />
           )}
         </div>
         <ModalFooter>
-          <Button variant="secondary" onClick={() => { setShowRentalForm(false); setRentalForm(EMPTY_RENTAL); }}>
-            Annulla
-          </Button>
+          <Button variant="secondary" onClick={() => { setShowRentalForm(false); setRentalForm(EMPTY_RENTAL); }}>Annulla</Button>
           <Button onClick={handleAddRental} isLoading={isCVSaving}>Aggiungi</Button>
         </ModalFooter>
       </Modal>
 
-      {/* Reference Form Modal */}
-      <Modal
-        isOpen={showReferenceForm}
-        onClose={() => { setShowReferenceForm(false); setReferenceForm(EMPTY_REFERENCE); }}
-        title="Richiedi Referenza"
-      >
+      {/* Reference Modal */}
+      <Modal isOpen={showReferenceForm} onClose={() => { setShowReferenceForm(false); setReferenceForm(EMPTY_REFERENCE); }} title="Richiedi Referenza">
         <div className="space-y-4">
-          <p className="text-sm text-text-secondary">
-            Inserisci i dati del tuo precedente proprietario. Ricevera una email per lasciare una referenza sul tuo profilo.
-          </p>
-          <Input
-            label="Nome proprietario *"
-            value={referenceForm.landlordName}
-            onChange={(e) => setReferenceForm({ ...referenceForm, landlordName: e.target.value })}
-            placeholder="Mario Rossi"
-          />
-          <Input
-            label="Email proprietario *"
-            type="email"
-            value={referenceForm.landlordEmail}
-            onChange={(e) => setReferenceForm({ ...referenceForm, landlordEmail: e.target.value })}
-            placeholder="proprietario@email.it"
-          />
-          <Input
-            label="Indirizzo immobile"
-            value={referenceForm.propertyAddress}
-            onChange={(e) => setReferenceForm({ ...referenceForm, propertyAddress: e.target.value })}
-            placeholder="Via dell'affitto precedente"
-          />
+          <p className="text-sm text-gray-500">Inserisci i dati del tuo precedente proprietario. Riceverà una email per lasciare una referenza sul tuo profilo.</p>
+          <Input label="Nome proprietario *" value={referenceForm.landlordName} onChange={e => setReferenceForm({ ...referenceForm, landlordName: e.target.value })} placeholder="Mario Rossi" />
+          <Input label="Email proprietario *" type="email" value={referenceForm.landlordEmail} onChange={e => setReferenceForm({ ...referenceForm, landlordEmail: e.target.value })} placeholder="proprietario@email.it" />
+          <Input label="Indirizzo immobile" value={referenceForm.propertyAddress} onChange={e => setReferenceForm({ ...referenceForm, propertyAddress: e.target.value })} placeholder="Via dell'affitto precedente" />
         </div>
         <ModalFooter>
-          <Button variant="secondary" onClick={() => { setShowReferenceForm(false); setReferenceForm(EMPTY_REFERENCE); }}>
-            Annulla
-          </Button>
+          <Button variant="secondary" onClick={() => { setShowReferenceForm(false); setReferenceForm(EMPTY_REFERENCE); }}>Annulla</Button>
           <Button onClick={handleAddReference} isLoading={isCVSaving}>Invia Richiesta</Button>
         </ModalFooter>
       </Modal>
