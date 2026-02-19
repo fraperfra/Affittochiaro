@@ -27,7 +27,28 @@ import { useAuthStore, useCVStore } from '../../store';
 import { TenantUser } from '../../types';
 import { ROUTES } from '../../utils/constants';
 import { formatRelativeTime } from '../../utils/formatters';
-import { Card, CardHeader, CardTitle, Button, Badge, ProfileCompletionCard } from '../../components/ui';
+import { Card, CardHeader, CardTitle, Button, Badge, Modal } from '../../components/ui';
+
+// Mock applications
+const mockApplications = [
+  { id: 1, title: 'Bilocale Milano · Via Brera 12', status: 'pending',  date: '2 giorni fa',   price: '1.100€/mese' },
+  { id: 2, title: 'Trilocale Roma · Via Cola di Rienzo',  status: 'accepted', date: '5 giorni fa',   price: '1.450€/mese' },
+  { id: 3, title: 'Monolocale Torino · Cit Turin',        status: 'rejected', date: '1 settimana fa', price: '650€/mese'  },
+  { id: 4, title: 'Bilocale Milano · Navigli',            status: 'pending',  date: '10 giorni fa',  price: '1.300€/mese' },
+  { id: 5, title: 'App. Bologna · Oltre La Fiera',        status: 'viewed',   date: '2 settimane fa', price: '900€/mese'  },
+  { id: 6, title: 'Trilocale Firenze · Santo Spirito',    status: 'pending',  date: '3 settimane fa', price: '1.600€/mese' },
+  { id: 7, title: 'Bilocale Milano · Porta Garibaldi',    status: 'rejected', date: '1 mese fa',     price: '1.250€/mese' },
+  { id: 8, title: 'Monolocale Roma · Trastevere',         status: 'accepted', date: '1 mese fa',     price: '850€/mese'  },
+] as const;
+
+type AppStatus = typeof mockApplications[number]['status'];
+
+const statusMap: Record<AppStatus, { label: string; cls: string }> = {
+  pending:  { label: 'In attesa', cls: 'bg-amber-100 text-amber-700' },
+  accepted: { label: 'Accettata', cls: 'bg-green-100 text-green-700' },
+  rejected: { label: 'Rifiutata', cls: 'bg-red-100 text-red-600'   },
+  viewed:   { label: 'Visionata', cls: 'bg-blue-100 text-blue-700'  },
+};
 
 // Mock recent activity
 const recentActivity = [
@@ -433,6 +454,7 @@ export default function TenantDashboardPage() {
   const { cv, loadCV } = useCVStore();
   const tenantUser = user as TenantUser;
   const [localProfile, setLocalProfile] = useState<any>(null);
+  const [showApplicationsModal, setShowApplicationsModal] = useState(false);
 
   // Try to load profile from localStorage (for users registered via modal)
   useEffect(() => {
@@ -525,27 +547,19 @@ export default function TenantDashboardPage() {
         </Link>
 
         {/* Candidature inviate */}
-        <div className="bg-white rounded-2xl shadow-card p-4 space-y-3">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center shrink-0">
-              <Send size={18} className="text-blue-600" />
-            </div>
-            <div>
-              <p className="font-semibold text-sm text-gray-900">Candidature</p>
-              <p className="text-xs text-gray-500">{profile?.applicationsSent ?? 8} inviate</p>
-            </div>
+        <button
+          onClick={() => setShowApplicationsModal(true)}
+          className="bg-white rounded-2xl shadow-card p-4 flex items-center gap-3 hover:shadow-md transition-all group text-left w-full"
+        >
+          <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center shrink-0">
+            <Send size={18} className="text-blue-600" />
           </div>
-          <div className="space-y-1.5">
-            <div className="flex items-center justify-between gap-1">
-              <p className="text-xs text-gray-600 truncate">Bilocale Milano</p>
-              <span className="text-[10px] bg-amber-100 text-amber-700 px-1.5 py-0.5 rounded-full shrink-0">In attesa</span>
-            </div>
-            <div className="flex items-center justify-between gap-1">
-              <p className="text-xs text-gray-600 truncate">Trilocale Roma</p>
-              <span className="text-[10px] bg-green-100 text-green-700 px-1.5 py-0.5 rounded-full shrink-0">Accettata</span>
-            </div>
+          <div className="flex-1 min-w-0">
+            <p className="font-semibold text-sm text-gray-900">Candidature</p>
+            <p className="text-xs text-gray-500 mt-0.5">{profile?.applicationsSent ?? mockApplications.length} inviate</p>
           </div>
-        </div>
+          <ArrowRight size={16} className="text-gray-300 group-hover:text-blue-400 transition-colors shrink-0" />
+        </button>
 
         {/* Visualizzazione profilo */}
         <div className="bg-white rounded-2xl shadow-card p-4 flex items-center gap-3">
@@ -610,8 +624,47 @@ export default function TenantDashboardPage() {
           </div>
         </Card>
 
-        {/* Profile Completion */}
-        <ProfileCompletionCard profile={profile} />
+        {/* Completion Header Card */}
+        {(() => {
+          const pct = calculatedCompletion;
+          const color = pct >= 80 ? { bar: 'bg-green-500', text: 'text-green-600', pill: 'bg-green-50' }
+                      : pct >= 50 ? { bar: 'bg-amber-500', text: 'text-amber-600', pill: 'bg-amber-50' }
+                      :             { bar: 'bg-red-500',   text: 'text-red-600',   pill: 'bg-red-50'   };
+          const emoji = pct >= 100 ? '🎉' : pct >= 80 ? '🌟' : pct >= 50 ? '💪' : '⚠️';
+          const msg   = pct >= 100 ? 'Profilo completo! Le agenzie ti noteranno.'
+                      : pct >= 80  ? 'Ottimo! Il tuo profilo è quasi perfetto.'
+                      : pct >= 50  ? 'Buon inizio! Completa il profilo per più visibilità.'
+                      :              'Profilo incompleto. Le agenzie potrebbero non trovarti.';
+          return (
+            <div className="bg-white rounded-2xl shadow-card p-4">
+              <div className="flex items-center justify-between mb-3">
+                <div className="flex items-center gap-2">
+                  <span className="text-xl">{emoji}</span>
+                  <h3 className="font-semibold text-gray-900 text-sm">Completamento Profilo</h3>
+                </div>
+                <div className={`flex items-center gap-1 px-2.5 py-1 rounded-full ${color.pill}`}>
+                  <TrendingUp size={13} className={color.text} />
+                  <span className={`text-sm font-bold ${color.text}`}>{pct}%</span>
+                </div>
+              </div>
+              <div className="h-2.5 bg-gray-100 rounded-full overflow-hidden mb-2">
+                <div
+                  className={`h-full ${color.bar} rounded-full transition-all duration-500`}
+                  style={{ width: `${pct}%` }}
+                />
+              </div>
+              <p className="text-xs text-gray-500">{msg}</p>
+              {pct < 100 && (
+                <Link
+                  to={ROUTES.TENANT_PROFILE}
+                  className="mt-3 block w-full py-2 bg-primary-500 text-white text-center text-sm rounded-xl font-medium hover:bg-primary-600 transition-colors"
+                >
+                  Completa il profilo
+                </Link>
+              )}
+            </div>
+          );
+        })()}
 
         {/* Quick Actions */}
         <Card>
@@ -737,6 +790,44 @@ export default function TenantDashboardPage() {
           </div>
         </Card>
       )}
+
+      {/* Applications Modal */}
+      <Modal
+        isOpen={showApplicationsModal}
+        onClose={() => setShowApplicationsModal(false)}
+        title="Le tue candidature"
+        size="md"
+      >
+        <div className="space-y-1">
+          <p className="text-sm text-gray-500 mb-4">
+            {mockApplications.length} candidature inviate in totale
+          </p>
+          {mockApplications.map((app) => {
+            const s = statusMap[app.status];
+            return (
+              <div
+                key={app.id}
+                className="flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 transition-colors"
+              >
+                <div className="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center shrink-0">
+                  <Send size={14} className="text-blue-500" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-medium text-gray-900 truncate">{app.title}</p>
+                  <div className="flex items-center gap-2 mt-0.5">
+                    <span className="text-xs text-gray-400">{app.date}</span>
+                    <span className="text-gray-200">·</span>
+                    <span className="text-xs text-gray-500">{app.price}</span>
+                  </div>
+                </div>
+                <span className={`shrink-0 text-[11px] font-medium px-2 py-0.5 rounded-full ${s.cls}`}>
+                  {s.label}
+                </span>
+              </div>
+            );
+          })}
+        </div>
+      </Modal>
     </div>
   );
 }
