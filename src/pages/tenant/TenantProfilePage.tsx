@@ -11,15 +11,17 @@ import {
   Euro,
   Home,
   PawPrint,
-  Plus,
   Settings,
+  Sparkles,
+  Loader2,
 } from 'lucide-react';
 import { CVRentalHistorySection, CVReferencesSection } from '../../components/cv';
-import { ITALIAN_CITIES, OCCUPATIONS } from '../../utils/constants';
+import { ITALIAN_CITIES, OCCUPATIONS, CONTRACT_TYPES } from '../../utils/constants';
 import { VideoRecorder, VideoUploader, VideoPlayer, VideoPlaceholder } from '../../components/video';
 import { ProfileEditModal, ProfileFormData } from '../../components/profile';
-import { mockVideoApi, mockAvatarApi, mockProfileApi, USE_MOCK_API } from '../../services/mock/mockTenantService';
+import { mockVideoApi, mockProfileApi, USE_MOCK_API } from '../../services/mock/mockTenantService';
 import { tenantsApi } from '../../services/api/tenants';
+import { generateTenantPitch } from '../../../services/aiService';
 import toast from 'react-hot-toast';
 
 type VideoMode = 'view' | 'record' | 'upload';
@@ -27,53 +29,54 @@ type VideoMode = 'view' | 'record' | 'upload';
 // ─── Dati statici ────────────────────────────────────────────────────────────
 
 const HOBBIES = [
-  { id: 'musica',       label: 'Musica',         emoji: '🎸' },
-  { id: 'lettura',      label: 'Lettura',         emoji: '📚' },
-  { id: 'cucina',       label: 'Cucina',          emoji: '🍳' },
-  { id: 'jogging',      label: 'Jogging',         emoji: '🏃' },
-  { id: 'ciclismo',     label: 'Ciclismo',        emoji: '🚴' },
-  { id: 'videogiochi',  label: 'Videogiochi',     emoji: '🎮' },
-  { id: 'arte',         label: 'Arte',            emoji: '🎨' },
-  { id: 'yoga',         label: 'Yoga',            emoji: '🧘' },
-  { id: 'viaggi',       label: 'Viaggi',          emoji: '✈️' },
-  { id: 'fotografia',   label: 'Fotografia',      emoji: '📸' },
-  { id: 'giardinaggio', label: 'Giardinaggio',    emoji: '🌱' },
-  { id: 'animali',      label: 'Animali',         emoji: '🐾' },
-  { id: 'cinema',       label: 'Cinema',          emoji: '🎬' },
-  { id: 'calcio',       label: 'Calcio',          emoji: '⚽' },
-  { id: 'tennis',       label: 'Tennis',          emoji: '🎾' },
-  { id: 'nuoto',        label: 'Nuoto',           emoji: '🏊' },
-  { id: 'teatro',       label: 'Teatro',          emoji: '🎭' },
-  { id: 'vino',         label: 'Vino & Cibo',     emoji: '🍷' },
-  { id: 'arrampicata',  label: 'Arrampicata',     emoji: '🧗' },
-  { id: 'danza',        label: 'Danza',           emoji: '💃' },
-  { id: 'scrittura',    label: 'Scrittura',       emoji: '✍️' },
-  { id: 'palestra',     label: 'Palestra',        emoji: '🏋️' },
-  { id: 'escursionismo',label: 'Escursionismo',   emoji: '🏔️' },
-  { id: 'meditazione',  label: 'Meditazione',     emoji: '🧠' },
-  { id: 'cucito',       label: 'Cucito',          emoji: '🪡' },
-  { id: 'skateboard',   label: 'Skateboard',      emoji: '🛹' },
-  { id: 'surf',         label: 'Sport Acquatici', emoji: '🌊' },
-  { id: 'campeggio',    label: 'Campeggio',       emoji: '🏕️' },
-  { id: 'karaoke',      label: 'Karaoke',         emoji: '🎤' },
-  { id: 'scacchi',      label: 'Scacchi',         emoji: '♟️' },
-  { id: 'podcast',      label: 'Podcast',         emoji: '🎙️' },
-  { id: 'bricolage',    label: 'Bricolage',       emoji: '🔨' },
+  { id: 'musica',        label: 'Musica',          emoji: '🎸' },
+  { id: 'lettura',       label: 'Lettura',          emoji: '📚' },
+  { id: 'cucina',        label: 'Cucina',           emoji: '🍳' },
+  { id: 'jogging',       label: 'Jogging',          emoji: '🏃' },
+  { id: 'ciclismo',      label: 'Ciclismo',         emoji: '🚴' },
+  { id: 'videogiochi',   label: 'Videogiochi',      emoji: '🎮' },
+  { id: 'arte',          label: 'Arte',             emoji: '🎨' },
+  { id: 'yoga',          label: 'Yoga',             emoji: '🧘' },
+  { id: 'viaggi',        label: 'Viaggi',           emoji: '✈️' },
+  { id: 'fotografia',    label: 'Fotografia',       emoji: '📸' },
+  { id: 'giardinaggio',  label: 'Giardinaggio',     emoji: '🌱' },
+  { id: 'animali',       label: 'Animali',          emoji: '🐾' },
+  { id: 'cinema',        label: 'Cinema',           emoji: '🎬' },
+  { id: 'calcio',        label: 'Calcio',           emoji: '⚽' },
+  { id: 'tennis',        label: 'Tennis',           emoji: '🎾' },
+  { id: 'nuoto',         label: 'Nuoto',            emoji: '🏊' },
+  { id: 'teatro',        label: 'Teatro',           emoji: '🎭' },
+  { id: 'vino',          label: 'Vino & Cibo',      emoji: '🍷' },
+  { id: 'arrampicata',   label: 'Arrampicata',      emoji: '🧗' },
+  { id: 'danza',         label: 'Danza',            emoji: '💃' },
+  { id: 'scrittura',     label: 'Scrittura',        emoji: '✍️' },
+  { id: 'palestra',      label: 'Palestra',         emoji: '🏋️' },
+  { id: 'escursionismo', label: 'Escursionismo',    emoji: '🏔️' },
+  { id: 'meditazione',   label: 'Meditazione',      emoji: '🧠' },
+  { id: 'cucito',        label: 'Cucito',           emoji: '🪡' },
+  { id: 'skateboard',    label: 'Skateboard',       emoji: '🛹' },
+  { id: 'surf',          label: 'Sport Acquatici',  emoji: '🌊' },
+  { id: 'campeggio',     label: 'Campeggio',        emoji: '🏕️' },
+  { id: 'karaoke',       label: 'Karaoke',          emoji: '🎤' },
+  { id: 'scacchi',       label: 'Scacchi',          emoji: '♟️' },
+  { id: 'podcast',       label: 'Podcast',          emoji: '🎙️' },
+  { id: 'bricolage',     label: 'Bricolage',        emoji: '🔨' },
 ];
 
 const PROPERTY_TYPES = [
-  { value: 'stanza',      label: 'Stanza'       },
-  { value: 'monolocale',  label: 'Monolocale'   },
-  { value: 'bilocale',    label: 'Bilocale'     },
-  { value: 'trilocale',   label: 'Trilocale'    },
-  { value: 'quadrilocale',label: 'Quadrilocale+'},
+  { value: 'stanza',           label: 'Stanza'            },
+  { value: 'appartamento',     label: 'Appartamento'      },
+  { value: 'villa',            label: 'Villa'             },
+  { value: 'attico',           label: 'Attico'            },
+  { value: 'casa_indipendente',label: 'Casa indipendente' },
+  { value: 'bifamiliare',      label: 'Bifamiliare'       },
 ];
 
 const FAMILY_UNITS = [
-  { value: 'solo',        label: 'Solo'         },
-  { value: 'coppia',      label: 'Coppia'       },
-  { value: 'famiglia',    label: 'Famiglia'     },
-  { value: 'coinquilini', label: 'Coinquilini'  },
+  { value: 'solo',        label: 'Solo'        },
+  { value: 'coppia',      label: 'Coppia'      },
+  { value: 'famiglia',    label: 'Famiglia'    },
+  { value: 'coinquilini', label: 'Coinquilini' },
 ];
 
 const AGE_RANGES = [
@@ -126,7 +129,9 @@ function ChipSelector({
   );
 }
 
-function FieldGroup({ label, required, children }: { label: string; required?: boolean; children: React.ReactNode }) {
+function FieldGroup({ label, required, hint, children }: {
+  label: string; required?: boolean; hint?: string; children: React.ReactNode;
+}) {
   return (
     <div>
       <label className="block text-sm font-medium text-gray-700 mb-1.5">
@@ -134,6 +139,7 @@ function FieldGroup({ label, required, children }: { label: string; required?: b
         {required && <span className="text-red-500 ml-0.5">*</span>}
       </label>
       {children}
+      {hint && <p className="mt-1 text-xs text-gray-400">{hint}</p>}
     </div>
   );
 }
@@ -165,24 +171,31 @@ export default function TenantProfilePage() {
 
   // ── Profile form state
   const [form, setForm] = useState({
-    firstName:   profile?.firstName  || '',
-    lastName:    profile?.lastName   || '',
-    phone:       profile?.phone      || '',
-    searchCity:  profile?.city       || '',
-    familyUnit:  'solo',
-    occupation:  profile?.occupation || '',
-    budget:      '',
-    propertyType:'bilocale',
-    rooms:       '1',
-    ageRange:    '',
-    furnished:   'indifferente',
-    hasPets:     'no',
-    bio:         profile?.bio        || '',
+    firstName:    profile?.firstName  || '',
+    lastName:     profile?.lastName   || '',
+    phone:        profile?.phone      || '',
+    searchCity:   profile?.city       || '',
+    familyUnit:   'solo',
+    familyCount:  '2',
+    occupation:   profile?.occupation || '',
+    incomeType:   'mensile' as 'mensile' | 'annuale',
+    income:       '',
+    contractType: '',
+    budget:       '',
+    propertyType: 'appartamento',
+    rooms:        '1',
+    ageRange:     '',
+    furnished:    'indifferente',
+    hasPets:      'no',
+    bio:          profile?.bio || '',
   });
   const [isSavingForm, setIsSavingForm] = useState(false);
+  const [isGeneratingBio, setIsGeneratingBio] = useState(false);
 
   const upd = (key: string, value: string) =>
     setForm(prev => ({ ...prev, [key]: value }));
+
+  const needsFamilyCount = form.familyUnit === 'famiglia' || form.familyUnit === 'coinquilini';
 
   // ── Hobbies
   const [selectedHobbies, setSelectedHobbies] = useState<string[]>([]);
@@ -192,12 +205,12 @@ export default function TenantProfilePage() {
     );
 
   // ── Video state
-  const [videoMode, setVideoMode]       = useState<VideoMode>('view');
-  const [videoUrl, setVideoUrl]         = useState<string | null>(null);
-  const [videoDuration, setVideoDuration] = useState(0);
+  const [videoMode, setVideoMode]             = useState<VideoMode>('view');
+  const [videoUrl, setVideoUrl]               = useState<string | null>(null);
+  const [videoDuration, setVideoDuration]     = useState(0);
   const [isUploadingVideo, setIsUploadingVideo] = useState(false);
   const [isDeletingVideo, setIsDeletingVideo]   = useState(false);
-  const [hasVideo, setHasVideo]         = useState(profile?.hasVideo || false);
+  const [hasVideo, setHasVideo]               = useState(profile?.hasVideo || false);
 
   // ── Profile settings modal
   const [editProfileOpen, setEditProfileOpen] = useState(false);
@@ -210,6 +223,39 @@ export default function TenantProfilePage() {
   const [referenceForm, setReferenceForm]         = useState<ReferenceFormData>(EMPTY_REFERENCE);
 
   // ── Handlers ─────────────────────────────────────────────────────────────
+
+  const handleGenerateBio = async () => {
+    setIsGeneratingBio(true);
+    try {
+      const hobbyLabels = selectedHobbies
+        .map(id => HOBBIES.find(h => h.id === id)?.label)
+        .filter(Boolean)
+        .slice(0, 5)
+        .join(', ') || 'vari interessi';
+
+      const familyDesc =
+        form.familyUnit === 'solo'        ? 'da solo'
+        : form.familyUnit === 'coppia'    ? 'in coppia'
+        : form.familyUnit === 'famiglia'  ? `con la mia famiglia (${form.familyCount} persone)`
+        :                                   `con ${form.familyCount} coinquilini`;
+
+      const reason = `cerco ${PROPERTY_TYPES.find(p => p.value === form.propertyType)?.label || 'casa'} a ${form.searchCity || 'una città italiana'}, trasferendomi ${familyDesc}`;
+
+      const generated = await generateTenantPitch({
+        name:    `${form.firstName} ${form.lastName}`.trim() || 'Inquilino',
+        job:     form.occupation || 'lavoratore',
+        reason,
+        hobbies: hobbyLabels,
+      });
+
+      upd('bio', generated.slice(0, 500));
+      toast.success('Descrizione generata!');
+    } catch {
+      toast.error('Errore nella generazione. Riprova.');
+    } finally {
+      setIsGeneratingBio(false);
+    }
+  };
 
   const handleFormSave = async () => {
     if (!form.firstName || !form.lastName || !form.phone || !form.searchCity || !form.occupation || !form.ageRange) {
@@ -341,7 +387,7 @@ export default function TenantProfilePage() {
 
             <div className="space-y-7">
 
-              {/* ── Dati personali */}
+              {/* ── 1. Dati personali */}
               <div>
                 <SectionTitle>Dati personali</SectionTitle>
                 <div className="grid sm:grid-cols-2 gap-4">
@@ -372,7 +418,7 @@ export default function TenantProfilePage() {
 
               <hr className="border-gray-100" />
 
-              {/* ── Dove e cosa cerchi */}
+              {/* ── 2. Dove e cosa cerchi */}
               <div>
                 <SectionTitle>Dove e cosa cerchi</SectionTitle>
                 <div className="space-y-4">
@@ -386,7 +432,8 @@ export default function TenantProfilePage() {
                   </FieldGroup>
 
                   <FieldGroup label="Tipologia immobile" required>
-                    <ChipSelector options={PROPERTY_TYPES} value={form.propertyType} onChange={v => upd('propertyType', v)} />
+                    <ChipSelector options={PROPERTY_TYPES} value={form.propertyType}
+                      onChange={v => upd('propertyType', v)} />
                   </FieldGroup>
 
                   <div className="grid sm:grid-cols-2 gap-4">
@@ -394,8 +441,7 @@ export default function TenantProfilePage() {
                       <div className="relative">
                         <Euro size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
                         <input className="input w-full pl-9 pr-14" type="number" min={0} step={50}
-                          value={form.budget} onChange={e => upd('budget', e.target.value)}
-                          placeholder="1.200" />
+                          value={form.budget} onChange={e => upd('budget', e.target.value)} placeholder="1.200" />
                         <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs">/mese</span>
                       </div>
                     </FieldGroup>
@@ -413,9 +459,9 @@ export default function TenantProfilePage() {
                   <FieldGroup label="Arredato?" required>
                     <ChipSelector
                       options={[
-                        { value:'si',          label:'Sì'          },
-                        { value:'no',          label:'No'          },
-                        { value:'indifferente',label:'Indifferente'},
+                        { value:'si',          label:'Sì'           },
+                        { value:'no',          label:'No'           },
+                        { value:'indifferente',label:'Indifferente' },
                       ]}
                       value={form.furnished} onChange={v => upd('furnished', v)}
                     />
@@ -425,10 +471,11 @@ export default function TenantProfilePage() {
 
               <hr className="border-gray-100" />
 
-              {/* ── Su di te */}
+              {/* ── 3. Su di te */}
               <div>
                 <SectionTitle>Su di te</SectionTitle>
-                <div className="grid sm:grid-cols-2 gap-4">
+                <div className="space-y-4">
+
                   <FieldGroup label="Occupazione" required>
                     <select className="input w-full" value={form.occupation}
                       onChange={e => upd('occupation', e.target.value)}>
@@ -437,8 +484,73 @@ export default function TenantProfilePage() {
                     </select>
                   </FieldGroup>
 
+                  {/* Nucleo familiare + count */}
                   <FieldGroup label="Nucleo familiare" required>
-                    <ChipSelector options={FAMILY_UNITS} value={form.familyUnit} onChange={v => upd('familyUnit', v)} />
+                    <ChipSelector options={FAMILY_UNITS} value={form.familyUnit}
+                      onChange={v => upd('familyUnit', v)} />
+                    {needsFamilyCount && (
+                      <div className="mt-3 flex items-center gap-3">
+                        <span className="text-sm text-gray-600">Numero di persone:</span>
+                        <div className="flex items-center gap-1">
+                          <button
+                            type="button"
+                            onClick={() => upd('familyCount', String(Math.max(2, parseInt(form.familyCount) - 1)))}
+                            className="w-8 h-8 rounded-lg border border-gray-200 flex items-center justify-center text-gray-600 hover:border-primary-300 hover:text-primary-600 transition-colors font-medium"
+                          >−</button>
+                          <span className="w-8 text-center font-semibold text-gray-900">{form.familyCount}</span>
+                          <button
+                            type="button"
+                            onClick={() => upd('familyCount', String(Math.min(10, parseInt(form.familyCount) + 1)))}
+                            className="w-8 h-8 rounded-lg border border-gray-200 flex items-center justify-center text-gray-600 hover:border-primary-300 hover:text-primary-600 transition-colors font-medium"
+                          >+</button>
+                        </div>
+                      </div>
+                    )}
+                  </FieldGroup>
+
+                  {/* Reddito */}
+                  <FieldGroup label="Reddito" hint="Inserisci il tuo reddito per aumentare la fiducia dei proprietari">
+                    <div className="flex items-stretch gap-2">
+                      {/* Toggle mensile/annuale */}
+                      <div className="flex rounded-xl border border-gray-200 overflow-hidden shrink-0">
+                        {(['mensile', 'annuale'] as const).map(type => (
+                          <button
+                            key={type}
+                            type="button"
+                            onClick={() => upd('incomeType', type)}
+                            className={`px-3 py-2 text-xs font-semibold transition-colors ${
+                              form.incomeType === type
+                                ? 'bg-primary-500 text-white'
+                                : 'bg-white text-gray-500 hover:bg-gray-50'
+                            }`}
+                          >
+                            {type === 'mensile' ? 'Mensile' : 'Annuo Lordo'}
+                          </button>
+                        ))}
+                      </div>
+                      {/* Amount input */}
+                      <div className="relative flex-1">
+                        <Euro size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                        <input
+                          className="input w-full pl-9"
+                          type="number"
+                          min={0}
+                          step={100}
+                          value={form.income}
+                          onChange={e => upd('income', e.target.value)}
+                          placeholder={form.incomeType === 'mensile' ? '2.000' : '28.000'}
+                        />
+                      </div>
+                    </div>
+                  </FieldGroup>
+
+                  {/* Tipologia contratto */}
+                  <FieldGroup label="Tipologia contratto preferita">
+                    <ChipSelector
+                      options={CONTRACT_TYPES.map(c => ({ value: c.value, label: c.label }))}
+                      value={form.contractType}
+                      onChange={v => upd('contractType', v)}
+                    />
                   </FieldGroup>
 
                   <div className="sm:col-span-2">
@@ -454,23 +566,52 @@ export default function TenantProfilePage() {
 
               <hr className="border-gray-100" />
 
-              {/* ── Presentazione */}
+              {/* ── 4. Presentazione (in fondo) */}
               <div>
-                <SectionTitle>Presentazione</SectionTitle>
-                <FieldGroup label="Scrivi qualcosa su di te">
-                  <textarea
-                    className="input w-full min-h-[130px] resize-none"
-                    value={form.bio}
-                    onChange={e => { if (e.target.value.length <= 500) upd('bio', e.target.value); }}
-                    placeholder={
-                      'Questa breve descrizione sarà visibile ai proprietari e può fare la differenza per essere scelto come inquilino ideale.\n\nParlaci di te'
-                    }
-                    maxLength={500}
-                  />
-                  <p className="text-xs text-gray-400 text-right mt-1">
-                    Usati {form.bio.length} / 500 caratteri
+                <SectionTitle>Parlaci di te</SectionTitle>
+
+                {/* AI button */}
+                <div className="flex items-center justify-between mb-3">
+                  <p className="text-sm text-gray-500 leading-relaxed max-w-sm">
+                    Questa descrizione sarà visibile ai proprietari e può fare la differenza.
                   </p>
-                </FieldGroup>
+                  <button
+                    type="button"
+                    onClick={handleGenerateBio}
+                    disabled={isGeneratingBio}
+                    className={`
+                      inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold text-white
+                      bg-gradient-to-r from-violet-500 to-purple-600
+                      hover:from-violet-600 hover:to-purple-700
+                      shadow-sm hover:shadow-md hover:shadow-purple-200
+                      transition-all duration-200 active:scale-[0.97]
+                      disabled:opacity-60 disabled:cursor-not-allowed shrink-0
+                    `}
+                  >
+                    {isGeneratingBio ? (
+                      <>
+                        <Loader2 size={14} className="animate-spin" />
+                        Generando...
+                      </>
+                    ) : (
+                      <>
+                        <Sparkles size={14} />
+                        Genera con AI
+                      </>
+                    )}
+                  </button>
+                </div>
+
+                <textarea
+                  className="input w-full min-h-[130px] resize-none"
+                  value={form.bio}
+                  onChange={e => { if (e.target.value.length <= 500) upd('bio', e.target.value); }}
+                  placeholder={'Ciao! Sono un professionista affidabile e ordinato, cerco un appartamento dove sentirmi a casa...'}
+                  maxLength={500}
+                />
+                <p className="text-xs text-gray-400 text-right mt-1">
+                  Usati {form.bio.length} / 500 caratteri
+                </p>
               </div>
 
               {/* Save */}
@@ -500,7 +641,6 @@ export default function TenantProfilePage() {
                 Seleziona i tuoi hobby — aiuta i proprietari a conoscerti meglio.
               </p>
             </CardHeader>
-
             <div className="flex flex-wrap gap-2">
               {HOBBIES.map(hobby => {
                 const active = selectedHobbies.includes(hobby.id);
@@ -574,22 +714,28 @@ export default function TenantProfilePage() {
               </div>
             </CardHeader>
             <div className="space-y-3">
-              {form.searchCity ? (
+              {form.searchCity && (
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2 text-gray-500 text-sm"><MapPin size={15} />Città</div>
                   <span className="text-sm font-medium">{form.searchCity}</span>
                 </div>
-              ) : null}
-              {form.budget ? (
+              )}
+              {form.budget && (
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2 text-gray-500 text-sm"><Euro size={15} />Budget max</div>
                   <span className="text-sm font-medium">€{form.budget}/mese</span>
                 </div>
-              ) : null}
+              )}
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2 text-gray-500 text-sm"><Home size={15} />Tipologia</div>
                 <span className="text-sm font-medium">{PROPERTY_TYPES.find(p => p.value === form.propertyType)?.label || '—'}</span>
               </div>
+              {form.income && (
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2 text-gray-500 text-sm"><Euro size={15} />Reddito</div>
+                  <span className="text-sm font-medium">€{form.income} {form.incomeType === 'mensile' ? '/mese' : '/anno lordo'}</span>
+                </div>
+              )}
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2 text-gray-500 text-sm"><PawPrint size={15} />Animali</div>
                 <span className="text-sm font-medium">{form.hasPets === 'si' ? 'Sì' : 'No'}</span>
@@ -607,7 +753,7 @@ export default function TenantProfilePage() {
                       ) : null;
                     })}
                     {selectedHobbies.length > 5 && (
-                      <span className="text-xs text-gray-400">+{selectedHobbies.length - 5}</span>
+                      <span className="text-xs text-gray-400 self-center">+{selectedHobbies.length - 5}</span>
                     )}
                   </div>
                 </div>
@@ -619,26 +765,19 @@ export default function TenantProfilePage() {
 
       {/* ── Modals ─────────────────────────────────────────────────────── */}
 
-      {/* Settings / Edit Profile Modal */}
       <ProfileEditModal
         isOpen={editProfileOpen}
         onClose={() => setEditProfileOpen(false)}
         onSubmit={handleProfileSave}
         initialData={{
-          firstName: profile?.firstName || '',
-          lastName:  profile?.lastName  || '',
-          phone:     profile?.phone     || '',
-          occupation: profile?.occupation || '',
-          employmentType: profile?.employmentType || '',
-          employer:  profile?.employer  || '',
-          annualIncome: profile?.annualIncome,
-          currentCity: profile?.city   || '',
-          bio: form.bio,
+          firstName: profile?.firstName || '', lastName: profile?.lastName || '',
+          phone: profile?.phone || '', occupation: profile?.occupation || '',
+          employmentType: profile?.employmentType || '', employer: profile?.employer || '',
+          annualIncome: profile?.annualIncome, currentCity: profile?.city || '', bio: form.bio,
         }}
         isLoading={isSavingProfile}
       />
 
-      {/* Rental History Modal */}
       <Modal isOpen={showRentalForm} onClose={() => { setShowRentalForm(false); setRentalForm(EMPTY_RENTAL); }} title="Aggiungi Affitto Precedente" size="lg">
         <div className="space-y-4">
           <Input label="Indirizzo *" value={rentalForm.address} onChange={e => setRentalForm({ ...rentalForm, address: e.target.value })} placeholder="Via Roma 10" />
@@ -675,7 +814,6 @@ export default function TenantProfilePage() {
         </ModalFooter>
       </Modal>
 
-      {/* Reference Modal */}
       <Modal isOpen={showReferenceForm} onClose={() => { setShowReferenceForm(false); setReferenceForm(EMPTY_REFERENCE); }} title="Richiedi Referenza">
         <div className="space-y-4">
           <p className="text-sm text-gray-500">Inserisci i dati del tuo precedente proprietario. Riceverà una email per lasciare una referenza sul tuo profilo.</p>
