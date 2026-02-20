@@ -7,10 +7,7 @@ import {
   TrendingUp,
   ArrowRight,
   CreditCard,
-  Unlock,
-  Calendar,
   Inbox,
-  Bell,
 } from 'lucide-react';
 import {
   LineChart,
@@ -26,8 +23,8 @@ import {
 import { useAuthStore } from '../../store';
 import { AgencyUser } from '../../types';
 import { ROUTES } from '../../utils/constants';
-import { formatCurrency, formatNumber } from '../../utils/formatters';
-import { Card, CardHeader, CardTitle, Button, StatCard, Badge } from '../../components/ui';
+import { formatCurrency } from '../../utils/formatters';
+import { Card, CardHeader, CardTitle, Button, Badge } from '../../components/ui';
 
 // Mock chart data
 const viewsData = [
@@ -118,32 +115,68 @@ export default function AgencyDashboardPage() {
         </div>
       </Card>
 
-      {/* Stats Grid */}
+      {/* Quick Action Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatCard
-          icon="👁️"
-          label="Visualizzazioni Annunci"
-          value={formatNumber(1234)}
-        />
-        <Link to={ROUTES.AGENCY_APPLICATIONS}>
-          <StatCard
-            icon="📩"
-            label="Candidature Ricevute"
-            value={applicationCount}
-            change={unreadNotifications > 0 ? unreadNotifications : undefined}
-            changeLabel={unreadNotifications > 0 ? 'nuove' : undefined}
-          />
+        {/* Cerca inquilino */}
+        <Link to={ROUTES.AGENCY_TENANTS} className="group block">
+          <div className="bg-white rounded-2xl p-5 border border-border hover:border-primary-300 hover:shadow-md transition-all duration-200 h-full flex flex-col gap-3">
+            <div className="w-11 h-11 rounded-xl bg-primary-50 group-hover:bg-primary-100 flex items-center justify-center transition-colors">
+              <Users size={22} className="text-primary-600" />
+            </div>
+            <div>
+              <p className="font-semibold text-text-primary text-sm leading-tight">Cerca inquilino</p>
+              <p className="text-xs text-text-muted mt-1">245 profili disponibili</p>
+            </div>
+            <ArrowRight size={15} className="text-text-muted group-hover:text-primary-500 group-hover:translate-x-0.5 transition-all mt-auto" />
+          </div>
         </Link>
-        <StatCard
-          icon={<Unlock size={24} className="text-primary-500" />}
-          label="Profili Sbloccati"
-          value={agencyUser?.agency?.tenantsUnlocked ?? 18}
-        />
-        <StatCard
-          icon="🏠"
-          label="Annunci Attivi"
-          value={agencyUser?.agency?.activeListingsCount ?? 12}
-        />
+
+        {/* Pubblica annuncio */}
+        <Link to={ROUTES.AGENCY_LISTINGS} className="group block">
+          <div className="bg-white rounded-2xl p-5 border border-border hover:border-teal-300 hover:shadow-md transition-all duration-200 h-full flex flex-col gap-3">
+            <div className="w-11 h-11 rounded-xl bg-teal-50 group-hover:bg-teal-100 flex items-center justify-center transition-colors">
+              <Home size={22} className="text-teal-600" />
+            </div>
+            <div>
+              <p className="font-semibold text-text-primary text-sm leading-tight">Pubblica annuncio</p>
+              <p className="text-xs text-text-muted mt-1">Aggiungi un nuovo immobile</p>
+            </div>
+            <ArrowRight size={15} className="text-text-muted group-hover:text-teal-500 group-hover:translate-x-0.5 transition-all mt-auto" />
+          </div>
+        </Link>
+
+        {/* Candidature ricevute */}
+        <Link to={ROUTES.AGENCY_APPLICATIONS} className="group block">
+          <div className="bg-white rounded-2xl p-5 border border-border hover:border-amber-300 hover:shadow-md transition-all duration-200 h-full flex flex-col gap-3 relative">
+            {unreadNotifications > 0 && (
+              <span className="absolute top-3 right-3 min-w-[20px] h-5 px-1.5 bg-accent-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center">
+                {unreadNotifications}
+              </span>
+            )}
+            <div className="w-11 h-11 rounded-xl bg-amber-50 group-hover:bg-amber-100 flex items-center justify-center transition-colors">
+              <Inbox size={22} className="text-amber-600" />
+            </div>
+            <div>
+              <p className="font-semibold text-text-primary text-sm leading-tight">Candidature ricevute</p>
+              <p className="text-xs text-text-muted mt-1">{applicationCount} candidature totali</p>
+            </div>
+            <ArrowRight size={15} className="text-text-muted group-hover:text-amber-500 group-hover:translate-x-0.5 transition-all mt-auto" />
+          </div>
+        </Link>
+
+        {/* Annunci attivi */}
+        <Link to={ROUTES.AGENCY_LISTINGS} className="group block">
+          <div className="bg-white rounded-2xl p-5 border border-border hover:border-violet-300 hover:shadow-md transition-all duration-200 h-full flex flex-col gap-3">
+            <div className="w-11 h-11 rounded-xl bg-violet-50 group-hover:bg-violet-100 flex items-center justify-center transition-colors">
+              <Eye size={22} className="text-violet-600" />
+            </div>
+            <div>
+              <p className="font-semibold text-text-primary text-sm leading-tight">Annunci attivi</p>
+              <p className="text-xs text-text-muted mt-1">{agencyUser?.agency?.activeListingsCount ?? 12} pubblicati</p>
+            </div>
+            <ArrowRight size={15} className="text-text-muted group-hover:text-violet-500 group-hover:translate-x-0.5 transition-all mt-auto" />
+          </div>
+        </Link>
       </div>
 
       {/* Charts Row */}
