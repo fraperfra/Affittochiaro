@@ -165,6 +165,12 @@ export interface TenantFilters {
   hasPets?: boolean;
   availableFrom?: Date;
   maxBudget?: number;
+  minBudget?: number;
+  radius?: number;
+  familyUnit?: string;
+  propertyCondition?: string;
+  lookingFor?: string;
+  propertyType?: string;
 }
 
 export interface TenantStats {

@@ -5,7 +5,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
-  FileDown,
   Share2,
   Eye,
   RefreshCw,
@@ -18,7 +17,6 @@ import { useAuthStore, useCVStore } from '@/store';
 import { TenantUser } from '@/types';
 import { GuarantorType, GUARANTOR_TYPE_LABELS } from '@/types/cv';
 import { DOCUMENT_TYPE_LABELS, DocumentType } from '@/types/tenant';
-import { generateCVPdf } from '@/utils/pdfExport';
 import { ITALIAN_CITIES } from '@/utils/constants';
 import { Button, Spinner, Modal, ModalFooter, Input } from '@/components/ui';
 import {
@@ -146,17 +144,6 @@ export default function TenantCVPage() {
     }
   };
 
-  const handleExportPDF = async () => {
-    if (!cv) return;
-    try {
-      toast.loading('Generazione PDF...', { id: 'pdf-export' });
-      await generateCVPdf(cv);
-      toast.success('PDF scaricato!', { id: 'pdf-export' });
-    } catch {
-      toast.error('Errore nella generazione del PDF', { id: 'pdf-export' });
-    }
-  };
-
   // ============================================================
   // Form Handlers
   // ============================================================
@@ -274,9 +261,6 @@ export default function TenantCVPage() {
           <Link to="/tenant/cv/preview">
             <Button variant="outline" size="sm" leftIcon={<Eye size={16} />}>Anteprima</Button>
           </Link>
-          <Button variant="outline" size="sm" leftIcon={<FileDown size={16} />} onClick={handleExportPDF}>
-            PDF
-          </Button>
           <Button
             variant="primary" size="sm" leftIcon={<Share2 size={16} />}
             onClick={shareLink ? handleCopyLink : handleShareLink}

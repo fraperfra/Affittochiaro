@@ -9,7 +9,8 @@ import {
   MapPin,
   Briefcase,
   Euro,
-  Download,
+  Mail,
+  Phone,
   X,
   Locate,
   Loader2,
@@ -88,10 +89,17 @@ export default function TenantSearchPage() {
   // Filtro + calcolo score + sort
   const filteredTenants = tenants
     .filter((tenant) => {
+      if (filters.search && !`${tenant.firstName} ${tenant.lastName} ${tenant.currentCity} ${tenant.occupation || ''}`.toLowerCase().includes(filters.search.toLowerCase())) return false;
       if (filters.city && tenant.currentCity !== filters.city) return false;
       if (filters.contractType && tenant.preferences.preferredContractType !== filters.contractType) return false;
       if (filters.isVerified && !tenant.isVerified) return false;
       if (filters.hasVideo && !tenant.hasVideo) return false;
+      if (filters.hasPets !== undefined && tenant.preferences.hasPets !== filters.hasPets) return false;
+      if (filters.minAge !== undefined && (tenant.age === undefined || tenant.age < filters.minAge)) return false;
+      if (filters.maxAge !== undefined && (tenant.age === undefined || tenant.age > filters.maxAge)) return false;
+      if (filters.maxBudget !== undefined && tenant.preferences.maxBudget !== undefined && tenant.preferences.maxBudget > filters.maxBudget) return false;
+      if (filters.minBudget !== undefined && tenant.preferences.maxBudget !== undefined && tenant.preferences.maxBudget < filters.minBudget) return false;
+      if (filters.familyUnit && tenant.familyUnit !== filters.familyUnit) return false;
       if (tenant.status !== 'active') return false;
       return true;
     })
@@ -213,21 +221,70 @@ export default function TenantSearchPage() {
           onClose={() => setShowFilters(false)}
           title="Filtri Ricerca"
         >
-          <div className="space-y-4">
+          <div className="space-y-5">
+            {/* Raggio di ricerca */}
             <div>
-              <label className="label">Città</label>
-              <select
-                className="input"
-                value={filters.city || ''}
-                onChange={(e) => setFilters({ city: e.target.value || undefined })}
-              >
-                <option value="">Tutte le citta</option>
-                {ITALIAN_CITIES.map((city) => (
-                  <option key={city} value={city}>{city}</option>
-                ))}
-              </select>
+              <div className="flex items-center justify-between mb-1.5">
+                <label className="label mb-0">Raggio di ricerca</label>
+                <span className="text-sm font-semibold text-primary-600">{filters.radius ?? 10} km</span>
+              </div>
+              <input
+                type="range"
+                min={1}
+                max={50}
+                step={1}
+                className="w-full accent-primary-500"
+                value={filters.radius ?? 10}
+                onChange={(e) => setFilters({ radius: Number(e.target.value) })}
+              />
+              <div className="flex justify-between text-xs text-text-muted mt-1">
+                <span>1 km</span><span>50 km</span>
+              </div>
             </div>
 
+            {/* Budget */}
+            <div>
+              <label className="label">Budget mensile (€)</label>
+              <div className="grid grid-cols-2 gap-3">
+                <input
+                  type="number"
+                  className="input"
+                  placeholder="Min (es. 400)"
+                  value={filters.minBudget ?? ''}
+                  onChange={(e) => setFilters({ minBudget: e.target.value ? Number(e.target.value) : undefined })}
+                />
+                <input
+                  type="number"
+                  className="input"
+                  placeholder="Max (es. 1200)"
+                  value={filters.maxBudget ?? ''}
+                  onChange={(e) => setFilters({ maxBudget: e.target.value ? Number(e.target.value) : undefined })}
+                />
+              </div>
+            </div>
+
+            {/* Età */}
+            <div>
+              <label className="label">Età</label>
+              <div className="grid grid-cols-2 gap-3">
+                <input
+                  type="number"
+                  className="input"
+                  placeholder="Da (es. 18)"
+                  value={filters.minAge ?? ''}
+                  onChange={(e) => setFilters({ minAge: e.target.value ? Number(e.target.value) : undefined })}
+                />
+                <input
+                  type="number"
+                  className="input"
+                  placeholder="A (es. 65)"
+                  value={filters.maxAge ?? ''}
+                  onChange={(e) => setFilters({ maxAge: e.target.value ? Number(e.target.value) : undefined })}
+                />
+              </div>
+            </div>
+
+            {/* Contratto */}
             <div>
               <label className="label">Tipo di Contratto</label>
               <select
@@ -235,33 +292,134 @@ export default function TenantSearchPage() {
                 value={filters.contractType || ''}
                 onChange={(e) => setFilters({ contractType: (e.target.value || undefined) as ContractType | undefined })}
               >
-                <option value="">Tutti i contratti</option>
+                <option value="">Qualsiasi</option>
                 {CONTRACT_TYPES.map((ct) => (
                   <option key={ct.value} value={ct.value}>{ct.label}</option>
                 ))}
               </select>
             </div>
 
-            <div className="flex flex-col gap-3 pt-2">
-              <label className="flex items-center justify-between p-3 rounded-xl border border-border bg-white cursor-pointer hover:border-primary-500 transition-colors">
-                <span className="font-medium">Solo profili verificati</span>
-                <input
-                  type="checkbox"
-                  className="w-5 h-5 accent-primary-500"
-                  checked={filters.isVerified || false}
-                  onChange={(e) => setFilters({ isVerified: e.target.checked })}
-                />
-              </label>
+            {/* Animali domestici */}
+            <div>
+              <label className="label">Animali domestici</label>
+              <div className="grid grid-cols-3 gap-2">
+                {[
+                  { val: '', lbl: 'Indifferente' },
+                  { val: 'yes', lbl: 'Sì' },
+                  { val: 'no', lbl: 'No' },
+                ].map(({ val, lbl }) => (
+                  <button
+                    key={val}
+                    type="button"
+                    onClick={() => setFilters({ hasPets: val === '' ? undefined : val === 'yes' })}
+                    className={`py-2 px-3 rounded-xl text-sm font-medium border transition-colors ${
+                      (val === '' && filters.hasPets === undefined) ||
+                      (val === 'yes' && filters.hasPets === true) ||
+                      (val === 'no' && filters.hasPets === false)
+                        ? 'bg-primary-500 text-white border-primary-500'
+                        : 'bg-white text-text-secondary border-border hover:border-primary-300'
+                    }`}
+                  >
+                    {lbl}
+                  </button>
+                ))}
+              </div>
+            </div>
 
-              <label className="flex items-center justify-between p-3 rounded-xl border border-border bg-white cursor-pointer hover:border-primary-500 transition-colors">
-                <span className="font-medium">Solo con video presentazione</span>
-                <input
-                  type="checkbox"
-                  className="w-5 h-5 accent-primary-500"
-                  checked={filters.hasVideo || false}
-                  onChange={(e) => setFilters({ hasVideo: e.target.checked })}
-                />
-              </label>
+            {/* Stato Immobile */}
+            <div>
+              <label className="label">Stato Immobile</label>
+              <div className="grid grid-cols-2 gap-2">
+                {[
+                  { val: '', lbl: 'Indifferente' },
+                  { val: 'nuovo', lbl: 'Nuovo' },
+                  { val: 'buono', lbl: 'Buono stato' },
+                  { val: 'da_ristrutturare', lbl: 'Da ristrutturare' },
+                ].map(({ val, lbl }) => (
+                  <button
+                    key={val}
+                    type="button"
+                    onClick={() => setFilters({ propertyCondition: val || undefined })}
+                    className={`py-2 px-3 rounded-xl text-sm font-medium border transition-colors ${
+                      (filters.propertyCondition ?? '') === val
+                        ? 'bg-primary-500 text-white border-primary-500'
+                        : 'bg-white text-text-secondary border-border hover:border-primary-300'
+                    }`}
+                  >
+                    {lbl}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Nucleo familiare */}
+            <div>
+              <label className="label">Nucleo familiare</label>
+              <div className="grid grid-cols-2 gap-2">
+                {[
+                  { val: '', lbl: 'Tutti' },
+                  { val: 'solo', lbl: 'Solo' },
+                  { val: 'coppia', lbl: 'Coppia' },
+                  { val: 'famiglia', lbl: 'Famiglia' },
+                  { val: 'coinquilini', lbl: 'Coinquilini' },
+                ].map(({ val, lbl }) => (
+                  <button
+                    key={val}
+                    type="button"
+                    onClick={() => setFilters({ familyUnit: val || undefined })}
+                    className={`py-2 px-3 rounded-xl text-sm font-medium border transition-colors ${
+                      (filters.familyUnit ?? '') === val
+                        ? 'bg-primary-500 text-white border-primary-500'
+                        : 'bg-white text-text-secondary border-border hover:border-primary-300'
+                    }`}
+                  >
+                    {lbl}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* In cerca di */}
+            <div>
+              <label className="label">In cerca di</label>
+              <select
+                className="input"
+                value={filters.lookingFor || ''}
+                onChange={(e) => setFilters({ lookingFor: e.target.value || undefined })}
+              >
+                <option value="">Qualsiasi</option>
+                <option value="intero">Intera proprietà</option>
+                <option value="stanza_singola">Stanza singola</option>
+                <option value="stanza_doppia">Stanza doppia</option>
+              </select>
+            </div>
+
+            {/* Tipo di immobile */}
+            <div>
+              <label className="label">Tipo di immobile</label>
+              <div className="flex flex-wrap gap-2">
+                {[
+                  { val: '', lbl: 'Tutti' },
+                  { val: 'appartamento', lbl: 'Appartamento' },
+                  { val: 'villa', lbl: 'Villa' },
+                  { val: 'studio', lbl: 'Studio' },
+                  { val: 'stanza', lbl: 'Stanza' },
+                  { val: 'altro', lbl: 'Altro' },
+                ].map(({ val, lbl }) => (
+                  <button
+                    key={val}
+                    type="button"
+                    onClick={() => setFilters({ propertyType: val || undefined })}
+                    className={`py-2 px-3 rounded-xl text-sm font-medium border transition-colors ${
+                      (filters.propertyType ?? '') === val
+                        ? 'bg-primary-500 text-white border-primary-500'
+                        : 'bg-white text-text-secondary border-border hover:border-primary-300'
+                    }`}
+                  >
+                    {lbl}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
           <ModalFooter>
@@ -272,11 +430,17 @@ export default function TenantSearchPage() {
               Resetta
             </Button>
             <Button onClick={() => setShowFilters(false)}>
-              Applica Filtri ({[
-                filters.city,
+              Applica ({[
                 filters.contractType,
-                filters.isVerified,
-                filters.hasVideo
+                filters.hasPets !== undefined && String(filters.hasPets),
+                filters.minAge,
+                filters.maxAge,
+                filters.minBudget,
+                filters.maxBudget,
+                filters.familyUnit,
+                filters.propertyCondition,
+                filters.lookingFor,
+                filters.propertyType,
               ].filter(Boolean).length})
             </Button>
           </ModalFooter>
@@ -542,11 +706,11 @@ export default function TenantSearchPage() {
                   <p className="text-xs font-semibold text-green-700 uppercase tracking-wide mb-2">Contatti sbloccati</p>
                   <div className="flex flex-wrap gap-x-6 gap-y-1 text-sm">
                     <a href={`mailto:${t.email}`} className="flex items-center gap-1.5 text-green-800 font-medium hover:underline">
-                      <Download size={13} />{t.email}
+                      <Mail size={13} />{t.email}
                     </a>
                     {t.phone && (
                       <a href={`tel:${t.phone}`} className="flex items-center gap-1.5 text-green-800 font-medium hover:underline">
-                        <Download size={13} />{t.phone}
+                        <Phone size={13} />{t.phone}
                       </a>
                     )}
                   </div>
@@ -564,9 +728,6 @@ export default function TenantSearchPage() {
         })()}
         <ModalFooter>
           <Button variant="secondary" onClick={() => setSelectedTenant(null)}>Chiudi</Button>
-          {isUnlocked(selectedTenant?.id || '') && (
-            <Button leftIcon={<Download size={16} />}>Scarica CV</Button>
-          )}
         </ModalFooter>
       </Modal>
 

@@ -9,7 +9,6 @@ import {
   Calendar,
   FileText,
   Edit2,
-  Download,
   User,
   Unlock,
   Bookmark,
@@ -313,9 +312,6 @@ function ProfileCard({
 
         {/* Actions */}
         <div className="flex lg:flex-col justify-end gap-2 lg:border-l lg:pl-5 lg:border-gray-100 shrink-0">
-          <Button variant="secondary" size="sm" leftIcon={<Download size={14} />}>
-            Scarica CV
-          </Button>
           <Button variant="outline" size="sm" leftIcon={<User size={14} />}>
             Vedi profilo
           </Button>
