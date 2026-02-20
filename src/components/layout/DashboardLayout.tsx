@@ -17,7 +17,6 @@ import {
   ChevronDown,
   Inbox,
   FolderOpen,
-  Calculator,
   Sparkles,
 } from 'lucide-react';
 import { useAuthStore } from '../../store';
@@ -54,7 +53,7 @@ const agencyNavItems: NavItem[] = [
   { icon: <Home size={20} />, label: 'I Miei Annunci', path: ROUTES.AGENCY_LISTINGS },
   { icon: <CreditCard size={20} />, label: 'Piano & Crediti', path: ROUTES.AGENCY_PLAN },
   { icon: <FolderOpen size={20} />, label: 'Documenti', path: ROUTES.AGENCY_DOCUMENTS },
-  { icon: <Calculator size={20} />, label: 'Calcolatori', path: ROUTES.AGENCY_CALCULATORS },
+  { icon: <Sparkles size={20} />, label: 'Servizi', path: ROUTES.AGENCY_SERVICES },
   { icon: <Settings size={20} />, label: 'Impostazioni', path: ROUTES.AGENCY_SETTINGS },
 ];
 
@@ -283,7 +282,7 @@ const PAGE_TITLES: Record<string, string> = {
   '/agency/messages': 'Messaggi',
   '/agency/settings': 'Impostazioni',
   '/agency/documents': 'Documenti',
-  '/agency/calculators': 'Calcolatori',
+  '/agency/services': 'Servizi',
   '/admin': 'Dashboard',
   '/admin/tenants': 'Gestione Inquilini',
   '/admin/agencies': 'Gestione Agenzie',

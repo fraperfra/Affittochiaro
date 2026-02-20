@@ -77,7 +77,7 @@ const MessagesPage = lazy(() => import('./pages/MessagesPage'));
 const TenantTemplatesPage = lazy(() => import('./pages/tenant/TenantTemplatesPage'));
 const TenantServicesPage = lazy(() => import('./pages/tenant/TenantServicesPage'));
 const AgencyDocumentsPage = lazy(() => import('./pages/agency/AgencyDocumentsPage'));
-const AgencyCalculatorsPage = lazy(() => import('./pages/agency/AgencyCalculatorsPage'));
+const AgencyServicesPage = lazy(() => import('./pages/agency/AgencyServicesPage'));
 
 
 // Auth Guard Component
@@ -322,7 +322,7 @@ function App() {
             <Route path="messages" element={<MessagesPage />} />
             <Route path="settings" element={<SettingsPage />} />
             <Route path="documents" element={<AgencyDocumentsPage />} />
-            <Route path="calculators" element={<AgencyCalculatorsPage />} />
+            <Route path="services" element={<AgencyServicesPage />} />
             <Route path="more" element={<AgencyMorePage />} />
             <Route path="*" element={<Navigate to={ROUTES.AGENCY_DASHBOARD} replace />} />
           </Route>

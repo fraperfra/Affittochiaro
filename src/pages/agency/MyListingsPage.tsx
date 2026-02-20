@@ -4,6 +4,7 @@ import {
   Plus, Edit2, Eye, Trash2, Users, Pause, Play, Save, MapPin,
   Phone, Mail, CheckCircle, XCircle, Clock, ChevronDown, ChevronUp,
   Briefcase, Calendar, Home, MessageSquare, PawPrint, Cigarette,
+  ImagePlus, X,
 } from 'lucide-react';
 import { formatCurrency, formatDate, formatNumber, formatDateTime } from '../../utils/formatters';
 import { ITALIAN_CITIES } from '../../utils/constants';
@@ -30,6 +31,7 @@ interface AgencyListing {
   features: ListingFeature[];
   petsAllowed: boolean;
   smokingAllowed: boolean;
+  photos: string[];
   status: ListingStatus;
   views: number;
   applications: number;
@@ -79,25 +81,25 @@ const INITIAL_LISTINGS: AgencyListing[] = [
     id: 1, title: 'Bilocale luminoso in zona Navigli', description: 'Splendido bilocale ristrutturato con affaccio sul Naviglio Grande. Luminoso e silenzioso, ideale per giovani professionisti.',
     city: 'Milano', zone: 'Navigli', price: 1200, expenses: 120, deposit: 2400, rooms: 2, bathrooms: 1, sqm: 55, floor: 3,
     propertyType: 'apartment', furnished: 'yes', heatingType: 'autonomous', features: ['balcony', 'air_conditioning', 'washing_machine', 'internet'],
-    petsAllowed: false, smokingAllowed: false, status: 'active', views: 234, applications: 12, createdAt: new Date('2024-10-15'),
+    petsAllowed: false, smokingAllowed: false, photos: [], status: 'active', views: 234, applications: 12, createdAt: new Date('2024-10-15'),
   },
   {
     id: 2, title: 'Trilocale con terrazzo zona Porta Romana', description: 'Ampio trilocale con terrazzo abitabile e doppia esposizione. Zona servitissima, vicino a metro e università.',
     city: 'Milano', zone: 'Porta Romana', price: 1650, expenses: 150, deposit: 3300, rooms: 3, bathrooms: 2, sqm: 85, floor: 5,
     propertyType: 'apartment', furnished: 'partial', heatingType: 'centralized', features: ['terrace', 'elevator', 'video_intercom', 'cellar'],
-    petsAllowed: true, smokingAllowed: false, status: 'active', views: 156, applications: 8, createdAt: new Date('2024-10-20'),
+    petsAllowed: true, smokingAllowed: false, photos: [], status: 'active', views: 156, applications: 8, createdAt: new Date('2024-10-20'),
   },
   {
     id: 3, title: 'Monolocale arredato centro storico', description: 'Monolocale completamente arredato nel cuore del centro storico. Perfetto per studenti e lavoratori single.',
     city: 'Milano', zone: 'Centro Storico', price: 850, expenses: 80, deposit: 1700, rooms: 1, bathrooms: 1, sqm: 35, floor: 2,
     propertyType: 'studio', furnished: 'yes', heatingType: 'autonomous', features: ['internet', 'washing_machine', 'air_conditioning'],
-    petsAllowed: false, smokingAllowed: false, status: 'paused', views: 89, applications: 5, createdAt: new Date('2024-09-10'),
+    petsAllowed: false, smokingAllowed: false, photos: [], status: 'paused', views: 89, applications: 5, createdAt: new Date('2024-09-10'),
   },
   {
     id: 4, title: 'Quadrilocale con box zona Isola', description: 'Quadrilocale spazioso con box auto e cantina. Zona Isola, quartiere trendy e ben collegato.',
     city: 'Milano', zone: 'Isola', price: 2100, expenses: 200, deposit: 4200, rooms: 4, bathrooms: 2, sqm: 110, floor: 1,
     propertyType: 'apartment', furnished: 'no', heatingType: 'floor', features: ['garage', 'cellar', 'elevator', 'video_intercom', 'garden'],
-    petsAllowed: true, smokingAllowed: false, status: 'rented', views: 412, applications: 23, createdAt: new Date('2024-08-05'),
+    petsAllowed: true, smokingAllowed: false, photos: [], status: 'rented', views: 412, applications: 23, createdAt: new Date('2024-08-05'),
   },
 ];
 
@@ -119,13 +121,14 @@ interface ListingFormData {
   features: ListingFeature[];
   petsAllowed: boolean;
   smokingAllowed: boolean;
+  photos: string[];
 }
 
 const EMPTY_FORM: ListingFormData = {
   title: '', description: '', city: '', zone: '', price: '', expenses: '', deposit: '',
   rooms: '2', bathrooms: '1', sqm: '', floor: '',
   propertyType: 'apartment', furnished: 'no', heatingType: 'autonomous',
-  features: [], petsAllowed: false, smokingAllowed: false,
+  features: [], petsAllowed: false, smokingAllowed: false, photos: [],
 };
 
 // Memoized Components to improve INP
@@ -410,6 +413,7 @@ export default function MyListingsPage() {
       features: [...listing.features],
       petsAllowed: listing.petsAllowed,
       smokingAllowed: listing.smokingAllowed,
+      photos: [...(listing.photos || [])],
     });
     setShowFormModal(true);
   }, []);
@@ -429,6 +433,7 @@ export default function MyListingsPage() {
         floor: parseInt(formData.floor) || 0, propertyType: formData.propertyType,
         furnished: formData.furnished, heatingType: formData.heatingType,
         features: formData.features, petsAllowed: formData.petsAllowed, smokingAllowed: formData.smokingAllowed,
+        photos: formData.photos,
       } : l));
       toast.success('Annuncio aggiornato!');
     } else {
@@ -441,6 +446,7 @@ export default function MyListingsPage() {
         floor: parseInt(formData.floor) || 0, propertyType: formData.propertyType,
         furnished: formData.furnished, heatingType: formData.heatingType,
         features: formData.features, petsAllowed: formData.petsAllowed, smokingAllowed: formData.smokingAllowed,
+        photos: formData.photos,
         status: asDraft ? 'draft' : 'active',
         views: 0, applications: 0, createdAt: new Date(),
       };
@@ -471,6 +477,19 @@ export default function MyListingsPage() {
         ? prev.features.filter(f => f !== feature)
         : [...prev.features, feature],
     }));
+  };
+
+  const handlePhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || []);
+    const remaining = 6 - formData.photos.length;
+    const toAdd = files.slice(0, remaining);
+    const newUrls = toAdd.map(f => URL.createObjectURL(f));
+    setFormData(prev => ({ ...prev, photos: [...prev.photos, ...newUrls] }));
+    e.target.value = '';
+  };
+
+  const handleRemovePhoto = (index: number) => {
+    setFormData(prev => ({ ...prev, photos: prev.photos.filter((_, i) => i !== index) }));
   };
 
   // Application actions
@@ -817,6 +836,57 @@ export default function MyListingsPage() {
         size="lg"
       >
         <div className="space-y-6">
+          {/* Photos */}
+          <div>
+            <h4 className="font-semibold mb-1">Foto dell'immobile</h4>
+            <p className="text-sm text-text-muted mb-3">
+              Aggiungi fino a 6 foto. La prima sarà usata come copertina dell'annuncio.
+            </p>
+
+            {/* Previews grid */}
+            {formData.photos.length > 0 && (
+              <div className="grid grid-cols-3 gap-2 mb-3">
+                {formData.photos.map((url, i) => (
+                  <div key={i} className="relative group aspect-video bg-gray-100 rounded-xl overflow-hidden">
+                    <img src={url} alt={`Foto ${i + 1}`} className="w-full h-full object-cover" />
+                    <button
+                      type="button"
+                      onClick={() => handleRemovePhoto(i)}
+                      className="absolute top-1 right-1 w-6 h-6 bg-black/60 rounded-full flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity"
+                    >
+                      <X size={12} />
+                    </button>
+                    {i === 0 && (
+                      <span className="absolute bottom-1 left-1 text-xs bg-black/60 text-white px-1.5 py-0.5 rounded-md">
+                        Copertina
+                      </span>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {/* Upload area */}
+            {formData.photos.length < 6 && (
+              <label className="flex flex-col items-center justify-center p-6 border-2 border-dashed border-border rounded-xl cursor-pointer hover:border-primary-300 hover:bg-primary-50/30 transition-colors">
+                <ImagePlus size={24} className="text-text-muted mb-2" />
+                <span className="text-sm font-medium text-text-secondary">
+                  {formData.photos.length === 0 ? 'Aggiungi foto' : 'Aggiungi altre foto'}
+                </span>
+                <span className="text-xs text-text-muted mt-1">
+                  {6 - formData.photos.length} slot rimanenti · JPG, PNG, WEBP
+                </span>
+                <input
+                  type="file"
+                  accept="image/jpeg,image/png,image/webp"
+                  multiple
+                  className="hidden"
+                  onChange={handlePhotoUpload}
+                />
+              </label>
+            )}
+          </div>
+
           {/* Basic */}
           <div>
             <h4 className="font-semibold mb-3">Informazioni Base</h4>

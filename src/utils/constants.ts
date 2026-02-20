@@ -150,6 +150,7 @@ export const ROUTES = {
   AGENCY_SETTINGS: '/agency/settings',
   AGENCY_DOCUMENTS: '/agency/documents',
   AGENCY_CALCULATORS: '/agency/calculators',
+  AGENCY_SERVICES: '/agency/services',
   AGENCY_UNLOCKED_PROFILES: '/agency/unlocked-profiles',
   AGENCY_MORE: '/agency/more',
 
