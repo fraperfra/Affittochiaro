@@ -79,7 +79,6 @@ export default function TenantSearchPage() {
       { enableHighAccuracy: true, timeout: 10000 }
     );
   }, [setFilters]);
-  const [sortBy, setSortBy] = useState<'recent' | 'name'>('recent');
 
   useEffect(() => {
     setTenants(mockTenants);
@@ -110,11 +109,10 @@ export default function TenantSearchPage() {
       matchScore: calculateTenantScore(tenant),
     }))
     .sort((a, b) => {
-      // paid plans always bubble up first regardless of sort
+      // paid plans always bubble up first, then by most recent
       const planDiff = planPriority(b.tenantPlan) - planPriority(a.tenantPlan);
       if (planDiff !== 0) return planDiff;
-      if (sortBy === 'recent') return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
-      return a.firstName.localeCompare(b.firstName);
+      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
     });
 
   const handleUnlockClick = (tenant: Tenant) => {
@@ -431,18 +429,10 @@ export default function TenantSearchPage() {
           </ModalFooter>
         </Modal>
 
-        <div className="flex items-center justify-between mt-4 pt-4 border-t border-border">
+        <div className="mt-4 pt-4 border-t border-border">
           <p className="text-text-secondary">
             <span className="font-semibold text-text-primary">{filteredTenants.length}</span> inquilini trovati
           </p>
-          <select
-            className="input w-auto text-sm"
-            value={sortBy}
-            onChange={(e) => setSortBy(e.target.value as 'recent' | 'name')}
-          >
-            <option value="recent">Più recenti</option>
-            <option value="name">Nome A-Z</option>
-          </select>
         </div>
       </Card>
 
