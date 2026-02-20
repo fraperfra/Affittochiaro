@@ -65,6 +65,9 @@ export interface Tenant {
   // Status
   status: Status;
   availableFrom?: Date;
+
+  // Subscription plan
+  tenantPlan?: 'free' | 'premium' | 'pro';
 }
 
 export type EmploymentType =

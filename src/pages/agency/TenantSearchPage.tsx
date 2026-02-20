@@ -85,6 +85,9 @@ export default function TenantSearchPage() {
     setTenants(mockTenants);
   }, []);
 
+  // Plan sort priority: pro=2, premium=1, free=0
+  const planPriority = (plan?: string) => plan === 'pro' ? 2 : plan === 'premium' ? 1 : 0;
+
   // Filtro + calcolo score + sort
   const filteredTenants = tenants
     .filter((tenant) => {
@@ -107,7 +110,12 @@ export default function TenantSearchPage() {
       matchScore: calculateTenantScore(tenant),
     }))
     .sort((a, b) => {
-      if (sortBy === 'score') return b.matchScore - a.matchScore;
+      if (sortBy === 'score') {
+        // paid plans bubble up first, then by score within same tier
+        const planDiff = planPriority(b.tenantPlan) - planPriority(a.tenantPlan);
+        if (planDiff !== 0) return planDiff;
+        return b.matchScore - a.matchScore;
+      }
       if (sortBy === 'recent') return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
       return a.firstName.localeCompare(b.firstName);
     });
@@ -446,7 +454,18 @@ export default function TenantSearchPage() {
       {filteredTenants.length > 0 ? (
         <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-4">
           {filteredTenants.slice(0, 20).map((tenant) => (
-            <Card key={tenant.id} hover onClick={() => setSelectedTenant(tenant)}>
+            <Card
+              key={tenant.id}
+              hover
+              onClick={() => setSelectedTenant(tenant)}
+              className={
+                tenant.tenantPlan === 'pro'
+                  ? 'ring-2 ring-amber-400 ring-offset-1'
+                  : tenant.tenantPlan === 'premium'
+                  ? 'ring-2 ring-violet-400 ring-offset-1'
+                  : ''
+              }
+            >
               <div className="flex items-start gap-4">
                 {/* Avatar */}
                 <div className="relative">
@@ -470,12 +489,22 @@ export default function TenantSearchPage() {
 
                 {/* Info */}
                 <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 flex-wrap">
                     <h3 className="font-semibold text-text-primary truncate">
                       {tenant.firstName} {tenant.lastName.charAt(0)}.
                     </h3>
                     {tenant.isVerified && (
                       <Check size={16} className="text-success flex-shrink-0" />
+                    )}
+                    {tenant.tenantPlan === 'pro' && (
+                      <span className="inline-flex items-center gap-1 text-xs font-bold px-2 py-0.5 rounded-full bg-amber-100 text-amber-700 border border-amber-300 flex-shrink-0">
+                        👑 Pro
+                      </span>
+                    )}
+                    {tenant.tenantPlan === 'premium' && (
+                      <span className="inline-flex items-center gap-1 text-xs font-bold px-2 py-0.5 rounded-full bg-violet-100 text-violet-700 border border-violet-300 flex-shrink-0">
+                        ⭐ Premium
+                      </span>
                     )}
                   </div>
                   <p className="text-sm text-text-muted">
@@ -498,6 +527,12 @@ export default function TenantSearchPage() {
                 </Badge>
                 {tenant.isVerified && <Badge variant="success" size="sm">✓ Verificato</Badge>}
                 {tenant.hasVideo && <Badge variant="info" size="sm">🎥 Video</Badge>}
+                {tenant.tenantPlan === 'pro' && (
+                  <Badge size="sm" className="bg-amber-100 text-amber-700 border border-amber-300">Profilo Top</Badge>
+                )}
+                {tenant.tenantPlan === 'premium' && (
+                  <Badge size="sm" className="bg-violet-100 text-violet-700 border border-violet-300">In Evidenza</Badge>
+                )}
               </div>
 
               {/* Quick Info */}
@@ -600,6 +635,16 @@ export default function TenantSearchPage() {
                     {t.ageRange ? `${t.ageRange} anni` : t.age ? `${t.age} anni` : ''}{t.currentCity ? ` · ${t.currentCity}` : ''}
                   </p>
                   <div className="flex flex-wrap gap-1.5 mt-2">
+                    {t.tenantPlan === 'pro' && (
+                      <span className="inline-flex items-center gap-1 text-xs font-bold px-2.5 py-1 rounded-full bg-amber-100 text-amber-700 border border-amber-300">
+                        👑 Pro
+                      </span>
+                    )}
+                    {t.tenantPlan === 'premium' && (
+                      <span className="inline-flex items-center gap-1 text-xs font-bold px-2.5 py-1 rounded-full bg-violet-100 text-violet-700 border border-violet-300">
+                        ⭐ Premium
+                      </span>
+                    )}
                     {t.isVerified && <Badge variant="success" size="sm">✓ Verificato</Badge>}
                     {t.hasVideo && <Badge variant="info" size="sm">🎥 Video</Badge>}
                     {(() => { const score = filteredTenants.find(f => f.id === t.id)?.matchScore ?? calculateTenantScore(t); return (

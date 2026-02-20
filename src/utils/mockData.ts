@@ -177,6 +177,13 @@ export function generateMockTenants(count: number): Tenant[] {
         .filter((v, i, a) => a.indexOf(v) === i), // unique
       familyUnit: randomElement(FAMILY_UNITS),
       ageRange: randomElement(AGE_RANGES),
+      // 15% Pro, 25% Premium, 60% Free — weighted random
+      tenantPlan: (() => {
+        const r = Math.random();
+        if (r < 0.15) return 'pro' as const;
+        if (r < 0.40) return 'premium' as const;
+        return 'free' as const;
+      })(),
     };
 
     tenants.push(tenant);
