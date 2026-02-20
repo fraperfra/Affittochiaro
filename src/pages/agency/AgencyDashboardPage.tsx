@@ -4,7 +4,6 @@ import {
   Users,
   Home,
   Eye,
-  TrendingUp,
   ArrowRight,
   CreditCard,
   Inbox,
@@ -237,7 +236,7 @@ export default function AgencyDashboardPage() {
       </div>
 
       {/* Recent Activity */}
-      <div className="grid lg:grid-cols-2 gap-6">
+      <div className="grid gap-6">
         {/* Recent Unlocks */}
         <Card>
           <CardHeader>
@@ -267,74 +266,6 @@ export default function AgencyDashboardPage() {
           </div>
         </Card>
 
-        {/* Quick Actions */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Azioni Rapide</CardTitle>
-          </CardHeader>
-          <div className="space-y-3">
-            <Link
-              to={ROUTES.AGENCY_APPLICATIONS}
-              className="flex items-center gap-4 p-4 rounded-xl bg-background-secondary hover:bg-primary-50 transition-colors group relative"
-            >
-              <div className="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center">
-                <Inbox size={20} className="text-primary-600" />
-              </div>
-              <div className="flex-1">
-                <p className="font-medium group-hover:text-primary-600">Candidature Ricevute</p>
-                <p className="text-sm text-text-muted">{applicationCount} candidature totali</p>
-              </div>
-              {unreadNotifications > 0 && (
-                <span className="absolute top-2 right-12 w-5 h-5 bg-accent-500 text-white text-xs rounded-full flex items-center justify-center font-medium">
-                  {unreadNotifications}
-                </span>
-              )}
-              <ArrowRight size={18} className="text-text-muted group-hover:text-primary-500" />
-            </Link>
-
-            <Link
-              to={ROUTES.AGENCY_TENANTS}
-              className="flex items-center gap-4 p-4 rounded-xl bg-background-secondary hover:bg-primary-50 transition-colors group"
-            >
-              <div className="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center">
-                <Users size={20} className="text-primary-600" />
-              </div>
-              <div className="flex-1">
-                <p className="font-medium group-hover:text-primary-600">Cerca Inquilini</p>
-                <p className="text-sm text-text-muted">245 profili disponibili</p>
-              </div>
-              <ArrowRight size={18} className="text-text-muted group-hover:text-primary-500" />
-            </Link>
-
-            <Link
-              to={ROUTES.AGENCY_LISTINGS}
-              className="flex items-center gap-4 p-4 rounded-xl bg-background-secondary hover:bg-primary-50 transition-colors group"
-            >
-              <div className="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center">
-                <Home size={20} className="text-primary-600" />
-              </div>
-              <div className="flex-1">
-                <p className="font-medium group-hover:text-primary-600">Pubblica Annuncio</p>
-                <p className="text-sm text-text-muted">Aggiungi un nuovo immobile</p>
-              </div>
-              <ArrowRight size={18} className="text-text-muted group-hover:text-primary-500" />
-            </Link>
-
-            <Link
-              to={ROUTES.AGENCY_PLAN}
-              className="flex items-center gap-4 p-4 rounded-xl bg-background-secondary hover:bg-primary-50 transition-colors group"
-            >
-              <div className="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center">
-                <TrendingUp size={20} className="text-primary-600" />
-              </div>
-              <div className="flex-1">
-                <p className="font-medium group-hover:text-primary-600">Upgrade Piano</p>
-                <p className="text-sm text-text-muted">Sblocca piu funzionalita</p>
-              </div>
-              <ArrowRight size={18} className="text-text-muted group-hover:text-primary-500" />
-            </Link>
-          </div>
-        </Card>
       </div>
     </div>
   );
