@@ -259,9 +259,14 @@ export function AvatarUploader({
 
       {/* Badge camera - angolo basso dx, visibile solo su hover */}
       {!disabled && !isUploading && (
-        <div className="absolute bottom-0.5 right-0.5 w-8 h-8 bg-action-green rounded-full flex items-center justify-center border-2 border-white shadow opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
+        <button
+          type="button"
+          onClick={handleClick}
+          aria-label="Cambia foto profilo"
+          className="absolute bottom-0.5 right-0.5 w-8 h-8 bg-action-green rounded-full flex items-center justify-center border-2 border-white shadow opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+        >
           <Camera className="w-4 h-4 text-white" />
-        </div>
+        </button>
       )}
 
       {/* Errore sotto avatar */}
