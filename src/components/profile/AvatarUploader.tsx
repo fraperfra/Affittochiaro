@@ -226,7 +226,7 @@ export function AvatarUploader({
 
   // Vista normale - avatar cliccabile
   return (
-    <div className="relative inline-block">
+    <div className="relative inline-block group">
       <button
         onClick={handleClick}
         disabled={disabled || isUploading}
@@ -235,8 +235,8 @@ export function AvatarUploader({
           bg-gray-100 border-2 border-white shadow-lg
           flex items-center justify-center
           transition-all duration-200
-          ${!disabled && !isUploading ? 'hover:ring-4 hover:ring-action-green/20 cursor-pointer' : 'cursor-not-allowed opacity-60'}
-          group relative
+          ${!disabled && !isUploading ? 'cursor-pointer' : 'cursor-not-allowed opacity-60'}
+          relative
         `}
       >
         {currentAvatar ? (
@@ -249,13 +249,6 @@ export function AvatarUploader({
           <User className={`${iconSizes[size]} text-gray-400`} />
         )}
 
-        {/* Overlay hover */}
-        {!disabled && !isUploading && (
-          <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-            <Camera className="w-6 h-6 text-white" />
-          </div>
-        )}
-
         {/* Loading overlay */}
         {isUploading && (
           <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
@@ -264,9 +257,9 @@ export function AvatarUploader({
         )}
       </button>
 
-      {/* Badge camera */}
+      {/* Badge camera - angolo basso dx, visibile solo su hover */}
       {!disabled && !isUploading && (
-        <div className="absolute -bottom-1 -right-1 w-8 h-8 bg-action-green rounded-full flex items-center justify-center border-2 border-white shadow">
+        <div className="absolute bottom-0.5 right-0.5 w-8 h-8 bg-action-green rounded-full flex items-center justify-center border-2 border-white shadow opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
           <Camera className="w-4 h-4 text-white" />
         </div>
       )}
