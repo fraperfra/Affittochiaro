@@ -128,6 +128,7 @@ export interface UnlockedTenant {
     email: string;
     phone?: string;
   };
+  notes?: string;
 }
 
 export interface AgencyFilters {

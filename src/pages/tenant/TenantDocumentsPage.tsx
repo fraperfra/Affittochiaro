@@ -273,7 +273,8 @@ export default function TenantDocumentsPage() {
       </div>
 
       {/* Document List */}
-      <div className="bg-white rounded-xl p-6 shadow-card">
+      {/* Document List */}
+      <div className="bg-white rounded-xl p-4 md:p-6 shadow-card">
         <DocumentList
           documents={filteredDocs}
           isLoading={isLoading}

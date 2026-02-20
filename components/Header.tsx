@@ -12,30 +12,48 @@ export const Header: React.FC = () => {
         <img src="/assets/logoaffittochiaro_pic.webp" alt="Affittochiaro" className="h-10 w-auto" />
       </Link>
 
-      <nav className="hidden md:flex items-center gap-8">
+      <nav className="hidden md:flex items-center gap-6 xl:gap-8">
         <Link
           to="/come-funziona"
-          className={`text-sm font-bold hover:text-action-green transition-colors uppercase tracking-widest ${
-            isActive('/come-funziona') ? 'text-action-green' : 'text-brand-green'
-          }`}
+          className={`text-sm font-bold hover:text-action-green transition-colors uppercase tracking-widest ${isActive('/come-funziona') ? 'text-action-green' : 'text-brand-green'
+            }`}
         >
           Come Funziona
         </Link>
         <Link
           to="/annunci"
-          className={`text-sm font-bold hover:text-action-green transition-colors uppercase tracking-widest ${
-            isActive('/annunci') ? 'text-action-green' : 'text-brand-green'
-          }`}
+          className={`text-sm font-bold hover:text-action-green transition-colors uppercase tracking-widest ${isActive('/annunci') ? 'text-action-green' : 'text-brand-green'
+            }`}
         >
           Annunci
         </Link>
         <Link
-          to="/faq"
-          className={`text-sm font-bold hover:text-action-green transition-colors uppercase tracking-widest ${
-            isActive('/faq') ? 'text-action-green' : 'text-brand-green'
-          }`}
+          to="/ricerca-inquilino"
+          className={`text-sm font-bold hover:text-action-green transition-colors uppercase tracking-widest ${isActive('/ricerca-inquilino') ? 'text-action-green' : 'text-brand-green'
+            }`}
         >
-          FAQ
+          Cerca Inquilino
+        </Link>
+        <Link
+          to="/servizi"
+          className={`text-sm font-bold hover:text-action-green transition-colors uppercase tracking-widest ${isActive('/servizi') ? 'text-action-green' : 'text-brand-green'
+            }`}
+        >
+          Servizi
+        </Link>
+        <Link
+          to="/agenzie"
+          className={`text-sm font-bold hover:text-action-green transition-colors uppercase tracking-widest ${isActive('/agenzie') ? 'text-action-green' : 'text-brand-green'
+            }`}
+        >
+          Agenzie
+        </Link>
+        <Link
+          to="/affittonews"
+          className={`text-sm font-bold hover:text-action-green transition-colors uppercase tracking-widest ${isActive('/affittonews') ? 'text-action-green' : 'text-brand-green'
+            }`}
+        >
+          News
         </Link>
         <Link
           to="/login"

@@ -82,8 +82,9 @@ export function DocumentList({
   return (
     <div className="space-y-6">
       {/* Header con statistiche */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-4">
+      {/* Header con statistiche */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="flex flex-wrap items-center gap-2 sm:gap-4">
           <span className="text-sm text-gray-500">
             {documents.length} document{documents.length !== 1 ? 'i' : 'o'}
           </span>
@@ -101,7 +102,7 @@ export function DocumentList({
         {onAddNew && (
           <button
             onClick={onAddNew}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm text-action-green hover:bg-green-50 rounded-lg transition-colors"
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-3 py-1.5 text-sm text-action-green hover:bg-green-50 rounded-lg transition-colors border border-green-100 sm:border-transparent"
           >
             <Plus className="w-4 h-4" />
             Aggiungi

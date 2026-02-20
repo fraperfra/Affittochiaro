@@ -9,6 +9,7 @@ interface ModalProps {
   size?: 'sm' | 'md' | 'lg' | 'xl' | 'full';
   children: React.ReactNode;
   showClose?: boolean;
+  footer?: React.ReactNode;
 }
 
 export default function Modal({
@@ -18,6 +19,7 @@ export default function Modal({
   size = 'md',
   children,
   showClose = true,
+  footer,
 }: ModalProps) {
   const overlayRef = useRef<HTMLDivElement>(null);
 
@@ -60,13 +62,13 @@ export default function Modal({
       <div
         className={`
           relative w-full ${sizeClasses[size]} bg-white rounded-2xl shadow-large
-          animate-scale-in overflow-hidden
+          animate-scale-in overflow-hidden flex flex-col max-h-[90vh]
         `}
       >
         {/* Header */}
         {(title || showClose) && (
-          <div className="flex items-center justify-between p-6 border-b border-border">
-            {title && <h2 className="text-xl font-semibold text-text-primary">{title}</h2>}
+          <div className="flex items-center justify-between p-4 md:p-6 border-b border-border shrink-0">
+            {title && <h2 className="text-xl font-semibold text-text-primary line-clamp-1 pr-4">{title}</h2>}
             {showClose && (
               <button
                 onClick={onClose}
@@ -79,7 +81,14 @@ export default function Modal({
         )}
 
         {/* Content */}
-        <div className="p-6 max-h-[60vh] md:max-h-[70vh] overflow-y-auto overflow-x-hidden">{children}</div>
+        <div className="p-4 md:p-6 overflow-y-auto overflow-x-hidden flex-1 min-h-0">{children}</div>
+
+        {/* Footer (Fixed) */}
+        {footer && (
+          <div className="p-4 md:p-6 border-t border-border bg-white shrink-0">
+            {footer}
+          </div>
+        )}
       </div>
     </div>,
     document.body
@@ -94,7 +103,7 @@ export function ModalFooter({
   className?: string;
 }) {
   return (
-    <div className={`flex justify-end gap-3 mt-6 pt-4 border-t border-border ${className}`}>
+    <div className={`flex justify-end gap-3 ${className}`}>
       {children}
     </div>
   );

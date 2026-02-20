@@ -48,8 +48,8 @@ export default function LoginPage() {
       const route = user.role === 'tenant'
         ? ROUTES.TENANT_DASHBOARD
         : user.role === 'agency'
-        ? ROUTES.AGENCY_DASHBOARD
-        : ROUTES.ADMIN_DASHBOARD;
+          ? ROUTES.AGENCY_DASHBOARD
+          : ROUTES.ADMIN_DASHBOARD;
       navigate(route);
     }
   }, [isAuthenticated, user, navigate]);
@@ -74,7 +74,8 @@ export default function LoginPage() {
       {/* Back to Landing */}
       <Link
         to="/"
-        className="absolute top-6 left-6 flex items-center gap-2 text-white/80 hover:text-white transition-colors"
+        className="absolute left-6 flex items-center gap-2 text-white/80 hover:text-white transition-colors z-10"
+        style={{ top: 'calc(env(safe-area-inset-top, 0px) + 1.5rem)' }}
       >
         <ArrowLeft size={20} />
         <span className="text-sm font-medium">Torna alla home</span>
@@ -172,35 +173,35 @@ export default function LoginPage() {
             <p className="text-xs text-center text-gray-500 mb-4">
               Accesso rapido (modalità demo)
             </p>
-              <div className="grid grid-cols-3 gap-3">
-                <button
-                  type="button"
-                  onClick={() => handleQuickLogin('admin')}
-                  disabled={isLoading}
-                  className="flex flex-col items-center gap-2 p-3 rounded-xl border-2 border-dashed border-gray-300 hover:border-purple-400 hover:bg-purple-50 transition-all group disabled:opacity-50"
-                >
-                  <Shield className="w-6 h-6 text-purple-500 group-hover:scale-110 transition-transform" />
-                  <span className="text-xs font-medium text-gray-600">Admin</span>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => handleQuickLogin('tenant')}
-                  disabled={isLoading}
-                  className="flex flex-col items-center gap-2 p-3 rounded-xl border-2 border-dashed border-gray-300 hover:border-green-400 hover:bg-green-50 transition-all group disabled:opacity-50"
-                >
-                  <User className="w-6 h-6 text-green-500 group-hover:scale-110 transition-transform" />
-                  <span className="text-xs font-medium text-gray-600">Inquilino</span>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => handleQuickLogin('agency')}
-                  disabled={isLoading}
-                  className="flex flex-col items-center gap-2 p-3 rounded-xl border-2 border-dashed border-gray-300 hover:border-blue-400 hover:bg-blue-50 transition-all group disabled:opacity-50"
-                >
-                  <Building2 className="w-6 h-6 text-blue-500 group-hover:scale-110 transition-transform" />
-                  <span className="text-xs font-medium text-gray-600">Agenzia</span>
-                </button>
-              </div>
+            <div className="grid grid-cols-3 gap-3">
+              <button
+                type="button"
+                onClick={() => handleQuickLogin('admin')}
+                disabled={isLoading}
+                className="flex flex-col items-center gap-2 p-3 rounded-xl border-2 border-dashed border-gray-300 hover:border-purple-400 hover:bg-purple-50 transition-all group disabled:opacity-50"
+              >
+                <Shield className="w-6 h-6 text-purple-500 group-hover:scale-110 transition-transform" />
+                <span className="text-xs font-medium text-gray-600">Admin</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => handleQuickLogin('tenant')}
+                disabled={isLoading}
+                className="flex flex-col items-center gap-2 p-3 rounded-xl border-2 border-dashed border-gray-300 hover:border-green-400 hover:bg-green-50 transition-all group disabled:opacity-50"
+              >
+                <User className="w-6 h-6 text-green-500 group-hover:scale-110 transition-transform" />
+                <span className="text-xs font-medium text-gray-600">Inquilino</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => handleQuickLogin('agency')}
+                disabled={isLoading}
+                className="flex flex-col items-center gap-2 p-3 rounded-xl border-2 border-dashed border-gray-300 hover:border-blue-400 hover:bg-blue-50 transition-all group disabled:opacity-50"
+              >
+                <Building2 className="w-6 h-6 text-blue-500 group-hover:scale-110 transition-transform" />
+                <span className="text-xs font-medium text-gray-600">Agenzia</span>
+              </button>
+            </div>
           </div>
         </Card>
 

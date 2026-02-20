@@ -54,16 +54,16 @@ export const Hero: React.FC<HeroProps> = ({ counter, activeCityName }) => {
             <div className="flex flex-col sm:flex-row items-center gap-4 mb-14">
               <button
                 onClick={() => setIsModalOpen(true)}
-                className="w-full sm:w-auto bg-brand-green text-white px-12 py-7 rounded-3xl font-bold text-xl flex items-center justify-center gap-4 hover:brightness-110 transition-all shadow-2xl shadow-brand-green/20 group uppercase tracking-tight"
+                className="w-full sm:w-auto bg-brand-green text-white px-8 py-5 rounded-2xl font-bold text-lg flex items-center justify-center gap-3 hover:brightness-110 transition-all shadow-2xl shadow-brand-green/20 group uppercase tracking-tight"
               >
                 CREA IL TUO PROFILO GRATIS
-                <span className="text-3xl group-hover:translate-x-1 transition-transform">→</span>
+                <span className="text-2xl group-hover:translate-x-1 transition-transform">→</span>
               </button>
             </div>
 
             <div className="flex flex-col lg:flex-row items-center gap-5">
               <div className="flex -space-x-3">
-                {[1,2,3,4].map(i => <img key={i} src={`https://i.pravatar.cc/100?img=${i+10}`} className="w-12 h-12 rounded-full border-2 border-white shadow-sm" alt="User" />)}
+                {[1, 2, 3, 4].map(i => <img key={i} src={`https://i.pravatar.cc/100?img=${i + 10}`} className="w-12 h-12 rounded-full border-2 border-white shadow-sm" alt="User" />)}
               </div>
               <p className="text-base font-semibold text-medium-gray italic">Unisciti a <span className="text-brand-green font-bold">30.000+</span> inquilini felici</p>
             </div>

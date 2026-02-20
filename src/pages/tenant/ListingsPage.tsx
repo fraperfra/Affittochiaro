@@ -576,6 +576,38 @@ export default function ListingsPage() {
         onClose={() => setSelectedListing(null)}
         title={selectedListing?.title}
         size="lg"
+        footer={
+          selectedListing && (
+            <div className="flex items-center gap-3 w-full">
+              {isApplied(selectedListing.id) ? (
+                <Button disabled variant="secondary" leftIcon={<CheckCircle size={20} />} className="flex-1 py-4 text-base md:text-lg h-auto rounded-xl justify-center">
+                  Gia candidato
+                </Button>
+              ) : (
+                <Button
+                  leftIcon={<Send size={20} />}
+                  className="flex-1 py-4 text-base md:text-lg h-auto shadow-md rounded-xl bg-primary-600 hover:bg-primary-700 justify-center"
+                  onClick={() => {
+                    setSelectedListing(null);
+                    openApplicationForm(selectedListing);
+                  }}
+                >
+                  Candidati
+                </Button>
+              )}
+              <Button
+                variant="outline"
+                className={`w-14 h-14 p-0 rounded-full shrink-0 border-2 ${savedListings.includes(selectedListing.id) ? 'border-primary-500 text-primary-500 bg-primary-50' : 'border-border text-text-secondary hover:border-primary-500 hover:text-primary-500'}`}
+                onClick={() => {
+                  toggleSavedListing(selectedListing.id);
+                  toast.success(savedListings.includes(selectedListing.id) ? 'Rimosso dai salvati' : 'Salvato!');
+                }}
+              >
+                <Heart size={24} fill={savedListings.includes(selectedListing.id) ? 'currentColor' : 'none'} />
+              </Button>
+            </div>
+          )
+        }
       >
         {selectedListing && (
           <div className="space-y-6">
@@ -647,40 +679,6 @@ export default function ListingsPage() {
             </div>
           </div>
         )}
-        <ModalFooter>
-          <Button variant="secondary" onClick={() => setSelectedListing(null)}>
-            Chiudi
-          </Button>
-          {selectedListing && (
-            <>
-              <Button
-                leftIcon={<Heart size={16} />}
-                variant="outline"
-                onClick={() => {
-                  toggleSavedListing(selectedListing.id);
-                  toast.success(savedListings.includes(selectedListing.id) ? 'Rimosso dai salvati' : 'Salvato!');
-                }}
-              >
-                {savedListings.includes(selectedListing.id) ? 'Salvato' : 'Salva'}
-              </Button>
-              {isApplied(selectedListing.id) ? (
-                <Button disabled variant="secondary" leftIcon={<CheckCircle size={16} />}>
-                  Gia candidato
-                </Button>
-              ) : (
-                <Button
-                  leftIcon={<Send size={16} />}
-                  onClick={() => {
-                    setSelectedListing(null);
-                    openApplicationForm(selectedListing);
-                  }}
-                >
-                  Candidati
-                </Button>
-              )}
-            </>
-          )}
-        </ModalFooter>
       </Modal>
 
       {/* Application Form Modal */}

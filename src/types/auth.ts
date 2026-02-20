@@ -75,6 +75,7 @@ export interface TenantProfile {
 }
 
 export interface AgencyProfile {
+  id?: string;
   name: string;
   logoUrl?: string;
   description?: string;

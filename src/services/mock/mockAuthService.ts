@@ -65,6 +65,7 @@ export const MOCK_USERS = {
     updatedAt: new Date(),
     lastLogin: new Date(),
     agency: {
+      id: 'agency-profile-001',
       name: 'Immobiliare Rossi',
       logoUrl: undefined,
       description: 'Agenzia immobiliare di Milano specializzata in affitti residenziali.',

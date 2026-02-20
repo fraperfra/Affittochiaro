@@ -7,6 +7,7 @@ import {
   Settings,
   LogOut,
   ChevronRight,
+  Users,
 } from 'lucide-react';
 import { useAuthStore } from '../../store';
 import { ROUTES } from '../../utils/constants';
@@ -15,6 +16,7 @@ import { AgencyUser } from '../../types';
 
 const menuItems = [
   { icon: Inbox, label: 'Candidature', path: ROUTES.AGENCY_APPLICATIONS, description: 'Gestisci le candidature ricevute' },
+  { icon: Users, label: 'Archivio Sbloccati', path: ROUTES.AGENCY_UNLOCKED_PROFILES, description: 'Profili e contatti sbloccati' },
   { icon: FileText, label: 'Documenti', path: ROUTES.AGENCY_DOCUMENTS, description: 'Contratti e documenti' },
   { icon: Calculator, label: 'Calcolatori', path: ROUTES.AGENCY_CALCULATORS, description: '14 calcolatori immobiliari' },
   { icon: CreditCard, label: 'Piano', path: ROUTES.AGENCY_PLAN, description: 'Gestisci il tuo abbonamento' },

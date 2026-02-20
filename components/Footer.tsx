@@ -11,6 +11,9 @@ export const Footer: React.FC = () => {
           <ul className="space-y-4 text-white/40">
             <li><Link to="/come-funziona" className="hover:text-white transition-colors">Come funziona</Link></li>
             <li><Link to="/annunci" className="hover:text-white transition-colors">Trova casa</Link></li>
+            <li><Link to="/ricerca-inquilino" className="hover:text-white transition-colors">Cerca Inquilino</Link></li>
+            <li><Link to="/servizi" className="hover:text-white transition-colors">Servizi</Link></li>
+            <li><Link to="/agenzie" className="hover:text-white transition-colors">Agenzie</Link></li>
             <li><Link to="/faq" className="hover:text-white transition-colors">Domande frequenti</Link></li>
           </ul>
         </div>
@@ -19,9 +22,10 @@ export const Footer: React.FC = () => {
         <div>
           <h4 className="font-bold mb-6 text-white/60 uppercase tracking-wider text-xs">Risorse</h4>
           <ul className="space-y-4 text-white/40">
-            <li><a href="#" className="hover:text-white transition-colors">Guida all'affitto</a></li>
-            <li><a href="#" className="hover:text-white transition-colors">Blog</a></li>
-            <li><a href="#" className="hover:text-white transition-colors">Supporto</a></li>
+            <li><Link to="/chi-siamo" className="hover:text-white transition-colors">Chi Siamo</Link></li>
+            <li><Link to="/affittonews" className="hover:text-white transition-colors">Blog & News</Link></li>
+            <li><Link to="#" className="hover:text-white transition-colors">Guida all'affitto</Link></li>
+            <li><Link to="#" className="hover:text-white transition-colors">Supporto</Link></li>
           </ul>
         </div>
 
@@ -52,6 +56,7 @@ export const Footer: React.FC = () => {
           <a href="#" className="hover:text-white/60 transition-colors">Privacy Policy</a>
           <a href="#" className="hover:text-white/60 transition-colors">Termini di Servizio</a>
           <a href="#" className="hover:text-white/60 transition-colors">Cookie</a>
+          <Link to="/design-system" className="hover:text-white/60 transition-colors opacity-50">System</Link>
         </div>
       </div>
     </footer>
