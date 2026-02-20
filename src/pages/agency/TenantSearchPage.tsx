@@ -79,7 +79,7 @@ export default function TenantSearchPage() {
       { enableHighAccuracy: true, timeout: 10000 }
     );
   }, [setFilters]);
-  const [sortBy, setSortBy] = useState<'score' | 'recent' | 'name'>('score');
+  const [sortBy, setSortBy] = useState<'recent' | 'name'>('recent');
 
   useEffect(() => {
     setTenants(mockTenants);
@@ -110,12 +110,9 @@ export default function TenantSearchPage() {
       matchScore: calculateTenantScore(tenant),
     }))
     .sort((a, b) => {
-      if (sortBy === 'score') {
-        // paid plans bubble up first, then by score within same tier
-        const planDiff = planPriority(b.tenantPlan) - planPriority(a.tenantPlan);
-        if (planDiff !== 0) return planDiff;
-        return b.matchScore - a.matchScore;
-      }
+      // paid plans always bubble up first regardless of sort
+      const planDiff = planPriority(b.tenantPlan) - planPriority(a.tenantPlan);
+      if (planDiff !== 0) return planDiff;
       if (sortBy === 'recent') return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
       return a.firstName.localeCompare(b.firstName);
     });
@@ -441,10 +438,9 @@ export default function TenantSearchPage() {
           <select
             className="input w-auto text-sm"
             value={sortBy}
-            onChange={(e) => setSortBy(e.target.value as 'score' | 'recent' | 'name')}
+            onChange={(e) => setSortBy(e.target.value as 'recent' | 'name')}
           >
-            <option value="score">Punteggio</option>
-            <option value="recent">Piu recenti</option>
+            <option value="recent">Più recenti</option>
             <option value="name">Nome A-Z</option>
           </select>
         </div>
