@@ -1,12 +1,19 @@
 import { create } from 'zustand';
 import { Agency, AgencyFilters, AgencyStats, CreditTransaction, UnlockedTenant, Pagination } from '../types';
 
+export interface SavedTenant {
+  tenantId: string;
+  savedAt: Date;
+  notes?: string;
+}
+
 interface AgencyState {
   // Data
   agencies: Agency[];
   currentAgency: Agency | null;
   stats: AgencyStats | null;
   unlockedTenants: UnlockedTenant[];
+  savedTenants: SavedTenant[];
   creditTransactions: CreditTransaction[];
 
   // UI State
@@ -35,6 +42,10 @@ interface AgencyState {
   updateAgency: (agencyId: string, updates: Partial<Agency>) => void;
   toggleAgencySelection: (agencyId: string) => void;
   clearSelection: () => void;
+  updateUnlockedTenantNote: (tenantId: string, note: string) => void;
+  addSavedTenant: (tenantId: string) => void;
+  removeSavedTenant: (tenantId: string) => void;
+  updateSavedTenantNote: (tenantId: string, note: string) => void;
 }
 
 const initialFilters: AgencyFilters = {};
@@ -51,6 +62,7 @@ export const useAgencyStore = create<AgencyState>((set, get) => ({
   currentAgency: null,
   stats: null,
   unlockedTenants: [],
+  savedTenants: [],
   creditTransactions: [],
   filters: initialFilters,
   pagination: initialPagination,
@@ -152,5 +164,34 @@ export const useAgencyStore = create<AgencyState>((set, get) => ({
 
   clearSelection: () => {
     set({ selectedAgencyIds: [] });
+  },
+
+  updateUnlockedTenantNote: (tenantId, note) => {
+    set((state) => ({
+      unlockedTenants: state.unlockedTenants.map((t) =>
+        t.tenantId === tenantId ? { ...t, notes: note } : t
+      ),
+    }));
+  },
+
+  addSavedTenant: (tenantId) => {
+    set((state) => {
+      if (state.savedTenants.some((t) => t.tenantId === tenantId)) return state;
+      return { savedTenants: [...state.savedTenants, { tenantId, savedAt: new Date() }] };
+    });
+  },
+
+  removeSavedTenant: (tenantId) => {
+    set((state) => ({
+      savedTenants: state.savedTenants.filter((t) => t.tenantId !== tenantId),
+    }));
+  },
+
+  updateSavedTenantNote: (tenantId, note) => {
+    set((state) => ({
+      savedTenants: state.savedTenants.map((t) =>
+        t.tenantId === tenantId ? { ...t, notes: note } : t
+      ),
+    }));
   },
 }));

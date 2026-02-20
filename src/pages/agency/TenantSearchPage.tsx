@@ -13,12 +13,16 @@ import {
   X,
   Locate,
   Loader2,
+  Bookmark,
+  BookmarkCheck,
+  Archive,
 } from 'lucide-react';
-import { useTenantStore, useAuthStore } from '../../store';
+import { Link } from 'react-router-dom';
+import { useTenantStore, useAuthStore, useAgencyStore } from '../../store';
 import { mockTenants } from '../../utils/mockData';
 import { formatCurrency, formatInitials, formatRelativeTime } from '../../utils/formatters';
 import { calculateTenantScore } from '../../utils/matching';
-import { ITALIAN_CITIES, CONTRACT_TYPES } from '../../utils/constants';
+import { ITALIAN_CITIES, CONTRACT_TYPES, ROUTES } from '../../utils/constants';
 import { Tenant, AgencyUser, ContractType } from '../../types';
 import { Card, Button, Badge, Modal, ModalFooter, Input, EmptyState } from '../../components/ui';
 import toast from 'react-hot-toast';
@@ -26,10 +30,15 @@ import toast from 'react-hot-toast';
 export default function TenantSearchPage() {
   const { tenants, setTenants, filters, setFilters } = useTenantStore();
   const { user } = useAuthStore();
+  const { unlockedTenants, addUnlockedTenant, savedTenants, addSavedTenant, removeSavedTenant } = useAgencyStore();
   const agencyUser = user as AgencyUser;
+
   const [selectedTenant, setSelectedTenant] = useState<Tenant | null>(null);
   const [showFilters, setShowFilters] = useState(false);
-  const [unlockedIds, setUnlockedIds] = useState<string[]>([]);
+  const [unlockingTenant, setUnlockingTenant] = useState<Tenant | null>(null);
+  const [unlockNote, setUnlockNote] = useState('');
+
+  const unlockedIds = unlockedTenants.map(t => t.tenantId);
   const [geoLoading, setGeoLoading] = useState(false);
 
   const handleGeolocate = useCallback(() => {
@@ -96,15 +105,44 @@ export default function TenantSearchPage() {
       return a.firstName.localeCompare(b.firstName);
     });
 
-  const handleUnlock = (tenant: Tenant) => {
+  const handleUnlockClick = (tenant: Tenant) => {
     if (unlockedIds.includes(tenant.id)) return;
+    setUnlockingTenant(tenant);
+    setUnlockNote('');
+  };
 
-    // Simulate unlock
-    setUnlockedIds([...unlockedIds, tenant.id]);
-    toast.success(`Profilo di ${tenant.firstName} sbloccato!`);
+  const confirmUnlock = () => {
+    if (!unlockingTenant) return;
+
+    addUnlockedTenant({
+      tenantId: unlockingTenant.id,
+      agencyId: agencyUser?.agency?.id || 'agency-1',
+      unlockedAt: new Date(),
+      creditsCost: 1,
+      contactInfo: {
+        email: unlockingTenant.email,
+        phone: unlockingTenant.phone
+      },
+      notes: unlockNote
+    });
+
+    toast.success(`Profilo di ${unlockingTenant.firstName} sbloccato!`);
+    setUnlockingTenant(null);
   };
 
   const isUnlocked = (tenantId: string) => unlockedIds.includes(tenantId);
+  const savedIds = savedTenants.map((t) => t.tenantId);
+  const isSaved = (tenantId: string) => savedIds.includes(tenantId);
+
+  const handleToggleSave = (tenant: Tenant) => {
+    if (isSaved(tenant.id)) {
+      removeSavedTenant(tenant.id);
+      toast('Profilo rimosso dai salvati');
+    } else {
+      addSavedTenant(tenant.id);
+      toast.success(`${tenant.firstName} aggiunto ai salvati`);
+    }
+  };
 
   return (
     <div className="space-y-6">
@@ -116,6 +154,16 @@ export default function TenantSearchPage() {
             {agencyUser?.agency?.credits || 0} crediti disponibili per sbloccare profili
           </p>
         </div>
+        <Link to={ROUTES.AGENCY_UNLOCKED_PROFILES}>
+          <Button variant="secondary" size="sm" leftIcon={<Archive size={16} />}>
+            Archivio profili
+            {(unlockedTenants.length + savedTenants.length) > 0 && (
+              <span className="ml-1.5 px-1.5 py-0.5 bg-primary-100 text-primary-700 text-xs font-bold rounded-full">
+                {unlockedTenants.length + savedTenants.length}
+              </span>
+            )}
+          </Button>
+        </Link>
       </div>
 
       {/* Search & Filters */}
@@ -329,23 +377,34 @@ export default function TenantSearchPage() {
               </div>
 
               {/* Action */}
-              <div className="mt-4">
+              <div className="mt-4 flex gap-2">
                 {isUnlocked(tenant.id) ? (
-                  <Button variant="secondary" className="w-full" leftIcon={<Eye size={16} />}>
+                  <Button variant="secondary" className="flex-1" leftIcon={<Eye size={16} />}>
                     Vedi Contatti
                   </Button>
                 ) : (
                   <Button
-                    className="w-full"
+                    className="flex-1"
                     leftIcon={<Unlock size={16} />}
                     onClick={(e) => {
                       e.stopPropagation();
-                      handleUnlock(tenant);
+                      handleUnlockClick(tenant);
                     }}
                   >
                     Sblocca (1 credito)
                   </Button>
                 )}
+                <button
+                  title={isSaved(tenant.id) ? 'Rimuovi dai salvati' : 'Salva profilo'}
+                  onClick={(e) => { e.stopPropagation(); handleToggleSave(tenant); }}
+                  className={`w-10 h-10 rounded-xl border flex items-center justify-center transition-colors flex-shrink-0 ${
+                    isSaved(tenant.id)
+                      ? 'bg-primary-50 border-primary-300 text-primary-600'
+                      : 'bg-white border-border text-text-muted hover:border-primary-300 hover:text-primary-500'
+                  }`}
+                >
+                  {isSaved(tenant.id) ? <BookmarkCheck size={16} /> : <Bookmark size={16} />}
+                </button>
               </div>
             </Card>
           ))}
@@ -462,7 +521,7 @@ export default function TenantSearchPage() {
                 <p className="text-text-muted mb-3">
                   Sblocca il profilo per vedere i contatti
                 </p>
-                <Button onClick={() => handleUnlock(selectedTenant)} leftIcon={<Unlock size={16} />}>
+                <Button onClick={() => handleUnlockClick(selectedTenant)} leftIcon={<Unlock size={16} />}>
                   Sblocca (1 credito)
                 </Button>
               </div>
@@ -478,6 +537,47 @@ export default function TenantSearchPage() {
               Scarica CV
             </Button>
           )}
+        </ModalFooter>
+      </Modal>
+
+      {/* Unlock Confirmation Modal */}
+      <Modal
+        isOpen={!!unlockingTenant}
+        onClose={() => setUnlockingTenant(null)}
+        title="Conferma Sblocco Profilo"
+      >
+        <div className="space-y-4">
+          <div className="bg-primary-50 p-4 rounded-xl flex items-center gap-3">
+            <div className="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center shrink-0">
+              <Unlock size={20} className="text-primary-600" />
+            </div>
+            <div>
+              <p className="font-medium text-text-primary">
+                Sbloccare {unlockingTenant?.firstName} {unlockingTenant?.lastName}?
+              </p>
+              <p className="text-sm text-text-secondary">
+                Costo operazione: <span className="font-bold text-primary-600">1 credito</span>
+              </p>
+            </div>
+          </div>
+
+          <div>
+            <label className="label">Note (Opzionale)</label>
+            <p className="text-xs text-text-muted mb-2">
+              Aggiungi una nota per facilitare il lavoro dei tuoi collaboratori (visibile solo alla tua agenzia).
+            </p>
+            <textarea
+              className="input min-h-[100px] resize-y"
+              placeholder="Es: Ottimo profilo, da contattare per l'appartamento in Centro..."
+              value={unlockNote}
+              onChange={(e) => setUnlockNote(e.target.value)}
+              autoFocus
+            />
+          </div>
+        </div>
+        <ModalFooter>
+          <Button variant="secondary" onClick={() => setUnlockingTenant(null)}>Annulla</Button>
+          <Button onClick={confirmUnlock}>Conferma Sblocco</Button>
         </ModalFooter>
       </Modal>
     </div>
