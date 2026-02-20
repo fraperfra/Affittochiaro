@@ -18,6 +18,12 @@ import {
   Inbox,
   FolderOpen,
   Sparkles,
+  Unlock,
+  Ticket,
+  MapPin,
+  Wrench,
+  BookOpen,
+  Megaphone,
 } from 'lucide-react';
 import { useAuthStore } from '../../store';
 import { ROUTES } from '../../utils/constants';
@@ -62,6 +68,13 @@ const adminNavItems: NavItem[] = [
   { icon: <Users size={20} />, label: 'Inquilini', path: ROUTES.ADMIN_TENANTS },
   { icon: <Building2 size={20} />, label: 'Agenzie', path: ROUTES.ADMIN_AGENCIES },
   { icon: <Home size={20} />, label: 'Annunci', path: ROUTES.ADMIN_LISTINGS },
+  { icon: <Unlock size={20} />, label: 'Profili Sbloccati', path: ROUTES.ADMIN_UNLOCKED_PROFILES },
+  { icon: <Inbox size={20} />, label: 'Candidature', path: ROUTES.ADMIN_APPLICATIONS },
+  { icon: <Ticket size={20} />, label: 'Ticket', path: ROUTES.ADMIN_TICKETS },
+  { icon: <MapPin size={20} />, label: 'Zone', path: ROUTES.ADMIN_ZONES },
+  { icon: <Wrench size={20} />, label: 'Servizi', path: ROUTES.ADMIN_SERVICES_ADMIN },
+  { icon: <BookOpen size={20} />, label: 'Blog', path: ROUTES.ADMIN_BLOG },
+  { icon: <Megaphone size={20} />, label: 'Pubblicità', path: ROUTES.ADMIN_ADS },
   { icon: <Settings size={20} />, label: 'Sistema', path: ROUTES.ADMIN_SYSTEM },
 ];
 
@@ -288,6 +301,13 @@ const PAGE_TITLES: Record<string, string> = {
   '/admin/agencies': 'Gestione Agenzie',
   '/admin/listings': 'Gestione Annunci',
   '/admin/system': 'Sistema',
+  '/admin/unlocked-profiles': 'Profili Sbloccati',
+  '/admin/applications': 'Candidature',
+  '/admin/tickets': 'Ticket',
+  '/admin/zones': 'Zone',
+  '/admin/services': 'Gestione Servizi',
+  '/admin/blog': 'Gestione Blog',
+  '/admin/ads': 'Pubblicità',
 };
 
 export default function DashboardLayout({ userRole }: DashboardLayoutProps) {

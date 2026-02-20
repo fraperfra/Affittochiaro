@@ -68,6 +68,13 @@ const TenantsManagementPage = lazy(() => import('./pages/admin/TenantsManagement
 const AgenciesManagementPage = lazy(() => import('./pages/admin/AgenciesManagementPage'));
 const ListingsManagementPage = lazy(() => import('./pages/admin/ListingsManagementPage'));
 const SystemPage = lazy(() => import('./pages/admin/SystemPage'));
+const AdminUnlockedProfilesPage = lazy(() => import('./pages/admin/AdminUnlockedProfilesPage'));
+const AdminApplicationsPage = lazy(() => import('./pages/admin/AdminApplicationsPage'));
+const AdminTicketsPage = lazy(() => import('./pages/admin/AdminTicketsPage'));
+const AdminZonesPage = lazy(() => import('./pages/admin/AdminZonesPage'));
+const AdminServicesManagementPage = lazy(() => import('./pages/admin/AdminServicesManagementPage'));
+const AdminBlogPage = lazy(() => import('./pages/admin/AdminBlogPage'));
+const AdminAdsPage = lazy(() => import('./pages/admin/AdminAdsPage'));
 
 // Shared Pages - lazy loaded
 const SettingsPage = lazy(() => import('./pages/SettingsPage'));
@@ -341,6 +348,13 @@ function App() {
             <Route path="agencies" element={<AgenciesManagementPage />} />
             <Route path="listings" element={<ListingsManagementPage />} />
             <Route path="system" element={<SystemPage />} />
+            <Route path="unlocked-profiles" element={<AdminUnlockedProfilesPage />} />
+            <Route path="applications" element={<AdminApplicationsPage />} />
+            <Route path="tickets" element={<AdminTicketsPage />} />
+            <Route path="zones" element={<AdminZonesPage />} />
+            <Route path="services" element={<AdminServicesManagementPage />} />
+            <Route path="blog" element={<AdminBlogPage />} />
+            <Route path="ads" element={<AdminAdsPage />} />
             <Route path="*" element={<Navigate to={ROUTES.ADMIN_DASHBOARD} replace />} />
           </Route>
 

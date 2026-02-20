@@ -160,6 +160,13 @@ export const ROUTES = {
   ADMIN_AGENCIES: '/admin/agencies',
   ADMIN_LISTINGS: '/admin/listings',
   ADMIN_SYSTEM: '/admin/system',
+  ADMIN_UNLOCKED_PROFILES: '/admin/unlocked-profiles',
+  ADMIN_APPLICATIONS: '/admin/applications',
+  ADMIN_TICKETS: '/admin/tickets',
+  ADMIN_ZONES: '/admin/zones',
+  ADMIN_SERVICES_ADMIN: '/admin/services',
+  ADMIN_BLOG: '/admin/blog',
+  ADMIN_ADS: '/admin/ads',
 } as const;
 
 // Date formats
