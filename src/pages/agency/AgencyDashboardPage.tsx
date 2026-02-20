@@ -11,6 +11,10 @@ import {
   FileText,
   Leaf,
   Truck,
+  MapPin,
+  Phone,
+  Globe,
+  Check,
 } from 'lucide-react';
 import {
   LineChart,
@@ -88,29 +92,69 @@ export default function AgencyDashboardPage() {
 
   return (
     <div className="space-y-6">
-      {/* Welcome & Credits Card */}
-      {/* Welcome & Credits Card */}
-      <Card className="bg-gradient-to-r from-teal-600 to-primary-500 text-white">
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-          <div>
-            <h1 className="text-2xl font-bold mb-2">
-              Ciao, {agencyUser?.agency?.name || 'Agenzia'}!
-            </h1>
-            <p className="text-white/80">
-              Il tuo piano <span className="font-semibold capitalize">{plan}</span> e attivo
-            </p>
-            <div className="flex items-center gap-4 mt-4">
-              <div className="flex items-center gap-2">
-                <CreditCard size={18} />
-                <span>{credits} crediti disponibili</span>
+      {/* Agency Profile Card */}
+      <Card className="bg-gradient-to-br from-teal-600 to-primary-600 text-white">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5">
+          {/* Logo */}
+          <div className="shrink-0">
+            {agencyUser?.agency?.logoUrl ? (
+              <img
+                src={agencyUser.agency.logoUrl}
+                alt={agencyUser.agency.name}
+                className="w-20 h-20 rounded-2xl object-cover border-2 border-white/30"
+              />
+            ) : (
+              <div className="w-20 h-20 rounded-2xl bg-white/20 border-2 border-white/30 flex items-center justify-center text-3xl font-bold">
+                {agencyUser?.agency?.name?.charAt(0) || 'A'}
               </div>
-              <div className="flex items-center gap-2">
-                <Home size={18} />
-                <span>{agencyUser?.agency?.activeListingsCount ?? 12} annunci attivi</span>
+            )}
+          </div>
+
+          {/* Info */}
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center gap-2 flex-wrap">
+              <h1 className="text-2xl font-bold">{agencyUser?.agency?.name || 'Agenzia'}</h1>
+              {agencyUser?.agency?.isVerified && (
+                <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-white/20 rounded-full text-xs font-medium">
+                  <Check size={11} /> Verificata
+                </span>
+              )}
+            </div>
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mt-1.5 text-sm text-white/80">
+              {agencyUser?.agency?.city && (
+                <span className="flex items-center gap-1">
+                  <MapPin size={13} />
+                  {agencyUser.agency.city}{agencyUser.agency.province ? ` (${agencyUser.agency.province})` : ''}
+                </span>
+              )}
+              {agencyUser?.agency?.phone && (
+                <a href={`tel:${agencyUser.agency.phone}`} className="flex items-center gap-1 hover:text-white transition-colors">
+                  <Phone size={13} /> {agencyUser.agency.phone}
+                </a>
+              )}
+              {agencyUser?.agency?.website && (
+                <a href={agencyUser.agency.website} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 hover:text-white transition-colors">
+                  <Globe size={13} /> {agencyUser.agency.website.replace(/^https?:\/\//, '')}
+                </a>
+              )}
+            </div>
+
+            {/* Stats row */}
+            <div className="flex flex-wrap items-center gap-4 mt-3 pt-3 border-t border-white/20 text-sm">
+              <div className="flex items-center gap-1.5">
+                <CreditCard size={15} />
+                <span><strong>{credits}</strong> crediti</span>
               </div>
+              <div className="flex items-center gap-1.5">
+                <Home size={15} />
+                <span><strong>{agencyUser?.agency?.activeListingsCount ?? 12}</strong> annunci attivi</span>
+              </div>
+              <span className="px-2 py-0.5 bg-white/20 rounded-full text-xs font-semibold capitalize">{plan}</span>
             </div>
           </div>
-          <Link to={ROUTES.AGENCY_PLAN}>
+
+          {/* CTA */}
+          <Link to={ROUTES.AGENCY_PLAN} className="shrink-0 self-start sm:self-center">
             <Button variant="secondary" rightIcon={<ArrowRight size={18} />}>
               Gestisci Piano
             </Button>

@@ -1,6 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
 import {
-  Search,
   SlidersHorizontal,
   Unlock,
   Eye,
@@ -177,41 +176,22 @@ export default function TenantSearchPage() {
       {/* Search & Filters */}
       <Card padding="sm">
         <div className="flex flex-row gap-3">
-          <div className="flex-1 relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-text-muted" size={18} />
-            <input
-              type="text"
-              placeholder="Cerca per nome, citta..."
-              className="input pl-10"
-              value={filters.search || ''}
-              onChange={(e) => setFilters({ search: e.target.value })}
-            />
-          </div>
-
           <button
             onClick={handleGeolocate}
             disabled={geoLoading}
-            className="hidden md:flex items-center gap-1.5 px-3 py-2 rounded-xl bg-primary-50 text-primary-600 hover:bg-primary-100 font-medium transition-colors disabled:opacity-50 whitespace-nowrap"
+            className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-primary-50 text-primary-600 hover:bg-primary-100 font-medium transition-colors disabled:opacity-50 whitespace-nowrap"
           >
             {geoLoading ? <Loader2 size={18} className="animate-spin" /> : <Locate size={18} />}
-            <span>Vicino a me</span>
+            <span className="hidden sm:inline">Vicino a me</span>
           </button>
 
           <Button
-            variant="secondary"
-            className="md:hidden !p-2.5"
-            onClick={handleGeolocate}
-            disabled={geoLoading}
-          >
-            {geoLoading ? <Loader2 size={20} className="animate-spin" /> : <Locate size={20} />}
-          </Button>
-
-          <Button
             variant={showFilters ? 'primary' : 'secondary'}
-            className="!p-2.5 aspect-square"
+            className="flex-1 sm:flex-none"
             onClick={() => setShowFilters(true)}
+            leftIcon={<SlidersHorizontal size={18} />}
           >
-            <SlidersHorizontal size={20} />
+            Filtri
           </Button>
         </div>
 
