@@ -134,11 +134,12 @@ function FieldGroup({ label, required, hint, children, error }: {
   );
 }
 
-function SectionTitle({ children }: { children: string }) {
+function SectionTitle({ children, subtitle }: { children: string; subtitle?: string }) {
   return (
-    <p className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-4">
-      {children}
-    </p>
+    <div className="mb-4">
+      <p className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider">{children}</p>
+      {subtitle && <p className="text-sm text-gray-500 mt-0.5">{subtitle}</p>}
+    </div>
   );
 }
 
@@ -439,7 +440,7 @@ export default function TenantProfilePage() {
 
                 {/* ── 1. Dati personali */}
                 <div>
-                  <SectionTitle>Dati personali</SectionTitle>
+                  <SectionTitle subtitle="Come ti chiamiamo e come ti contattano le agenzie">Le informazioni base</SectionTitle>
                   <div className="grid sm:grid-cols-2 gap-4">
                     <FieldGroup label="Nome" required error={fe('firstName')}>
                       <input
@@ -486,7 +487,7 @@ export default function TenantProfilePage() {
 
                 {/* ── 2. Dove e cosa cerchi */}
                 <div>
-                  <SectionTitle>Dove e cosa cerchi</SectionTitle>
+                  <SectionTitle subtitle="Più sei preciso, più annunci pertinenti ricevi">Dove vuoi vivere?</SectionTitle>
                   <div className="space-y-4">
 
                     <FieldGroup label="Dove stai cercando" required error={fe('searchCity')}>
@@ -542,7 +543,7 @@ export default function TenantProfilePage() {
 
                 {/* ── 3. Su di te */}
                 <div>
-                  <SectionTitle>Su di te</SectionTitle>
+                  <SectionTitle subtitle="Queste info aumentano la tua credibilità con i proprietari">Chi sei e come vivi</SectionTitle>
                   <div className="space-y-4">
 
                     <FieldGroup label="Occupazione" required error={fe('occupation')}>
@@ -638,7 +639,7 @@ export default function TenantProfilePage() {
 
                 {/* ── 4. Presentazione (in fondo) */}
                 <div>
-                  <SectionTitle>Parlaci di te</SectionTitle>
+                  <SectionTitle subtitle="Una presentazione autentica può fare la differenza sul proprietario">Presentati ai proprietari</SectionTitle>
 
                   <div className="flex items-center justify-between mb-3">
                     <p className="text-sm text-gray-500 leading-relaxed max-w-sm">
