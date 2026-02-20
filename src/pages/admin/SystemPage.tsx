@@ -6,13 +6,6 @@ import {
   Bell,
   Mail,
   CreditCard,
-  Globe,
-  Server,
-  HardDrive,
-  Cpu,
-  Activity,
-  CheckCircle,
-  AlertTriangle,
   RefreshCw,
   Save,
   Key,
@@ -23,35 +16,15 @@ import {
 import { Card, CardHeader, CardTitle, Button, Badge, Modal, ModalFooter, Input } from '../../components/ui';
 import toast from 'react-hot-toast';
 
-// Mock system data
-const systemStats = {
-  serverStatus: 'online',
-  uptime: '45 giorni, 12 ore',
-  cpuUsage: 34,
-  memoryUsage: 62,
-  diskUsage: 48,
-  activeConnections: 127,
-  requestsPerMinute: 342,
-  avgResponseTime: '45ms',
-};
-
-const recentLogs = [
-  { id: 1, type: 'info', message: 'Backup completato con successo', time: '2 min fa' },
-  { id: 2, type: 'warning', message: 'Alto utilizzo memoria rilevato', time: '15 min fa' },
-  { id: 3, type: 'success', message: 'Nuova agenzia registrata: Immobiliare XYZ', time: '32 min fa' },
-  { id: 4, type: 'info', message: 'Cache pulita automaticamente', time: '1 ora fa' },
-  { id: 5, type: 'error', message: 'Tentativo di login fallito (IP: 192.168.1.45)', time: '2 ore fa' },
-];
 
 export default function SystemPage() {
-  const [activeTab, setActiveTab] = useState<'overview' | 'settings' | 'security' | 'notifications' | 'payments'>('overview');
+  const [activeTab, setActiveTab] = useState<'settings' | 'security' | 'notifications' | 'payments'>('settings');
   const [showApiKey, setShowApiKey] = useState(false);
   const [maintenanceMode, setMaintenanceMode] = useState(false);
   const [emailNotifications, setEmailNotifications] = useState(true);
   const [autoBackup, setAutoBackup] = useState(true);
 
   const tabs = [
-    { id: 'overview', label: 'Panoramica', icon: <Activity size={18} /> },
     { id: 'settings', label: 'Impostazioni', icon: <Settings size={18} /> },
     { id: 'security', label: 'Sicurezza', icon: <Shield size={18} /> },
     { id: 'notifications', label: 'Notifiche', icon: <Bell size={18} /> },
@@ -60,14 +33,6 @@ export default function SystemPage() {
 
   const handleSaveSettings = () => {
     toast.success('Impostazioni salvate con successo');
-  };
-
-  const handleClearCache = () => {
-    toast.success('Cache pulita con successo');
-  };
-
-  const handleBackupNow = () => {
-    toast.success('Backup avviato');
   };
 
   return (
@@ -97,139 +62,6 @@ export default function SystemPage() {
           </button>
         ))}
       </div>
-
-      {/* Overview Tab */}
-      {activeTab === 'overview' && (
-        <div className="space-y-6">
-          {/* Server Status */}
-          <div className="grid md:grid-cols-4 gap-4">
-            <Card className="text-center">
-              <div className="flex items-center justify-center gap-2 mb-2">
-                <Server size={20} className="text-primary-500" />
-                <span className="text-sm text-text-muted">Stato Server</span>
-              </div>
-              <Badge variant="success" className="text-sm">
-                <CheckCircle size={12} className="mr-1" />
-                Online
-              </Badge>
-              <p className="text-xs text-text-muted mt-2">Uptime: {systemStats.uptime}</p>
-            </Card>
-
-            <Card className="text-center">
-              <div className="flex items-center justify-center gap-2 mb-2">
-                <Cpu size={20} className="text-primary-500" />
-                <span className="text-sm text-text-muted">CPU</span>
-              </div>
-              <p className="text-2xl font-bold">{systemStats.cpuUsage}%</p>
-              <div className="h-2 bg-background-secondary rounded-full mt-2 overflow-hidden">
-                <div
-                  className="h-full bg-primary-500 rounded-full"
-                  style={{ width: `${systemStats.cpuUsage}%` }}
-                />
-              </div>
-            </Card>
-
-            <Card className="text-center">
-              <div className="flex items-center justify-center gap-2 mb-2">
-                <HardDrive size={20} className="text-primary-500" />
-                <span className="text-sm text-text-muted">Memoria</span>
-              </div>
-              <p className="text-2xl font-bold">{systemStats.memoryUsage}%</p>
-              <div className="h-2 bg-background-secondary rounded-full mt-2 overflow-hidden">
-                <div
-                  className={`h-full rounded-full ${systemStats.memoryUsage > 80 ? 'bg-error' : 'bg-primary-500'}`}
-                  style={{ width: `${systemStats.memoryUsage}%` }}
-                />
-              </div>
-            </Card>
-
-            <Card className="text-center">
-              <div className="flex items-center justify-center gap-2 mb-2">
-                <Database size={20} className="text-primary-500" />
-                <span className="text-sm text-text-muted">Disco</span>
-              </div>
-              <p className="text-2xl font-bold">{systemStats.diskUsage}%</p>
-              <div className="h-2 bg-background-secondary rounded-full mt-2 overflow-hidden">
-                <div
-                  className="h-full bg-primary-500 rounded-full"
-                  style={{ width: `${systemStats.diskUsage}%` }}
-                />
-              </div>
-            </Card>
-          </div>
-
-          {/* Performance Stats */}
-          <div className="grid md:grid-cols-3 gap-4">
-            <Card>
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-text-muted">Connessioni Attive</p>
-                  <p className="text-2xl font-bold">{systemStats.activeConnections}</p>
-                </div>
-                <Activity size={24} className="text-primary-500" />
-              </div>
-            </Card>
-            <Card>
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-text-muted">Richieste/min</p>
-                  <p className="text-2xl font-bold">{systemStats.requestsPerMinute}</p>
-                </div>
-                <Globe size={24} className="text-primary-500" />
-              </div>
-            </Card>
-            <Card>
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-text-muted">Tempo Risposta Medio</p>
-                  <p className="text-2xl font-bold">{systemStats.avgResponseTime}</p>
-                </div>
-                <Activity size={24} className="text-success" />
-              </div>
-            </Card>
-          </div>
-
-          {/* Quick Actions */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Azioni Rapide</CardTitle>
-            </CardHeader>
-            <div className="flex flex-wrap gap-3">
-              <Button variant="secondary" leftIcon={<RefreshCw size={16} />} onClick={handleClearCache}>
-                Pulisci Cache
-              </Button>
-              <Button variant="secondary" leftIcon={<Database size={16} />} onClick={handleBackupNow}>
-                Backup Ora
-              </Button>
-              <Button variant="secondary" leftIcon={<RefreshCw size={16} />}>
-                Riavvia Servizi
-              </Button>
-            </div>
-          </Card>
-
-          {/* Recent Logs */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Log Recenti</CardTitle>
-            </CardHeader>
-            <div className="space-y-3">
-              {recentLogs.map((log) => (
-                <div key={log.id} className="flex items-start gap-3 p-3 rounded-lg bg-background-secondary">
-                  <div className={`w-2 h-2 rounded-full mt-2 ${
-                    log.type === 'error' ? 'bg-error' :
-                    log.type === 'warning' ? 'bg-warning' :
-                    log.type === 'success' ? 'bg-success' : 'bg-info'
-                  }`} />
-                  <div className="flex-1">
-                    <p className="text-sm">{log.message}</p>
-                    <p className="text-xs text-text-muted">{log.time}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </Card>
-        </div>
-      )}
 
       {/* Settings Tab */}
       {activeTab === 'settings' && (
