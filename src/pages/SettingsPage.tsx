@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import {
   Bell,
   Shield,
@@ -22,6 +22,8 @@ import {
   CheckCircle2,
   XCircle,
   AlertCircle,
+  Camera,
+  Trash2,
 } from 'lucide-react';
 import { useAuthStore } from '../store';
 import { TenantUser, AgencyUser } from '../types';
@@ -81,7 +83,7 @@ const MOCK_TICKETS: Ticket[] = [
 ];
 
 export default function SettingsPage() {
-  const { user, logout } = useAuthStore();
+  const { user, logout, setUser } = useAuthStore();
   const isTenant = user?.role === 'tenant';
   const isAgency = user?.role === 'agency';
 
@@ -124,6 +126,38 @@ export default function SettingsPage() {
     newPassword: '',
     confirmPassword: '',
   });
+
+  // Logo state (agency only)
+  const logoInputRef = useRef<HTMLInputElement>(null);
+  const [logoPreview, setLogoPreview] = useState<string | null>(null);
+
+  const handleLogoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error('Il file è troppo grande. Massimo 5MB.');
+      return;
+    }
+    setLogoPreview(URL.createObjectURL(file));
+    e.target.value = '';
+  };
+
+  const handleSaveLogo = () => {
+    if (!logoPreview || !user) return;
+    const agencyUser = user as AgencyUser;
+    const updated: AgencyUser = { ...agencyUser, agency: { ...agencyUser.agency, logoUrl: logoPreview } };
+    setUser(updated as unknown as typeof user);
+    setLogoPreview(null);
+    toast.success('Logo aggiornato con successo!');
+  };
+
+  const handleRemoveLogo = () => {
+    if (!user) return;
+    const agencyUser = user as AgencyUser;
+    const updated: AgencyUser = { ...agencyUser, agency: { ...agencyUser.agency, logoUrl: undefined } };
+    setUser(updated as unknown as typeof user);
+    toast.success('Logo rimosso');
+  };
 
   const tabs: { id: SettingsTab; label: string; icon: React.ReactNode }[] = [
     { id: 'notifications', label: 'Notifiche', icon: <Bell size={18} /> },
@@ -407,6 +441,83 @@ export default function SettingsPage() {
           {/* Account Tab */}
           {activeTab === 'account' && (
             <div className="space-y-6">
+
+              {/* Logo Agenzia */}
+              {isAgency && (
+                <Card>
+                  <div className="space-y-4">
+                    <div>
+                      <h2 className="text-lg font-semibold text-text-primary">Logo Agenzia</h2>
+                      <p className="text-sm text-text-secondary mt-1">
+                        Il logo appare nella dashboard, nel profilo e nelle comunicazioni
+                      </p>
+                    </div>
+
+                    <div className="flex items-center gap-5">
+                      {/* Preview */}
+                      <div className="shrink-0 relative">
+                        {(logoPreview || (user as AgencyUser).agency.logoUrl) ? (
+                          <img
+                            src={logoPreview || (user as AgencyUser).agency.logoUrl}
+                            alt="Logo agenzia"
+                            className="w-24 h-24 rounded-2xl object-cover border border-border"
+                          />
+                        ) : (
+                          <div className="w-24 h-24 rounded-2xl bg-gradient-to-br from-teal-400 to-primary-500 flex items-center justify-center text-white text-3xl font-bold">
+                            {(user as AgencyUser).agency.name.charAt(0)}
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Controls */}
+                      <div className="flex flex-col gap-2.5">
+                        <Button
+                          variant="secondary"
+                          size="sm"
+                          leftIcon={<Camera size={15} />}
+                          onClick={() => logoInputRef.current?.click()}
+                        >
+                          {(user as AgencyUser).agency.logoUrl ? 'Cambia logo' : 'Carica logo'}
+                        </Button>
+                        <input
+                          ref={logoInputRef}
+                          type="file"
+                          accept="image/jpeg,image/png,image/webp,image/svg+xml"
+                          className="hidden"
+                          onChange={handleLogoChange}
+                        />
+                        {(user as AgencyUser).agency.logoUrl && !logoPreview && (
+                          <button
+                            onClick={handleRemoveLogo}
+                            className="flex items-center gap-1.5 text-xs text-error hover:underline"
+                          >
+                            <Trash2 size={13} /> Rimuovi logo
+                          </button>
+                        )}
+                        <p className="text-xs text-text-muted">JPG, PNG, WEBP, SVG · max 5 MB</p>
+                      </div>
+                    </div>
+
+                    {/* Pending save banner */}
+                    {logoPreview && (
+                      <div className="flex items-center gap-3 p-3 bg-primary-50 border border-primary-200 rounded-xl">
+                        <p className="text-sm text-primary-700 flex-1">
+                          Nuovo logo selezionato. Salva per applicarlo ovunque.
+                        </p>
+                        <div className="flex gap-2 shrink-0">
+                          <Button size="sm" variant="outline" onClick={() => setLogoPreview(null)}>
+                            Annulla
+                          </Button>
+                          <Button size="sm" onClick={handleSaveLogo}>
+                            Salva
+                          </Button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </Card>
+              )}
+
               {/* Account Info */}
               <Card>
                 <div className="space-y-6">
