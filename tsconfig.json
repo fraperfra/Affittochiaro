@@ -24,7 +24,8 @@
     "noFallthroughCasesInSwitch": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@vercel/analytics/react": ["./node_modules/@vercel/analytics/dist/react/index"]
     },
     "allowImportingTsExtensions": true,
     "noEmit": true
