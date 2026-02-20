@@ -7,6 +7,10 @@ import {
   ArrowRight,
   CreditCard,
   Inbox,
+  Zap,
+  FileText,
+  Leaf,
+  Truck,
 } from 'lucide-react';
 import {
   LineChart,
@@ -266,6 +270,59 @@ export default function AgencyDashboardPage() {
           </div>
         </Card>
 
+      </div>
+
+      {/* Servizi Aggiuntivi */}
+      <div>
+        <div className="flex items-center justify-between mb-4">
+          <div>
+            <h2 className="text-base font-semibold text-text-primary">Servizi per i tuoi clienti</h2>
+            <p className="text-sm text-text-secondary">Attiva servizi aggiuntivi per completare la gestione dell'affitto</p>
+          </div>
+        </div>
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+
+          {/* Voltura utenze */}
+          <div className="bg-white rounded-2xl p-5 border border-border hover:border-amber-300 hover:shadow-md transition-all duration-200 cursor-pointer group">
+            <div className="w-11 h-11 rounded-xl bg-amber-50 group-hover:bg-amber-100 flex items-center justify-center transition-colors mb-3">
+              <Zap size={22} className="text-amber-500" />
+            </div>
+            <p className="font-semibold text-text-primary text-sm leading-tight">Voltura utenze</p>
+            <p className="text-xs text-text-muted mt-1 leading-relaxed">Gestisci il passaggio di luce, gas e acqua per i tuoi inquilini</p>
+            <span className="inline-block mt-3 text-xs font-semibold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full">Prossimamente</span>
+          </div>
+
+          {/* APE */}
+          <div className="bg-white rounded-2xl p-5 border border-border hover:border-green-300 hover:shadow-md transition-all duration-200 cursor-pointer group">
+            <div className="w-11 h-11 rounded-xl bg-green-50 group-hover:bg-green-100 flex items-center justify-center transition-colors mb-3">
+              <Leaf size={22} className="text-green-600" />
+            </div>
+            <p className="font-semibold text-text-primary text-sm leading-tight">Certificazione APE</p>
+            <p className="text-xs text-text-muted mt-1 leading-relaxed">Attestato di prestazione energetica per i tuoi immobili</p>
+            <span className="inline-block mt-3 text-xs font-semibold text-green-600 bg-green-50 px-2 py-0.5 rounded-full">Prossimamente</span>
+          </div>
+
+          {/* Registrazione contratti */}
+          <div className="bg-white rounded-2xl p-5 border border-border hover:border-blue-300 hover:shadow-md transition-all duration-200 cursor-pointer group">
+            <div className="w-11 h-11 rounded-xl bg-blue-50 group-hover:bg-blue-100 flex items-center justify-center transition-colors mb-3">
+              <FileText size={22} className="text-blue-600" />
+            </div>
+            <p className="font-semibold text-text-primary text-sm leading-tight">Registrazione contratti</p>
+            <p className="text-xs text-text-muted mt-1 leading-relaxed">Registra i contratti di locazione direttamente dall'Agenzia delle Entrate</p>
+            <span className="inline-block mt-3 text-xs font-semibold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full">Prossimamente</span>
+          </div>
+
+          {/* Traslochi */}
+          <div className="bg-white rounded-2xl p-5 border border-border hover:border-violet-300 hover:shadow-md transition-all duration-200 cursor-pointer group">
+            <div className="w-11 h-11 rounded-xl bg-violet-50 group-hover:bg-violet-100 flex items-center justify-center transition-colors mb-3">
+              <Truck size={22} className="text-violet-600" />
+            </div>
+            <p className="font-semibold text-text-primary text-sm leading-tight">Traslochi</p>
+            <p className="text-xs text-text-muted mt-1 leading-relaxed">Metti in contatto i tuoi inquilini con ditte di trasloco convenzionate</p>
+            <span className="inline-block mt-3 text-xs font-semibold text-violet-600 bg-violet-50 px-2 py-0.5 rounded-full">Prossimamente</span>
+          </div>
+
+        </div>
       </div>
     </div>
   );
