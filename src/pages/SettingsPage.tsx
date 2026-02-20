@@ -14,6 +14,14 @@ import {
   PauseCircle,
   Star,
   Send,
+  LifeBuoy,
+  Plus,
+  ChevronDown,
+  ChevronUp,
+  Clock,
+  CheckCircle2,
+  XCircle,
+  AlertCircle,
 } from 'lucide-react';
 import { useAuthStore } from '../store';
 import { TenantUser, AgencyUser } from '../types';
@@ -31,7 +39,46 @@ interface NotificationPreferences {
   smsImportant: boolean;
 }
 
-type SettingsTab = 'notifications' | 'account' | 'security' | 'feedback';
+type SettingsTab = 'notifications' | 'account' | 'security' | 'feedback' | 'tickets';
+
+type TicketStatus = 'aperto' | 'in_lavorazione' | 'risolto' | 'chiuso';
+type TicketPriority = 'bassa' | 'media' | 'alta';
+
+interface Ticket {
+  id: string;
+  subject: string;
+  category: string;
+  priority: TicketPriority;
+  status: TicketStatus;
+  message: string;
+  createdAt: string;
+  updatedAt: string;
+  response?: string;
+}
+
+const MOCK_TICKETS: Ticket[] = [
+  {
+    id: 'TKT-001',
+    subject: 'Impossibile caricare foto profilo',
+    category: 'problema_tecnico',
+    priority: 'media',
+    status: 'risolto',
+    message: 'Quando provo a caricare una foto profilo il sistema mi dà errore 413. Ho provato con diversi file JPG.',
+    createdAt: '2026-02-15T10:30:00',
+    updatedAt: '2026-02-16T14:22:00',
+    response: 'Abbiamo risolto il problema con il limite di dimensione file. Puoi ora caricare foto fino a 5MB.',
+  },
+  {
+    id: 'TKT-002',
+    subject: 'Richiesta sblocco profilo agenzia',
+    category: 'richiesta_specifica',
+    priority: 'alta',
+    status: 'in_lavorazione',
+    message: "Siamo un'agenzia immobiliare con 15 anni di attività. Vorremmo accedere al piano premium con sblocco illimitato di profili.",
+    createdAt: '2026-02-18T09:00:00',
+    updatedAt: '2026-02-19T11:45:00',
+  },
+];
 
 export default function SettingsPage() {
   const { user, logout } = useAuthStore();
@@ -41,6 +88,17 @@ export default function SettingsPage() {
   const [activeTab, setActiveTab] = useState<SettingsTab>('notifications');
   const [showPauseModal, setShowPauseModal] = useState(false);
   const [showPasswordModal, setShowPasswordModal] = useState(false);
+
+  // Ticket state
+  const [tickets, setTickets] = useState<Ticket[]>(MOCK_TICKETS);
+  const [showNewTicketForm, setShowNewTicketForm] = useState(false);
+  const [expandedTicket, setExpandedTicket] = useState<string | null>(null);
+  const [newTicket, setNewTicket] = useState({
+    subject: '',
+    category: 'problema_tecnico',
+    priority: 'media' as TicketPriority,
+    message: '',
+  });
 
   // Feedback state
   const [feedbackRating, setFeedbackRating] = useState(0);
@@ -72,6 +130,7 @@ export default function SettingsPage() {
     { id: 'account', label: 'Account', icon: <User size={18} /> },
     { id: 'security', label: 'Sicurezza', icon: <Shield size={18} /> },
     { id: 'feedback', label: 'Feedback', icon: <MessageSquare size={18} /> },
+    { id: 'tickets', label: 'Assistenza', icon: <LifeBuoy size={18} /> },
   ];
 
   const handleSaveNotifications = () => {
@@ -100,6 +159,31 @@ export default function SettingsPage() {
     toast.success('Account messo in pausa. Puoi riattivarlo in qualsiasi momento.');
     setShowPauseModal(false);
     logout();
+  };
+
+  const handleSubmitTicket = () => {
+    if (!newTicket.subject.trim()) {
+      toast.error('Inserisci un oggetto per il ticket');
+      return;
+    }
+    if (!newTicket.message.trim() || newTicket.message.trim().length < 20) {
+      toast.error('Descrivi il problema con almeno 20 caratteri');
+      return;
+    }
+    const ticket: Ticket = {
+      id: `TKT-${String(tickets.length + 1).padStart(3, '0')}`,
+      subject: newTicket.subject,
+      category: newTicket.category,
+      priority: newTicket.priority,
+      status: 'aperto',
+      message: newTicket.message,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
+    setTickets([ticket, ...tickets]);
+    setNewTicket({ subject: '', category: 'problema_tecnico', priority: 'media', message: '' });
+    setShowNewTicketForm(false);
+    toast.success(`Ticket ${ticket.id} aperto con successo! Ti risponderemo entro 24 ore.`);
   };
 
   const handleSendFeedback = () => {
@@ -506,6 +590,197 @@ export default function SettingsPage() {
                 </div>
               </div>
             </Card>
+          )}
+
+          {/* Tickets Tab */}
+          {activeTab === 'tickets' && (
+            <div className="space-y-4">
+              {/* Header + nuovo ticket */}
+              <div className="flex items-center justify-between">
+                <div>
+                  <h2 className="text-lg font-semibold text-text-primary">Assistenza</h2>
+                  <p className="text-sm text-text-secondary">Apri un ticket per problemi tecnici o richieste specifiche</p>
+                </div>
+                <Button
+                  leftIcon={<Plus size={16} />}
+                  onClick={() => setShowNewTicketForm(!showNewTicketForm)}
+                  variant={showNewTicketForm ? 'secondary' : 'primary'}
+                  size="sm"
+                >
+                  {showNewTicketForm ? 'Annulla' : 'Nuovo ticket'}
+                </Button>
+              </div>
+
+              {/* Form nuovo ticket */}
+              {showNewTicketForm && (
+                <Card>
+                  <div className="space-y-4">
+                    <h3 className="font-semibold text-text-primary">Apri un nuovo ticket</h3>
+
+                    <div>
+                      <label className="block text-sm font-medium text-text-primary mb-1">Oggetto *</label>
+                      <input
+                        type="text"
+                        className="input w-full"
+                        placeholder="Descrivi brevemente il problema..."
+                        value={newTicket.subject}
+                        onChange={(e) => setNewTicket({ ...newTicket, subject: e.target.value })}
+                        maxLength={100}
+                      />
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-sm font-medium text-text-primary mb-1">Categoria</label>
+                        <select
+                          className="input w-full text-sm"
+                          value={newTicket.category}
+                          onChange={(e) => setNewTicket({ ...newTicket, category: e.target.value })}
+                        >
+                          <option value="problema_tecnico">Problema tecnico</option>
+                          <option value="account">Problema account</option>
+                          <option value="pagamento">Pagamento / crediti</option>
+                          <option value="richiesta_specifica">Richiesta specifica</option>
+                          <option value="segnalazione">Segnalazione utente</option>
+                          <option value="altro">Altro</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-text-primary mb-1">Priorita</label>
+                        <select
+                          className="input w-full text-sm"
+                          value={newTicket.priority}
+                          onChange={(e) => setNewTicket({ ...newTicket, priority: e.target.value as TicketPriority })}
+                        >
+                          <option value="bassa">Bassa</option>
+                          <option value="media">Media</option>
+                          <option value="alta">Alta</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-text-primary mb-1">Descrizione *</label>
+                      <textarea
+                        className="input w-full resize-none"
+                        rows={5}
+                        placeholder="Descrivi il problema nel dettaglio: cosa hai fatto, cosa ti aspettavi, cosa è successo invece..."
+                        value={newTicket.message}
+                        onChange={(e) => setNewTicket({ ...newTicket, message: e.target.value })}
+                        maxLength={2000}
+                      />
+                      <p className="text-xs text-text-muted mt-1 text-right">{newTicket.message.length}/2000</p>
+                    </div>
+
+                    <div className="flex justify-end gap-3 pt-1">
+                      <Button variant="secondary" size="sm" onClick={() => setShowNewTicketForm(false)}>Annulla</Button>
+                      <Button size="sm" leftIcon={<Send size={14} />} onClick={handleSubmitTicket}>
+                        Invia ticket
+                      </Button>
+                    </div>
+                  </div>
+                </Card>
+              )}
+
+              {/* Lista ticket */}
+              {tickets.length === 0 ? (
+                <Card>
+                  <div className="py-10 text-center text-text-muted">
+                    <LifeBuoy size={32} className="mx-auto mb-3 opacity-30" />
+                    <p className="text-sm">Nessun ticket aperto</p>
+                  </div>
+                </Card>
+              ) : (
+                <div className="space-y-3">
+                  {tickets.map((ticket) => {
+                    const isExpanded = expandedTicket === ticket.id;
+                    const statusConfig: Record<TicketStatus, { label: string; color: string; icon: React.ReactNode }> = {
+                      aperto: { label: 'Aperto', color: 'bg-blue-100 text-blue-700', icon: <AlertCircle size={12} /> },
+                      in_lavorazione: { label: 'In lavorazione', color: 'bg-amber-100 text-amber-700', icon: <Clock size={12} /> },
+                      risolto: { label: 'Risolto', color: 'bg-green-100 text-green-700', icon: <CheckCircle2 size={12} /> },
+                      chiuso: { label: 'Chiuso', color: 'bg-gray-100 text-gray-500', icon: <XCircle size={12} /> },
+                    };
+                    const priorityConfig: Record<TicketPriority, { label: string; color: string }> = {
+                      bassa: { label: 'Bassa', color: 'text-gray-500' },
+                      media: { label: 'Media', color: 'text-amber-600' },
+                      alta: { label: 'Alta', color: 'text-red-600' },
+                    };
+                    const categoryLabels: Record<string, string> = {
+                      problema_tecnico: 'Problema tecnico',
+                      account: 'Account',
+                      pagamento: 'Pagamento',
+                      richiesta_specifica: 'Richiesta specifica',
+                      segnalazione: 'Segnalazione',
+                      altro: 'Altro',
+                    };
+                    const s = statusConfig[ticket.status];
+                    const p = priorityConfig[ticket.priority];
+                    return (
+                      <Card key={ticket.id} padding="sm">
+                        <button
+                          className="w-full text-left"
+                          onClick={() => setExpandedTicket(isExpanded ? null : ticket.id)}
+                        >
+                          <div className="flex items-start justify-between gap-3 px-1 py-1">
+                            <div className="flex-1 min-w-0">
+                              <div className="flex items-center gap-2 flex-wrap mb-1">
+                                <span className="text-xs font-mono text-text-muted">{ticket.id}</span>
+                                <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium ${s.color}`}>
+                                  {s.icon}
+                                  {s.label}
+                                </span>
+                                <span className={`text-xs font-medium ${p.color}`}>
+                                  ● {p.label}
+                                </span>
+                              </div>
+                              <p className="text-sm font-semibold text-text-primary truncate">{ticket.subject}</p>
+                              <p className="text-xs text-text-muted mt-0.5">
+                                {categoryLabels[ticket.category] || ticket.category} · {new Date(ticket.createdAt).toLocaleDateString('it-IT')}
+                              </p>
+                            </div>
+                            <div className="flex-shrink-0 text-text-muted mt-1">
+                              {isExpanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+                            </div>
+                          </div>
+                        </button>
+
+                        {isExpanded && (
+                          <div className="mt-3 pt-3 border-t border-border space-y-3 px-1">
+                            <div>
+                              <p className="text-xs font-semibold text-text-muted uppercase tracking-wide mb-1">La tua richiesta</p>
+                              <p className="text-sm text-text-primary whitespace-pre-wrap">{ticket.message}</p>
+                            </div>
+                            {ticket.response && (
+                              <div className="p-3 bg-green-50 border border-green-100 rounded-xl">
+                                <p className="text-xs font-semibold text-green-700 uppercase tracking-wide mb-1">Risposta del team</p>
+                                <p className="text-sm text-green-800">{ticket.response}</p>
+                                <p className="text-xs text-green-600 mt-2">
+                                  Aggiornato il {new Date(ticket.updatedAt).toLocaleDateString('it-IT')}
+                                </p>
+                              </div>
+                            )}
+                            {!ticket.response && ticket.status !== 'chiuso' && (
+                              <p className="text-xs text-text-muted italic">
+                                Il team ti risponderà entro 24 ore lavorative.
+                              </p>
+                            )}
+                          </div>
+                        )}
+                      </Card>
+                    );
+                  })}
+                </div>
+              )}
+
+              {/* Info */}
+              <div className="flex items-start gap-3 p-4 bg-background-secondary rounded-xl text-sm text-text-muted">
+                <LifeBuoy size={16} className="flex-shrink-0 mt-0.5" />
+                <p>
+                  Per problemi urgenti scrivi a <span className="font-medium text-text-primary">support@affittochiaro.it</span>.
+                  I ticket vengono gestiti dal lunedi al venerdi, 9:00–18:00.
+                </p>
+              </div>
+            </div>
           )}
 
           {/* Feedback Tab */}
