@@ -2,9 +2,7 @@ import { useState } from 'react';
 import {
   Bell,
   Shield,
-  Eye,
   Lock,
-  Trash2,
   Globe,
   Moon,
   Mail,
@@ -13,10 +11,13 @@ import {
   Save,
   User,
   Building2,
+  PauseCircle,
+  Star,
+  Send,
 } from 'lucide-react';
 import { useAuthStore } from '../store';
 import { TenantUser, AgencyUser } from '../types';
-import { Card, Button, Modal, ModalFooter, Input } from '../components/ui';
+import { Card, Button, Modal, ModalFooter } from '../components/ui';
 import toast from 'react-hot-toast';
 
 interface NotificationPreferences {
@@ -30,15 +31,7 @@ interface NotificationPreferences {
   smsImportant: boolean;
 }
 
-interface PrivacySettings {
-  profileVisible: boolean;
-  showIncome: boolean;
-  showPhone: boolean;
-  showEmail: boolean;
-  allowAgencyContact: boolean;
-}
-
-type SettingsTab = 'notifications' | 'privacy' | 'account' | 'security';
+type SettingsTab = 'notifications' | 'account' | 'security' | 'feedback';
 
 export default function SettingsPage() {
   const { user, logout } = useAuthStore();
@@ -46,9 +39,14 @@ export default function SettingsPage() {
   const isAgency = user?.role === 'agency';
 
   const [activeTab, setActiveTab] = useState<SettingsTab>('notifications');
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [showPauseModal, setShowPauseModal] = useState(false);
   const [showPasswordModal, setShowPasswordModal] = useState(false);
-  const [deleteConfirm, setDeleteConfirm] = useState('');
+
+  // Feedback state
+  const [feedbackRating, setFeedbackRating] = useState(0);
+  const [feedbackHover, setFeedbackHover] = useState(0);
+  const [feedbackCategory, setFeedbackCategory] = useState('generale');
+  const [feedbackText, setFeedbackText] = useState('');
 
   // Notification preferences state
   const [notifications, setNotifications] = useState<NotificationPreferences>({
@@ -62,15 +60,6 @@ export default function SettingsPage() {
     smsImportant: true,
   });
 
-  // Privacy settings state
-  const [privacy, setPrivacy] = useState<PrivacySettings>({
-    profileVisible: true,
-    showIncome: false,
-    showPhone: false,
-    showEmail: true,
-    allowAgencyContact: true,
-  });
-
   // Password form state
   const [passwordForm, setPasswordForm] = useState({
     currentPassword: '',
@@ -80,17 +69,13 @@ export default function SettingsPage() {
 
   const tabs: { id: SettingsTab; label: string; icon: React.ReactNode }[] = [
     { id: 'notifications', label: 'Notifiche', icon: <Bell size={18} /> },
-    { id: 'privacy', label: 'Privacy', icon: <Eye size={18} /> },
     { id: 'account', label: 'Account', icon: <User size={18} /> },
     { id: 'security', label: 'Sicurezza', icon: <Shield size={18} /> },
+    { id: 'feedback', label: 'Feedback', icon: <MessageSquare size={18} /> },
   ];
 
   const handleSaveNotifications = () => {
     toast.success('Preferenze notifiche salvate');
-  };
-
-  const handleSavePrivacy = () => {
-    toast.success('Impostazioni privacy salvate');
   };
 
   const handleChangePassword = () => {
@@ -111,14 +96,25 @@ export default function SettingsPage() {
     setPasswordForm({ currentPassword: '', newPassword: '', confirmPassword: '' });
   };
 
-  const handleDeleteAccount = () => {
-    if (deleteConfirm !== 'ELIMINA') {
-      toast.error('Scrivi ELIMINA per confermare');
+  const handlePauseAccount = () => {
+    toast.success('Account messo in pausa. Puoi riattivarlo in qualsiasi momento.');
+    setShowPauseModal(false);
+    logout();
+  };
+
+  const handleSendFeedback = () => {
+    if (feedbackRating === 0) {
+      toast.error('Seleziona una valutazione prima di inviare');
       return;
     }
-    toast.success('Account eliminato');
-    setShowDeleteModal(false);
-    logout();
+    if (!feedbackText.trim()) {
+      toast.error('Scrivi un commento per il tuo feedback');
+      return;
+    }
+    toast.success('Grazie per il tuo feedback! Lo terremo in grande considerazione.');
+    setFeedbackRating(0);
+    setFeedbackText('');
+    setFeedbackCategory('generale');
   };
 
   const ToggleSwitch = ({ checked, onChange }: { checked: boolean; onChange: (v: boolean) => void }) => (
@@ -136,6 +132,14 @@ export default function SettingsPage() {
       />
     </button>
   );
+
+  const ratingLabels: Record<number, string> = {
+    1: 'Molto scarso',
+    2: 'Scarso',
+    3: 'Nella media',
+    4: 'Buono',
+    5: 'Eccellente',
+  };
 
   return (
     <div className="space-y-6">
@@ -316,101 +320,6 @@ export default function SettingsPage() {
             </Card>
           )}
 
-          {/* Privacy Tab */}
-          {activeTab === 'privacy' && (
-            <Card>
-              <div className="space-y-6">
-                <div>
-                  <h2 className="text-lg font-semibold text-text-primary">Privacy e Visibilita</h2>
-                  <p className="text-sm text-text-secondary mt-1">
-                    Controlla chi puo vedere le tue informazioni
-                  </p>
-                </div>
-
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-sm font-medium">Profilo visibile</p>
-                      <p className="text-xs text-text-muted">
-                        {isTenant
-                          ? 'Le agenzie possono vedere il tuo profilo nella ricerca'
-                          : 'Gli inquilini possono vedere il profilo della tua agenzia'}
-                      </p>
-                    </div>
-                    <ToggleSwitch
-                      checked={privacy.profileVisible}
-                      onChange={(v) => setPrivacy({ ...privacy, profileVisible: v })}
-                    />
-                  </div>
-
-                  {isTenant && (
-                    <>
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <p className="text-sm font-medium">Mostra reddito</p>
-                          <p className="text-xs text-text-muted">
-                            Le agenzie possono vedere il tuo reddito annuale
-                          </p>
-                        </div>
-                        <ToggleSwitch
-                          checked={privacy.showIncome}
-                          onChange={(v) => setPrivacy({ ...privacy, showIncome: v })}
-                        />
-                      </div>
-
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <p className="text-sm font-medium">Mostra telefono</p>
-                          <p className="text-xs text-text-muted">
-                            Il tuo numero di telefono sara visibile alle agenzie
-                          </p>
-                        </div>
-                        <ToggleSwitch
-                          checked={privacy.showPhone}
-                          onChange={(v) => setPrivacy({ ...privacy, showPhone: v })}
-                        />
-                      </div>
-                    </>
-                  )}
-
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-sm font-medium">Mostra email</p>
-                      <p className="text-xs text-text-muted">
-                        La tua email sara visibile nel profilo
-                      </p>
-                    </div>
-                    <ToggleSwitch
-                      checked={privacy.showEmail}
-                      onChange={(v) => setPrivacy({ ...privacy, showEmail: v })}
-                    />
-                  </div>
-
-                  {isTenant && (
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="text-sm font-medium">Consenti contatto agenzie</p>
-                        <p className="text-xs text-text-muted">
-                          Le agenzie possono contattarti direttamente per proposte
-                        </p>
-                      </div>
-                      <ToggleSwitch
-                        checked={privacy.allowAgencyContact}
-                        onChange={(v) => setPrivacy({ ...privacy, allowAgencyContact: v })}
-                      />
-                    </div>
-                  )}
-                </div>
-
-                <div className="pt-2">
-                  <Button onClick={handleSavePrivacy} leftIcon={<Save size={16} />}>
-                    Salva Impostazioni
-                  </Button>
-                </div>
-              </div>
-            </Card>
-          )}
-
           {/* Account Tab */}
           {activeTab === 'account' && (
             <div className="space-y-6">
@@ -485,7 +394,7 @@ export default function SettingsPage() {
                 </div>
               </Card>
 
-              {/* Language & Appearance (placeholder) */}
+              {/* Language & Appearance */}
               <Card>
                 <div className="space-y-4">
                   <div>
@@ -519,33 +428,33 @@ export default function SettingsPage() {
                 </div>
               </Card>
 
-              {/* Danger Zone */}
+              {/* Pause Account */}
               <Card>
                 <div className="space-y-4">
                   <div>
-                    <h2 className="text-lg font-semibold text-error">Zona Pericolosa</h2>
+                    <h2 className="text-lg font-semibold text-text-primary">Gestione Account</h2>
                     <p className="text-sm text-text-secondary mt-1">
-                      Azioni irreversibili sul tuo account
+                      Metti in pausa il tuo account temporaneamente
                     </p>
                   </div>
 
-                  <div className="p-4 border border-red-200 bg-red-50 rounded-xl">
+                  <div className="p-4 border border-amber-200 bg-amber-50 rounded-xl">
                     <div className="flex items-start justify-between gap-4">
                       <div>
-                        <p className="text-sm font-medium text-error">Elimina account</p>
-                        <p className="text-xs text-text-muted mt-1">
-                          Tutti i tuoi dati, profilo, CV e candidature verranno eliminati permanentemente.
-                          Questa azione non puo essere annullata.
+                        <p className="text-sm font-medium text-amber-800">Metti in pausa l'account</p>
+                        <p className="text-xs text-amber-700 mt-1">
+                          Il tuo profilo non sarà visibile durante la pausa. Puoi riattivarlo in qualsiasi momento
+                          effettuando nuovamente il login.
                         </p>
                       </div>
                       <Button
                         variant="secondary"
                         size="sm"
-                        onClick={() => setShowDeleteModal(true)}
-                        className="!text-error !border-red-200 hover:!bg-red-100 flex-shrink-0"
+                        onClick={() => setShowPauseModal(true)}
+                        className="!text-amber-700 !border-amber-300 hover:!bg-amber-100 flex-shrink-0"
                       >
-                        <Trash2 size={14} className="mr-1" />
-                        Elimina
+                        <PauseCircle size={14} className="mr-1" />
+                        Pausa
                       </Button>
                     </div>
                   </div>
@@ -556,84 +465,148 @@ export default function SettingsPage() {
 
           {/* Security Tab */}
           {activeTab === 'security' && (
+            <Card>
+              <div className="space-y-6">
+                <div>
+                  <h2 className="text-lg font-semibold text-text-primary">Sicurezza</h2>
+                  <p className="text-sm text-text-secondary mt-1">
+                    Gestisci la sicurezza del tuo account
+                  </p>
+                </div>
+
+                {/* Password */}
+                <div className="flex items-center justify-between p-4 bg-background-secondary rounded-xl">
+                  <div className="flex items-center gap-3">
+                    <Lock size={18} className="text-text-muted" />
+                    <div>
+                      <p className="text-sm font-medium">Password</p>
+                      <p className="text-xs text-text-muted">Ultima modifica: mai</p>
+                    </div>
+                  </div>
+                  <Button variant="secondary" size="sm" onClick={() => setShowPasswordModal(true)}>
+                    Cambia password
+                  </Button>
+                </div>
+
+                {/* Active sessions */}
+                <div>
+                  <h3 className="font-medium text-text-primary mb-3">Sessioni attive</h3>
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between p-3 bg-background-secondary rounded-lg">
+                      <div className="flex items-center gap-3">
+                        <div className="w-2 h-2 bg-success rounded-full" />
+                        <div>
+                          <p className="text-sm font-medium">Sessione corrente</p>
+                          <p className="text-xs text-text-muted">Browser web - Attiva ora</p>
+                        </div>
+                      </div>
+                      <span className="text-xs text-success font-medium">Attiva</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </Card>
+          )}
+
+          {/* Feedback Tab */}
+          {activeTab === 'feedback' && (
             <div className="space-y-6">
               <Card>
                 <div className="space-y-6">
                   <div>
-                    <h2 className="text-lg font-semibold text-text-primary">Sicurezza</h2>
+                    <h2 className="text-lg font-semibold text-text-primary">Lascia una recensione</h2>
                     <p className="text-sm text-text-secondary mt-1">
-                      Gestisci la sicurezza del tuo account
+                      La tua opinione ci aiuta a migliorare Affittochiaro per tutti
                     </p>
                   </div>
 
-                  {/* Password */}
-                  <div className="flex items-center justify-between p-4 bg-background-secondary rounded-xl">
-                    <div className="flex items-center gap-3">
-                      <Lock size={18} className="text-text-muted" />
-                      <div>
-                        <p className="text-sm font-medium">Password</p>
-                        <p className="text-xs text-text-muted">Ultima modifica: mai</p>
-                      </div>
-                    </div>
-                    <Button variant="secondary" size="sm" onClick={() => setShowPasswordModal(true)}>
-                      Cambia password
-                    </Button>
-                  </div>
-
-                  {/* 2FA */}
-                  <div className="flex items-center justify-between p-4 bg-background-secondary rounded-xl">
-                    <div className="flex items-center gap-3">
-                      <Smartphone size={18} className="text-text-muted" />
-                      <div>
-                        <p className="text-sm font-medium">Autenticazione a due fattori</p>
-                        <p className="text-xs text-text-muted">Non attiva - Prossimamente</p>
-                      </div>
-                    </div>
-                    <Button variant="secondary" size="sm" disabled>
-                      Attiva
-                    </Button>
-                  </div>
-
-                  {/* Active sessions */}
+                  {/* Star Rating */}
                   <div>
-                    <h3 className="font-medium text-text-primary mb-3">Sessioni attive</h3>
-                    <div className="space-y-3">
-                      <div className="flex items-center justify-between p-3 bg-background-secondary rounded-lg">
-                        <div className="flex items-center gap-3">
-                          <div className="w-2 h-2 bg-success rounded-full" />
-                          <div>
-                            <p className="text-sm font-medium">Sessione corrente</p>
-                            <p className="text-xs text-text-muted">Browser web - Attiva ora</p>
-                          </div>
-                        </div>
-                        <span className="text-xs text-success font-medium">Attiva</span>
-                      </div>
+                    <p className="text-sm font-medium text-text-primary mb-3">La tua valutazione complessiva</p>
+                    <div className="flex items-center gap-2">
+                      {[1, 2, 3, 4, 5].map((star) => (
+                        <button
+                          key={star}
+                          type="button"
+                          onClick={() => setFeedbackRating(star)}
+                          onMouseEnter={() => setFeedbackHover(star)}
+                          onMouseLeave={() => setFeedbackHover(0)}
+                          className="transition-transform hover:scale-110 active:scale-95"
+                          aria-label={`${star} stelle`}
+                        >
+                          <Star
+                            size={36}
+                            className={`transition-colors ${
+                              star <= (feedbackHover || feedbackRating)
+                                ? 'text-yellow-400 fill-yellow-400'
+                                : 'text-gray-300'
+                            }`}
+                          />
+                        </button>
+                      ))}
+                      {(feedbackHover || feedbackRating) > 0 && (
+                        <span className="ml-2 text-sm font-medium text-text-secondary">
+                          {ratingLabels[feedbackHover || feedbackRating]}
+                        </span>
+                      )}
                     </div>
+                  </div>
+
+                  <hr className="border-border" />
+
+                  {/* Category */}
+                  <div>
+                    <label className="block text-sm font-medium text-text-primary mb-2">
+                      Categoria
+                    </label>
+                    <select
+                      className="input w-full md:w-auto text-sm"
+                      value={feedbackCategory}
+                      onChange={(e) => setFeedbackCategory(e.target.value)}
+                    >
+                      <option value="generale">Esperienza generale</option>
+                      <option value="profilo">Gestione profilo</option>
+                      <option value="annunci">Ricerca annunci</option>
+                      <option value="messaggi">Messaggi e comunicazione</option>
+                      <option value="agenzia">Rapporto con le agenzie</option>
+                      <option value="app">App e usabilita</option>
+                    </select>
+                  </div>
+
+                  {/* Comment */}
+                  <div>
+                    <label className="block text-sm font-medium text-text-primary mb-2">
+                      Il tuo commento
+                    </label>
+                    <textarea
+                      className="input w-full resize-none"
+                      rows={5}
+                      placeholder="Raccontaci la tua esperienza. Cosa ti è piaciuto? Cosa miglioreresti?"
+                      value={feedbackText}
+                      onChange={(e) => setFeedbackText(e.target.value)}
+                      maxLength={1000}
+                    />
+                    <p className="text-xs text-text-muted mt-1 text-right">
+                      {feedbackText.length}/1000
+                    </p>
+                  </div>
+
+                  <div className="pt-2">
+                    <Button onClick={handleSendFeedback} leftIcon={<Send size={16} />}>
+                      Invia Recensione
+                    </Button>
                   </div>
                 </div>
               </Card>
 
-              {/* Login history */}
-              <Card>
-                <div className="space-y-4">
-                  <h2 className="text-lg font-semibold text-text-primary">Cronologia Accessi</h2>
-                  <div className="space-y-2">
-                    {[
-                      { date: 'Oggi, 10:32', device: 'Chrome su Windows', location: 'Milano, IT' },
-                      { date: 'Ieri, 18:15', device: 'Safari su iPhone', location: 'Milano, IT' },
-                      { date: '3 giorni fa', device: 'Chrome su Windows', location: 'Roma, IT' },
-                    ].map((entry, i) => (
-                      <div key={i} className="flex items-center justify-between py-2 text-sm">
-                        <div>
-                          <p className="font-medium">{entry.device}</p>
-                          <p className="text-xs text-text-muted">{entry.location}</p>
-                        </div>
-                        <span className="text-text-muted text-xs">{entry.date}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </Card>
+              {/* Privacy note */}
+              <div className="flex items-start gap-3 p-4 bg-background-secondary rounded-xl text-sm text-text-muted">
+                <MessageSquare size={16} className="flex-shrink-0 mt-0.5" />
+                <p>
+                  Le tue recensioni ci aiutano a capire come migliorare il servizio. Il tuo feedback
+                  è anonimo e non verrà condiviso pubblicamente senza il tuo consenso.
+                </p>
+              </div>
             </div>
           )}
         </div>
@@ -698,60 +671,38 @@ export default function SettingsPage() {
         </ModalFooter>
       </Modal>
 
-      {/* Delete Account Modal */}
+      {/* Pause Account Modal */}
       <Modal
-        isOpen={showDeleteModal}
-        onClose={() => {
-          setShowDeleteModal(false);
-          setDeleteConfirm('');
-        }}
-        title="Elimina Account"
+        isOpen={showPauseModal}
+        onClose={() => setShowPauseModal(false)}
+        title="Metti in pausa l'account"
       >
         <div className="space-y-4">
-          <div className="p-4 bg-red-50 border border-red-200 rounded-xl">
-            <p className="text-sm text-error font-medium">Attenzione: questa azione e irreversibile!</p>
-            <p className="text-sm text-text-secondary mt-2">
-              Eliminando il tuo account perderai:
-            </p>
-            <ul className="text-sm text-text-secondary mt-2 space-y-1 list-disc pl-4">
-              <li>Tutti i dati del profilo</li>
-              {isTenant && <li>Il tuo CV dell'inquilino</li>}
-              {isTenant && <li>Tutte le candidature inviate</li>}
-              {isAgency && <li>Tutti gli annunci pubblicati</li>}
-              {isAgency && <li>I crediti rimanenti</li>}
-              <li>Lo storico messaggi</li>
+          <div className="p-4 bg-amber-50 border border-amber-200 rounded-xl">
+            <p className="text-sm text-amber-800 font-medium">Cosa succede durante la pausa?</p>
+            <ul className="text-sm text-amber-700 mt-2 space-y-1 list-disc pl-4">
+              <li>Il tuo profilo non sarà visibile nelle ricerche</li>
+              {isTenant && <li>Le agenzie non potranno contattarti</li>}
+              {isTenant && <li>Le candidature attive verranno sospese</li>}
+              {isAgency && <li>I tuoi annunci non saranno visibili</li>}
+              <li>I tuoi dati vengono conservati intatti</li>
+              <li>Puoi riattivare l'account in qualsiasi momento</li>
             </ul>
           </div>
-
-          <div>
-            <label className="block text-sm font-medium text-text-primary mb-1">
-              Scrivi <strong>ELIMINA</strong> per confermare
-            </label>
-            <input
-              type="text"
-              className="input"
-              value={deleteConfirm}
-              onChange={(e) => setDeleteConfirm(e.target.value)}
-              placeholder="ELIMINA"
-            />
-          </div>
+          <p className="text-sm text-text-secondary">
+            Verrai disconnesso. Per riattivare l'account, accedi nuovamente con le tue credenziali.
+          </p>
         </div>
         <ModalFooter>
-          <Button
-            variant="secondary"
-            onClick={() => {
-              setShowDeleteModal(false);
-              setDeleteConfirm('');
-            }}
-          >
+          <Button variant="secondary" onClick={() => setShowPauseModal(false)}>
             Annulla
           </Button>
           <Button
-            onClick={handleDeleteAccount}
-            className="!bg-error hover:!bg-red-600"
+            onClick={handlePauseAccount}
+            className="!bg-amber-500 hover:!bg-amber-600"
           >
-            <Trash2 size={14} className="mr-1" />
-            Elimina Account
+            <PauseCircle size={14} className="mr-1" />
+            Metti in Pausa
           </Button>
         </ModalFooter>
       </Modal>
