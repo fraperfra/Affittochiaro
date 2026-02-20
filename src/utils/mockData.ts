@@ -15,6 +15,15 @@ import {
 import { ITALIAN_CITIES, OCCUPATIONS, CONTRACT_TYPES } from './constants';
 import { randomCoordinateNear } from '../data/cityCoordinates';
 
+const ALL_HOBBIES = [
+  'Musica','Lettura','Cucina','Jogging','Ciclismo','Videogiochi','Arte','Yoga',
+  'Viaggi','Fotografia','Giardinaggio','Animali','Cinema','Calcio','Tennis',
+  'Nuoto','Teatro','Vino & Cibo','Arrampicata','Danza','Scrittura','Palestra',
+  'Escursionismo','Meditazione','Karaoke','Bricolage',
+];
+const FAMILY_UNITS = ['solo', 'coppia', 'famiglia', 'coinquilini'];
+const AGE_RANGES = ['18-25','26-30','31-35','36-40','41-45','46-50','51-55','56-60'];
+
 // Helper functions for generating mock data
 const randomId = () => Math.random().toString(36).substring(2, 15);
 
@@ -164,6 +173,10 @@ export function generateMockTenants(count: number): Tenant[] {
       lastActive: randomDate(new Date('2024-10-01'), new Date()),
       status: 'active',
       availableFrom: randomDate(new Date(), new Date('2025-06-01')),
+      hobbies: Array.from({ length: randomNumber(2, 6) }, () => randomElement(ALL_HOBBIES))
+        .filter((v, i, a) => a.indexOf(v) === i), // unique
+      familyUnit: randomElement(FAMILY_UNITS),
+      ageRange: randomElement(AGE_RANGES),
     };
 
     tenants.push(tenant);

@@ -15,6 +15,11 @@ export interface Tenant {
   hasChildren?: boolean;
   numChildren?: number;
 
+  // Personal extras
+  hobbies?: string[];           // Lista label es: ['Musica', 'Cucina']
+  familyUnit?: string;          // 'solo' | 'coppia' | 'famiglia' | 'coinquilini'
+  ageRange?: string;            // es: '26-30'
+
   // Employment
   occupation?: string;
   employmentType?: EmploymentType;

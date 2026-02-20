@@ -424,118 +424,166 @@ export default function TenantSearchPage() {
         title="Profilo Inquilino"
         size="lg"
       >
-        {selectedTenant && (
-          <div className="space-y-6">
-            {/* Header */}
-            <div className="flex items-start gap-4">
-              {selectedTenant.avatar ? (
-                <img
-                  src={selectedTenant.avatar}
-                  alt={selectedTenant.firstName}
-                  className="w-24 h-24 rounded-2xl object-cover"
-                />
-              ) : (
-                <div className="w-24 h-24 rounded-2xl bg-gradient-to-br from-primary-400 to-teal-500 flex items-center justify-center text-white text-3xl font-bold">
-                  {formatInitials(selectedTenant.firstName, selectedTenant.lastName)}
+        {selectedTenant && (() => {
+          const t = selectedTenant;
+          const unlocked = isUnlocked(t.id);
+          const empLabels: Record<string, string> = {
+            permanent: 'Indeterminato', fixed_term: 'Determinato', freelance: 'Autonomo / Libero professionista',
+            internship: 'Stage', student: 'Studente', retired: 'Pensionato', unemployed: 'Disoccupato',
+          };
+          const furnishedLabels: Record<string, string> = { yes: 'Sì', no: 'No', indifferent: 'Indifferente' };
+          const familyLabels: Record<string, string> = {
+            solo: 'Solo', coppia: 'Coppia', famiglia: 'Famiglia', coinquilini: 'Coinquilini',
+          };
+
+          return (
+            <div className="space-y-5">
+
+              {/* ── Header ─────────────────────────────── */}
+              <div className="flex items-start gap-4">
+                {t.avatar ? (
+                  <img src={t.avatar} alt={t.firstName} className="w-20 h-20 rounded-2xl object-cover shrink-0" />
+                ) : (
+                  <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-primary-400 to-teal-500 flex items-center justify-center text-white text-2xl font-bold shrink-0">
+                    {formatInitials(t.firstName, t.lastName)}
+                  </div>
+                )}
+                <div className="min-w-0">
+                  <h2 className="text-xl font-bold text-text-primary">
+                    {t.firstName} {t.lastName}
+                  </h2>
+                  <p className="text-text-secondary text-sm mt-0.5">
+                    {t.ageRange ? `${t.ageRange} anni` : t.age ? `${t.age} anni` : ''}{t.currentCity ? ` · ${t.currentCity}` : ''}
+                  </p>
+                  <div className="flex flex-wrap gap-1.5 mt-2">
+                    {t.isVerified && <Badge variant="success" size="sm">✓ Verificato</Badge>}
+                    {t.hasVideo && <Badge variant="info" size="sm">🎥 Video</Badge>}
+                    {(() => { const score = filteredTenants.find(f => f.id === t.id)?.matchScore ?? calculateTenantScore(t); return (
+                      <Badge variant={score >= 70 ? 'success' : score >= 50 ? 'warning' : 'error'} size="sm">
+                        {score}% match
+                      </Badge>
+                    ); })()}
+                    <span className="text-xs text-text-muted bg-background-secondary px-2 py-0.5 rounded-full">
+                      {t.profileViews} visualizzazioni
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              {/* ── Bio ────────────────────────────────── */}
+              {t.bio && (
+                <div className="p-4 bg-background-secondary rounded-xl">
+                  <p className="text-xs font-semibold text-text-muted uppercase tracking-wide mb-1.5">Presentazione</p>
+                  <p className="text-sm text-text-primary leading-relaxed">{t.bio}</p>
                 </div>
               )}
+
+              {/* ── Lavoro & Reddito ───────────────────── */}
               <div>
-                <h2 className="text-xl font-bold">
-                  {selectedTenant.firstName} {selectedTenant.lastName}
-                </h2>
-                <p className="text-text-secondary">
-                  {selectedTenant.age} anni • {selectedTenant.occupation}
-                </p>
-                <div className="flex flex-wrap gap-2 mt-2">
-                  {selectedTenant.isVerified && <Badge variant="success">✓ Verificato</Badge>}
-                  {selectedTenant.hasVideo && <Badge variant="info">🎥 Video</Badge>}
-                </div>
-              </div>
-            </div>
-
-            {/* Bio */}
-            {selectedTenant.bio && (
-              <div>
-                <h4 className="font-semibold mb-2">Presentazione</h4>
-                <p className="text-text-secondary">{selectedTenant.bio}</p>
-              </div>
-            )}
-
-            {/* Details */}
-            <div className="grid grid-cols-2 gap-4">
-              <div className="p-4 bg-background-secondary rounded-xl">
-                <div className="flex items-center gap-2 text-text-muted mb-1">
-                  <Briefcase size={14} />
-                  <span className="text-sm">Tipo Contratto</span>
-                </div>
-                <p className="font-medium">
-                  {CONTRACT_TYPES.find(ct => ct.value === selectedTenant.preferences.preferredContractType)?.label || 'Non specificato'}
-                </p>
-              </div>
-              <div className="p-4 bg-background-secondary rounded-xl">
-                <div className="flex items-center gap-2 text-text-muted mb-1">
-                  <MapPin size={14} />
-                  <span className="text-sm">Citta</span>
-                </div>
-                <p className="font-medium">{selectedTenant.currentCity}</p>
-              </div>
-              <div className="p-4 bg-background-secondary rounded-xl">
-                <div className="flex items-center gap-2 text-text-muted mb-1">
-                  <Euro size={14} />
-                  <span className="text-sm">Budget Massimo</span>
-                </div>
-                <p className="font-medium">
-                  {selectedTenant.preferences.maxBudget
-                    ? formatCurrency(selectedTenant.preferences.maxBudget) + '/mese'
-                    : 'Non specificato'}
-                </p>
-              </div>
-              <div className="p-4 bg-background-secondary rounded-xl">
-                <div className="flex items-center gap-2 text-text-muted mb-1">
-                  <Eye size={14} />
-                  <span className="text-sm">Visualizzazioni</span>
-                </div>
-                <p className="font-medium">{selectedTenant.profileViews}</p>
-              </div>
-            </div>
-
-            {/* Contact Info (if unlocked) */}
-            {isUnlocked(selectedTenant.id) ? (
-              <div className="p-4 bg-success/10 rounded-xl border border-success/20">
-                <h4 className="font-semibold text-success mb-2">Contatti Sbloccati</h4>
-                <div className="space-y-2">
-                  <p>
-                    <span className="text-text-muted">Email:</span>{' '}
-                    <span className="font-medium">{selectedTenant.email}</span>
-                  </p>
-                  {selectedTenant.phone && (
-                    <p>
-                      <span className="text-text-muted">Telefono:</span>{' '}
-                      <span className="font-medium">{selectedTenant.phone}</span>
-                    </p>
+                <p className="text-xs font-semibold text-text-muted uppercase tracking-wide mb-2">Lavoro & Reddito</p>
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                  <InfoCell label="Occupazione" value={t.occupation} />
+                  <InfoCell label="Tipo contratto lavoro" value={t.employmentType ? empLabels[t.employmentType] : undefined} />
+                  <InfoCell label="Datore di lavoro" value={t.employer} />
+                  {t.incomeVisible && t.annualIncome && (
+                    <InfoCell label="Reddito annuo lordo" value={`€ ${t.annualIncome.toLocaleString('it-IT')}`} />
                   )}
                 </div>
               </div>
-            ) : (
-              <div className="p-4 bg-background-secondary rounded-xl text-center">
-                <p className="text-text-muted mb-3">
-                  Sblocca il profilo per vedere i contatti
-                </p>
-                <Button onClick={() => handleUnlockClick(selectedTenant)} leftIcon={<Unlock size={16} />}>
-                  Sblocca (1 credito)
-                </Button>
+
+              {/* ── Situazione personale ───────────────── */}
+              <div>
+                <p className="text-xs font-semibold text-text-muted uppercase tracking-wide mb-2">Situazione personale</p>
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                  <InfoCell label="Nucleo familiare" value={t.familyUnit ? familyLabels[t.familyUnit] : undefined} />
+                  {t.numPeople && <InfoCell label="Persone totali" value={String(t.numPeople)} />}
+                  {t.hasChildren !== undefined && (
+                    <InfoCell label="Figli" value={t.hasChildren ? `Sì${t.numChildren ? ` (${t.numChildren})` : ''}` : 'No'} />
+                  )}
+                  <InfoCell label="Animali domestici" value={t.preferences.hasPets ? `Sì${t.preferences.petType ? ` — ${t.preferences.petType}` : ''}` : 'No'} />
+                  {t.preferences.smokingAllowed !== undefined && (
+                    <InfoCell label="Fumatore" value={t.preferences.smokingAllowed ? 'Sì' : 'No'} />
+                  )}
+                  {t.nationality && <InfoCell label="Nazionalità" value={t.nationality} />}
+                </div>
               </div>
-            )}
-          </div>
-        )}
+
+              {/* ── Cosa cerca ─────────────────────────── */}
+              <div>
+                <p className="text-xs font-semibold text-text-muted uppercase tracking-wide mb-2">Cosa sta cercando</p>
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                  <InfoCell label="Città cercata" value={t.preferences.preferredCities?.join(', ') || t.currentCity} />
+                  <InfoCell label="Budget max" value={t.preferences.maxBudget ? `€ ${t.preferences.maxBudget}/mese` : undefined} />
+                  <InfoCell label="Camere" value={t.preferences.minRooms || t.preferences.maxRooms
+                    ? `${t.preferences.minRooms ?? '?'} – ${t.preferences.maxRooms ?? '?'}`
+                    : undefined} />
+                  <InfoCell label="Arredato" value={t.preferences.furnished ? furnishedLabels[t.preferences.furnished] : undefined} />
+                  <InfoCell label="Contratto preferito" value={CONTRACT_TYPES.find(c => c.value === t.preferences.preferredContractType)?.label} />
+                  <InfoCell label="Disponibile da" value={t.availableFrom ? new Date(t.availableFrom).toLocaleDateString('it-IT', { month: 'long', year: 'numeric' }) : undefined} />
+                  {t.preferences.parkingRequired && <InfoCell label="Parcheggio" value="Richiesto" />}
+                </div>
+              </div>
+
+              {/* ── Hobby ──────────────────────────────── */}
+              {t.hobbies && t.hobbies.length > 0 && (
+                <div>
+                  <p className="text-xs font-semibold text-text-muted uppercase tracking-wide mb-2">Hobby & Interessi</p>
+                  <div className="flex flex-wrap gap-1.5">
+                    {t.hobbies.map((h) => (
+                      <span key={h} className="px-2.5 py-1 bg-primary-50 text-primary-700 text-xs font-medium rounded-full border border-primary-100">
+                        {h}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* ── Documenti ──────────────────────────── */}
+              {t.documents && t.documents.length > 0 && (
+                <div>
+                  <p className="text-xs font-semibold text-text-muted uppercase tracking-wide mb-2">Documenti caricati</p>
+                  <div className="flex flex-wrap gap-2">
+                    {t.documents.map((doc) => (
+                      <span key={doc.id} className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium border ${
+                        doc.status === 'verified' ? 'bg-green-50 text-green-700 border-green-200' : 'bg-gray-50 text-gray-600 border-gray-200'
+                      }`}>
+                        {doc.status === 'verified' ? '✓' : '⏳'} {doc.name}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* ── Contatti / Sblocco ─────────────────── */}
+              {unlocked ? (
+                <div className="p-4 bg-green-50 rounded-xl border border-green-200">
+                  <p className="text-xs font-semibold text-green-700 uppercase tracking-wide mb-2">Contatti sbloccati</p>
+                  <div className="flex flex-wrap gap-x-6 gap-y-1 text-sm">
+                    <a href={`mailto:${t.email}`} className="flex items-center gap-1.5 text-green-800 font-medium hover:underline">
+                      <Download size={13} />{t.email}
+                    </a>
+                    {t.phone && (
+                      <a href={`tel:${t.phone}`} className="flex items-center gap-1.5 text-green-800 font-medium hover:underline">
+                        <Download size={13} />{t.phone}
+                      </a>
+                    )}
+                  </div>
+                </div>
+              ) : (
+                <div className="p-4 bg-background-secondary rounded-xl text-center">
+                  <p className="text-sm text-text-muted mb-3">Sblocca il profilo per vedere i contatti</p>
+                  <Button onClick={() => { setSelectedTenant(null); handleUnlockClick(t); }} leftIcon={<Unlock size={16} />}>
+                    Sblocca (1 credito)
+                  </Button>
+                </div>
+              )}
+            </div>
+          );
+        })()}
         <ModalFooter>
-          <Button variant="secondary" onClick={() => setSelectedTenant(null)}>
-            Chiudi
-          </Button>
+          <Button variant="secondary" onClick={() => setSelectedTenant(null)}>Chiudi</Button>
           {isUnlocked(selectedTenant?.id || '') && (
-            <Button leftIcon={<Download size={16} />}>
-              Scarica CV
-            </Button>
+            <Button leftIcon={<Download size={16} />}>Scarica CV</Button>
           )}
         </ModalFooter>
       </Modal>
@@ -580,6 +628,16 @@ export default function TenantSearchPage() {
           <Button onClick={confirmUnlock}>Conferma Sblocco</Button>
         </ModalFooter>
       </Modal>
+    </div>
+  );
+}
+
+function InfoCell({ label, value }: { label: string; value?: string | null }) {
+  if (!value) return null;
+  return (
+    <div className="p-3 bg-background-secondary rounded-xl">
+      <p className="text-xs text-text-muted mb-0.5">{label}</p>
+      <p className="text-sm font-medium text-text-primary leading-snug">{value}</p>
     </div>
   );
 }
