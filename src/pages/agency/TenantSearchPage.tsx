@@ -470,7 +470,7 @@ export default function TenantSearchPage() {
                 </div>
               </div>
 
-              {/* ── Bio ────────────────────────────────── */}
+              {/* ── Presentazione ──────────────────────── */}
               {t.bio && (
                 <div className="p-4 bg-background-secondary rounded-xl">
                   <p className="text-xs font-semibold text-text-muted uppercase tracking-wide mb-1.5">Presentazione</p>
@@ -478,37 +478,7 @@ export default function TenantSearchPage() {
                 </div>
               )}
 
-              {/* ── Lavoro & Reddito ───────────────────── */}
-              <div>
-                <p className="text-xs font-semibold text-text-muted uppercase tracking-wide mb-2">Lavoro & Reddito</p>
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-                  <InfoCell label="Occupazione" value={t.occupation} />
-                  <InfoCell label="Tipo contratto lavoro" value={t.employmentType ? empLabels[t.employmentType] : undefined} />
-                  <InfoCell label="Datore di lavoro" value={t.employer} />
-                  {t.incomeVisible && t.annualIncome && (
-                    <InfoCell label="Reddito annuo lordo" value={`€ ${t.annualIncome.toLocaleString('it-IT')}`} />
-                  )}
-                </div>
-              </div>
-
-              {/* ── Situazione personale ───────────────── */}
-              <div>
-                <p className="text-xs font-semibold text-text-muted uppercase tracking-wide mb-2">Situazione personale</p>
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-                  <InfoCell label="Nucleo familiare" value={t.familyUnit ? familyLabels[t.familyUnit] : undefined} />
-                  {t.numPeople && <InfoCell label="Persone totali" value={String(t.numPeople)} />}
-                  {t.hasChildren !== undefined && (
-                    <InfoCell label="Figli" value={t.hasChildren ? `Sì${t.numChildren ? ` (${t.numChildren})` : ''}` : 'No'} />
-                  )}
-                  <InfoCell label="Animali domestici" value={t.preferences.hasPets ? `Sì${t.preferences.petType ? ` — ${t.preferences.petType}` : ''}` : 'No'} />
-                  {t.preferences.smokingAllowed !== undefined && (
-                    <InfoCell label="Fumatore" value={t.preferences.smokingAllowed ? 'Sì' : 'No'} />
-                  )}
-                  {t.nationality && <InfoCell label="Nazionalità" value={t.nationality} />}
-                </div>
-              </div>
-
-              {/* ── Cosa cerca ─────────────────────────── */}
+              {/* ── Cosa sta cercando ──────────────────── */}
               <div>
                 <p className="text-xs font-semibold text-text-muted uppercase tracking-wide mb-2">Cosa sta cercando</p>
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
@@ -524,35 +494,47 @@ export default function TenantSearchPage() {
                 </div>
               </div>
 
-              {/* ── Hobby ──────────────────────────────── */}
-              {t.hobbies && t.hobbies.length > 0 && (
-                <div>
-                  <p className="text-xs font-semibold text-text-muted uppercase tracking-wide mb-2">Hobby & Interessi</p>
-                  <div className="flex flex-wrap gap-1.5">
-                    {t.hobbies.map((h) => (
-                      <span key={h} className="px-2.5 py-1 bg-primary-50 text-primary-700 text-xs font-medium rounded-full border border-primary-100">
-                        {h}
-                      </span>
-                    ))}
-                  </div>
+              {/* ── Lavoro & Reddito ───────────────────── */}
+              <div>
+                <p className="text-xs font-semibold text-text-muted uppercase tracking-wide mb-2">Lavoro & Reddito</p>
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                  <InfoCell label="Occupazione" value={t.occupation} />
+                  <InfoCell label="Tipo contratto lavoro" value={t.employmentType ? empLabels[t.employmentType] : undefined} />
+                  <InfoCell label="Datore di lavoro" value={t.employer} />
+                  {t.incomeVisible && t.annualIncome && (
+                    <InfoCell label="Reddito annuo lordo" value={`€ ${t.annualIncome.toLocaleString('it-IT')}`} />
+                  )}
                 </div>
-              )}
+              </div>
 
-              {/* ── Documenti ──────────────────────────── */}
-              {t.documents && t.documents.length > 0 && (
-                <div>
-                  <p className="text-xs font-semibold text-text-muted uppercase tracking-wide mb-2">Documenti caricati</p>
-                  <div className="flex flex-wrap gap-2">
-                    {t.documents.map((doc) => (
-                      <span key={doc.id} className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium border ${
-                        doc.status === 'verified' ? 'bg-green-50 text-green-700 border-green-200' : 'bg-gray-50 text-gray-600 border-gray-200'
-                      }`}>
-                        {doc.status === 'verified' ? '✓' : '⏳'} {doc.name}
-                      </span>
-                    ))}
-                  </div>
+              {/* ── Situazione personale + Hobby ───────── */}
+              <div>
+                <p className="text-xs font-semibold text-text-muted uppercase tracking-wide mb-2">Situazione personale</p>
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mb-3">
+                  <InfoCell label="Nucleo familiare" value={t.familyUnit ? familyLabels[t.familyUnit] : undefined} />
+                  {t.numPeople && <InfoCell label="Persone totali" value={String(t.numPeople)} />}
+                  {t.hasChildren !== undefined && (
+                    <InfoCell label="Figli" value={t.hasChildren ? `Sì${t.numChildren ? ` (${t.numChildren})` : ''}` : 'No'} />
+                  )}
+                  <InfoCell label="Animali domestici" value={t.preferences.hasPets ? `Sì${t.preferences.petType ? ` — ${t.preferences.petType}` : ''}` : 'No'} />
+                  {t.preferences.smokingAllowed !== undefined && (
+                    <InfoCell label="Fumatore" value={t.preferences.smokingAllowed ? 'Sì' : 'No'} />
+                  )}
+                  {t.nationality && <InfoCell label="Nazionalità" value={t.nationality} />}
                 </div>
-              )}
+                {t.hobbies && t.hobbies.length > 0 && (
+                  <div>
+                    <p className="text-xs text-text-muted mb-2">Hobby & Interessi</p>
+                    <div className="flex flex-wrap gap-1.5">
+                      {t.hobbies.map((h) => (
+                        <span key={h} className="px-2.5 py-1 bg-primary-50 text-primary-700 text-xs font-medium rounded-full border border-primary-100">
+                          {h}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
 
               {/* ── Contatti / Sblocco ─────────────────── */}
               {unlocked ? (

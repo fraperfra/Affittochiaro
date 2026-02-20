@@ -74,7 +74,6 @@ const SettingsPage = lazy(() => import('./pages/SettingsPage'));
 const MessagesPage = lazy(() => import('./pages/MessagesPage'));
 
 // Additional Pages - lazy loaded
-const TenantDocumentsPage = lazy(() => import('./pages/tenant/TenantDocumentsPage'));
 const TenantTemplatesPage = lazy(() => import('./pages/tenant/TenantTemplatesPage'));
 const TenantServicesPage = lazy(() => import('./pages/tenant/TenantServicesPage'));
 const AgencyDocumentsPage = lazy(() => import('./pages/agency/AgencyDocumentsPage'));
@@ -297,7 +296,6 @@ function App() {
             <Route path="listings" element={<ListingsPage />} />
             <Route path="notifications" element={<NotificationsPage />} />
             <Route path="agencies" element={<TenantAgenciesPage />} />
-            <Route path="documents" element={<TenantDocumentsPage />} />
             <Route path="services" element={<TenantServicesPage />} />
             <Route path="messages" element={<MessagesPage />} />
             <Route path="settings" element={<SettingsPage />} />
