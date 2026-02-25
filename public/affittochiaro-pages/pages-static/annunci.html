@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Annunci Case e Appartamenti in Affitto | AffittoChiaro</title>
+    <meta name="description"
+        content="Migliaia di annunci di case e appartamenti in affitto da privati e agenzie. Trova la tua nuova casa con AffittoChiaro.">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: { 50: '#E6FFF5', 100: '#B3FFE0', 500: '#00C48C', 600: '#00A376', 700: '#008261' },
+                        teal: { 500: '#0A8F70', 700: '#0A5E4D' },
+                        accent: { 500: '#FF6B35' },
+                        text: { primary: '#2C3E50', secondary: '#64748B' }
+                    },
+                    fontFamily: { sans: ['Inter', 'sans-serif'], serif: ['Poppins', 'sans-serif'] },
+                    boxShadow: {
+                        'card': '0 1px 3px rgba(0, 0, 0, 0.08), 0 4px 12px rgba(0, 0, 0, 0.05)',
+                        'card-hover': '0 4px 12px rgba(0, 0, 0, 0.1), 0 8px 24px rgba(0, 0, 0, 0.08)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../styles/design-tokens.css">
+    <link rel="stylesheet" href="../styles/custom.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body class="font-sans antialiased text-gray-800 bg-gray-50">
+
+    <!-- HEADER -->
+    <header class="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-100">
+        <div class="container-custom mx-auto flex items-center justify-between h-16 md:h-20">
+            <a href="come-funziona.html" class="flex items-center gap-2">
+                <div
+                    class="w-8 h-8 md:w-10 md:h-10 bg-primary-500 rounded-lg flex items-center justify-center text-white font-bold text-xl">
+                    A</div>
+                <span class="font-serif font-bold text-xl md:text-2xl text-gray-900 tracking-tight">AffittoChiaro</span>
+            </a>
+            <nav class="hidden md:flex items-center gap-8">
+                <a href="come-funziona.html"
+                    class="text-sm font-medium text-gray-600 hover:text-primary-600 transition-colors">Come funziona</a>
+                <a href="annunci.html" class="text-sm font-medium text-primary-600">Cerca Casa</a>
+                <a href="ricerca-inquilino.html"
+                    class="text-sm font-medium text-gray-600 hover:text-primary-600 transition-colors">Cerca
+                    Inquilino</a>
+                <a href="servizi-casa.html"
+                    class="text-sm font-medium text-gray-600 hover:text-primary-600 transition-colors">Servizi</a>
+                <a href="agenzie-partner.html"
+                    class="text-sm font-medium text-gray-600 hover:text-primary-600 transition-colors">Agenzie</a>
+                <a href="affittonews.html"
+                    class="text-sm font-medium text-gray-600 hover:text-primary-600 transition-colors">AffittoNews</a>
+            </nav>
+            <div class="hidden md:flex items-center gap-3">
+                <a href="#" class="text-sm font-medium text-gray-600 hover:text-gray-900 px-3 py-2">Accedi</a>
+                <a href="landing-inquilino.html" class="btn btn-primary btn-sm">Registrati</a>
+            </div>
+            <button class="md:hidden p-2 text-gray-600"><i data-lucide="menu" class="w-6 h-6"></i></button>
+        </div>
+    </header>
+
+    <main>
+        <!-- SEARCH BAR STRIP -->
+        <div class="bg-white border-b border-gray-200 sticky top-16 md:top-20 z-40 shadow-sm">
+            <div class="container-custom mx-auto py-4">
+                <div class="flex flex-col md:flex-row gap-4">
+                    <div class="relative flex-grow">
+                        <i data-lucide="map-pin"
+                            class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5"></i>
+                        <input type="text" value="Milano"
+                            class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none"
+                            placeholder="Città, zona, via...">
+                    </div>
+                    <div class="flex gap-2 overflow-x-auto pb-2 md:pb-0">
+                        <button
+                            class="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg bg-white hover:border-gray-400 whitespace-nowrap">
+                            <i data-lucide="home" class="w-4 h-4"></i> Tipologia
+                        </button>
+                        <button
+                            class="flex items-center gap-2 px-4 py-2 border border-primary-500 text-primary-600 bg-primary-50 rounded-lg hover:bg-primary-100 whitespace-nowrap font-medium">
+                            <i data-lucide="euro" class="w-4 h-4"></i> Prezzo
+                        </button>
+                        <button
+                            class="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg bg-white hover:border-gray-400 whitespace-nowrap">
+                            <i data-lucide="sliders-horizontal" class="w-4 h-4"></i> Filtri
+                        </button>
+                        <button
+                            class="md:hidden flex items-center gap-2 px-4 py-2 bg-primary-500 text-white rounded-lg whitespace-nowrap font-bold">
+                            Cerca
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-custom mx-auto py-8 grid lg:grid-cols-4 gap-8">
+            <!-- FILTERS SIDEBAR (Desktop) -->
+            <aside class="hidden lg:block space-y-8">
+                <div>
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="font-bold text-lg">Filtra risultati</h3>
+                        <button class="text-sm text-primary-600 hover:underline">Reset</button>
+                    </div>
+
+                    <!-- Price Range -->
+                    <div class="mb-6">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Prezzo (€)</label>
+                        <div class="flex gap-2 items-center">
+                            <input type="number" placeholder="Min"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm">
+                            <span>-</span>
+                            <input type="number" placeholder="Max"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm">
+                        </div>
+                    </div>
+
+                    <!-- Type -->
+                    <div class="mb-6">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Tipologia</label>
+                        <div class="space-y-2">
+                            <label class="flex items-center gap-2 text-sm text-gray-600 cursor-pointer">
+                                <input type="checkbox" class="rounded text-primary-500 focus:ring-primary-500">
+                                Appartamento
+                            </label>
+                            <label class="flex items-center gap-2 text-sm text-gray-600 cursor-pointer">
+                                <input type="checkbox" class="rounded text-primary-500 focus:ring-primary-500"> Stanza
+                                Singola
+                            </label>
+                            <label class="flex items-center gap-2 text-sm text-gray-600 cursor-pointer">
+                                <input type="checkbox" class="rounded text-primary-500 focus:ring-primary-500">
+                                Monolocale
+                            </label>
+                            <label class="flex items-center gap-2 text-sm text-gray-600 cursor-pointer">
+                                <input type="checkbox" class="rounded text-primary-500 focus:ring-primary-500"> Loft
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Features -->
+                    <div class="mb-6">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Caratteristiche</label>
+                        <div class="space-y-2">
+                            <label class="flex items-center gap-2 text-sm text-gray-600 cursor-pointer">
+                                <input type="checkbox" class="rounded text-primary-500 focus:ring-primary-500"> Arredato
+                            </label>
+                            <label class="flex items-center gap-2 text-sm text-gray-600 cursor-pointer">
+                                <input type="checkbox" class="rounded text-primary-500 focus:ring-primary-500"> Balcone
+                            </label>
+                            <label class="flex items-center gap-2 text-sm text-gray-600 cursor-pointer">
+                                <input type="checkbox" class="rounded text-primary-500 focus:ring-primary-500"> Aria
+                                Condizionata
+                            </label>
+                            <label class="flex items-center gap-2 text-sm text-gray-600 cursor-pointer">
+                                <input type="checkbox" class="rounded text-primary-500 focus:ring-primary-500">
+                                Ascensore
+                            </label>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-primary w-full justify-center">Applica Filtri</button>
+                </div>
+
+                <!-- SEO Banner -->
+                <div class="bg-primary-50 p-4 rounded-xl border border-primary-100">
+                    <h4 class="font-bold text-primary-800 mb-2 text-sm">Cerchi Inquilini?</h4>
+                    <p class="text-xs text-primary-700 mb-3">Pubblica il tuo annuncio gratis e trova inquilini
+                        verificati.</p>
+                    <a href="landing-inquilino.html" class="text-sm font-bold text-primary-600 hover:underline">Pubblica
+                        Gratis →</a>
+                </div>
+            </aside>
+
+            <!-- LISTINGS GRID -->
+            <div class="lg:col-span-3">
+                <div class="flex justify-between items-center mb-6">
+                    <h1 class="text-xl md:text-2xl font-bold font-serif">Case in affitto a <span
+                            class="text-primary-600">Milano</span></h1>
+                    <div class="flex items-center gap-2 text-sm text-gray-500">
+                        <span class="hidden sm:inline">2.450 risultati</span>
+                        <select
+                            class="border-none bg-transparent font-medium text-gray-900 focus:ring-0 cursor-pointer">
+                            <option>Più rilevanti</option>
+                            <option>Prezzo più basso</option>
+                            <option>Prezzo più alto</option>
+                            <option>Più recenti</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-6">
+                    <!-- Listing Card 1 -->
+                    <article class="card p-0 overflow-hidden group hover:shadow-card-hover transition-all duration-300">
+                        <div class="relative h-56">
+                            <img src="https://placehold.co/600x400/e2e8f0/64748b?text=Appartamento+Centro"
+                                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            <span
+                                class="absolute top-3 left-3 badge bg-white/90 text-gray-900 font-bold backdrop-blur-sm">Nuovo</span>
+                            <button
+                                class="absolute top-3 right-3 w-8 h-8 bg-white/50 hover:bg-white rounded-full flex items-center justify-center text-gray-800 transition-colors backdrop-blur-sm">
+                                <i data-lucide="heart" class="w-5 h-5"></i>
+                            </button>
+                            <div
+                                class="absolute bottom-3 left-3 bg-black/60 text-white text-xs px-2 py-1 rounded backdrop-blur-sm flex items-center gap-1">
+                                <i data-lucide="camera" class="w-3 h-3"></i> 12 foto
+                            </div>
+                        </div>
+                        <div class="p-5">
+                            <div class="flex justify-between items-start mb-2">
+                                <h2
+                                    class="text-lg font-bold font-serif hover:text-primary-600 transition-colors cursor-pointer line-clamp-1">
+                                    Bilocale ristrutturato Porta Romana</h2>
+                                <span class="text-xl font-bold text-primary-600">€1.200</span>
+                            </div>
+                            <p class="text-sm text-gray-500 mb-4 flex items-center gap-1">
+                                <i data-lucide="map-pin" class="w-3 h-3"></i> Via Muratori, Milano
+                            </p>
+                            <div
+                                class="flex items-center gap-4 text-sm text-gray-600 mb-4 border-b border-gray-100 pb-4">
+                                <span class="flex items-center gap-1"><i data-lucide="bed-double" class="w-4 h-4"></i>
+                                    1</span>
+                                <span class="flex items-center gap-1"><i data-lucide="bath" class="w-4 h-4"></i>
+                                    1</span>
+                                <span class="flex items-center gap-1"><i data-lucide="maximize" class="w-4 h-4"></i> 55
+                                    m²</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <div class="flex items-center gap-2">
+                                    <div class="w-6 h-6 rounded-full bg-gray-200 overflow-hidden">
+                                        <img src="https://placehold.co/50x50/333/fff?text=A" alt="Agency Logo">
+                                    </div>
+                                    <span class="text-xs font-medium text-gray-500">Immobiliare.it Partner</span>
+                                </div>
+                                <button class="btn btn-outline btn-sm">Contatta</button>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Listing Card 2 -->
+                    <article class="card p-0 overflow-hidden group hover:shadow-card-hover transition-all duration-300">
+                        <div class="relative h-56">
+                            <img src="https://placehold.co/600x400/e2e8f0/64748b?text=Trilocale+Isola"
+                                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            <button
+                                class="absolute top-3 right-3 w-8 h-8 bg-white/50 hover:bg-white rounded-full flex items-center justify-center text-gray-800 transition-colors backdrop-blur-sm">
+                                <i data-lucide="heart" class="w-5 h-5"></i>
+                            </button>
+                        </div>
+                        <div class="p-5">
+                            <div class="flex justify-between items-start mb-2">
+                                <h2
+                                    class="text-lg font-bold font-serif hover:text-primary-600 transition-colors cursor-pointer line-clamp-1">
+                                    Trilocale luminoso Isola</h2>
+                                <span class="text-xl font-bold text-primary-600">€1.650</span>
+                            </div>
+                            <p class="text-sm text-gray-500 mb-4 flex items-center gap-1">
+                                <i data-lucide="map-pin" class="w-3 h-3"></i> Via Volturno, Milano
+                            </p>
+                            <div
+                                class="flex items-center gap-4 text-sm text-gray-600 mb-4 border-b border-gray-100 pb-4">
+                                <span class="flex items-center gap-1"><i data-lucide="bed-double" class="w-4 h-4"></i>
+                                    2</span>
+                                <span class="flex items-center gap-1"><i data-lucide="bath" class="w-4 h-4"></i>
+                                    1</span>
+                                <span class="flex items-center gap-1"><i data-lucide="maximize" class="w-4 h-4"></i> 85
+                                    m²</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="badge badge-success text-xs">Privato</span>
+                                <button class="btn btn-outline btn-sm">Contatta</button>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Listing Card 3 -->
+                    <article class="card p-0 overflow-hidden group hover:shadow-card-hover transition-all duration-300">
+                        <div class="relative h-56">
+                            <img src="https://placehold.co/600x400/e2e8f0/64748b?text=Loft+Tortona"
+                                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            <button
+                                class="absolute top-3 right-3 w-8 h-8 bg-white/50 hover:bg-white rounded-full flex items-center justify-center text-gray-800 transition-colors backdrop-blur-sm">
+                                <i data-lucide="heart" class="w-5 h-5"></i>
+                            </button>
+                        </div>
+                        <div class="p-5">
+                            <div class="flex justify-between items-start mb-2">
+                                <h2
+                                    class="text-lg font-bold font-serif hover:text-primary-600 transition-colors cursor-pointer line-clamp-1">
+                                    Loft Design Zona Tortona</h2>
+                                <span class="text-xl font-bold text-primary-600">€1.400</span>
+                            </div>
+                            <p class="text-sm text-gray-500 mb-4 flex items-center gap-1">
+                                <i data-lucide="map-pin" class="w-3 h-3"></i> Via Tortona, Milano
+                            </p>
+                            <div
+                                class="flex items-center gap-4 text-sm text-gray-600 mb-4 border-b border-gray-100 pb-4">
+                                <span class="flex items-center gap-1"><i data-lucide="bed-double" class="w-4 h-4"></i>
+                                    1</span>
+                                <span class="flex items-center gap-1"><i data-lucide="bath" class="w-4 h-4"></i>
+                                    1</span>
+                                <span class="flex items-center gap-1"><i data-lucide="maximize" class="w-4 h-4"></i> 60
+                                    m²</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <div class="flex items-center gap-2">
+                                    <div class="w-6 h-6 rounded-full bg-gray-200 overflow-hidden">
+                                        <img src="https://placehold.co/50x50/333/fff?text=A" alt="Agency Logo">
+                                    </div>
+                                    <span class="text-xs font-medium text-gray-500">Studio Milano</span>
+                                </div>
+                                <button class="btn btn-outline btn-sm">Contatta</button>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Listing Card 4 -->
+                    <article class="card p-0 overflow-hidden group hover:shadow-card-hover transition-all duration-300">
+                        <div class="relative h-56">
+                            <img src="https://placehold.co/600x400/e2e8f0/64748b?text=Monolocale"
+                                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            <button
+                                class="absolute top-3 right-3 w-8 h-8 bg-white/50 hover:bg-white rounded-full flex items-center justify-center text-gray-800 transition-colors backdrop-blur-sm">
+                                <i data-lucide="heart" class="w-5 h-5"></i>
+                            </button>
+                        </div>
+                        <div class="p-5">
+                            <div class="flex justify-between items-start mb-2">
+                                <h2
+                                    class="text-lg font-bold font-serif hover:text-primary-600 transition-colors cursor-pointer line-clamp-1">
+                                    Ampio Monolocale Nolo</h2>
+                                <span class="text-xl font-bold text-primary-600">€850</span>
+                            </div>
+                            <p class="text-sm text-gray-500 mb-4 flex items-center gap-1">
+                                <i data-lucide="map-pin" class="w-3 h-3"></i> Viale Monza, Milano
+                            </p>
+                            <div
+                                class="flex items-center gap-4 text-sm text-gray-600 mb-4 border-b border-gray-100 pb-4">
+                                <span class="flex items-center gap-1"><i data-lucide="bed-double" class="w-4 h-4"></i>
+                                    1</span>
+                                <span class="flex items-center gap-1"><i data-lucide="bath" class="w-4 h-4"></i>
+                                    1</span>
+                                <span class="flex items-center gap-1"><i data-lucide="maximize" class="w-4 h-4"></i> 40
+                                    m²</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="badge badge-success text-xs">Privato</span>
+                                <button class="btn btn-outline btn-sm">Contatta</button>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- More listings can be added here -->
+
+                </div>
+
+                <!-- Pagination -->
+                <div class="mt-12 flex justify-center gap-2">
+                    <button class="w-10 h-10 rounded-lg bg-primary-500 text-white font-bold shadow-md">1</button>
+                    <button class="w-10 h-10 rounded-lg hover:bg-gray-100 text-gray-600 transition-colors">2</button>
+                    <button class="w-10 h-10 rounded-lg hover:bg-gray-100 text-gray-600 transition-colors">3</button>
+                    <button
+                        class="w-10 h-10 rounded-lg hover:bg-gray-100 text-gray-600 transition-colors flex items-center justify-center"><i
+                            data-lucide="chevron-right" class="w-4 h-4"></i></button>
+                </div>
+
+                <!-- SEO Text Block (Bottom) -->
+                <div class="mt-16 pt-8 border-t border-gray-200">
+                    <h2 class="text-xl font-bold mb-4">Case in Affitto a Milano: Scopri le Migliori Offerte</h2>
+                    <p class="text-sm text-gray-500 leading-relaxed max-w-4xl">
+                        Stai cercando una casa in affitto a Milano? Su AffittoChiaro trovi migliaia di annunci di
+                        appartamenti, monolocali, bilocali e stanze in affitto verificate.
+                        Che tu stia cercando in centro storico, zona Navigli, Città Studi o nei quartieri emergenti come
+                        NoLo e Porta Romana, abbiamo la soluzione giusta per te.
+                        Tutti i nostri annunci sono controllati per garantirti la massima sicurezza e trasparenza.
+                        Contatta direttamente i proprietari senza intermediari o affidati alle migliori agenzie partner.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-gray-900 text-white pt-16 pb-8">
+        <div class="container-custom mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+            <div class="space-y-4">
+                <div class="flex items-center gap-2">
+                    <div
+                        class="w-8 h-8 bg-primary-500 rounded-lg flex items-center justify-center text-white font-bold">
+                        A</div>
+                    <span class="font-serif font-bold text-xl tracking-tight">AffittoChiaro</span>
+                </div>
+                <p class="text-gray-400 text-sm leading-relaxed">
+                    La piattaforma che rivoluziona il modo di affittare casa in Italia.
+                </p>
+            </div>
+            <div>
+                <h4 class="font-serif font-bold text-lg mb-4">Piattaforma</h4>
+                <ul class="space-y-2 text-sm text-gray-400">
+                    <li><a href="chi-siamo.html" class="hover:text-primary-400">Chi Siamo</a></li>
+                    <li><a href="annunci.html" class="hover:text-primary-400">Cerca Casa</a></li>
+                    <li><a href="landing-inquilino.html" class="hover:text-primary-400">Pubblica Annuncio</a></li>
+                    <li><a href="affittonews.html" class="hover:text-primary-400">AffittoNews</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-serif font-bold text-lg mb-4">Supporto</h4>
+                <ul class="space-y-2 text-sm text-gray-400">
+                    <li><a href="agenzie-partner.html" class="hover:text-primary-400">Agenzie Partner</a></li>
+                    <li><a href="guida-affitto/index.html" class="hover:text-primary-400">Guida Affitto</a></li>
+                    <li><a href="#" class="hover:text-primary-400">Contatti</a></li>
+                </ul>
+            </div>
+            <div>
+                <p class="text-sm text-gray-500">&copy; 2025 AffittoChiaro Srl</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+
+</html>

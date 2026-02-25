@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Affitto Casa a Milano | AffittoChiaro</title>
+    <meta name="description"
+        content="Trova inquilini verificati o la tua casa ideale a Milano. Scopri prezzi, quartieri e consigli per affittare a Milano.">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: { 50: '#E6FFF5', 100: '#B3FFE0', 500: '#00C48C', 600: '#00A376', 700: '#008261' },
+                        teal: { 500: '#0A8F70', 700: '#0A5E4D' },
+                        accent: { 500: '#FF6B35' },
+                        text: { primary: '#2C3E50', secondary: '#64748B' }
+                    },
+                    fontFamily: { sans: ['Inter', 'sans-serif'], serif: ['Poppins', 'sans-serif'] },
+                    boxShadow: {
+                        'card': '0 1px 3px rgba(0, 0, 0, 0.08), 0 4px 12px rgba(0, 0, 0, 0.05)',
+                        'card-hover': '0 4px 12px rgba(0, 0, 0, 0.1), 0 8px 24px rgba(0, 0, 0, 0.08)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../styles/design-tokens.css">
+    <link rel="stylesheet" href="../styles/custom.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body class="font-sans antialiased text-gray-800 bg-white">
+
+    <!-- HEADER -->
+    <header class="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-100">
+        <div class="container-custom mx-auto flex items-center justify-between h-16 md:h-20">
+            <a href="#" class="flex items-center gap-2">
+                <div
+                    class="w-8 h-8 md:w-10 md:h-10 bg-primary-500 rounded-lg flex items-center justify-center text-white font-bold text-xl">
+                    A</div>
+                <span class="font-serif font-bold text-xl md:text-2xl text-gray-900 tracking-tight">AffittoChiaro</span>
+            </a>
+            <nav class="hidden md:flex items-center gap-8">
+                <a href="come-funziona.html"
+                    class="text-sm font-medium text-gray-600 hover:text-primary-600 transition-colors">Come funziona</a>
+                <a href="annunci.html"
+                    class="text-sm font-medium text-gray-600 hover:text-primary-600 transition-colors">Cerca
+                    Casa</a>
+                <a href="ricerca-inquilino.html"
+                    class="text-sm font-medium text-gray-600 hover:text-primary-600 transition-colors">Cerca
+                    Inquilino</a>
+                <a href="servizi-casa.html"
+                    class="text-sm font-medium text-gray-600 hover:text-primary-600 transition-colors">Servizi</a>
+                <a href="agenzie-partner.html"
+                    class="text-sm font-medium text-gray-600 hover:text-primary-600 transition-colors">Agenzie</a>
+                <a href="affittonews.html"
+                    class="text-sm font-medium text-gray-600 hover:text-primary-600 transition-colors">AffittoNews</a>
+            </nav>
+            <div class="hidden md:flex items-center gap-3">
+                <a href="#" class="text-sm font-medium text-gray-600 hover:text-gray-900 px-3 py-2">Accedi</a>
+                <a href="landing-inquilino.html" class="btn btn-primary btn-sm">Registrati</a>
+            </div>
+            <button class="md:hidden p-2 text-gray-600"><i data-lucide="menu" class="w-6 h-6"></i></button>
+        </div>
+    </header>
+
+    <main>
+        <!-- HERO CITY -->
+        <section class="relative h-[600px] flex items-center justify-center text-white">
+            <!-- Background Image with Overlay -->
+            <div class="absolute inset-0 z-0">
+                <img src="https://placehold.co/1920x1080/000000/FFFFFF?text=Milano+Duomo" alt="Milano"
+                    class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-black/60"></div>
+            </div>
+
+            <div class="container-custom mx-auto relative z-10 text-center animate-fade-in">
+                <div class="text-sm font-medium text-gray-300 mb-4 flex items-center justify-center gap-2">
+                    <a href="#" class="hover:text-white">Home</a> <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                    <a href="#" class="hover:text-white">Città</a> <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                    <span>Milano</span>
+                </div>
+                <h1 class="text-5xl md:text-6xl font-bold font-serif mb-6">Affitto Casa a <span
+                        class="city-name text-primary-400">Milano</span></h1>
+                <p class="text-xl md:text-2xl text-gray-200 mb-12 max-w-2xl mx-auto">Trova inquilini verificati o la tua
+                    casa ideale nel capoluogo lombardo.</p>
+
+                <!-- Stats Bar -->
+                <div
+                    class="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-6 mx-auto max-w-4xl grid grid-cols-2 md:grid-cols-4 gap-6">
+                    <div>
+                        <div class="text-3xl font-bold text-primary-400" data-city-stat="tenants">12.450</div>
+                        <div class="text-sm text-gray-300">Inquilini attivi</div>
+                    </div>
+                    <div>
+                        <div class="text-3xl font-bold text-primary-400" data-city-stat="owners">3.200</div>
+                        <div class="text-sm text-gray-300">Proprietari</div>
+                    </div>
+                    <div>
+                        <div class="text-3xl font-bold text-primary-400">€1.200</div>
+                        <div class="text-sm text-gray-300">Affitto Medio</div>
+                    </div>
+                    <div>
+                        <div class="text-3xl font-bold text-primary-400">45</div>
+                        <div class="text-sm text-gray-300">Quartieri</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- MERCATO PANORAMICA -->
+        <section class="section">
+            <div class="container-custom mx-auto max-w-6xl grid lg:grid-cols-3 gap-12">
+                <div class="lg:col-span-2">
+                    <h2 class="text-3xl font-bold font-serif mb-6">Il Mercato degli Affitti a <span
+                            class="city-name">Milano</span> nel 2025</h2>
+                    <div class="prose text-gray-600 space-y-4">
+                        <p>Milano si conferma la città più dinamica d'Italia per il mercato immobiliare. Nel 2025, la
+                            domanda di affitti è cresciuta del 15% rispetto all'anno precedente, trainata dal ritorno
+                            degli studenti universitari e dal consolidamento dello smart working ibrido che porta
+                            giovani professionisti a cercare soluzioni abitative più flessibili.</p>
+                        <p>I prezzi medi hanno subito un leggero incremento nelle zone centrali come Brera e Porta
+                            Nuova, mentre quartieri emergenti come NoLo (North of Loreto) e Scalo Romana offrono ancora
+                            opportunità interessanti per chi cerca un ottimo rapporto qualità-prezzo. La
+                            riqualificazione delle aree ex-ferroviarie sta trasformando intere zone della città, creando
+                            nuovi hub residenziali moderni e serviti.</p>
+                        <p>Per i proprietari, il rendimento medio lordo si attesta intorno al 5-6%, con punte più alte
+                            per gli affitti transitori e studenteschi. La richiesta di immobili arredati e pronti
+                            all'uso è ai massimi storici.</p>
+                    </div>
+                </div>
+
+                <div class="space-y-6">
+                    <div class="card bg-primary-50 border border-primary-100">
+                        <h3 class="font-bold text-xl mb-2 text-primary-800">Cerca casa a Milano?</h3>
+                        <p class="text-sm text-primary-700 mb-4">Crea il tuo profilo inquilino e fatti contattare dai
+                            proprietari.</p>
+                        <button class="btn btn-primary w-full justify-center">Crea Profilo Ora</button>
+                    </div>
+
+                    <div class="card">
+                        <h3 class="font-bold text-lg mb-4">Prezzi Medi (mensili)</h3>
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-center pb-2 border-b border-gray-100">
+                                <span class="text-gray-600">Monolocale</span>
+                                <span class="font-bold">€800 - €950</span>
+                            </div>
+                            <div class="flex justify-between items-center pb-2 border-b border-gray-100">
+                                <span class="text-gray-600">Bilocale</span>
+                                <span class="font-bold">€1.100 - €1.400</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-600">Trilocale</span>
+                                <span class="font-bold">€1.500 - €1.900</span>
+                            </div>
+                        </div>
+                        <p class="text-xs text-gray-400 mt-4 text-center">Aggiornato a Febbraio 2025</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- QUARTIERI -->
+        <section class="section bg-gray-50">
+            <div class="container-custom mx-auto">
+                <h2 class="text-3xl font-bold font-serif mb-2 text-center">Esplora i Quartieri di <span
+                        class="city-name">Milano</span></h2>
+                <p class="text-center text-gray-600 mb-12">Ogni zona ha la sua anima. Trova quella giusta per te.</p>
+
+                <div class="grid md:grid-cols-3 gap-8">
+                    <!-- Card Quartiere 1 -->
+                    <div class="card card-hover p-0 overflow-hidden group">
+                        <div class="relative h-48 overflow-hidden">
+                            <img src="https://placehold.co/400x300/e2e8f0/64748b?text=Navigli"
+                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                            <span
+                                class="absolute top-4 right-4 badge bg-white/90 backdrop-blur text-gray-800">Vivace</span>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold mb-1">Navigli</h3>
+                            <p class="text-sm text-gray-500 mb-4">Ideale per studenti e movida</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-primary-600 font-bold">€1.100 <span
+                                        class="text-xs text-gray-400 font-normal">/media</span></span>
+                                <a href="#" class="text-sm font-medium hover:underline text-gray-600">Scopri →</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card Quartiere 2 -->
+                    <div class="card card-hover p-0 overflow-hidden group">
+                        <div class="relative h-48 overflow-hidden">
+                            <img src="https://placehold.co/400x300/e2e8f0/64748b?text=Porta+Romana"
+                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                            <span
+                                class="absolute top-4 right-4 badge bg-white/90 backdrop-blur text-gray-800">Residenziale</span>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold mb-1">Porta Romana</h3>
+                            <p class="text-sm text-gray-500 mb-4">Elegante e ben collegato</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-primary-600 font-bold">€1.350 <span
+                                        class="text-xs text-gray-400 font-normal">/media</span></span>
+                                <a href="#" class="text-sm font-medium hover:underline text-gray-600">Scopri →</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card Quartiere 3 -->
+                    <div class="card card-hover p-0 overflow-hidden group">
+                        <div class="relative h-48 overflow-hidden">
+                            <img src="https://placehold.co/400x300/e2e8f0/64748b?text=Citt%C3%A0+Studi"
+                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                            <span
+                                class="absolute top-4 right-4 badge bg-white/90 backdrop-blur text-gray-800">Universitario</span>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold mb-1">Città Studi</h3>
+                            <p class="text-sm text-gray-500 mb-4">Tranquillo e verde</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-primary-600 font-bold">€950 <span
+                                        class="text-xs text-gray-400 font-normal">/media</span></span>
+                                <a href="#" class="text-sm font-medium hover:underline text-gray-600">Scopri →</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TESTIMONIALS -->
+        <section class="section">
+            <div class="container-custom mx-auto">
+                <h2 class="text-3xl font-bold font-serif text-center mb-12">Cosa dicono di noi a <span
+                        class="city-name">Milano</span></h2>
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="card bg-gray-50 border-none">
+                        <div class="flex items-center gap-1 text-yellow-400 mb-4">
+                            <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                            <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                            <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                            <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                            <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        </div>
+                        <p class="text-gray-700 italic mb-6">"Trovare casa a Milano è un incubo, ma con AffittoChiaro ho
+                            risolto in 10 giorni. Profilo fatto, proprietario trovato, contratto firmato."</p>
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 bg-gray-300 rounded-full"></div>
+                            <div>
+                                <div class="font-bold">Marco R.</div>
+                                <div class="text-xs text-gray-500">Inquilino in zona Isola</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card bg-gray-50 border-none">
+                        <div class="flex items-center gap-1 text-yellow-400 mb-4">
+                            <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                            <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                            <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                            <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                            <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        </div>
+                        <p class="text-gray-700 italic mb-6">"Come proprietaria ero stanca delle agenzie. Qui ho trovato
+                            una studentessa referenziata e ho gestito tutto io, gratis."</p>
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 bg-gray-300 rounded-full"></div>
+                            <div>
+                                <div class="font-bold">Giulia P.</div>
+                                <div class="text-xs text-gray-500">Proprietaria a Porta Venezia</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card bg-gray-50 border-none">
+                        <div class="flex items-center gap-1 text-yellow-400 mb-4">
+                            <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                            <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                            <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                            <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                            <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        </div>
+                        <p class="text-gray-700 italic mb-6">"La verifica dei documenti mi ha dato la sicurezza che
+                            cercavo. Finalmente un portale serio e moderno."</p>
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 bg-gray-300 rounded-full"></div>
+                            <div>
+                                <div class="font-bold">Luca S.</div>
+                                <div class="text-xs text-gray-500">Inquilino a Lambrate</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ MILANO -->
+        <section class="section">
+            <div class="container-custom mx-auto max-w-3xl">
+                <h2 class="text-3xl font-bold font-serif text-center mb-12">FAQ Affitti Milano</h2>
+                <div class="space-y-4">
+                    <div class="accordion-item active">
+                        <button class="accordion-trigger p-4 bg-white hover:bg-gray-50">
+                            <span>Quanto tempo ci vuole per trovare casa a Milano?</span>
+                            <i data-lucide="chevron-down" class="accordion-icon w-5 h-5 text-gray-400"></i>
+                        </button>
+                        <div class="accordion-content px-4">
+                            In media, su AffittoChiaro gli utenti trovano casa in 14-21 giorni. Il mercato di Milano è
+                            molto veloce, consigliamo di preparare tutti i documenti prima di iniziare.
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <button class="accordion-trigger p-4 bg-white hover:bg-gray-50">
+                            <span>Quali documenti servono per affittare?</span>
+                            <i data-lucide="chevron-down" class="accordion-icon w-5 h-5 text-gray-400"></i>
+                        </button>
+                        <div class="accordion-content px-4">
+                            Solitamente: Carta d'identità, Codice Fiscale e ultime 3 buste paga (o dichiarazione dei
+                            redditi). Per gli studenti serve spesso un garante.
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <button class="accordion-trigger p-4 bg-white hover:bg-gray-50">
+                            <span>Come funziona la cedolare secca a Milano?</span>
+                            <i data-lucide="chevron-down" class="accordion-icon w-5 h-5 text-gray-400"></i>
+                        </button>
+                        <div class="accordion-content px-4">
+                            La cedolare secca è un regime opzionale che prevede un'imposta sostitutiva del 21% (o 10%
+                            per canone concordato) invece dell'IRPEF. A Milano è molto diffusa soprattutto per il canone
+                            concordato.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CITY CTA -->
+        <section class="py-24 relative overflow-hidden flex items-center justify-center">
+            <div class="absolute inset-0">
+                <img src="https://placehold.co/1920x600/000000/FFFFFF?text=Milano+Skyline"
+                    class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-teal-900/80"></div>
+            </div>
+            <div class="relative z-10 text-center container-custom mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold font-serif text-white mb-8">Parti da <span
+                        class="text-primary-400">Milano</span></h2>
+                <div class="flex flex-col sm:flex-row justify-center gap-6">
+                    <button class="btn btn-primary btn-lg shadow-xl hover:scale-105 transition-transform">Trova
+                        Inquilino a Milano</button>
+                    <button
+                        class="btn bg-white text-gray-900 btn-lg shadow-xl hover:scale-105 transition-transform">Cerca
+                        Casa a Milano</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- NEARBY CITIES -->
+        <section class="py-12 bg-gray-50 border-t border-gray-200">
+            <div class="container-custom mx-auto text-center">
+                <h3 class="text-lg font-bold text-gray-400 uppercase tracking-wider mb-6">Esplora altre città in
+                    Lombardia</h3>
+                <div class="flex flex-wrap justify-center gap-4 md:gap-8">
+                    <a href="#" class="text-gray-600 hover:text-primary-600 font-medium">Bergamo</a>
+                    <a href="#" class="text-gray-600 hover:text-primary-600 font-medium">Brescia</a>
+                    <a href="#" class="text-gray-600 hover:text-primary-600 font-medium">Monza</a>
+                    <a href="#" class="text-gray-600 hover:text-primary-600 font-medium">Como</a>
+                    <a href="#" class="text-gray-600 hover:text-primary-600 font-medium">Varese</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-gray-900 text-white pt-16 pb-8">
+        <div class="container-custom mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+            <div class="space-y-4">
+                <div class="flex items-center gap-2">
+                    <div
+                        class="w-8 h-8 bg-primary-500 rounded-lg flex items-center justify-center text-white font-bold">
+                        A</div>
+                    <span class="font-serif font-bold text-xl tracking-tight">AffittoChiaro</span>
+                </div>
+                <p class="text-gray-400 text-sm leading-relaxed">
+                    La piattaforma che rivoluziona il modo di affittare casa in Italia.
+                </p>
+            </div>
+            <div>
+                <h4 class="font-serif font-bold text-lg mb-4">Piattaforma</h4>
+                <ul class="space-y-2 text-sm text-gray-400">
+                    <li><a href="chi-siamo.html" class="hover:text-primary-400">Chi Siamo</a></li>
+                    <li><a href="annunci.html" class="hover:text-primary-400">Cerca Casa</a></li>
+                    <li><a href="landing-inquilino.html" class="hover:text-primary-400">Pubblica Annuncio</a></li>
+                    <li><a href="affittonews.html" class="hover:text-primary-400">AffittoNews</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-serif font-bold text-lg mb-4">Supporto</h4>
+                <ul class="space-y-2 text-sm text-gray-400">
+                    <li><a href="agenzie-partner.html" class="hover:text-primary-400">Agenzie Partner</a></li>
+                    <li><a href="guida-affitto/index.html" class="hover:text-primary-400">Guida Affitto</a></li>
+                    <li><a href="#" class="hover:text-primary-400">Contatti</a></li>
+                </ul>
+            </div>
+            <div>
+                <p class="text-sm text-gray-500">&copy; 2025 AffittoChiaro Srl</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+        document.querySelectorAll('.accordion-trigger').forEach(trigger => {
+            trigger.addEventListener('click', () => {
+                trigger.parentElement.classList.toggle('active');
+                // Rotate icon manually if css doesn't cover it perfectly in this specific file context override
+                const icon = trigger.querySelector('.accordion-icon');
+                if (trigger.parentElement.classList.contains('active')) {
+                    icon.style.transform = 'rotate(180deg)';
+                } else {
+                    icon.style.transform = 'rotate(0deg)';
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

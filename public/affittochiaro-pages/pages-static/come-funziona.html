@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Come Funziona | AffittoChiaro</title>
+    <meta name="description"
+        content="Scopri come funziona AffittoChiaro per inquilini e proprietari. Il modo più semplice e sicuro per affittare casa in Italia.">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: { 50: '#E6FFF5', 100: '#B3FFE0', 500: '#00C48C', 600: '#00A376', 700: '#008261' },
+                        teal: { 500: '#0A8F70', 700: '#0A5E4D' },
+                        accent: { 500: '#FF6B35' },
+                        text: { primary: '#2C3E50', secondary: '#64748B' }
+                    },
+                    fontFamily: { sans: ['Inter', 'sans-serif'], serif: ['Poppins', 'sans-serif'] },
+                    boxShadow: {
+                        'card': '0 1px 3px rgba(0, 0, 0, 0.08), 0 4px 12px rgba(0, 0, 0, 0.05)',
+                        'card-hover': '0 4px 12px rgba(0, 0, 0, 0.1), 0 8px 24px rgba(0, 0, 0, 0.08)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../styles/design-tokens.css">
+    <link rel="stylesheet" href="../styles/custom.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body class="font-sans antialiased text-gray-800 bg-white">
+
+    <!-- HEADER -->
+    <header class="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-100">
+        <div class="container-custom mx-auto flex items-center justify-between h-16 md:h-20">
+            <a href="#" class="flex items-center gap-2">
+                <div
+                    class="w-8 h-8 md:w-10 md:h-10 bg-primary-500 rounded-lg flex items-center justify-center text-white font-bold text-xl">
+                    A</div>
+                <span class="font-serif font-bold text-xl md:text-2xl text-gray-900 tracking-tight">AffittoChiaro</span>
+            </a>
+            <nav class="hidden md:flex items-center gap-8">
+                <a href="come-funziona.html" class="text-sm font-medium text-primary-600">Come funziona</a>
+                <a href="annunci.html"
+                    class="text-sm font-medium text-gray-600 hover:text-primary-600 transition-colors">Cerca
+                    Casa</a>
+                <a href="ricerca-inquilino.html"
+                    class="text-sm font-medium text-gray-600 hover:text-primary-600 transition-colors">Cerca
+                    Inquilino</a>
+                <a href="servizi-casa.html"
+                    class="text-sm font-medium text-gray-600 hover:text-primary-600 transition-colors">Servizi</a>
+                <a href="agenzie-partner.html"
+                    class="text-sm font-medium text-gray-600 hover:text-primary-600 transition-colors">Agenzie</a>
+                <a href="affittonews.html"
+                    class="text-sm font-medium text-gray-600 hover:text-primary-600 transition-colors">AffittoNews</a>
+            </nav>
+            <div class="hidden md:flex items-center gap-3">
+                <a href="#" class="text-sm font-medium text-gray-600 hover:text-gray-900 px-3 py-2">Accedi</a>
+                <a href="landing-inquilino.html" class="btn btn-primary btn-sm">Registrati</a>
+            </div>
+            <button class="md:hidden p-2 text-gray-600"><i data-lucide="menu" class="w-6 h-6"></i></button>
+        </div>
+    </header>
+
+    <main>
+        <!-- HERO -->
+        <section class="relative pt-16 pb-24 lg:pt-24 lg:pb-32 overflow-hidden">
+            <div class="container-custom mx-auto grid lg:grid-cols-2 gap-12 items-center">
+                <div class="space-y-6 animate-fade-in relative z-10">
+                    <div class="flex items-center gap-2 text-sm text-primary-600 font-medium mb-2">
+                        <a href="#" class="hover:underline">Home</a> <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                        <span>Come Funziona</span>
+                    </div>
+                    <h1 class="text-4xl lg:text-5xl font-bold font-serif text-gray-900 leading-tight">
+                        Come Funziona <span class="text-primary-500">AffittoChiaro</span>
+                    </h1>
+                    <p class="text-xl text-gray-600 leading-relaxed max-w-lg">
+                        Il modo più semplice per affittare e trovare casa in Italia. Senza stress, senza sorprese.
+                    </p>
+                </div>
+                <div class="relative animate-slide-up delay-200">
+                    <img src="https://placehold.co/600x400/00C48C/white?text=AffittoChiaro+Experience" alt="Hero Image"
+                        class="rounded-2xl shadow-2xl transform rotate-1 hover:rotate-0 transition-transform duration-500">
+                    <!-- Decorative blob -->
+                    <div
+                        class="absolute -z-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-gradient-to-tr from-primary-50 to-teal-50 rounded-full blur-3xl opacity-60">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- DUE PERCORSI -->
+        <section class="section bg-gray-50">
+            <div class="container-custom mx-auto">
+                <div class="grid md:grid-cols-2 gap-8">
+                    <!-- Tenant Path -->
+                    <div class="card card-hover text-center p-8 border-t-4 border-primary-500">
+                        <div
+                            class="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-6 text-primary-600">
+                            <i data-lucide="user" class="w-8 h-8"></i>
+                        </div>
+                        <h2 class="text-2xl font-bold mb-4">Cerchi Casa?</h2>
+                        <p class="text-gray-600 mb-8">Crea il tuo profilo verificato e fatti trovare dai proprietari
+                            migliori.</p>
+                        <a href="#inquilini" class="btn btn-primary w-full justify-center">Scopri per Inquilini</a>
+                    </div>
+
+                    <!-- Owner Path -->
+                    <div class="card card-hover text-center p-8 border-t-4 border-teal-700">
+                        <div
+                            class="w-16 h-16 bg-teal-50 rounded-full flex items-center justify-center mx-auto mb-6 text-teal-700">
+                            <i data-lucide="home" class="w-8 h-8"></i>
+                        </div>
+                        <h2 class="text-2xl font-bold mb-4">Hai una Casa?</h2>
+                        <p class="text-gray-600 mb-8">Trova inquilini referenziati e affitta in totale sicurezza.</p>
+                        <a href="#proprietari" class="btn btn-outline w-full justify-center">Scopri per Proprietari</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PER INQUILINI -->
+        <section id="inquilini" class="section">
+            <div class="container-custom mx-auto">
+                <div class="text-center mb-16">
+                    <span class="badge badge-primary mb-4">Per Inquilini</span>
+                    <h2 class="text-3xl md:text-4xl font-bold font-serif mb-4">Trova la tua casa ideale in 4 step</h2>
+                    <p class="text-text-secondary max-w-2xl mx-auto">Nessuna perdita di tempo. Solo annunci reali e
+                        proprietari verificati.</p>
+                </div>
+
+                <div
+                    class="space-y-12 relative before:content-[''] before:absolute before:left-4 md:before:left-1/2 before:top-0 before:bottom-0 before:w-0.5 before:bg-gray-200 before:-translate-x-1/2">
+
+                    <!-- Step 1 -->
+                    <div class="relative flex flex-col md:flex-row items-center justify-between gap-8 group">
+                        <div class="md:w-1/2 md:pr-12 md:text-right order-2 md:order-1">
+                            <h3 class="text-2xl font-bold mb-2">1. Crea il Tuo Profilo</h3>
+                            <p class="text-gray-600">Inserisci i tuoi dati, le tue preferenze e presentati al meglio. È
+                                il tuo CV per la casa.</p>
+                        </div>
+                        <div
+                            class="absolute left-4 md:left-1/2 -translate-x-1/2 w-8 h-8 bg-primary-500 rounded-full border-4 border-white shadow flex items-center justify-center text-white font-bold z-10">
+                            1</div>
+                        <div class="md:w-1/2 md:pl-12 order-3">
+                            <div
+                                class="card p-4 bg-gray-50 transform group-hover:scale-105 transition-transform duration-300">
+                                <div class="flex items-center gap-4">
+                                    <div
+                                        class="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-sm text-primary-500">
+                                        <i data-lucide="user-plus" class="w-6 h-6"></i>
+                                    </div>
+                                    <div class="font-medium text-gray-500">Profilo in creazione...</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div class="relative flex flex-col md:flex-row items-center justify-between gap-8 group">
+                        <div class="md:w-1/2 md:pr-12 md:text-right order-2 md:order-1 md:hidden">
+                            <!-- Mobile text placeholder order fix if needed -->
+                        </div>
+                        <div class="md:w-1/2 md:pr-12 md:text-right order-3 md:order-1">
+                            <div
+                                class="card p-4 bg-gray-50 transform group-hover:scale-105 transition-transform duration-300">
+                                <div class="flex items-center gap-4 justify-end">
+                                    <div class="font-medium text-gray-500">Documenti caricati</div>
+                                    <div
+                                        class="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-sm text-primary-500">
+                                        <i data-lucide="file-check" class="w-6 h-6"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div
+                            class="absolute left-4 md:left-1/2 -translate-x-1/2 w-8 h-8 bg-primary-500 rounded-full border-4 border-white shadow flex items-center justify-center text-white font-bold z-10">
+                            2</div>
+                        <div class="md:w-1/2 md:pl-12 order-2 md:order-3">
+                            <h3 class="text-2xl font-bold mb-2">2. Aggiungi Documenti e Video</h3>
+                            <p class="text-gray-600">Aumenta la tua credibilità caricando referenze e un video di
+                                presentazione. I profili completi ricevono 3x risposte.</p>
+                        </div>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div class="relative flex flex-col md:flex-row items-center justify-between gap-8 group">
+                        <div class="md:w-1/2 md:pr-12 md:text-right order-2 md:order-1">
+                            <h3 class="text-2xl font-bold mb-2">3. Ricevi Contatti</h3>
+                            <p class="text-gray-600">I proprietari vedono il tuo profilo e ti contattano se sei
+                                compatibile. Niente più chiamate a vuoto.</p>
+                        </div>
+                        <div
+                            class="absolute left-4 md:left-1/2 -translate-x-1/2 w-8 h-8 bg-primary-500 rounded-full border-4 border-white shadow flex items-center justify-center text-white font-bold z-10">
+                            3</div>
+                        <div class="md:w-1/2 md:pl-12 order-3">
+                            <div
+                                class="card p-4 bg-gray-50 transform group-hover:scale-105 transition-transform duration-300">
+                                <div class="flex items-center gap-4">
+                                    <div
+                                        class="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-sm text-primary-500">
+                                        <i data-lucide="message-circle" class="w-6 h-6"></i>
+                                    </div>
+                                    <div class="font-medium text-gray-500">Nuova proposta di affitto!</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 4 -->
+                    <div class="relative flex flex-col md:flex-row items-center justify-between gap-8 group">
+                        <div class="md:w-1/2 md:pr-12 md:text-right order-3 md:order-1">
+                            <div
+                                class="card p-4 bg-gray-50 transform group-hover:scale-105 transition-transform duration-300">
+                                <div class="flex items-center gap-4 justify-end">
+                                    <div class="font-medium text-gray-500">Chiavi in mano</div>
+                                    <div
+                                        class="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-sm text-primary-500">
+                                        <i data-lucide="key" class="w-6 h-6"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div
+                            class="absolute left-4 md:left-1/2 -translate-x-1/2 w-8 h-8 bg-primary-500 rounded-full border-4 border-white shadow flex items-center justify-center text-white font-bold z-10">
+                            4</div>
+                        <div class="md:w-1/2 md:pl-12 order-2 md:order-3">
+                            <h3 class="text-2xl font-bold mb-2">4. Scegli e Firma</h3>
+                            <p class="text-gray-600">Visita l'appartamento, accordati con il proprietario e firma il
+                                contratto. Tutto pronto!</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION: VANTAGGI -->
+        <section class="section bg-teal-700 text-white">
+            <div class="container-custom mx-auto">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl md:text-4xl font-bold font-serif mb-4">Perché scegliere AffittoChiaro?</h2>
+                </div>
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div
+                        class="p-6 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/10 hover:bg-white/20 transition-colors">
+                        <i data-lucide="clock" class="w-10 h-10 mb-4 text-primary-400"></i>
+                        <h3 class="text-xl font-bold mb-2">Zero Perdite di Tempo</h3>
+                        <p class="text-gray-200">Basta visitare case che non fanno per te. Filtra e scegli solo il
+                            meglio.</p>
+                    </div>
+                    <div
+                        class="p-6 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/10 hover:bg-white/20 transition-colors">
+                        <i data-lucide="shield-check" class="w-10 h-10 mb-4 text-primary-400"></i>
+                        <h3 class="text-xl font-bold mb-2">Profili Verificati</h3>
+                        <p class="text-gray-200">Sia inquilini che proprietari vengono verificati per garantire la
+                            massima sicurezza.</p>
+                    </div>
+                    <div
+                        class="p-6 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/10 hover:bg-white/20 transition-colors">
+                        <i data-lucide="wallet" class="w-10 h-10 mb-4 text-primary-400"></i>
+                        <h3 class="text-xl font-bold mb-2">Gratuita per Inquilini</h3>
+                        <p class="text-gray-200">La creazione del profilo e la ricerca sono totalmente gratuite per chi
+                            cerca casa.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- VIDEO SECTION -->
+        <section class="section">
+            <div class="container-custom mx-auto text-center">
+                <h2 class="text-3xl font-bold font-serif mb-8">Guarda AffittoChiaro in Azione</h2>
+                <div
+                    class="max-w-4xl mx-auto rounded-3xl overflow-hidden shadow-2xl relative aspect-video bg-gray-900 group cursor-pointer">
+                    <img src="https://placehold.co/1200x675/1A1A1A/FFFFFF?text=Video+Thumbnail"
+                        class="w-full h-full object-cover opacity-80 group-hover:opacity-60 transition-opacity">
+                    <div class="absolute inset-0 flex items-center justify-center">
+                        <div
+                            class="w-20 h-20 bg-white rounded-full flex items-center justify-center text-primary-600 shadow-lg group-hover:scale-110 transition-transform">
+                            <i data-lucide="play" class="w-8 h-8 fill-current ml-1"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ -->
+        <section class="section bg-gray-50">
+            <div class="container-custom mx-auto max-w-3xl">
+                <h2 class="text-3xl font-bold font-serif text-center mb-12">Domande Frequenti</h2>
+                <div class="space-y-4">
+                    <div class="accordion-item active bg-white rounded-xl px-6 shadow-sm">
+                        <button class="accordion-trigger">
+                            <span>È davvero gratis per chi cerca casa?</span>
+                            <i data-lucide="chevron-down" class="accordion-icon w-5 h-5 text-gray-400"></i>
+                        </button>
+                        <div class="accordion-content">
+                            Assolutamente sì. Non chiediamo commissioni agli inquilini. Il servizio è supportato dai
+                            servizi premium per i proprietari.
+                        </div>
+                    </div>
+                    <div class="accordion-item bg-white rounded-xl px-6 shadow-sm">
+                        <button class="accordion-trigger">
+                            <span>Come vengono verificati gli annunci?</span>
+                            <i data-lucide="chevron-down" class="accordion-icon w-5 h-5 text-gray-400"></i>
+                        </button>
+                        <div class="accordion-content">
+                            Ogni annuncio viene controllato manualmente dal nostro team qualità per assicurare che le
+                            foto siano reali e la descrizione accurata.
+                        </div>
+                    </div>
+                    <div class="accordion-item bg-white rounded-xl px-6 shadow-sm">
+                        <button class="accordion-trigger">
+                            <span>I miei dati sono al sicuro?</span>
+                            <i data-lucide="chevron-down" class="accordion-icon w-5 h-5 text-gray-400"></i>
+                        </button>
+                        <div class="accordion-content">
+                            Utilizziamo crittografia avanzata e rispettiamo rigorosamente il GDPR. I tuoi documenti sono
+                            visibili solo ai proprietari che autorizzi.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FINAL CTA -->
+        <section class="section">
+            <div class="container-custom mx-auto">
+                <div
+                    class="bg-gradient-brand rounded-3xl p-12 text-center text-white shadow-2xl relative overflow-hidden">
+                    <div class="relative z-10">
+                        <h2 class="text-3xl md:text-5xl font-bold font-serif mb-6">Pronto a Iniziare?</h2>
+                        <p class="text-xl text-white/90 mb-8 max-w-2xl mx-auto">Unisciti a oltre 12.000 utenti che hanno
+                            già trovato o affittato casa con noi.</p>
+                        <div class="flex flex-col sm:flex-row justify-center gap-4">
+                            <button class="btn bg-white text-primary-600 hover:bg-gray-100 btn-lg border-0">Trova
+                                Casa</button>
+                            <button class="btn border-2 border-white text-white hover:bg-white/10 btn-lg">Affitta
+                                Casa</button>
+                        </div>
+                        <p class="mt-8 text-sm opacity-80">🔥 12.450 inquilini registrati questo mese</p>
+                    </div>
+
+                    <!-- Background Pattern -->
+                    <div
+                        class="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2">
+                    </div>
+                    <div
+                        class="absolute bottom-0 left-0 w-64 h-64 bg-black/10 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-gray-900 text-white pt-16 pb-8">
+        <div class="container-custom mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+            <div class="space-y-4">
+                <div class="flex items-center gap-2">
+                    <div
+                        class="w-8 h-8 bg-primary-500 rounded-lg flex items-center justify-center text-white font-bold">
+                        A</div>
+                    <span class="font-serif font-bold text-xl tracking-tight">AffittoChiaro</span>
+                </div>
+                <p class="text-gray-400 text-sm leading-relaxed">
+                    La piattaforma che rivoluziona il modo di affittare casa in Italia.
+                </p>
+            </div>
+            <div>
+                <h4 class="font-serif font-bold text-lg mb-4">Piattaforma</h4>
+                <ul class="space-y-2 text-sm text-gray-400">
+                    <li><a href="chi-siamo.html" class="hover:text-primary-400">Chi Siamo</a></li>
+                    <li><a href="annunci.html" class="hover:text-primary-400">Cerca Casa</a></li>
+                    <li><a href="landing-inquilino.html" class="hover:text-primary-400">Pubblica Annuncio</a></li>
+                    <li><a href="affittonews.html" class="hover:text-primary-400">AffittoNews</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-serif font-bold text-lg mb-4">Supporto</h4>
+                <ul class="space-y-2 text-sm text-gray-400">
+                    <li><a href="agenzie-partner.html" class="hover:text-primary-400">Agenzie Partner</a></li>
+                    <li><a href="guida-affitto/index.html" class="hover:text-primary-400">Guida Affitto</a></li>
+                    <li><a href="#" class="hover:text-primary-400">Contatti</a></li>
+                </ul>
+            </div>
+            <div>
+                <p class="text-sm text-gray-500">&copy; 2025 AffittoChiaro Srl</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+
+        // Accordion
+        document.querySelectorAll('.accordion-trigger').forEach(trigger => {
+            trigger.addEventListener('click', () => {
+                const item = trigger.parentElement;
+                item.classList.toggle('active');
+                // Rotate icon
+                const icon = item.querySelector('.accordion-icon');
+                /* Icon rotation handled by CSS based on .active state if implemented there, 
+                   otherwise simple inline styles or classes could be toggled here. 
+                   In our custom.css we have rotation on .active */
+            });
+        });
+    </script>
+</body>
+
+</html>
