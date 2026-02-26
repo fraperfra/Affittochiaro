@@ -20,7 +20,7 @@ export const Listings: React.FC<ListingsProps> = ({
   const filters = ['Tutti', 'Appartamento', 'Attico', 'Villa'];
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedListing, setSelectedListing] = useState<{
-    id: number;
+    id: string;
     title: string;
     price: string;
     type: string;

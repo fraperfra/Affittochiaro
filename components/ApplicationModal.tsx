@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { X, User, Briefcase, Home, MessageSquare, CheckCircle, ArrowRight, ArrowLeft, Sparkles } from 'lucide-react';
 
 interface ListingInfo {
-  id: number;
+  id: string;
   title: string;
   price: string;
   type: string;
@@ -35,7 +35,7 @@ export interface ApplicationData {
   // Step 4: Message
   message: string;
   // Listing info
-  listingId: number;
+  listingId: string;
   listingTitle: string;
 }
 
@@ -129,7 +129,7 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({
     petDetails: '',
     isSmoker: false,
     message: '',
-    listingId: 0,
+    listingId: '',
     listingTitle: '',
   });
 
@@ -259,7 +259,7 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({
           petDetails: '',
           isSmoker: false,
           message: '',
-          listingId: 0,
+          listingId: '',
           listingTitle: '',
         });
       }, 300);

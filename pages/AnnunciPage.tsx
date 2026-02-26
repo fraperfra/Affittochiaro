@@ -13,7 +13,8 @@ import {
 import { CityMap, ApplicationModal, ListingsMap } from '../components';
 import { ApplicationData } from '../components/ApplicationModal';
 import { listings, LISTING_CITIES, LISTING_TYPES, Listing } from '../data';
-import { useAuthStore } from '@/store';
+import { useAuthStore, useListingStore } from '@/store';
+import type { CachedListing } from '@/store/listingStore';
 
 // City coordinates for map view
 const CITY_COORDINATES: Record<string, [number, number]> = {
@@ -48,6 +49,7 @@ export const AnnunciPage: React.FC = () => {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const { isAuthenticated, user } = useAuthStore();
+  const { savedListings, toggleSavedListing, cachePublicListing } = useListingStore();
 
   const [searchText, setSearchText] = useState(searchParams.get('city') || '');
   const [showMap, setShowMap] = useState(false);
@@ -59,7 +61,7 @@ export const AnnunciPage: React.FC = () => {
   // Application modal
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedListing, setSelectedListing] = useState<{
-    id: number;
+    id: string;
     title: string;
     price: string;
     type: string;
@@ -121,6 +123,35 @@ export const AnnunciPage: React.FC = () => {
     const matchedCity = LISTING_CITIES.find(c => c.toLowerCase() === val.toLowerCase());
     setFilters(f => ({ ...f, city: matchedCity || '' }));
   };
+
+  const handleToggleSave = useCallback((item: Listing, e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (!isAuthenticated) {
+      // Salva comunque (guest) — si sincronizzerà al login
+    }
+    const isSaved = savedListings.includes(item.id);
+    toggleSavedListing(item.id);
+    if (!isSaved) {
+      // Cache full data so the dashboard can display it
+      const cached: CachedListing = {
+        id: item.id,
+        title: item.title,
+        city: item.city,
+        price: item.priceNumber,
+        priceDisplay: item.price,
+        rooms: item.rooms,
+        squareMeters: item.squareMeters,
+        bathrooms: item.bathrooms,
+        furnished: item.features?.includes('Arredato') ?? false,
+        features: item.features ?? [],
+        description: item.desc,
+        agencyName: 'AffittoChiaro',
+        applicationsCount: 0,
+        views: 0,
+      };
+      cachePublicListing(cached);
+    }
+  }, [isAuthenticated, savedListings, toggleSavedListing, cachePublicListing]);
 
   const handleClearFilters = () => {
     setFilters(EMPTY_FILTERS);
@@ -469,8 +500,16 @@ export const AnnunciPage: React.FC = () => {
                       <span className="absolute top-4 left-4 bg-white/90 backdrop-blur text-gray-900 px-3 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest shadow-sm">
                         {item.type}
                       </span>
-                      <button className="absolute top-4 right-4 w-8 h-8 bg-white/50 hover:bg-white rounded-full flex items-center justify-center text-gray-800 transition-colors backdrop-blur-sm">
-                        <Heart className="w-5 h-5" />
+                      <button
+                        onClick={(e) => handleToggleSave(item, e)}
+                        className={`absolute top-4 right-4 w-8 h-8 rounded-full flex items-center justify-center transition-colors backdrop-blur-sm ${
+                          savedListings.includes(item.id)
+                            ? 'bg-red-500 text-white shadow-md'
+                            : 'bg-white/50 hover:bg-white text-gray-800'
+                        }`}
+                        title={savedListings.includes(item.id) ? 'Rimuovi dai salvati' : 'Salva'}
+                      >
+                        <Heart className="w-5 h-5" fill={savedListings.includes(item.id) ? 'currentColor' : 'none'} />
                       </button>
                     </div>
                     <div className="p-5 flex-grow flex flex-col">

@@ -19,9 +19,32 @@ import {
   Trash2,
 } from 'lucide-react';
 import { useListingStore, useAuthStore } from '../../store';
+import type { CachedListing } from '../../store/listingStore';
 import { mockListings } from '../../utils/mockData';
 import { formatCurrency } from '../../utils/formatters';
 import { Listing, TenantUser } from '../../types';
+
+// Tipo unificato per la visualizzazione dei salvati (pubblici + mock)
+interface SavedDisplay {
+  id: string;
+  title: string;
+  city: string;
+  zone?: string;
+  price: number;
+  priceDisplay?: string;
+  rooms: number;
+  squareMeters: number;
+  bathrooms: number;
+  furnished: boolean;
+  features: string[];
+  description: string;
+  agencyName: string;
+  applicationsCount: number;
+  views: number;
+  createdAt?: string;
+  floor?: number;
+  expenses?: number;
+}
 import { EMPLOYMENT_TYPE_LABELS } from '../../types/cv';
 import { Card, Button, Badge, Modal, ModalFooter, Input, EmptyState } from '../../components/ui';
 import toast from 'react-hot-toast';
@@ -69,11 +92,11 @@ const SavedListingCard = memo(({
   onClick,
   onApply,
 }: {
-  listing: Listing;
+  listing: SavedDisplay;
   isApplied: boolean;
   onRemove: (id: string, e: React.MouseEvent) => void;
-  onClick: (listing: Listing) => void;
-  onApply: (listing: Listing, e: React.MouseEvent) => void;
+  onClick: (listing: SavedDisplay) => void;
+  onApply: (listing: SavedDisplay, e: React.MouseEvent) => void;
 }) => {
   const isNew = listing.createdAt &&
     new Date().getTime() - new Date(listing.createdAt).getTime() < 7 * 24 * 60 * 60 * 1000;
@@ -104,7 +127,7 @@ const SavedListingCard = memo(({
               {listing.title}
             </h3>
             <p className="text-xs md:text-sm text-text-secondary mt-0.5 truncate">
-              {listing.address.city}{listing.zone ? ` • ${listing.zone}` : ''}
+              {listing.city}{listing.zone ? ` • ${listing.zone}` : ''}
             </p>
             <div className="flex gap-1.5 mt-2 flex-wrap">
               <span className="text-xs px-1.5 py-0.5 bg-background-secondary rounded text-text-secondary">
@@ -113,7 +136,7 @@ const SavedListingCard = memo(({
               <span className="text-xs px-1.5 py-0.5 bg-background-secondary rounded text-text-secondary">
                 {listing.squareMeters}m²
               </span>
-              {listing.furnished === 'yes' && (
+              {listing.furnished && (
                 <span className="text-xs px-1.5 py-0.5 bg-background-secondary rounded text-text-secondary">
                   Arredato
                 </span>
@@ -122,7 +145,7 @@ const SavedListingCard = memo(({
           </div>
           <div className="flex items-center justify-between mt-2">
             <span className="text-lg md:text-xl font-bold text-primary-600">
-              {formatCurrency(listing.price)}
+              {listing.priceDisplay ?? formatCurrency(listing.price)}
               <span className="text-xs md:text-sm font-normal text-text-muted">/mese</span>
             </span>
             <div className="flex items-center gap-2">
@@ -156,12 +179,12 @@ const SavedListingCard = memo(({
 
 export default function ListingsPage() {
   const navigate = useNavigate();
-  const { savedListings, toggleSavedListing } = useListingStore();
+  const { savedListings, savedListingsCache, toggleSavedListing } = useListingStore();
   const { user } = useAuthStore();
   const tenantUser = user as TenantUser;
 
-  const [selectedListing, setSelectedListing] = useState<Listing | null>(null);
-  const [applyingTo, setApplyingTo] = useState<Listing | null>(null);
+  const [selectedListing, setSelectedListing] = useState<SavedDisplay | null>(null);
+  const [applyingTo, setApplyingTo] = useState<SavedDisplay | null>(null);
   const [appliedIds, setAppliedIds] = useState<string[]>([]);
   const [formData, setFormData] = useState<ApplicationFormData>(INITIAL_FORM);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -191,8 +214,59 @@ export default function ListingsPage() {
     }
   }, [applyingTo]);
 
-  // Saved listings cross-referenced with mockListings data
-  const savedListingData = mockListings.filter((l) => savedListings.includes(l.id));
+  // Combina listing salvati: prima cerca nei mock (dashboard), poi nel cache pubblico
+  const savedListingData: SavedDisplay[] = savedListings
+    .map((id) => {
+      // Cerca nei mock
+      const mock = mockListings.find((l) => l.id === id);
+      if (mock) {
+        return {
+          id: mock.id,
+          title: mock.title,
+          city: mock.address.city,
+          zone: mock.zone,
+          price: mock.price,
+          rooms: mock.rooms,
+          squareMeters: mock.squareMeters,
+          bathrooms: mock.bathrooms,
+          furnished: mock.furnished === 'yes',
+          features: mock.features as string[],
+          description: mock.description,
+          agencyName: mock.agencyName,
+          applicationsCount: mock.applicationsCount,
+          views: mock.views,
+          createdAt: mock.createdAt?.toString(),
+          floor: mock.floor,
+          expenses: mock.expenses,
+        } satisfies SavedDisplay;
+      }
+      // Cerca nel cache pubblico
+      const cached: CachedListing | undefined = savedListingsCache[id];
+      if (cached) {
+        return {
+          id: cached.id,
+          title: cached.title,
+          city: cached.city,
+          zone: cached.zone,
+          price: cached.price,
+          priceDisplay: cached.priceDisplay,
+          rooms: cached.rooms,
+          squareMeters: cached.squareMeters,
+          bathrooms: cached.bathrooms,
+          furnished: cached.furnished,
+          features: cached.features,
+          description: cached.description,
+          agencyName: cached.agencyName,
+          applicationsCount: cached.applicationsCount,
+          views: cached.views,
+          createdAt: cached.createdAt,
+          floor: cached.floor,
+          expenses: cached.expenses,
+        } satisfies SavedDisplay;
+      }
+      return null;
+    })
+    .filter((l) => l !== null) as SavedDisplay[];
 
   const isApplied = useCallback((id: string) => appliedIds.includes(id), [appliedIds]);
 
@@ -202,11 +276,11 @@ export default function ListingsPage() {
     toast('Rimosso dai salvati', { icon: '🗑️' });
   }, [toggleSavedListing]);
 
-  const handleListingClick = useCallback((listing: Listing) => {
+  const handleListingClick = useCallback((listing: SavedDisplay) => {
     setSelectedListing(listing);
   }, []);
 
-  const openApplicationForm = useCallback((listing: Listing, e?: React.MouseEvent) => {
+  const openApplicationForm = useCallback((listing: SavedDisplay, e?: React.MouseEvent) => {
     if (e) e.stopPropagation();
     if (appliedIds.includes(listing.id)) {
       toast('Hai già inviato la candidatura per questo annuncio', { icon: '📝' });
@@ -388,7 +462,7 @@ export default function ListingsPage() {
             <div className="flex items-start justify-between">
               <div>
                 <span className="text-3xl font-bold text-primary-600">
-                  {formatCurrency(selectedListing.price)}
+                  {selectedListing.priceDisplay ?? formatCurrency(selectedListing.price)}
                 </span>
                 <span className="text-text-muted">/mese</span>
                 {selectedListing.expenses && (
@@ -398,7 +472,7 @@ export default function ListingsPage() {
                 )}
               </div>
               <div className="text-right">
-                <p className="font-medium">{selectedListing.address.city}</p>
+                <p className="font-medium">{selectedListing.city}</p>
                 <p className="text-sm text-text-muted">{selectedListing.zone}</p>
               </div>
             </div>
@@ -434,7 +508,7 @@ export default function ListingsPage() {
                 <h4 className="font-semibold mb-2">Caratteristiche</h4>
                 <div className="flex flex-wrap gap-2">
                   {selectedListing.features.map((feature) => (
-                    <Badge key={feature} variant="success">✓ {feature}</Badge>
+                    <Badge key={String(feature)} variant="success">✓ {String(feature)}</Badge>
                   ))}
                 </div>
               </div>
@@ -464,7 +538,7 @@ export default function ListingsPage() {
               <p className="text-sm text-primary-600 font-medium">Ti stai candidando per:</p>
               <p className="font-bold text-text-primary mt-1">{applyingTo.title}</p>
               <p className="text-sm text-text-secondary">
-                {applyingTo.address.city} - {formatCurrency(applyingTo.price)}/mese
+                {applyingTo.city} - {applyingTo.priceDisplay ?? formatCurrency(applyingTo.price)}/mese
               </p>
             </div>
 
