@@ -2,21 +2,18 @@ import React, { useState, useMemo, useCallback } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import {
   MapPin,
-  Home,
-  Euro,
-  SlidersHorizontal,
   Search,
   Map as MapIcon,
   List,
   Heart,
-  BedDouble,
-  Bath,
-  Maximize,
   X,
+  LayoutDashboard,
+  ArrowLeft,
 } from 'lucide-react';
 import { CityMap, ApplicationModal, ListingsMap } from '../components';
 import { ApplicationData } from '../components/ApplicationModal';
 import { listings, LISTING_CITIES, LISTING_TYPES, Listing } from '../data';
+import { useAuthStore } from '@/store';
 
 // City coordinates for map view
 const CITY_COORDINATES: Record<string, [number, number]> = {
@@ -50,6 +47,7 @@ const ALL_FEATURES = ['Arredato', 'Balcone', 'Aria Condizionata', 'Ascensore', '
 export const AnnunciPage: React.FC = () => {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
+  const { isAuthenticated, user } = useAuthStore();
 
   const [searchText, setSearchText] = useState(searchParams.get('city') || '');
   const [showMap, setShowMap] = useState(false);
@@ -193,6 +191,23 @@ export const AnnunciPage: React.FC = () => {
 
   return (
     <div className="pt-16 bg-gray-50 min-h-screen flex flex-col">
+
+      {/* ── Banner "Torna alla dashboard" (solo se loggato) ──────────────── */}
+      {isAuthenticated && user && (
+        <div className="bg-white border-b border-gray-200 px-4 py-2.5 flex items-center justify-between gap-3">
+          <div className="flex items-center gap-2 text-sm text-gray-600">
+            <LayoutDashboard size={15} className="text-primary-600 shrink-0" />
+            <span>Stai navigando come <span className="font-semibold text-gray-900">{(user as any).profile?.firstName || user.email}</span></span>
+          </div>
+          <button
+            onClick={() => navigate(user.role === 'tenant' ? '/tenant/listings' : user.role === 'agency' ? '/agency' : '/admin')}
+            className="flex items-center gap-1.5 text-xs font-bold text-primary-600 hover:text-primary-700 shrink-0"
+          >
+            <ArrowLeft size={13} />
+            Torna alla dashboard
+          </button>
+        </div>
+      )}
 
       {/* ── 1. SEO Hero ──────────────────────────────────────────────────── */}
       <div className="bg-gradient-to-br from-brand-green to-teal-700 text-white py-10 px-4">
