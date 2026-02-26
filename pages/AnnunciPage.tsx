@@ -225,7 +225,7 @@ export const AnnunciPage: React.FC = () => {
 
       {/* ── Banner "Torna alla dashboard" (solo se loggato) ──────────────── */}
       {isAuthenticated && user && (
-        <div className="bg-primary-50 border-b border-primary-100 px-4 py-3 flex items-center justify-between gap-3">
+        <div className="sticky top-16 md:top-20 z-50 bg-primary-50 border-b border-primary-100 px-4 py-3 flex items-center justify-between gap-3">
           <div className="flex items-center gap-2 text-sm text-gray-600">
             <LayoutDashboard size={16} className="text-primary-600 shrink-0" />
             <span className="hidden sm:inline">Stai navigando come <span className="font-semibold text-gray-900">{(user as any).profile?.firstName || user.email}</span></span>
