@@ -118,7 +118,7 @@ function PublicGuard({ children }: { children: React.ReactNode }) {
 }
 
 // ─── Authenticated mobile menu ────────────────────────────────────────────────
-import { Menu, X as XIcon, LayoutDashboard as DashIcon, User, FileText, Heart, MessageSquare, Settings, LogOut } from 'lucide-react';
+import { Menu, X as XIcon, LayoutDashboard as DashIcon, User, Heart, MessageSquare, Settings, LogOut } from 'lucide-react';
 import { useNavigate as useNav } from 'react-router-dom';
 
 function AuthMobileMenu({ role }: { role: string }) {
