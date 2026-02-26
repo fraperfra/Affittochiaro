@@ -117,15 +117,99 @@ function PublicGuard({ children }: { children: React.ReactNode }) {
   return <>{children}</>;
 }
 
+// ─── Authenticated mobile menu ────────────────────────────────────────────────
+import { Menu, X as XIcon, LayoutDashboard as DashIcon, User, FileText, Heart, MessageSquare, Settings, LogOut } from 'lucide-react';
+import { useNavigate as useNav } from 'react-router-dom';
+
+function AuthMobileMenu({ role }: { role: string }) {
+  const [open, setOpen] = useState(false);
+  const navigate = useNav();
+  const { logout } = useAuthStore();
+
+  const tenantLinks = [
+    { label: 'Dashboard',       icon: <DashIcon size={18} />, to: '/tenant' },
+    { label: 'Il mio profilo',  icon: <User size={18} />,     to: '/tenant/profile' },
+    { label: 'Il mio CV',       icon: <FileText size={18} />, to: '/tenant/cv/preview' },
+    { label: 'Annunci salvati', icon: <Heart size={18} />,    to: '/tenant/listings' },
+    { label: 'Messaggi',        icon: <MessageSquare size={18} />, to: '/tenant/messages' },
+    { label: 'Impostazioni',    icon: <Settings size={18} />, to: '/tenant/settings' },
+  ];
+  const agencyLinks = [
+    { label: 'Dashboard',   icon: <DashIcon size={18} />,      to: '/agency' },
+    { label: 'Annunci',     icon: <Heart size={18} />,          to: '/agency/listings' },
+    { label: 'Messaggi',    icon: <MessageSquare size={18} />,  to: '/agency/messages' },
+    { label: 'Impostazioni',icon: <Settings size={18} />,       to: '/agency/settings' },
+  ];
+  const links = role === 'agency' ? agencyLinks : tenantLinks;
+
+  const go = (to: string) => { setOpen(false); navigate(to); };
+  const handleLogout = () => { setOpen(false); logout(); navigate('/'); };
+
+  return (
+    <>
+      {/* Hamburger button — top-right, mobile only */}
+      <button
+        onClick={() => setOpen(true)}
+        className="md:hidden fixed top-3 right-4 z-[60] p-2.5 bg-white rounded-xl shadow-md border border-gray-100"
+        aria-label="Menu"
+      >
+        <Menu size={22} className="text-gray-700" />
+      </button>
+
+      {/* Backdrop */}
+      {open && (
+        <div
+          className="md:hidden fixed inset-0 z-[70] bg-black/40 backdrop-blur-sm"
+          onClick={() => setOpen(false)}
+        />
+      )}
+
+      {/* Drawer */}
+      <div className={`md:hidden fixed top-0 right-0 h-full w-72 z-[80] bg-white shadow-2xl transform transition-transform duration-300 ${open ? 'translate-x-0' : 'translate-x-full'}`}>
+        <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100">
+          <span className="font-bold text-gray-900 text-base">Menu</span>
+          <button onClick={() => setOpen(false)} className="p-1.5 rounded-lg hover:bg-gray-100">
+            <XIcon size={20} className="text-gray-600" />
+          </button>
+        </div>
+
+        <nav className="p-4 space-y-1">
+          {links.map(link => (
+            <button
+              key={link.to}
+              onClick={() => go(link.to)}
+              className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-gray-700 hover:bg-primary-50 hover:text-primary-700 transition-colors text-sm font-medium text-left"
+            >
+              <span className="text-primary-500">{link.icon}</span>
+              {link.label}
+            </button>
+          ))}
+        </nav>
+
+        <div className="absolute bottom-8 left-4 right-4">
+          <button
+            onClick={handleLogout}
+            className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-red-600 hover:bg-red-50 transition-colors text-sm font-medium"
+          >
+            <LogOut size={18} />
+            Esci
+          </button>
+        </div>
+      </div>
+    </>
+  );
+}
+
 // Landing Layout Wrapper
 function LandingWrapper({ children }: { children: React.ReactNode }) {
   const { notifications, dismissNotification } = useNotifications();
-  const { isAuthenticated } = useAuthStore();
+  const { isAuthenticated, user } = useAuthStore();
 
   return (
     <div className="min-h-screen bg-white font-sans selection:bg-action-green/30 overflow-x-hidden relative">
       {!isAuthenticated && <LandingHeader />}
       {!isAuthenticated && <LiveNotifications notifications={notifications} onDismiss={dismissNotification} />}
+      {isAuthenticated && user && <AuthMobileMenu role={user.role} />}
       <main className={isAuthenticated ? '' : 'pt-20'}>
         {children}
       </main>
