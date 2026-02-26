@@ -119,19 +119,19 @@ function PublicGuard({ children }: { children: React.ReactNode }) {
 
 // Landing Layout Wrapper
 function LandingWrapper({ children }: { children: React.ReactNode }) {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { notifications, dismissNotification } = useNotifications();
+  const { isAuthenticated } = useAuthStore();
 
   return (
     <div className="min-h-screen bg-white font-sans selection:bg-action-green/30 overflow-x-hidden relative">
-      <LandingHeader />
-      <LiveNotifications notifications={notifications} onDismiss={dismissNotification} />
-      <main className="pt-20">
+      {!isAuthenticated && <LandingHeader />}
+      {!isAuthenticated && <LiveNotifications notifications={notifications} onDismiss={dismissNotification} />}
+      <main className={isAuthenticated ? '' : 'pt-20'}>
         {children}
       </main>
-      <Footer />
-      <StickyBottomBar onMenuToggle={() => { }} />
-      <ExitIntentPopup />
+      {!isAuthenticated && <Footer />}
+      {!isAuthenticated && <StickyBottomBar onMenuToggle={() => { }} />}
+      {!isAuthenticated && <ExitIntentPopup />}
       <AddToHomeScreenModal />
     </div>
   );
