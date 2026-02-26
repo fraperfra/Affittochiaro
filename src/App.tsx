@@ -206,13 +206,13 @@ function LandingWrapper({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="min-h-screen bg-white font-sans selection:bg-action-green/30 overflow-x-hidden relative">
-      {!isAuthenticated && <LandingHeader />}
+      <LandingHeader />
       {!isAuthenticated && <LiveNotifications notifications={notifications} onDismiss={dismissNotification} />}
       {isAuthenticated && user && <AuthMobileMenu role={user.role} />}
-      <main className={isAuthenticated ? '' : 'pt-20'}>
+      <main className="pt-20">
         {children}
       </main>
-      {!isAuthenticated && <Footer />}
+      <Footer />
       {!isAuthenticated && <StickyBottomBar onMenuToggle={() => { }} />}
       {!isAuthenticated && <ExitIntentPopup />}
       <AddToHomeScreenModal />
