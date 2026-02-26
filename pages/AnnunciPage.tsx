@@ -225,16 +225,16 @@ export const AnnunciPage: React.FC = () => {
 
       {/* ── Banner "Torna alla dashboard" (solo se loggato) ──────────────── */}
       {isAuthenticated && user && (
-        <div className="bg-white border-b border-gray-200 px-4 py-2.5 flex items-center justify-between gap-3">
+        <div className="bg-primary-50 border-b border-primary-100 px-4 py-3 flex items-center justify-between gap-3">
           <div className="flex items-center gap-2 text-sm text-gray-600">
-            <LayoutDashboard size={15} className="text-primary-600 shrink-0" />
-            <span>Stai navigando come <span className="font-semibold text-gray-900">{(user as any).profile?.firstName || user.email}</span></span>
+            <LayoutDashboard size={16} className="text-primary-600 shrink-0" />
+            <span className="hidden sm:inline">Stai navigando come <span className="font-semibold text-gray-900">{(user as any).profile?.firstName || user.email}</span></span>
           </div>
           <button
             onClick={() => navigate(user.role === 'tenant' ? '/tenant/listings' : user.role === 'agency' ? '/agency' : '/admin')}
-            className="flex items-center gap-1.5 text-xs font-bold text-primary-600 hover:text-primary-700 shrink-0"
+            className="flex items-center gap-2 px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white text-sm font-bold rounded-lg transition-colors shadow-sm shrink-0"
           >
-            <ArrowLeft size={13} />
+            <ArrowLeft size={15} />
             Torna alla dashboard
           </button>
         </div>
