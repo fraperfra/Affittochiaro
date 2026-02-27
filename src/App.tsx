@@ -127,17 +127,17 @@ function AuthMobileMenu({ role }: { role: string }) {
   const { logout } = useAuthStore();
 
   const tenantLinks = [
-    { label: 'Dashboard',       icon: <DashIcon size={18} />,      to: '/tenant' },
-    { label: 'Il mio profilo',  icon: <User size={18} />,          to: '/tenant/profile' },
-    { label: 'Annunci salvati', icon: <Heart size={18} />,         to: '/tenant/listings' },
-    { label: 'Messaggi',        icon: <MessageSquare size={18} />, to: '/tenant/messages' },
-    { label: 'Impostazioni',    icon: <Settings size={18} />,      to: '/tenant/settings' },
+    { label: 'Dashboard', icon: <DashIcon size={18} />, to: '/tenant' },
+    { label: 'Il mio profilo', icon: <User size={18} />, to: '/tenant/profile' },
+    { label: 'Annunci salvati', icon: <Heart size={18} />, to: '/tenant/listings' },
+    { label: 'Messaggi', icon: <MessageSquare size={18} />, to: '/tenant/messages' },
+    { label: 'Impostazioni', icon: <Settings size={18} />, to: '/tenant/settings' },
   ];
   const agencyLinks = [
-    { label: 'Dashboard',   icon: <DashIcon size={18} />,      to: '/agency' },
-    { label: 'Annunci',     icon: <Heart size={18} />,          to: '/agency/listings' },
-    { label: 'Messaggi',    icon: <MessageSquare size={18} />,  to: '/agency/messages' },
-    { label: 'Impostazioni',icon: <Settings size={18} />,       to: '/agency/settings' },
+    { label: 'Dashboard', icon: <DashIcon size={18} />, to: '/agency' },
+    { label: 'Annunci', icon: <Heart size={18} />, to: '/agency/listings' },
+    { label: 'Messaggi', icon: <MessageSquare size={18} />, to: '/agency/messages' },
+    { label: 'Impostazioni', icon: <Settings size={18} />, to: '/agency/settings' },
   ];
   const links = role === 'agency' ? agencyLinks : tenantLinks;
 
@@ -209,7 +209,7 @@ function LandingWrapper({ children }: { children: React.ReactNode }) {
       <LandingHeader />
       {!isAuthenticated && <LiveNotifications notifications={notifications} onDismiss={dismissNotification} />}
       {isAuthenticated && user && <AuthMobileMenu role={user.role} />}
-      <main className="pt-20">
+      <main className={isAuthenticated && user ? "pt-[124px]" : "pt-20"}>
         {children}
       </main>
       <Footer />

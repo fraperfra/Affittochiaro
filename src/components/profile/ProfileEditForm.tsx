@@ -23,6 +23,7 @@ const profileSchema = z.object({
   annualIncome: z.number().min(0).optional(),
   currentCity: z.string().optional(),
   bio: z.string().max(500, 'Bio troppo lunga').optional(),
+  avatarUrl: z.string().optional(),
 });
 
 export type ProfileFormData = z.infer<typeof profileSchema>;
@@ -55,6 +56,7 @@ export function ProfileEditForm({
     handleSubmit,
     formState: { errors, isDirty },
     watch,
+    setValue,
   } = useForm<ProfileFormData>({
     resolver: zodResolver(profileSchema),
     defaultValues: {
@@ -90,6 +92,50 @@ export function ProfileEditForm({
           <User className="w-4 h-4 text-action-green" />
           Dati Personali
         </h3>
+
+        {/* Foto Profilo */}
+        <div className="mb-6 flex items-center gap-6">
+          <div className="relative group">
+            {watch('avatarUrl') ? (
+              <img
+                src={watch('avatarUrl')}
+                alt="Profile"
+                className="w-24 h-24 rounded-full object-cover border-2 border-gray-100"
+              />
+            ) : (
+              <div className="w-24 h-24 rounded-full bg-gradient-to-br from-primary-400 to-teal-500 flex items-center justify-center text-white text-3xl font-bold">
+                {watch('firstName')?.charAt(0) || ''}{watch('lastName')?.charAt(0) || ''}
+              </div>
+            )}
+            <label className="absolute inset-0 flex items-center justify-center bg-black/50 text-white opacity-0 group-hover:opacity-100 rounded-full cursor-pointer transition-opacity">
+              <span className="text-xs font-medium">Cambia</span>
+              <input
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  if (file) {
+                    const reader = new FileReader();
+                    reader.onloadend = () => {
+                      const base64String = reader.result as string;
+                      // Mettiamo il base64 nel form
+                      setValue('avatarUrl', base64String, { shouldDirty: true });
+                    };
+                    reader.readAsDataURL(file);
+                  }
+                }}
+              />
+            </label>
+          </div>
+          <div>
+            <h4 className="text-sm font-medium text-gray-900">Foto Profilo</h4>
+            <p className="text-xs text-gray-500 mt-1 max-w-xs">
+              Carica una foto ben visibile per aumentare la fiducia dei proprietari. Formati supportati: JPG, PNG.
+            </p>
+          </div>
+        </div>
+
         <div className="grid sm:grid-cols-2 gap-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -98,9 +144,8 @@ export function ProfileEditForm({
             <input
               {...register('firstName')}
               type="text"
-              className={`w-full px-4 py-2.5 rounded-lg border ${
-                errors.firstName ? 'border-red-500' : 'border-gray-300'
-              } focus:outline-none focus:ring-2 focus:ring-action-green focus:border-transparent`}
+              className={`w-full px-4 py-2.5 rounded-lg border ${errors.firstName ? 'border-red-500' : 'border-gray-300'
+                } focus:outline-none focus:ring-2 focus:ring-action-green focus:border-transparent`}
               placeholder="Il tuo nome"
             />
             {errors.firstName && (
@@ -115,9 +160,8 @@ export function ProfileEditForm({
             <input
               {...register('lastName')}
               type="text"
-              className={`w-full px-4 py-2.5 rounded-lg border ${
-                errors.lastName ? 'border-red-500' : 'border-gray-300'
-              } focus:outline-none focus:ring-2 focus:ring-action-green focus:border-transparent`}
+              className={`w-full px-4 py-2.5 rounded-lg border ${errors.lastName ? 'border-red-500' : 'border-gray-300'
+                } focus:outline-none focus:ring-2 focus:ring-action-green focus:border-transparent`}
               placeholder="Il tuo cognome"
             />
             {errors.lastName && (
@@ -260,9 +304,8 @@ export function ProfileEditForm({
         <textarea
           {...register('bio')}
           rows={4}
-          className={`w-full px-4 py-3 rounded-lg border ${
-            errors.bio ? 'border-red-500' : 'border-gray-300'
-          } focus:outline-none focus:ring-2 focus:ring-action-green focus:border-transparent resize-none`}
+          className={`w-full px-4 py-3 rounded-lg border ${errors.bio ? 'border-red-500' : 'border-gray-300'
+            } focus:outline-none focus:ring-2 focus:ring-action-green focus:border-transparent resize-none`}
           placeholder="Racconta di te, del tuo lavoro, dei tuoi hobby e perché sei l'inquilino ideale..."
         />
         <div className="flex justify-between mt-1">

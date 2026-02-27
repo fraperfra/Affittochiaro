@@ -18,13 +18,13 @@ import type { CachedListing } from '@/store/listingStore';
 
 // City coordinates for map view
 const CITY_COORDINATES: Record<string, [number, number]> = {
-  'Milano':  [45.4642,  9.1900],
-  'Roma':    [41.9028, 12.4964],
-  'Napoli':  [40.8518, 14.2681],
-  'Torino':  [45.0703,  7.6869],
+  'Milano': [45.4642, 9.1900],
+  'Roma': [41.9028, 12.4964],
+  'Napoli': [40.8518, 14.2681],
+  'Torino': [45.0703, 7.6869],
   'Firenze': [43.7696, 11.2558],
   'Bologna': [44.4949, 11.3426],
-  'Italia':  [41.8719, 12.5674],
+  'Italia': [41.8719, 12.5674],
 };
 
 interface ActiveFilters {
@@ -221,24 +221,7 @@ export const AnnunciPage: React.FC = () => {
   // ── Render ────────────────────────────────────────────────────────────────
 
   return (
-    <div className="pt-16 bg-gray-50 min-h-screen flex flex-col">
-
-      {/* ── Banner "Torna alla dashboard" (solo se loggato) ──────────────── */}
-      {isAuthenticated && user && (
-        <div className="sticky top-20 z-50 bg-primary-50 border-b border-primary-100 px-4 py-3 flex items-center justify-between gap-3">
-          <div className="flex items-center gap-2 text-sm text-gray-600">
-            <LayoutDashboard size={16} className="text-primary-600 shrink-0" />
-            <span className="hidden sm:inline">Stai navigando come <span className="font-semibold text-gray-900">{(user as any).profile?.firstName || user.email}</span></span>
-          </div>
-          <button
-            onClick={() => navigate(user.role === 'tenant' ? '/tenant/listings' : user.role === 'agency' ? '/agency' : '/admin')}
-            className="flex items-center gap-2 px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white text-sm font-bold rounded-lg transition-colors shadow-sm shrink-0"
-          >
-            <ArrowLeft size={15} />
-            Torna alla dashboard
-          </button>
-        </div>
-      )}
+    <div className="bg-gray-50 min-h-screen flex flex-col">
 
       {/* ── 1. SEO Hero ──────────────────────────────────────────────────── */}
       <div className="bg-gradient-to-br from-brand-green to-teal-700 text-white py-10 px-4">
@@ -276,11 +259,10 @@ export const AnnunciPage: React.FC = () => {
               <button
                 key={city}
                 onClick={() => handleCityChange(city)}
-                className={`px-4 py-1.5 rounded-full text-sm font-semibold transition-all ${
-                  filters.city === city
-                    ? 'bg-action-green text-brand-green shadow'
-                    : 'bg-white/20 text-white hover:bg-white/30'
-                }`}
+                className={`px-4 py-1.5 rounded-full text-sm font-semibold transition-all ${filters.city === city
+                  ? 'bg-action-green text-brand-green shadow'
+                  : 'bg-white/20 text-white hover:bg-white/30'
+                  }`}
               >
                 {city}
               </button>
@@ -502,11 +484,10 @@ export const AnnunciPage: React.FC = () => {
                       </span>
                       <button
                         onClick={(e) => handleToggleSave(item, e)}
-                        className={`absolute top-4 right-4 w-8 h-8 rounded-full flex items-center justify-center transition-colors backdrop-blur-sm ${
-                          savedListings.includes(item.id)
-                            ? 'bg-red-500 text-white shadow-md'
-                            : 'bg-white/50 hover:bg-white text-gray-800'
-                        }`}
+                        className={`absolute top-4 right-4 w-8 h-8 rounded-full flex items-center justify-center transition-colors backdrop-blur-sm ${savedListings.includes(item.id)
+                          ? 'bg-red-500 text-white shadow-md'
+                          : 'bg-white/50 hover:bg-white text-gray-800'
+                          }`}
                         title={savedListings.includes(item.id) ? 'Rimuovi dai salvati' : 'Salva'}
                       >
                         <Heart className="w-5 h-5" fill={savedListings.includes(item.id) ? 'currentColor' : 'none'} />

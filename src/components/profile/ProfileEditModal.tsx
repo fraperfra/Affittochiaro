@@ -62,7 +62,7 @@ export function ProfileEditModal({
           {/* Content */}
           <div className="p-6 max-h-[60vh] md:max-h-[70vh] overflow-y-auto overflow-x-hidden">
             <ProfileEditForm
-              initialData={initialData}
+              initialData={{ ...initialData, avatarUrl: initialData?.avatarUrl }}
               onSubmit={handleSubmit}
               onCancel={onClose}
               isLoading={isLoading}

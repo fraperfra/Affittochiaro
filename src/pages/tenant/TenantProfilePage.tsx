@@ -34,59 +34,59 @@ type VideoMode = 'view' | 'record' | 'upload';
 // ─── Dati statici ────────────────────────────────────────────────────────────
 
 const HOBBIES = [
-  { id: 'musica',        label: 'Musica',          emoji: '🎸' },
-  { id: 'lettura',       label: 'Lettura',          emoji: '📚' },
-  { id: 'cucina',        label: 'Cucina',           emoji: '🍳' },
-  { id: 'jogging',       label: 'Jogging',          emoji: '🏃' },
-  { id: 'ciclismo',      label: 'Ciclismo',         emoji: '🚴' },
-  { id: 'videogiochi',   label: 'Videogiochi',      emoji: '🎮' },
-  { id: 'arte',          label: 'Arte',             emoji: '🎨' },
-  { id: 'yoga',          label: 'Yoga',             emoji: '🧘' },
-  { id: 'viaggi',        label: 'Viaggi',           emoji: '✈️' },
-  { id: 'fotografia',    label: 'Fotografia',       emoji: '📸' },
-  { id: 'giardinaggio',  label: 'Giardinaggio',     emoji: '🌱' },
-  { id: 'animali',       label: 'Animali',          emoji: '🐾' },
-  { id: 'cinema',        label: 'Cinema',           emoji: '🎬' },
-  { id: 'calcio',        label: 'Calcio',           emoji: '⚽' },
-  { id: 'tennis',        label: 'Tennis',           emoji: '🎾' },
-  { id: 'nuoto',         label: 'Nuoto',            emoji: '🏊' },
-  { id: 'teatro',        label: 'Teatro',           emoji: '🎭' },
-  { id: 'vino',          label: 'Vino & Cibo',      emoji: '🍷' },
-  { id: 'arrampicata',   label: 'Arrampicata',      emoji: '🧗' },
-  { id: 'danza',         label: 'Danza',            emoji: '💃' },
-  { id: 'scrittura',     label: 'Scrittura',        emoji: '✍️' },
-  { id: 'palestra',      label: 'Palestra',         emoji: '🏋️' },
-  { id: 'escursionismo', label: 'Escursionismo',    emoji: '🏔️' },
-  { id: 'meditazione',   label: 'Meditazione',      emoji: '🧠' },
-  { id: 'cucito',        label: 'Cucito',           emoji: '🪡' },
-  { id: 'skateboard',    label: 'Skateboard',       emoji: '🛹' },
-  { id: 'surf',          label: 'Sport Acquatici',  emoji: '🌊' },
-  { id: 'campeggio',     label: 'Campeggio',        emoji: '🏕️' },
-  { id: 'karaoke',       label: 'Karaoke',          emoji: '🎤' },
-  { id: 'scacchi',       label: 'Scacchi',          emoji: '♟️' },
-  { id: 'podcast',       label: 'Podcast',          emoji: '🎙️' },
-  { id: 'bricolage',     label: 'Bricolage',        emoji: '🔨' },
+  { id: 'musica', label: 'Musica', emoji: '🎸' },
+  { id: 'lettura', label: 'Lettura', emoji: '📚' },
+  { id: 'cucina', label: 'Cucina', emoji: '🍳' },
+  { id: 'jogging', label: 'Jogging', emoji: '🏃' },
+  { id: 'ciclismo', label: 'Ciclismo', emoji: '🚴' },
+  { id: 'videogiochi', label: 'Videogiochi', emoji: '🎮' },
+  { id: 'arte', label: 'Arte', emoji: '🎨' },
+  { id: 'yoga', label: 'Yoga', emoji: '🧘' },
+  { id: 'viaggi', label: 'Viaggi', emoji: '✈️' },
+  { id: 'fotografia', label: 'Fotografia', emoji: '📸' },
+  { id: 'giardinaggio', label: 'Giardinaggio', emoji: '🌱' },
+  { id: 'animali', label: 'Animali', emoji: '🐾' },
+  { id: 'cinema', label: 'Cinema', emoji: '🎬' },
+  { id: 'calcio', label: 'Calcio', emoji: '⚽' },
+  { id: 'tennis', label: 'Tennis', emoji: '🎾' },
+  { id: 'nuoto', label: 'Nuoto', emoji: '🏊' },
+  { id: 'teatro', label: 'Teatro', emoji: '🎭' },
+  { id: 'vino', label: 'Vino & Cibo', emoji: '🍷' },
+  { id: 'arrampicata', label: 'Arrampicata', emoji: '🧗' },
+  { id: 'danza', label: 'Danza', emoji: '💃' },
+  { id: 'scrittura', label: 'Scrittura', emoji: '✍️' },
+  { id: 'palestra', label: 'Palestra', emoji: '🏋️' },
+  { id: 'escursionismo', label: 'Escursionismo', emoji: '🏔️' },
+  { id: 'meditazione', label: 'Meditazione', emoji: '🧠' },
+  { id: 'cucito', label: 'Cucito', emoji: '🪡' },
+  { id: 'skateboard', label: 'Skateboard', emoji: '🛹' },
+  { id: 'surf', label: 'Sport Acquatici', emoji: '🌊' },
+  { id: 'campeggio', label: 'Campeggio', emoji: '🏕️' },
+  { id: 'karaoke', label: 'Karaoke', emoji: '🎤' },
+  { id: 'scacchi', label: 'Scacchi', emoji: '♟️' },
+  { id: 'podcast', label: 'Podcast', emoji: '🎙️' },
+  { id: 'bricolage', label: 'Bricolage', emoji: '🔨' },
 ];
 
 const PROPERTY_TYPES = [
-  { value: 'stanza',            label: 'Stanza'            },
-  { value: 'appartamento',      label: 'Appartamento'      },
-  { value: 'villa',             label: 'Villa'             },
-  { value: 'attico',            label: 'Attico'            },
+  { value: 'stanza', label: 'Stanza' },
+  { value: 'appartamento', label: 'Appartamento' },
+  { value: 'villa', label: 'Villa' },
+  { value: 'attico', label: 'Attico' },
   { value: 'casa_indipendente', label: 'Casa indipendente' },
-  { value: 'bifamiliare',       label: 'Bifamiliare'       },
+  { value: 'bifamiliare', label: 'Bifamiliare' },
 ];
 
 const FAMILY_UNITS = [
-  { value: 'solo',        label: 'Solo'        },
-  { value: 'coppia',      label: 'Coppia'      },
-  { value: 'famiglia',    label: 'Famiglia'    },
+  { value: 'solo', label: 'Solo' },
+  { value: 'coppia', label: 'Coppia' },
+  { value: 'famiglia', label: 'Famiglia' },
   { value: 'coinquilini', label: 'Coinquilini' },
 ];
 
 const AGE_RANGES = [
-  '18-25','26-30','31-35','36-40','41-45',
-  '46-50','51-55','56-60','61-65','66-70','70+',
+  '18-25', '26-30', '31-35', '36-40', '41-45',
+  '46-50', '51-55', '56-60', '61-65', '66-70', '70+',
 ];
 
 // ─── Sub-components ───────────────────────────────────────────────────────────
@@ -105,11 +105,10 @@ function ChipSelector({
           key={opt.value}
           type="button"
           onClick={() => onChange(opt.value)}
-          className={`px-3 py-1.5 rounded-xl text-sm font-medium transition-all border ${
-            value === opt.value
-              ? 'bg-primary-500 text-white border-primary-500 shadow-sm'
-              : 'bg-white text-gray-600 border-gray-200 hover:border-primary-300 hover:text-primary-600'
-          }`}
+          className={`px-3 py-1.5 rounded-xl text-sm font-medium transition-all border ${value === opt.value
+            ? 'bg-primary-500 text-white border-primary-500 shadow-sm'
+            : 'bg-white text-gray-600 border-gray-200 hover:border-primary-300 hover:text-primary-600'
+            }`}
         >
           {opt.label}
         </button>
@@ -169,28 +168,28 @@ export default function TenantProfilePage() {
 
   // ── Profile form state
   const [form, setForm] = useState({
-    firstName:    profile?.firstName  || '',
-    lastName:     profile?.lastName   || '',
-    phone:        profile?.phone      || '',
-    searchCity:   profile?.city       || '',
-    familyUnit:   'solo',
-    familyCount:  '2',
-    occupation:   profile?.occupation || '',
-    incomeType:   'mensile' as 'mensile' | 'annuale',
-    income:       '',
+    firstName: profile?.firstName || '',
+    lastName: profile?.lastName || '',
+    phone: profile?.phone || '',
+    searchCity: profile?.city || '',
+    familyUnit: 'solo',
+    familyCount: '2',
+    occupation: profile?.occupation || '',
+    incomeType: 'mensile' as 'mensile' | 'annuale',
+    income: '',
     contractType: '',
-    budget:       '',
+    budget: '',
     propertyType: 'appartamento',
-    rooms:        '1',
-    ageRange:     '',
-    furnished:    'indifferente',
-    hasPets:      'no',
-    bio:          profile?.bio || '',
+    rooms: '1',
+    ageRange: '',
+    furnished: 'indifferente',
+    hasPets: 'no',
+    bio: profile?.bio || '',
   });
-  const [isSavingForm, setIsSavingForm]         = useState(false);
-  const [isGeneratingBio, setIsGeneratingBio]   = useState(false);
+  const [isSavingForm, setIsSavingForm] = useState(false);
+  const [isGeneratingBio, setIsGeneratingBio] = useState(false);
   const [isEditingProfile, setIsEditingProfile] = useState(true);
-  const [showErrors, setShowErrors]             = useState(false);
+  const [showErrors, setShowErrors] = useState(false);
 
   const upd = (key: string, value: string) => {
     setForm(prev => ({ ...prev, [key]: value }));
@@ -204,9 +203,9 @@ export default function TenantProfilePage() {
   const needsFamilyCount = form.familyUnit === 'famiglia' || form.familyUnit === 'coinquilini';
 
   // ── Hobbies
-  const [selectedHobbies, setSelectedHobbies]   = useState<string[]>([]);
+  const [selectedHobbies, setSelectedHobbies] = useState<string[]>([]);
   const [isEditingHobbies, setIsEditingHobbies] = useState(true);
-  const [isSavingHobbies, setIsSavingHobbies]   = useState(false);
+  const [isSavingHobbies, setIsSavingHobbies] = useState(false);
 
   const toggleHobby = (id: string) =>
     setSelectedHobbies(prev =>
@@ -222,12 +221,12 @@ export default function TenantProfilePage() {
   };
 
   // ── Video state
-  const [videoMode, setVideoMode]               = useState<VideoMode>('view');
-  const [videoUrl, setVideoUrl]                 = useState<string | null>(null);
-  const [videoDuration, setVideoDuration]       = useState(0);
+  const [videoMode, setVideoMode] = useState<VideoMode>('view');
+  const [videoUrl, setVideoUrl] = useState<string | null>(null);
+  const [videoDuration, setVideoDuration] = useState(0);
   const [isUploadingVideo, setIsUploadingVideo] = useState(false);
-  const [isDeletingVideo, setIsDeletingVideo]   = useState(false);
-  const [hasVideo, setHasVideo]                 = useState(profile?.hasVideo || false);
+  const [isDeletingVideo, setIsDeletingVideo] = useState(false);
+  const [hasVideo, setHasVideo] = useState(profile?.hasVideo || false);
 
   // ── Profile settings modal
   const [editProfileOpen, setEditProfileOpen] = useState(false);
@@ -245,16 +244,16 @@ export default function TenantProfilePage() {
         .join(', ') || 'vari interessi';
 
       const familyDesc =
-        form.familyUnit === 'solo'        ? 'da solo'
-        : form.familyUnit === 'coppia'    ? 'in coppia'
-        : form.familyUnit === 'famiglia'  ? `con la mia famiglia (${form.familyCount} persone)`
-        :                                   `con ${form.familyCount} coinquilini`;
+        form.familyUnit === 'solo' ? 'da solo'
+          : form.familyUnit === 'coppia' ? 'in coppia'
+            : form.familyUnit === 'famiglia' ? `con la mia famiglia (${form.familyCount} persone)`
+              : `con ${form.familyCount} coinquilini`;
 
       const reason = `cerco ${PROPERTY_TYPES.find(p => p.value === form.propertyType)?.label || 'casa'} a ${form.searchCity || 'una città italiana'}, trasferendomi ${familyDesc}`;
 
       const generated = await generateTenantPitch({
-        name:    `${form.firstName} ${form.lastName}`.trim() || 'Inquilino',
-        job:     form.occupation || 'lavoratore',
+        name: `${form.firstName} ${form.lastName}`.trim() || 'Inquilino',
+        job: form.occupation || 'lavoratore',
         reason,
         hobbies: hobbyLabels,
       });
@@ -332,6 +331,7 @@ export default function TenantProfilePage() {
             firstName: data.firstName, lastName: data.lastName, phone: data.phone,
             bio: data.bio, occupation: data.occupation, employmentType: data.employmentType as any,
             employer: data.employer, annualIncome: data.annualIncome, city: data.currentCity,
+            avatarUrl: data.avatarUrl || (user as TenantUser).profile.avatarUrl,
           },
         } as TenantUser);
       }
@@ -398,9 +398,17 @@ export default function TenantProfilePage() {
               <div className="space-y-4">
                 {/* Name / phone row */}
                 <div className="flex items-center gap-3 pb-3 border-b border-gray-100">
-                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary-400 to-teal-500 flex items-center justify-center text-white font-bold text-sm shrink-0">
-                    {form.firstName.charAt(0)}{form.lastName.charAt(0)}
-                  </div>
+                  {profile?.avatarUrl ? (
+                    <img
+                      src={profile.avatarUrl}
+                      alt="Profile"
+                      className="w-10 h-10 rounded-xl object-cover shrink-0 border border-gray-100"
+                    />
+                  ) : (
+                    <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary-400 to-teal-500 flex items-center justify-center text-white font-bold text-sm shrink-0">
+                      {form.firstName.charAt(0)}{form.lastName.charAt(0)}
+                    </div>
+                  )}
                   <div>
                     <p className="font-semibold text-gray-900">{form.firstName} {form.lastName}</p>
                     <p className="text-sm text-gray-500">+39 {form.phone} · {form.ageRange} anni</p>
@@ -409,19 +417,19 @@ export default function TenantProfilePage() {
 
                 {/* Pills grid */}
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-                  <SummaryPill icon={MapPin}    label="Cerca a"     value={form.searchCity || '—'} />
-                  <SummaryPill icon={Home}       label="Immobile"    value={PROPERTY_TYPES.find(p => p.value === form.propertyType)?.label || '—'} />
-                  <SummaryPill icon={BedDouble}  label="Camere"      value={`${form.rooms} ${form.rooms === '1' ? 'camera' : 'camere'}`} />
-                  <SummaryPill icon={Euro}       label="Budget"      value={form.budget ? `€${form.budget}/mese` : '—'} />
-                  <SummaryPill icon={Users}      label="Con chi"     value={familyLabel} />
-                  <SummaryPill icon={PawPrint}   label="Animali"     value={form.hasPets === 'si' ? 'Sì' : 'No'} />
+                  <SummaryPill icon={MapPin} label="Cerca a" value={form.searchCity || '—'} />
+                  <SummaryPill icon={Home} label="Immobile" value={PROPERTY_TYPES.find(p => p.value === form.propertyType)?.label || '—'} />
+                  <SummaryPill icon={BedDouble} label="Camere" value={`${form.rooms} ${form.rooms === '1' ? 'camera' : 'camere'}`} />
+                  <SummaryPill icon={Euro} label="Budget" value={form.budget ? `€${form.budget}/mese` : '—'} />
+                  <SummaryPill icon={Users} label="Con chi" value={familyLabel} />
+                  <SummaryPill icon={PawPrint} label="Animali" value={form.hasPets === 'si' ? 'Sì' : 'No'} />
                   {form.income && (
-                    <SummaryPill icon={Banknote} label="Reddito"     value={`€${form.income} ${form.incomeType === 'mensile' ? '/mese' : '/anno'}`} />
+                    <SummaryPill icon={Banknote} label="Reddito" value={`€${form.income} ${form.incomeType === 'mensile' ? '/mese' : '/anno'}`} />
                   )}
                   {form.contractType && (
-                    <SummaryPill icon={FileText} label="Contratto"   value={contractLabel} />
+                    <SummaryPill icon={FileText} label="Contratto" value={contractLabel} />
                   )}
-                  <SummaryPill icon={ChevronRight} label="Arredato"  value={form.furnished === 'si' ? 'Sì' : form.furnished === 'no' ? 'No' : 'Indifferente'} />
+                  <SummaryPill icon={ChevronRight} label="Arredato" value={form.furnished === 'si' ? 'Sì' : form.furnished === 'no' ? 'No' : 'Indifferente'} />
                 </div>
 
                 {/* Bio preview */}
@@ -518,8 +526,8 @@ export default function TenantProfilePage() {
                       <FieldGroup label="Numero di camere" required>
                         <ChipSelector
                           options={[
-                            { value:'1', label:'1' }, { value:'2', label:'2' },
-                            { value:'3', label:'3' }, { value:'4+', label:'4+' },
+                            { value: '1', label: '1' }, { value: '2', label: '2' },
+                            { value: '3', label: '3' }, { value: '4+', label: '4+' },
                           ]}
                           value={form.rooms} onChange={v => upd('rooms', v)}
                         />
@@ -529,9 +537,9 @@ export default function TenantProfilePage() {
                     <FieldGroup label="Arredato?" required>
                       <ChipSelector
                         options={[
-                          { value:'si',          label:'Sì'           },
-                          { value:'no',          label:'No'           },
-                          { value:'indifferente',label:'Indifferente' },
+                          { value: 'si', label: 'Sì' },
+                          { value: 'no', label: 'No' },
+                          { value: 'indifferente', label: 'Indifferente' },
                         ]}
                         value={form.furnished} onChange={v => upd('furnished', v)}
                       />
@@ -590,11 +598,10 @@ export default function TenantProfilePage() {
                               key={type}
                               type="button"
                               onClick={() => upd('incomeType', type)}
-                              className={`px-3 py-2 text-xs font-semibold transition-colors ${
-                                form.incomeType === type
-                                  ? 'bg-primary-500 text-white'
-                                  : 'bg-white text-gray-500 hover:bg-gray-50'
-                              }`}
+                              className={`px-3 py-2 text-xs font-semibold transition-colors ${form.incomeType === type
+                                ? 'bg-primary-500 text-white'
+                                : 'bg-white text-gray-500 hover:bg-gray-50'
+                                }`}
                             >
                               {type === 'mensile' ? 'Mensile' : 'Annuo Lordo'}
                             </button>
@@ -627,7 +634,7 @@ export default function TenantProfilePage() {
                     <div className="sm:col-span-2">
                       <FieldGroup label="Hai animali domestici?" required>
                         <ChipSelector
-                          options={[{ value:'si', label:'Sì' }, { value:'no', label:'No' }]}
+                          options={[{ value: 'si', label: 'Sì' }, { value: 'no', label: 'No' }]}
                           value={form.hasPets} onChange={v => upd('hasPets', v)}
                         />
                       </FieldGroup>
@@ -753,11 +760,10 @@ export default function TenantProfilePage() {
                         key={hobby.id}
                         type="button"
                         onClick={() => toggleHobby(hobby.id)}
-                        className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium transition-all border ${
-                          active
-                            ? 'bg-primary-50 text-primary-700 border-primary-300 shadow-sm scale-[1.02]'
-                            : 'bg-white text-gray-600 border-gray-200 hover:border-primary-200 hover:text-primary-600'
-                        }`}
+                        className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium transition-all border ${active
+                          ? 'bg-primary-50 text-primary-700 border-primary-300 shadow-sm scale-[1.02]'
+                          : 'bg-white text-gray-600 border-gray-200 hover:border-primary-200 hover:text-primary-600'
+                          }`}
                       >
                         <span>{hobby.emoji}</span>
                         {hobby.label}
@@ -878,6 +884,7 @@ export default function TenantProfilePage() {
           phone: profile?.phone || '', occupation: profile?.occupation || '',
           employmentType: profile?.employmentType || '', employer: profile?.employer || '',
           annualIncome: profile?.annualIncome, currentCity: profile?.city || '', bio: form.bio,
+          avatarUrl: profile?.avatarUrl || '',
         }}
         isLoading={isSavingProfile}
       />
