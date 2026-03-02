@@ -11,6 +11,7 @@ import {
   MoreHorizontal,
   Settings,
   User,
+  Inbox,
 } from 'lucide-react';
 import { ROUTES } from '../../utils/constants';
 
@@ -37,6 +38,7 @@ const agencyTabs: TabItem[] = [
   { icon: LayoutDashboard, label: 'Home', href: ROUTES.AGENCY_DASHBOARD },
   { icon: SearchIcon, label: 'Cerca', href: ROUTES.AGENCY_TENANTS },
   { icon: Megaphone, label: 'Annunci', href: ROUTES.AGENCY_LISTINGS },
+  { icon: Inbox, label: 'Candidature', href: ROUTES.AGENCY_APPLICATIONS, badgeKey: 'applications' },
   { icon: MoreHorizontal, label: 'Altro', href: ROUTES.AGENCY_MORE },
 ];
 
@@ -81,7 +83,6 @@ const TabItemComponent = React.memo(function TabItemComponent({
     }
     if (item.href === ROUTES.AGENCY_MORE) {
       return path === ROUTES.AGENCY_MORE
-        || path === ROUTES.AGENCY_APPLICATIONS || path.startsWith(ROUTES.AGENCY_APPLICATIONS + '/')
         || path === ROUTES.AGENCY_DOCUMENTS || path.startsWith(ROUTES.AGENCY_DOCUMENTS + '/')
         || path === ROUTES.AGENCY_CALCULATORS || path.startsWith(ROUTES.AGENCY_CALCULATORS + '/')
         || path === ROUTES.AGENCY_PLAN || path.startsWith(ROUTES.AGENCY_PLAN + '/')

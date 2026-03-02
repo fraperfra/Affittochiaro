@@ -7,7 +7,6 @@ import {
   ChevronRight,
   Inbox,
   Home,
-  Users,
   CreditCard,
   FileText,
   Calculator,
@@ -19,7 +18,6 @@ import {
   Zap,
   LogOut,
   MapPin,
-  MessageSquare,
   Unlock,
   Sparkles,
   Check,
@@ -70,43 +68,6 @@ export default function AgencyMorePage() {
 
   // Sezioni del menu
   const menuSections = [
-    {
-      title: 'Attività',
-      items: [
-        {
-          icon: Inbox,
-          label: 'Candidature',
-          path: ROUTES.AGENCY_APPLICATIONS,
-          description: 'Richieste di affitto ricevute',
-          badge: unreadApplications,
-          color: 'bg-blue-50 text-blue-600',
-        },
-        {
-          icon: Home,
-          label: 'I Miei Annunci',
-          path: ROUTES.AGENCY_LISTINGS,
-          description: `${activeListings} annunci attivi`,
-          badge: 0,
-          color: 'bg-green-50 text-green-600',
-        },
-        {
-          icon: Users,
-          label: 'Cerca Inquilini',
-          path: ROUTES.AGENCY_TENANTS,
-          description: 'Sfoglia i profili inquilino',
-          badge: 0,
-          color: 'bg-purple-50 text-purple-600',
-        },
-        {
-          icon: MessageSquare,
-          label: 'Messaggi',
-          path: ROUTES.AGENCY_MESSAGES,
-          description: 'Conversazioni con gli inquilini',
-          badge: 0,
-          color: 'bg-sky-50 text-sky-600',
-        },
-      ],
-    },
     {
       title: 'Strumenti',
       items: [
