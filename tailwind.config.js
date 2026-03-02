@@ -121,6 +121,7 @@ export default {
         'scale-in': 'scaleIn 0.2s ease-out',
         'spin-slow': 'spin 3s linear infinite',
         'pulse-soft': 'pulseSoft 2s ease-in-out infinite',
+        'marquee': 'marquee 30s linear infinite',
       },
       keyframes: {
         fadeIn: {
@@ -143,6 +144,10 @@ export default {
           '0%, 100%': { opacity: '1' },
           '50%': { opacity: '0.7' },
         },
+        marquee: {
+          '0%': { transform: 'translateX(0%)' },
+          '100%': { transform: 'translateX(-100%)' },
+        }
       },
       transitionDuration: {
         '250': '250ms',

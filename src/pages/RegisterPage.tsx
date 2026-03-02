@@ -8,20 +8,8 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import {
-  Eye,
-  EyeOff,
-  Mail,
-  Lock,
-  User,
-  Phone,
-  Building2,
-  Globe,
-  ArrowLeft,
-  ArrowRight,
-  Check,
-  AlertCircle,
-} from 'lucide-react';
+import { Building2, Globe, Heart, Wallet, Mail, Lock, User, Phone, Check, ArrowRight, ArrowLeft, AlertCircle, Eye, EyeOff } from 'lucide-react';
+import toast from 'react-hot-toast';
 import { useAuthStore } from '../store';
 import { ROUTES, ITALIAN_CITIES, OCCUPATIONS } from '../utils/constants';
 import { Button, Input, Card } from '../components/ui';
@@ -195,7 +183,7 @@ export default function RegisterPage() {
       <Header />
 
       <main className="flex-1 flex items-center justify-center p-4 mt-20 mb-16">
-        <div className="w-full max-w-lg">
+        <div className="w-full max-w-md">
           {/* Header Text */}
           <div className="text-center mb-6">
             <h1 className="text-3xl font-bold text-gray-900 mb-2">Crea il tuo Account</h1>
@@ -246,33 +234,60 @@ export default function RegisterPage() {
             {step === 1 && (
               <div className="space-y-4">
                 <h2 className="text-lg font-semibold text-center mb-6">Come vuoi registrarti?</h2>
-                <button
-                  onClick={() => handleAccountTypeSelect('tenant')}
-                  className="w-full p-6 rounded-xl border-2 border-border hover:border-primary-500 hover:bg-primary-50 transition-all text-left group"
-                >
-                  <div className="flex items-center gap-4">
+
+                {/* Social Registration */}
+                <div className="space-y-3 mb-6">
+                  <button
+                    type="button"
+                    className="w-full flex items-center justify-center gap-3 bg-white border border-gray-200 hover:bg-gray-50 text-gray-700 font-semibold py-3 px-4 rounded-xl transition-colors shadow-sm"
+                    onClick={() => toast.success("Registrazione con Google in arrivo!")}
+                  >
+                    <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" className="w-5 h-5" />
+                    Registrati con Google
+                  </button>
+                  <button
+                    type="button"
+                    className="w-full flex items-center justify-center gap-3 bg-[#1877F2] hover:bg-[#166FE5] text-white font-semibold py-3 px-4 rounded-xl transition-colors shadow-sm"
+                    onClick={() => toast.success("Registrazione con Facebook in arrivo!")}
+                  >
+                    <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.469h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.469h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" /></svg>
+                    Registrati con Facebook
+                  </button>
+                </div>
+
+                <div className="relative mb-6">
+                  <div className="absolute inset-0 flex items-center">
+                    <div className="w-full border-t border-gray-200"></div>
+                  </div>
+                  <div className="relative flex justify-center text-sm">
+                    <span className="px-2 bg-white text-gray-500 font-medium">oppure con la tua email</span>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-3 mt-4">
+                  <button
+                    onClick={() => handleAccountTypeSelect('tenant')}
+                    className="w-full p-6 text-center rounded-xl border-2 border-border hover:border-primary-500 hover:bg-primary-50 transition-all flex flex-col items-center justify-center gap-3 group"
+                  >
                     <span className="text-4xl">🏠</span>
                     <div>
-                      <h3 className="font-semibold text-lg group-hover:text-primary-600">Sono un Inquilino</h3>
-                      <p className="text-sm text-text-secondary">Cerco casa in affitto</p>
+                      <h3 className="font-semibold text-lg group-hover:text-primary-600">Inquilino</h3>
+                      <p className="text-sm text-text-secondary mt-1">Cerco casa</p>
                     </div>
-                  </div>
-                </button>
-                <button
-                  onClick={() => handleAccountTypeSelect('agency')}
-                  className="w-full p-6 rounded-xl border-2 border-border hover:border-primary-500 hover:bg-primary-50 transition-all text-left group"
-                >
-                  <div className="flex items-center gap-4">
+                  </button>
+                  <button
+                    onClick={() => handleAccountTypeSelect('agency')}
+                    className="w-full p-6 text-center rounded-xl border-2 border-border hover:border-primary-500 hover:bg-primary-50 transition-all flex flex-col items-center justify-center gap-3 group"
+                  >
                     <span className="text-4xl">🏢</span>
                     <div>
-                      <h3 className="font-semibold text-lg group-hover:text-primary-600">Sono un'Agenzia</h3>
-                      <p className="text-sm text-text-secondary">Cerco inquilini affidabili</p>
+                      <h3 className="font-semibold text-lg group-hover:text-primary-600">Agenzia</h3>
+                      <p className="text-sm text-text-secondary mt-1">Cerco inquilini</p>
                     </div>
-                  </div>
-                </button>
+                  </button>
+                </div>
               </div>
             )}
-
             {/* Step 2: Credentials */}
             {step === 2 && (
               <div className="space-y-5">
