@@ -117,8 +117,9 @@ export default function TenantMorePage() {
   const menuItems = [
     { icon: User, label: 'Il mio profilo', path: ROUTES.TENANT_PROFILE },
     { icon: Bell, label: 'Notifiche', path: ROUTES.TENANT_NOTIFICATIONS },
-    { icon: ShieldCheck, label: 'Sicurezza', path: `${ROUTES.TENANT_SETTINGS}?tab=security` },
     { icon: UserCog, label: 'Account', path: `${ROUTES.TENANT_SETTINGS}?tab=account` },
+    { icon: ShieldCheck, label: 'Sicurezza', path: `${ROUTES.TENANT_SETTINGS}?tab=security` },
+    { icon: LifeBuoy, label: 'Assistenza', path: `${ROUTES.TENANT_SETTINGS}?tab=tickets` },
   ];
 
   return (
@@ -258,20 +259,13 @@ export default function TenantMorePage() {
       </div>
 
       {/* Bottom Actions */}
-      <div className="flex gap-3 pt-2 pb-6">
+      <div className="pt-2 pb-6">
         <button
           onClick={() => window.open('https://it.trustpilot.com/review/affittochiaro.it', '_blank')}
-          className="flex-1 flex items-center justify-center gap-2 bg-yellow-400 hover:bg-yellow-500 text-yellow-900 font-bold py-3.5 px-4 rounded-2xl shadow-sm transition-colors active:scale-[0.98] cursor-pointer"
+          className="w-full flex items-center justify-center gap-2 bg-yellow-400 hover:bg-yellow-500 text-yellow-900 font-bold py-3.5 px-4 rounded-2xl shadow-sm transition-colors active:scale-[0.98] cursor-pointer"
         >
           <Star size={18} className="fill-yellow-900" />
-          Valuta App
-        </button>
-        <button
-          onClick={() => navigate(`${ROUTES.TENANT_SETTINGS}?tab=tickets`)}
-          className="flex-1 flex items-center justify-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold py-3.5 px-4 rounded-2xl shadow-sm transition-colors active:scale-[0.98] cursor-pointer"
-        >
-          <LifeBuoy size={18} />
-          Assistenza
+          Valuta App su Trustpilot
         </button>
       </div>
 

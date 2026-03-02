@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import {
   Bell,
   Shield,
@@ -19,6 +19,8 @@ import {
   Plus,
   ChevronDown,
   ChevronUp,
+  ChevronLeft,
+  ChevronRight,
   Clock,
   CheckCircle2,
   XCircle,
@@ -88,9 +90,13 @@ export default function SettingsPage() {
   const isTenant = user?.role === 'tenant';
   const isAgency = user?.role === 'agency';
 
+  const navigate = useNavigate();
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
-  const initialTab = (searchParams.get('tab') as SettingsTab) || 'notifications';
+  const tabParam = searchParams.get('tab') as SettingsTab | null;
+  const initialTab = tabParam || 'notifications';
+  // On mobile: if a tab param is in the URL, show only that tab's content (full-screen)
+  const hasMobileTab = !!tabParam;
 
   const [activeTab, setActiveTab] = useState<SettingsTab>(initialTab);
   const [showPauseModal, setShowPauseModal] = useState(false);
@@ -249,38 +255,63 @@ export default function SettingsPage() {
     5: 'Eccellente',
   };
 
+  const tabTitles: Record<SettingsTab, string> = {
+    notifications: 'Notifiche',
+    account: 'Account',
+    security: 'Sicurezza',
+    feedback: 'Feedback',
+    tickets: 'Assistenza',
+  };
+
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <div>
+      {/* Header – nascosto su mobile quando si visualizza un singolo tab */}
+      <div className={hasMobileTab ? 'hidden md:block' : ''}>
         <h1 className="text-2xl font-bold text-text-primary">Impostazioni</h1>
         <p className="text-text-secondary">Gestisci le tue preferenze e impostazioni account</p>
       </div>
 
+      {/* Mobile back header – visibile solo su mobile quando è selezionato un tab */}
+      {hasMobileTab && (
+        <div className="md:hidden flex items-center gap-2 -mt-2 pb-1">
+          <button
+            onClick={() => navigate(-1)}
+            className="p-2 -ml-2 rounded-xl hover:bg-background-secondary text-text-secondary"
+          >
+            <ChevronLeft size={22} />
+          </button>
+          <h1 className="text-xl font-bold text-text-primary">{tabTitles[activeTab]}</h1>
+        </div>
+      )}
+
       <div className="flex flex-col lg:flex-row gap-6">
-        {/* Sidebar Tabs */}
-        <div className="lg:w-56 flex-shrink-0">
+        {/* Sidebar Tabs – su mobile, visibile solo quando NON è selezionato un tab */}
+        <div className={`${hasMobileTab ? 'hidden md:block' : ''} lg:w-56 flex-shrink-0`}>
           <Card padding="sm">
             <nav className="space-y-1">
               {tabs.map((tab) => (
                 <button
                   key={tab.id}
-                  onClick={() => setActiveTab(tab.id)}
+                  onClick={() => {
+                    setActiveTab(tab.id);
+                    navigate(`?tab=${tab.id}`);
+                  }}
                   className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${activeTab === tab.id
                     ? 'bg-primary-50 text-primary-600'
                     : 'text-text-secondary hover:bg-background-secondary'
                     }`}
                 >
                   {tab.icon}
-                  {tab.label}
+                  <span className="flex-1 text-left">{tab.label}</span>
+                  <ChevronRight size={16} className="md:hidden text-text-muted opacity-50" />
                 </button>
               ))}
             </nav>
           </Card>
         </div>
 
-        {/* Content */}
-        <div className="flex-1">
+        {/* Content – su mobile, visibile solo quando è selezionato un tab */}
+        <div className={`${hasMobileTab ? '' : 'hidden md:block'} flex-1`}>
           {/* Notifications Tab */}
           {activeTab === 'notifications' && (
             <Card>
