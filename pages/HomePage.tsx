@@ -1,5 +1,6 @@
 import React from 'react';
 import { PartnersCarousel } from '../src/components/ui';
+import { useCMSSections } from '../src/cms';
 import {
   Hero,
   Problems,
@@ -20,6 +21,20 @@ interface HomePageProps {
   onFilterChange: (filter: string) => void;
 }
 
+// Map section IDs to their components
+const sectionComponents: Record<string, React.FC<any>> = {
+  hero: Hero,
+  partners: PartnersCarousel,
+  problems: Problems,
+  benefits: Benefits,
+  howItWorks: HowItWorks,
+  cityMap: CityMap,
+  listings: Listings,
+  testimonials: Testimonials,
+  finalCta: FinalCTA,
+  faq: FAQ,
+};
+
 export const HomePage: React.FC<HomePageProps> = ({
   counter,
   activeCityName,
@@ -27,22 +42,23 @@ export const HomePage: React.FC<HomePageProps> = ({
   activeFilter,
   onFilterChange,
 }) => {
+  const visibleSections = useCMSSections('home');
+
+  // Props that specific sections need
+  const sectionProps: Record<string, any> = {
+    hero: { counter, activeCityName },
+    cityMap: { activeCityName, onCityChange },
+    listings: { activeCityName, activeFilter, onFilterChange },
+  };
+
   return (
     <>
-      <Hero counter={counter} activeCityName={activeCityName} />
-      <PartnersCarousel />
-      <Problems />
-      <Benefits />
-      <HowItWorks />
-      <CityMap activeCityName={activeCityName} onCityChange={onCityChange} />
-      <Listings
-        activeCityName={activeCityName}
-        activeFilter={activeFilter}
-        onFilterChange={onFilterChange}
-      />
-      <Testimonials />
-      <FinalCTA />
-      <FAQ />
+      {visibleSections.map((section) => {
+        const Component = sectionComponents[section.id];
+        if (!Component) return null;
+        const props = sectionProps[section.id] || {};
+        return <Component key={section.id} {...props} />;
+      })}
     </>
   );
 };

@@ -1,16 +1,19 @@
 import React from 'react';
 import { TESTIMONIALS } from '../constants';
+import { InlineEditor } from '../src/cms';
 
 export const Testimonials: React.FC = () => {
   return (
     <section id="testimonianze" className="py-16 bg-white px-4 border-t border-gray-50">
       <div className="max-w-6xl mx-auto text-center">
         <div className="inline-block bg-action-green/10 text-action-green px-5 py-2 rounded-full font-bold text-[10px] mb-8 uppercase tracking-[0.2em]">TESTIMONIANZE</div>
-        <h2 className="text-3xl md:text-5xl font-bold text-brand-green mb-6 leading-tight font-poppins">Cosa dicono i nostri inquilini</h2>
+        <InlineEditor id="home.testimonials.title" as="h2" className="text-3xl md:text-5xl font-bold text-brand-green mb-6 leading-tight font-poppins">
+          Cosa dicono i nostri inquilini
+        </InlineEditor>
         <div className="flex flex-col items-center gap-2 mb-10">
           <div className="flex items-center gap-1">
-            {[1,2,3,4,5].map(i => (
-              <svg key={i} className="w-6 h-6 text-[#00b67a] fill-current" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+            {[1, 2, 3, 4, 5].map(i => (
+              <svg key={i} className="w-6 h-6 text-[#00b67a] fill-current" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" /></svg>
             ))}
           </div>
           <p className="text-brand-green font-bold">Eccezionale 4.9/5 su <span className="text-[#00b67a]">Trustpilot</span></p>

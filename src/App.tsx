@@ -4,6 +4,9 @@ import { useAuthStore } from './store';
 import { ROUTES } from './utils/constants';
 import { Analytics } from '@vercel/analytics/react';
 
+// CMS
+import { CMSProvider, CMSEditToggle } from './cms';
+
 // Landing Page Components (from root) - eagerly loaded (entry point)
 import { useNotifications } from '../hooks';
 import {
@@ -76,6 +79,7 @@ const AdminZonesPage = lazy(() => import('./pages/admin/AdminZonesPage'));
 const AdminServicesManagementPage = lazy(() => import('./pages/admin/AdminServicesManagementPage'));
 const AdminBlogPage = lazy(() => import('./pages/admin/AdminBlogPage'));
 const AdminAdsPage = lazy(() => import('./pages/admin/AdminAdsPage'));
+const CMSAdminPage = lazy(() => import('./pages/admin/CMSAdminPage'));
 
 // Shared Pages - lazy loaded
 const SettingsPage = lazy(() => import('./pages/SettingsPage'));
@@ -217,6 +221,7 @@ function LandingWrapper({ children }: { children: React.ReactNode }) {
       {!isAuthenticated && <StickyBottomBar onMenuToggle={() => { }} />}
       {!isAuthenticated && <ExitIntentPopup />}
       <AddToHomeScreenModal />
+      <CMSEditToggle />
     </div>
   );
 }
@@ -248,7 +253,7 @@ function App() {
   }
 
   return (
-    <>
+    <CMSProvider>
       <Suspense fallback={<FullPageSpinner />}>
         <Routes>
           {/* Landing Pages (public with landing layout) */}
@@ -447,6 +452,7 @@ function App() {
             <Route path="services" element={<AdminServicesManagementPage />} />
             <Route path="blog" element={<AdminBlogPage />} />
             <Route path="ads" element={<AdminAdsPage />} />
+            <Route path="cms" element={<CMSAdminPage />} />
             <Route path="*" element={<Navigate to={ROUTES.ADMIN_DASHBOARD} replace />} />
           </Route>
 
@@ -462,7 +468,7 @@ function App() {
         </Routes>
       </Suspense>
       <Analytics />
-    </>
+    </CMSProvider>
   );
 }
 
