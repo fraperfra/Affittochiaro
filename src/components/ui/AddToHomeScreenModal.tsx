@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Share, PlusSquare, X } from 'lucide-react';
+import { Share, PlusSquare, X, Home } from 'lucide-react';
 import Modal from './Modal';
 import Button from './Button';
 
@@ -69,7 +69,13 @@ export default function AddToHomeScreenModal() {
                     <img src="/pwa-192x192.png" alt="App Icon" className="w-12 h-12 rounded-xl object-contain" onError={(e) => {
                         // Fallback if image not found
                         e.currentTarget.style.display = 'none';
-                        e.currentTarget.parentElement!.innerHTML = '<span class="text-3xl">🏠</span>';
+                        const parent = e.currentTarget.parentElement;
+                        if (parent && !parent.querySelector('.fallback-icon')) {
+                            const icon = document.createElement('span');
+                            icon.className = 'fallback-icon text-primary-500';
+                            icon.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>';
+                            parent.appendChild(icon);
+                        }
                     }} />
                 </div>
 

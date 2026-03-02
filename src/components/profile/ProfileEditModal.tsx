@@ -30,7 +30,7 @@ export function ProfileEditModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto overflow-x-hidden">
+    <div className="fixed inset-0 z-[110] overflow-y-auto overflow-x-hidden">
       {/* Backdrop */}
       <div
         className="fixed inset-0 bg-black/50 transition-opacity"

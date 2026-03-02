@@ -27,21 +27,21 @@ const STATUS_CONFIG: Record<ServiceStatus, { label: string; variant: 'success' |
 const CATEGORIES: ServiceCategory[] = ['Contratti & Burocrazia', 'Certificazioni', 'Casa & Logistica', 'Consulenza'];
 
 const INITIAL_SERVICES: ManagedService[] = [
-  { id: '1', title: 'Redazione Contratto', description: 'Contratto di locazione redatto da avvocati specializzati', category: 'Contratti & Burocrazia', status: 'coming_soon', icon: '📄', targetRole: 'agency', order: 1 },
-  { id: '2', title: 'Registrazione Contratto', description: 'Registrazione automatica all\'Agenzia delle Entrate', category: 'Contratti & Burocrazia', status: 'coming_soon', icon: '🏛️', targetRole: 'both', order: 2 },
-  { id: '3', title: 'Cedolare Secca', description: 'Gestione regime fiscale agevolato', category: 'Contratti & Burocrazia', status: 'coming_soon', icon: '💰', targetRole: 'agency', order: 3 },
-  { id: '4', title: 'Attestato di Prestazione Energetica', description: 'APE certificato da tecnici abilitati', category: 'Certificazioni', status: 'coming_soon', icon: '⚡', targetRole: 'agency', order: 4 },
-  { id: '5', title: 'Visura Catastale', description: 'Visure catastali e ipotecarie aggiornate', category: 'Certificazioni', status: 'coming_soon', icon: '🗺️', targetRole: 'both', order: 5 },
-  { id: '6', title: 'Servizio di Trasloco', description: 'Trasloco professionale con preventivo online', category: 'Casa & Logistica', status: 'coming_soon', icon: '🚚', targetRole: 'tenant', order: 6 },
-  { id: '7', title: 'Pulizie Professionali', description: 'Pulizia profonda appartamento al cambio inquilino', category: 'Casa & Logistica', status: 'coming_soon', icon: '🧹', targetRole: 'both', order: 7 },
-  { id: '8', title: 'Utenze Domestiche', description: 'Attivazione e cambio intestazione utenze', category: 'Casa & Logistica', status: 'coming_soon', icon: '💡', targetRole: 'tenant', order: 8 },
-  { id: '9', title: 'Assicurazione Affitto', description: 'Polizza tutela affitti e danni all\'immobile', category: 'Casa & Logistica', status: 'coming_soon', icon: '🛡️', targetRole: 'both', order: 9 },
-  { id: '10', title: 'Consulenza Legale', description: 'Consulenza con avvocato specializzato in locazioni', category: 'Consulenza', status: 'coming_soon', icon: '⚖️', targetRole: 'both', order: 10 },
-  { id: '11', title: 'Consulenza Fiscale', description: 'Ottimizzazione fiscale per proprietari e agenzie', category: 'Consulenza', status: 'coming_soon', icon: '📊', targetRole: 'agency', order: 11 },
+  { id: '1', title: 'Redazione Contratto', description: 'Contratto di locazione redatto da avvocati specializzati', category: 'Contratti & Burocrazia', status: 'coming_soon', icon: 'FileText', targetRole: 'agency', order: 1 },
+  { id: '2', title: 'Registrazione Contratto', description: 'Registrazione automatica all\'Agenzia delle Entrate', category: 'Contratti & Burocrazia', status: 'coming_soon', icon: 'Scale', targetRole: 'both', order: 2 },
+  { id: '3', title: 'Cedolare Secca', description: 'Gestione regime fiscale agevolato', category: 'Contratti & Burocrazia', status: 'coming_soon', icon: 'Wallet', targetRole: 'agency', order: 3 },
+  { id: '4', title: 'Attestato di Prestazione Energetica', description: 'APE certificato da tecnici abilitati', category: 'Certificazioni', status: 'coming_soon', icon: 'Zap', targetRole: 'agency', order: 4 },
+  { id: '5', title: 'Visura Catastale', description: 'Visure catastali e ipotecarie aggiornate', category: 'Certificazioni', status: 'coming_soon', icon: 'Map', targetRole: 'both', order: 5 },
+  { id: '6', title: 'Servizio di Trasloco', description: 'Trasloco professionale con preventivo online', category: 'Casa & Logistica', status: 'coming_soon', icon: 'Truck', targetRole: 'tenant', order: 6 },
+  { id: '7', title: 'Pulizie Professionali', description: 'Pulizia profonda appartamento al cambio inquilino', category: 'Casa & Logistica', status: 'coming_soon', icon: 'Sparkles', targetRole: 'both', order: 7 },
+  { id: '8', title: 'Utenze Domestiche', description: 'Attivazione e cambio intestazione utenze', category: 'Casa & Logistica', status: 'coming_soon', icon: 'Lightbulb', targetRole: 'tenant', order: 8 },
+  { id: '9', title: 'Assicurazione Affitto', description: 'Polizza tutela affitti e danni all\'immobile', category: 'Casa & Logistica', status: 'coming_soon', icon: 'Shield', targetRole: 'both', order: 9 },
+  { id: '10', title: 'Consulenza Legale', description: 'Consulenza con avvocato specializzato in locazioni', category: 'Consulenza', status: 'coming_soon', icon: 'Scale', targetRole: 'both', order: 10 },
+  { id: '11', title: 'Consulenza Fiscale', description: 'Ottimizzazione fiscale per proprietari e agenzie', category: 'Consulenza', status: 'coming_soon', icon: 'BarChart3', targetRole: 'agency', order: 11 },
 ];
 
 const EMPTY_FORM: Omit<ManagedService, 'id'> = {
-  title: '', description: '', category: 'Contratti & Burocrazia', status: 'coming_soon', icon: '⭐', targetRole: 'both', order: 99,
+  title: '', description: '', category: 'Contratti & Burocrazia', status: 'coming_soon', icon: 'Star', targetRole: 'both', order: 99,
 };
 
 export default function AdminServicesManagementPage() {

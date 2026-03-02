@@ -20,6 +20,14 @@ import {
   Calendar,
   CheckCircle,
   Shield,
+  Star,
+  Video,
+  AlertTriangle,
+  Check,
+  PenLine,
+  Lock,
+  Zap,
+  Mail,
 } from 'lucide-react';
 import { useAuthStore, useCVStore } from '../../store';
 import { TenantUser } from '../../types';
@@ -55,30 +63,37 @@ const recentActivity = [
     type: 'view',
     message: 'Immobiliare Centrale ha visualizzato il tuo profilo',
     time: new Date(Date.now() - 2 * 60 * 60 * 1000),
-    icon: '👁️',
+    iconType: 'view' as const,
   },
   {
     id: 2,
     type: 'match',
     message: 'Hai un nuovo match con Casa Milano',
     time: new Date(Date.now() - 5 * 60 * 60 * 1000),
-    icon: '⭐',
+    iconType: 'match' as const,
   },
   {
     id: 3,
     type: 'application',
     message: 'La tua candidatura e stata inviata',
     time: new Date(Date.now() - 24 * 60 * 60 * 1000),
-    icon: '📩',
+    iconType: 'application' as const,
   },
   {
     id: 4,
     type: 'document',
     message: 'Documento verificato con successo',
     time: new Date(Date.now() - 48 * 60 * 60 * 1000),
-    icon: '✅',
+    iconType: 'document' as const,
   },
 ];
+
+const activityIconMap = {
+  view: <Eye size={18} />,
+  match: <Star size={18} />,
+  application: <Mail size={18} />,
+  document: <CheckCircle size={18} />,
+};
 
 function BudgetCalculatorCard() {
   const [rent, setRent] = useState(800);
@@ -382,7 +397,7 @@ function ProfileHeaderCard({
                 <h2 className="text-lg md:text-xl font-bold text-gray-900 leading-tight truncate">
                   {firstName} {lastName}
                 </h2>
-                <p className="text-xs text-gray-400 mt-0.5">Benvenuto! come va oggi? 🙂</p>
+                <p className="text-xs text-gray-400 mt-0.5">Benvenuto! come va oggi?</p>
               </div>
               <span className={`shrink-0 text-xs font-semibold px-2.5 py-1 rounded-full whitespace-nowrap ${
                 calculatedCompletion >= 80
@@ -449,12 +464,12 @@ function ProfileHeaderCard({
               )}
               {hasVideo && (
                 <span className="inline-flex items-center gap-1 text-[11px] font-medium bg-blue-50 text-blue-700 border border-blue-200 px-2 py-0.5 rounded-full">
-                  🎥 Video
+                  <Video size={10} /> Video
                 </span>
               )}
               {calculatedCompletion >= 80 && (
                 <span className="inline-flex items-center gap-1 text-[11px] font-medium bg-amber-50 text-amber-700 border border-amber-200 px-2 py-0.5 rounded-full">
-                  ⭐ Profilo completo
+                  <Star size={10} /> Profilo completo
                 </span>
               )}
             </div>
@@ -625,8 +640,8 @@ export default function TenantDashboardPage() {
                 className={`flex items-start gap-4 ${index < recentActivity.length - 1 ? 'pb-4 border-b border-border' : ''
                   }`}
               >
-                <div className="flex-shrink-0 w-10 h-10 rounded-full bg-background-secondary flex items-center justify-center text-lg">
-                  {activity.icon}
+                <div className="flex-shrink-0 w-10 h-10 rounded-full bg-background-secondary flex items-center justify-center">
+                  {activityIconMap[activity.iconType]}
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-text-primary">{activity.message}</p>
@@ -646,7 +661,7 @@ export default function TenantDashboardPage() {
           const color = pct >= 80 ? { bar: 'bg-green-500', text: 'text-green-600', pill: 'bg-green-50' }
                       : pct >= 50 ? { bar: 'bg-amber-500', text: 'text-amber-600', pill: 'bg-amber-50' }
                       :             { bar: 'bg-red-500',   text: 'text-red-600',   pill: 'bg-red-50'   };
-          const emoji = pct >= 100 ? '🎉' : pct >= 80 ? '🌟' : pct >= 50 ? '💪' : '⚠️';
+          const completionIcon = pct >= 100 ? <CheckCircle size={20} className="text-green-500" /> : pct >= 80 ? <Star size={20} className="text-amber-500" /> : pct >= 50 ? <Zap size={20} className="text-amber-500" /> : <AlertTriangle size={20} className="text-red-500" />;
           const msg   = pct >= 100 ? 'Profilo completo! Le agenzie ti noteranno.'
                       : pct >= 80  ? 'Ottimo! Il tuo profilo è quasi perfetto.'
                       : pct >= 50  ? 'Buon inizio! Completa il profilo per più visibilità.'
@@ -694,20 +709,20 @@ export default function TenantDashboardPage() {
         </CardHeader>
         <div className="flex flex-wrap gap-3">
           {(profile?.isVerified || tenantUser?.profile?.isVerified) && (
-            <Badge variant="success" size="md">✓ Profilo Verificato</Badge>
+            <Badge variant="success" size="md"><Check size={12} className="inline mr-1" />Profilo Verificato</Badge>
           )}
           {(profile?.hasVideo || tenantUser?.profile?.hasVideo) && (
-            <Badge variant="info" size="md">🎥 Video Presentazione</Badge>
+            <Badge variant="info" size="md"><Video size={12} className="inline mr-1" />Video Presentazione</Badge>
           )}
           {calculatedCompletion >= 80 && (
-            <Badge variant="primary" size="md">⭐ Profilo Completo</Badge>
+            <Badge variant="primary" size="md"><Star size={12} className="inline mr-1" />Profilo Completo</Badge>
           )}
           {calculatedCompletion >= 50 && calculatedCompletion < 80 && (
-            <Badge variant="warning" size="md">📝 In Costruzione</Badge>
+            <Badge variant="warning" size="md"><PenLine size={12} className="inline mr-1" />In Costruzione</Badge>
           )}
           {!(profile?.isVerified || tenantUser?.profile?.isVerified) && (
             <div className="flex items-center gap-2 px-3 py-1.5 bg-background-secondary rounded-full text-sm text-text-muted">
-              <span>🔒</span>
+              <Lock size={14} />
               <span>Verifica il profilo per sbloccare</span>
             </div>
           )}

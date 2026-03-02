@@ -21,6 +21,7 @@ import {
   Euro,
   PawPrint,
   Cigarette,
+  Inbox,
 } from 'lucide-react';
 import { Card, CardHeader, CardTitle, Button, Badge, Modal, ModalFooter, EmptyState } from '../../components/ui';
 import { formatDate, formatDateTime } from '../../utils/formatters';
@@ -471,7 +472,7 @@ export default function ApplicationsPage() {
         </div>
       ) : (
         <EmptyState
-          icon="📩"
+          icon={<Inbox size={40} className="text-text-muted" />}
           title="Nessuna candidatura"
           description={searchQuery || filterStatus ? "Prova a modificare i filtri" : "Le candidature inviate dagli inquilini appariranno qui"}
         />

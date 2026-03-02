@@ -56,13 +56,13 @@ export default function Modal({
   return createPortal(
     <div
       ref={overlayRef}
-      className="fixed inset-0 z-50 flex items-center justify-center px-4 py-6 bg-black/50 animate-fade-in"
+      className="fixed inset-0 z-[110] flex items-center justify-center px-4 py-6 pb-[calc(1.5rem+88px)] md:pb-6 bg-black/50 animate-fade-in"
       onClick={handleOverlayClick}
     >
       <div
         className={`
           relative w-full ${sizeClasses[size]} bg-white rounded-2xl shadow-large
-          animate-scale-in overflow-hidden flex flex-col max-h-[90vh]
+          animate-scale-in overflow-hidden flex flex-col max-h-[calc(90vh-88px)] md:max-h-[90vh]
         `}
       >
         {/* Header */}

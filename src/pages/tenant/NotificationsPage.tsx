@@ -1,12 +1,30 @@
-import { useEffect, useState } from 'react';
-import { Check, Trash2, Bell, BellOff, Settings } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { Check, Trash2, Bell, BellOff, Settings, Eye, Star, Mail, CheckCircle, XCircle, AlertTriangle, Home, Clock, CreditCard, Wallet, Zap, Calendar, Megaphone } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useNotificationStore } from '../../store';
 import { ROUTES } from '../../utils/constants';
 import { generateMockNotifications } from '../../utils/mockData';
 import { formatRelativeTime } from '../../utils/formatters';
-import { NOTIFICATION_ICONS } from '../../types';
+import { NotificationType } from '../../types';
 import { Card, CardHeader, CardTitle, Button, EmptyState, Badge } from '../../components/ui';
+
+const NOTIF_ICONS: Record<NotificationType, React.ReactNode> = {
+  profile_view: <Eye size={18} />,
+  new_match: <Star size={18} />,
+  application_received: <Mail size={18} />,
+  application_accepted: <CheckCircle size={18} />,
+  application_rejected: <XCircle size={18} />,
+  document_verified: <CheckCircle size={18} />,
+  document_rejected: <AlertTriangle size={18} />,
+  new_listing: <Home size={18} />,
+  listing_expired: <Clock size={18} />,
+  credit_low: <CreditCard size={18} />,
+  credit_purchased: <Wallet size={18} />,
+  plan_upgrade: <Zap size={18} />,
+  plan_expiring: <Calendar size={18} />,
+  system_message: <Megaphone size={18} />,
+  welcome: <Bell size={18} />,
+};
 
 export default function NotificationsPage() {
   const {
@@ -92,7 +110,7 @@ export default function NotificationsPage() {
                   !notification.isRead ? 'bg-primary-100' : 'bg-background-secondary'
                 }`}
               >
-                {NOTIFICATION_ICONS[notification.type] || '📢'}
+                {NOTIF_ICONS[notification.type] || <Megaphone size={18} />}
               </div>
 
               {/* Content */}
@@ -136,7 +154,7 @@ export default function NotificationsPage() {
         </Card>
       ) : (
         <EmptyState
-          icon={filter === 'unread' ? '✅' : '🔔'}
+          icon={filter === 'unread' ? <CheckCircle size={40} className="text-text-muted" /> : <Bell size={40} className="text-text-muted" />}
           title={filter === 'unread' ? 'Nessuna notifica non letta' : 'Nessuna notifica'}
           description={
             filter === 'unread'

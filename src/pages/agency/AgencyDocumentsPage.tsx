@@ -4,7 +4,7 @@ import {
   FolderOpen, FileCheck, FileSpreadsheet, X, Calendar,
   ClipboardList, Bell, BellOff, CheckCircle2, AlertTriangle,
   Clock, Plus, ChevronDown, ChevronUp, Home, User, BadgeCheck,
-  AlertCircle, Filter,
+  AlertCircle, Filter, Info,
 } from 'lucide-react';
 import { Card, Button, Badge, Modal, ModalFooter, EmptyState } from '../../components/ui';
 import { formatDate } from '../../utils/formatters';
@@ -277,7 +277,7 @@ export default function AgencyDocumentsPage() {
 
   const handleDownload = (name: string, blobUrl?: string) => {
     if (blobUrl) { const a = document.createElement('a'); a.href = blobUrl; a.download = name; a.click(); }
-    else toast('Documento di esempio — download disponibile con il backend reale', { icon: 'ℹ️' });
+    else toast('Documento di esempio — download disponibile con il backend reale');
   };
 
   // ── Contracts helpers ───────────────────────────────────────────────────────
@@ -336,7 +336,7 @@ export default function AgencyDocumentsPage() {
     const updated = deadlines.map(d => d.id === id ? { ...d, completed: !d.completed } : d);
     persistDeadlines(updated);
     const d = deadlines.find(x => x.id === id);
-    toast.success(d?.completed ? 'Scadenza riaperta' : 'Scadenza completata ✓');
+    toast.success(d?.completed ? 'Scadenza riaperta' : 'Scadenza completata');
   };
 
   const handleSaveDeadline = () => {
@@ -446,7 +446,7 @@ export default function AgencyDocumentsPage() {
               ))}
             </div>
           ) : (
-            <EmptyState icon="📄" title="Nessun documento trovato" description={searchQuery || category !== 'all' ? 'Prova a modificare i filtri' : 'Carica contratti modello e documenti utili'} action={{ label: 'Carica Documento', onClick: () => setShowUploadModal(true) }} />
+            <EmptyState icon={<FileText size={40} className="text-text-muted" />} title="Nessun documento trovato" description={searchQuery || category !== 'all' ? 'Prova a modificare i filtri' : 'Carica contratti modello e documenti utili'} action={{ label: 'Carica Documento', onClick: () => setShowUploadModal(true) }} />
           )}
         </>
       )}
@@ -566,7 +566,7 @@ export default function AgencyDocumentsPage() {
               })}
             </div>
           ) : (
-            <EmptyState icon="📋" title="Nessun contratto registrato" description="Aggiungi i contratti registrati presso l'Agenzia delle Entrate per monitorarne le scadenze." action={{ label: 'Aggiungi Contratto', onClick: () => setShowContractModal(true) }} />
+            <EmptyState icon={<ClipboardList size={40} className="text-text-muted" />} title="Nessun contratto registrato" description="Aggiungi i contratti registrati presso l'Agenzia delle Entrate per monitorarne le scadenze." action={{ label: 'Aggiungi Contratto', onClick: () => setShowContractModal(true) }} />
           )}
         </>
       )}
@@ -686,7 +686,7 @@ export default function AgencyDocumentsPage() {
               })}
             </div>
           ) : (
-            <EmptyState icon="🗓️" title="Nessuna scadenza trovata" description="Aggiungi scadenze per tenere traccia di rinnovi, aggiornamenti ISTAT, cedolare e altro." action={{ label: 'Nuova Scadenza', onClick: () => setShowDeadlineModal(true) }} />
+            <EmptyState icon={<Calendar size={40} className="text-text-muted" />} title="Nessuna scadenza trovata" description="Aggiungi scadenze per tenere traccia di rinnovi, aggiornamenti ISTAT, cedolare e altro." action={{ label: 'Nuova Scadenza', onClick: () => setShowDeadlineModal(true) }} />
           )}
         </>
       )}

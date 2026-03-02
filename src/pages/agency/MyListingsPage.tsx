@@ -4,7 +4,7 @@ import {
   Plus, Edit2, Eye, Trash2, Users, Pause, Play, Save, MapPin,
   Phone, Mail, CheckCircle, XCircle, Clock, ChevronDown, ChevronUp,
   Briefcase, Calendar, Home, MessageSquare, PawPrint, Cigarette,
-  ImagePlus, X,
+  ImagePlus, X, Check,
 } from 'lucide-react';
 import { formatCurrency, formatDate, formatNumber, formatDateTime } from '../../utils/formatters';
 import { ITALIAN_CITIES } from '../../utils/constants';
@@ -623,7 +623,7 @@ export default function MyListingsPage() {
         </>
       ) : (
         <EmptyState
-          icon="🏠"
+          icon={<Home size={40} className="text-text-muted" />}
           title="Nessun annuncio"
           description="Inizia a pubblicare i tuoi immobili"
           action={{ label: 'Crea Annuncio', onClick: openCreateModal }}
@@ -1010,7 +1010,7 @@ export default function MyListingsPage() {
                     }`}
                   onClick={() => toggleFeature(key as ListingFeature)}
                 >
-                  {formData.features.includes(key as ListingFeature) ? '✓ ' : ''}{label}
+                  {formData.features.includes(key as ListingFeature) && <Check size={12} className="inline mr-1" />}{label}
                 </button>
               ))}
             </div>

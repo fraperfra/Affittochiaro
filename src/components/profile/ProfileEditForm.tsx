@@ -7,7 +7,7 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { User, Mail, Phone, Briefcase, MapPin, Euro, Calendar, Building2, Save, Loader2 } from 'lucide-react';
+import { User, Mail, Phone, Briefcase, MapPin, Euro, Calendar, Building2, Save, Loader2, PenLine } from 'lucide-react';
 import { EmploymentType } from '@/types/tenant';
 import { ITALIAN_CITIES, OCCUPATIONS } from '@/utils/constants';
 
@@ -298,7 +298,7 @@ export function ProfileEditForm({
       {/* Bio */}
       <div>
         <h3 className="text-sm font-medium text-gray-900 mb-4 flex items-center gap-2">
-          <span className="text-lg">📝</span>
+          <PenLine className="w-4 h-4 text-action-green" />
           La Tua Presentazione
         </h3>
         <textarea

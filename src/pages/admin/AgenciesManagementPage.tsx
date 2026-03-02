@@ -11,6 +11,7 @@ import {
   CreditCard,
   ChevronLeft,
   ChevronRight,
+  Building2,
 } from 'lucide-react';
 import { useAgencyStore } from '../../store';
 import { mockAgencies } from '../../utils/mockData';
@@ -159,7 +160,7 @@ export default function AgenciesManagementPage() {
                         <Badge variant={planColors[agency.plan]} className="capitalize" size="sm">
                           {agency.plan}
                         </Badge>
-                        {agency.isVerified && <Badge variant="success" size="sm">✓</Badge>}
+                        {agency.isVerified && <Badge variant="success" size="sm"><Check size={11} className="inline" /></Badge>}
                       </div>
                     </div>
                   </div>
@@ -315,7 +316,7 @@ export default function AgenciesManagementPage() {
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-2">
                           {agency.isVerified && (
-                            <Badge variant="success" size="sm">✓ Verificata</Badge>
+                            <Badge variant="success" size="sm"><Check size={11} className="inline mr-0.5" />Verificata</Badge>
                           )}
                           <Badge
                             variant={agency.status === 'active' ? 'success' : 'warning'}
@@ -411,7 +412,7 @@ export default function AgenciesManagementPage() {
         </>
       ) : (
         <EmptyState
-          icon="🏢"
+          icon={<Building2 size={40} className="text-text-muted" />}
           title="Nessuna agenzia trovata"
           description="Prova a modificare i filtri"
         />
@@ -438,7 +439,7 @@ export default function AgenciesManagementPage() {
                     Piano {selectedAgency.plan}
                   </Badge>
                   {selectedAgency.isVerified && (
-                    <Badge variant="success">✓ Verificata</Badge>
+                    <Badge variant="success"><Check size={11} className="inline mr-0.5" />Verificata</Badge>
                   )}
                 </div>
               </div>

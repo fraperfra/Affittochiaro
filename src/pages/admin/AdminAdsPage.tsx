@@ -73,7 +73,7 @@ const INITIAL_ADS: Ad[] = [
   {
     id: '1', name: 'Promo Piano Pro Agenzie', placement: 'agency_dashboard_top', type: 'banner', target: 'agency',
     status: 'active',
-    content: { title: '🚀 Passa al Piano Pro', subtitle: 'Sblocca profili illimitati e funzionalità avanzate', ctaText: 'Scopri il Piano Pro', ctaUrl: '/agency/plan', bgColor: '#004832', textColor: '#ffffff', badgeText: 'Offerta Limitata' },
+    content: { title: 'Passa al Piano Pro', subtitle: 'Sblocca profili illimitati e funzionalità avanzate', ctaText: 'Scopri il Piano Pro', ctaUrl: '/agency/plan', bgColor: '#004832', textColor: '#ffffff', badgeText: 'Offerta Limitata' },
     impressions: 4820, clicks: 312, createdAt: new Date(Date.now() - 15 * 86400000).toISOString(), updatedAt: new Date(Date.now() - 15 * 86400000).toISOString(),
   },
   {

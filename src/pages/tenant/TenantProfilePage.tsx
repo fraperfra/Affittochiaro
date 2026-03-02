@@ -20,6 +20,33 @@ import {
   FileText,
   BedDouble,
   ChevronRight,
+  User,
+  Target,
+  Video,
+  ClipboardList,
+  Music,
+  BookOpen,
+  Activity,
+  Bike,
+  Gamepad2,
+  Palette,
+  Leaf,
+  Plane,
+  Camera,
+  Film,
+  Waves,
+  Drama,
+  Wine,
+  Mountain,
+  PenLine,
+  Dumbbell,
+  Brain,
+  Scissors,
+  Zap,
+  Tent,
+  Mic,
+  Mic2,
+  Hammer,
 } from 'lucide-react';
 import { ITALIAN_CITIES, OCCUPATIONS, CONTRACT_TYPES } from '../../utils/constants';
 import { VideoRecorder, VideoUploader, VideoPlayer, VideoPlaceholder } from '../../components/video';
@@ -33,39 +60,39 @@ type VideoMode = 'view' | 'record' | 'upload';
 
 // ─── Dati statici ────────────────────────────────────────────────────────────
 
-const HOBBIES = [
-  { id: 'musica', label: 'Musica', emoji: '🎸' },
-  { id: 'lettura', label: 'Lettura', emoji: '📚' },
-  { id: 'cucina', label: 'Cucina', emoji: '🍳' },
-  { id: 'jogging', label: 'Jogging', emoji: '🏃' },
-  { id: 'ciclismo', label: 'Ciclismo', emoji: '🚴' },
-  { id: 'videogiochi', label: 'Videogiochi', emoji: '🎮' },
-  { id: 'arte', label: 'Arte', emoji: '🎨' },
-  { id: 'yoga', label: 'Yoga', emoji: '🧘' },
-  { id: 'viaggi', label: 'Viaggi', emoji: '✈️' },
-  { id: 'fotografia', label: 'Fotografia', emoji: '📸' },
-  { id: 'giardinaggio', label: 'Giardinaggio', emoji: '🌱' },
-  { id: 'animali', label: 'Animali', emoji: '🐾' },
-  { id: 'cinema', label: 'Cinema', emoji: '🎬' },
-  { id: 'calcio', label: 'Calcio', emoji: '⚽' },
-  { id: 'tennis', label: 'Tennis', emoji: '🎾' },
-  { id: 'nuoto', label: 'Nuoto', emoji: '🏊' },
-  { id: 'teatro', label: 'Teatro', emoji: '🎭' },
-  { id: 'vino', label: 'Vino & Cibo', emoji: '🍷' },
-  { id: 'arrampicata', label: 'Arrampicata', emoji: '🧗' },
-  { id: 'danza', label: 'Danza', emoji: '💃' },
-  { id: 'scrittura', label: 'Scrittura', emoji: '✍️' },
-  { id: 'palestra', label: 'Palestra', emoji: '🏋️' },
-  { id: 'escursionismo', label: 'Escursionismo', emoji: '🏔️' },
-  { id: 'meditazione', label: 'Meditazione', emoji: '🧠' },
-  { id: 'cucito', label: 'Cucito', emoji: '🪡' },
-  { id: 'skateboard', label: 'Skateboard', emoji: '🛹' },
-  { id: 'surf', label: 'Sport Acquatici', emoji: '🌊' },
-  { id: 'campeggio', label: 'Campeggio', emoji: '🏕️' },
-  { id: 'karaoke', label: 'Karaoke', emoji: '🎤' },
-  { id: 'scacchi', label: 'Scacchi', emoji: '♟️' },
-  { id: 'podcast', label: 'Podcast', emoji: '🎙️' },
-  { id: 'bricolage', label: 'Bricolage', emoji: '🔨' },
+const HOBBIES: { id: string; label: string; icon: React.ReactNode }[] = [
+  { id: 'musica', label: 'Musica', icon: <Music size={14} /> },
+  { id: 'lettura', label: 'Lettura', icon: <BookOpen size={14} /> },
+  { id: 'cucina', label: 'Cucina', icon: <Sparkles size={14} /> },
+  { id: 'jogging', label: 'Jogging', icon: <Activity size={14} /> },
+  { id: 'ciclismo', label: 'Ciclismo', icon: <Bike size={14} /> },
+  { id: 'videogiochi', label: 'Videogiochi', icon: <Gamepad2 size={14} /> },
+  { id: 'arte', label: 'Arte', icon: <Palette size={14} /> },
+  { id: 'yoga', label: 'Yoga', icon: <Leaf size={14} /> },
+  { id: 'viaggi', label: 'Viaggi', icon: <Plane size={14} /> },
+  { id: 'fotografia', label: 'Fotografia', icon: <Camera size={14} /> },
+  { id: 'giardinaggio', label: 'Giardinaggio', icon: <Leaf size={14} /> },
+  { id: 'animali', label: 'Animali', icon: <PawPrint size={14} /> },
+  { id: 'cinema', label: 'Cinema', icon: <Film size={14} /> },
+  { id: 'calcio', label: 'Calcio', icon: <Activity size={14} /> },
+  { id: 'tennis', label: 'Tennis', icon: <Activity size={14} /> },
+  { id: 'nuoto', label: 'Nuoto', icon: <Waves size={14} /> },
+  { id: 'teatro', label: 'Teatro', icon: <Drama size={14} /> },
+  { id: 'vino', label: 'Vino & Cibo', icon: <Wine size={14} /> },
+  { id: 'arrampicata', label: 'Arrampicata', icon: <Mountain size={14} /> },
+  { id: 'danza', label: 'Danza', icon: <Music size={14} /> },
+  { id: 'scrittura', label: 'Scrittura', icon: <PenLine size={14} /> },
+  { id: 'palestra', label: 'Palestra', icon: <Dumbbell size={14} /> },
+  { id: 'escursionismo', label: 'Escursionismo', icon: <Mountain size={14} /> },
+  { id: 'meditazione', label: 'Meditazione', icon: <Brain size={14} /> },
+  { id: 'cucito', label: 'Cucito', icon: <Scissors size={14} /> },
+  { id: 'skateboard', label: 'Skateboard', icon: <Zap size={14} /> },
+  { id: 'surf', label: 'Sport Acquatici', icon: <Waves size={14} /> },
+  { id: 'campeggio', label: 'Campeggio', icon: <Tent size={14} /> },
+  { id: 'karaoke', label: 'Karaoke', icon: <Mic size={14} /> },
+  { id: 'scacchi', label: 'Scacchi', icon: <Target size={14} /> },
+  { id: 'podcast', label: 'Podcast', icon: <Mic2 size={14} /> },
+  { id: 'bricolage', label: 'Bricolage', icon: <Hammer size={14} /> },
 ];
 
 const PROPERTY_TYPES = [
@@ -378,7 +405,7 @@ export default function TenantProfilePage() {
             <CardHeader>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <span className="text-xl">👤</span>
+                  <User size={20} className="text-primary-500" />
                   <CardTitle>Informazioni Obbligatorie</CardTitle>
                 </div>
                 {!isEditingProfile && (
@@ -700,7 +727,7 @@ export default function TenantProfilePage() {
             <CardHeader>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <span className="text-xl">🎯</span>
+                  <Target size={20} className="text-primary-500" />
                   <CardTitle>I Tuoi Interessi</CardTitle>
                 </div>
                 <div className="flex items-center gap-2">
@@ -740,7 +767,7 @@ export default function TenantProfilePage() {
                         key={id}
                         className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium bg-primary-50 text-primary-700 border border-primary-200"
                       >
-                        <span>{h.emoji}</span>
+                        {h.icon}
                         {h.label}
                       </span>
                     ) : null;
@@ -765,7 +792,7 @@ export default function TenantProfilePage() {
                           : 'bg-white text-gray-600 border-gray-200 hover:border-primary-200 hover:text-primary-600'
                           }`}
                       >
-                        <span>{hobby.emoji}</span>
+                        {hobby.icon}
                         {hobby.label}
                       </button>
                     );
@@ -793,7 +820,7 @@ export default function TenantProfilePage() {
           <Card>
             <CardHeader>
               <div className="flex items-center gap-2">
-                <span className="text-xl">🎥</span>
+                <Video size={20} className="text-primary-500" />
                 <CardTitle>Video Presentazione</CardTitle>
               </div>
             </CardHeader>
@@ -819,7 +846,7 @@ export default function TenantProfilePage() {
           <Card>
             <CardHeader>
               <div className="flex items-center gap-2">
-                <span className="text-xl">📋</span>
+                <ClipboardList size={20} className="text-primary-500" />
                 <CardTitle>Riepilogo Ricerca</CardTitle>
               </div>
             </CardHeader>

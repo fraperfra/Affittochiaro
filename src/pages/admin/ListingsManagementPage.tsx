@@ -197,8 +197,8 @@ export default function ListingsManagementPage() {
                 </div>
 
                 {/* Agenzia */}
-                <p className="text-xs text-text-secondary mb-2">
-                  📍 <span className="font-medium">{listing.agencyName}</span>
+                <p className="text-xs text-text-secondary mb-2 flex items-center gap-1">
+                  <MapPin size={11} /><span className="font-medium">{listing.agencyName}</span>
                 </p>
 
                 {/* Price */}
@@ -474,7 +474,7 @@ export default function ListingsManagementPage() {
         </>
       ) : (
         <EmptyState
-          icon="🏠"
+          icon={<Home size={40} className="text-text-muted" />}
           title="Nessun annuncio trovato"
           description="Prova a modificare i filtri"
         />

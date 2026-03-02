@@ -14,6 +14,7 @@ import {
   Bookmark,
   BookmarkCheck,
   Trash2,
+  Check,
 } from 'lucide-react';
 import { formatRelativeTime, formatInitials } from '../../utils/formatters';
 import { Link } from 'react-router-dom';
@@ -254,7 +255,7 @@ function ProfileCard({
               <h3 className="text-base font-bold text-text-primary truncate">
                 {profile?.firstName} {profile?.lastName}
               </h3>
-              {profile?.isVerified && <Badge variant="success" size="sm">✓</Badge>}
+              {profile?.isVerified && <Badge variant="success" size="sm"><Check size={11} className="inline" /></Badge>}
               {type === 'salvati' && <Badge variant="warning" size="sm"><BookmarkCheck size={11} className="inline mr-0.5" />Salvato</Badge>}
               {type === 'sbloccati' && <Badge variant="primary" size="sm"><Unlock size={11} className="inline mr-0.5" />Sbloccato</Badge>}
             </div>

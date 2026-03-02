@@ -8,9 +8,11 @@ import {
   Video,
   CheckCircle,
   AlertCircle,
+  AlertTriangle,
   ArrowRight,
   Star,
   TrendingUp,
+  Zap,
 } from 'lucide-react';
 import { ROUTES } from '../../utils/constants';
 
@@ -117,10 +119,10 @@ export function ProfileCompletionCard({ profile }: ProfileCompletionCardProps) {
 
   // Get status message
   const getStatusMessage = () => {
-    if (completionPercentage >= 100) return { emoji: '🎉', text: 'Profilo completo! Le agenzie ti noteranno sicuramente.' };
-    if (completionPercentage >= 80) return { emoji: '🌟', text: 'Ottimo lavoro! Il tuo profilo e quasi perfetto.' };
-    if (completionPercentage >= 50) return { emoji: '💪', text: 'Buon inizio! Completa il profilo per piu visibilita.' };
-    return { emoji: '⚠️', text: 'Profilo incompleto. Le agenzie potrebbero non trovarti.' };
+    if (completionPercentage >= 100) return { icon: <CheckCircle size={20} className="text-green-500" />, text: 'Profilo completo! Le agenzie ti noteranno sicuramente.' };
+    if (completionPercentage >= 80) return { icon: <Star size={20} className="text-amber-500" />, text: 'Ottimo lavoro! Il tuo profilo e quasi perfetto.' };
+    if (completionPercentage >= 50) return { icon: <Zap size={20} className="text-amber-500" />, text: 'Buon inizio! Completa il profilo per piu visibilita.' };
+    return { icon: <AlertTriangle size={20} className="text-red-500" />, text: 'Profilo incompleto. Le agenzie potrebbero non trovarti.' };
   };
 
   const status = getStatusMessage();
@@ -131,7 +133,7 @@ export function ProfileCompletionCard({ profile }: ProfileCompletionCardProps) {
       <div className="p-4">
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-2">
-            <span className="text-xl">{status.emoji}</span>
+            {status.icon}
             <h3 className="font-semibold text-text-primary">Completamento Profilo</h3>
           </div>
           <div className={`flex items-center gap-1 px-2 py-1 rounded-full ${colors.bgLight}`}>

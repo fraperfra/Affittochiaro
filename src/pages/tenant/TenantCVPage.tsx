@@ -573,7 +573,7 @@ export default function TenantCVPage() {
           </div>
           <div className="border-2 border-dashed border-border rounded-xl p-8 text-center">
             <p className="text-text-secondary text-sm mb-2">Trascina qui il file oppure</p>
-            <Button variant="outline" size="sm" onClick={() => toast('Seleziona file dal dispositivo', { icon: '📁' })}>
+            <Button variant="outline" size="sm" onClick={() => toast('Seleziona file dal dispositivo')}>
               Sfoglia
             </Button>
             <p className="text-xs text-text-muted mt-2">PDF, JPG o PNG - Max 10MB</p>

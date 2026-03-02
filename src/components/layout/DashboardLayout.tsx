@@ -24,6 +24,8 @@ import {
   Wrench,
   BookOpen,
   Megaphone,
+  Check,
+  Video,
 } from 'lucide-react';
 import { useAuthStore } from '../../store';
 import { ROUTES } from '../../utils/constants';
@@ -82,19 +84,19 @@ const roleConfig = {
   tenant: {
     navItems: tenantNavItems,
     label: 'Area Inquilino',
-    emoji: '🏠',
+    icon: <Home size={16} />,
     color: 'primary',
   },
   agency: {
     navItems: agencyNavItems,
     label: 'Area Agenzia',
-    emoji: '🏢',
+    icon: <Building2 size={16} />,
     color: 'teal',
   },
   admin: {
     navItems: adminNavItems,
     label: 'Admin Panel',
-    emoji: '⚙️',
+    icon: <Settings size={16} />,
     color: 'accent',
   },
 };
@@ -421,7 +423,7 @@ export default function DashboardLayout({ userRole }: DashboardLayoutProps) {
             </div>
             <div className="mt-4">
               <span className="inline-flex items-center gap-2 px-3 py-1.5 bg-background-secondary rounded-full text-sm font-medium">
-                <span>{config.emoji}</span>
+                {config.icon}
                 <span>{config.label}</span>
               </span>
             </div>
@@ -451,10 +453,10 @@ export default function DashboardLayout({ userRole }: DashboardLayoutProps) {
             {userRole === 'tenant' && user?.role === 'tenant' && (
               <div className="flex gap-2 mt-3">
                 {(user as TenantUser).profile.isVerified && (
-                  <span className="badge badge-success">✓ Verificato</span>
+                  <span className="badge badge-success"><Check size={12} className="inline mr-0.5" />Verificato</span>
                 )}
                 {(user as TenantUser).profile.hasVideo && (
-                  <span className="badge badge-info">🎥 Video</span>
+                  <span className="badge badge-info"><Video size={12} className="inline mr-0.5" />Video</span>
                 )}
               </div>
             )}

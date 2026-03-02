@@ -1,7 +1,9 @@
+import React from 'react';
+import { Inbox } from 'lucide-react';
 import Button from './Button';
 
 interface EmptyStateProps {
-  icon?: string;
+  icon?: React.ReactNode;
   title: string;
   description?: string;
   action?: {
@@ -12,7 +14,7 @@ interface EmptyStateProps {
 }
 
 export default function EmptyState({
-  icon = '📭',
+  icon = <Inbox size={40} className="text-text-muted" />,
   title,
   description,
   action,

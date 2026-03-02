@@ -16,6 +16,9 @@ import {
   Bookmark,
   BookmarkCheck,
   Archive,
+  Crown,
+  Star,
+  Users,
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useTenantStore, useAuthStore, useAgencyStore } from '../../store';
@@ -484,12 +487,12 @@ export default function TenantSearchPage() {
                     )}
                     {tenant.tenantPlan === 'pro' && (
                       <span className="inline-flex items-center gap-1 text-xs font-bold px-2 py-0.5 rounded-full bg-amber-100 text-amber-700 border border-amber-300 flex-shrink-0">
-                        👑 Pro
+                        <Crown size={11} /> Pro
                       </span>
                     )}
                     {tenant.tenantPlan === 'premium' && (
                       <span className="inline-flex items-center gap-1 text-xs font-bold px-2 py-0.5 rounded-full bg-violet-100 text-violet-700 border border-violet-300 flex-shrink-0">
-                        ⭐ Premium
+                        <Star size={11} /> Premium
                       </span>
                     )}
                   </div>
@@ -511,8 +514,8 @@ export default function TenantSearchPage() {
                 >
                   {tenant.matchScore}% match
                 </Badge>
-                {tenant.isVerified && <Badge variant="success" size="sm">✓ Verificato</Badge>}
-                {tenant.hasVideo && <Badge variant="info" size="sm">🎥 Video</Badge>}
+                {tenant.isVerified && <Badge variant="success" size="sm"><Check size={11} className="inline mr-0.5" />Verificato</Badge>}
+                {tenant.hasVideo && <Badge variant="info" size="sm"><Video size={11} className="inline mr-0.5" />Video</Badge>}
                 {tenant.tenantPlan === 'pro' && (
                   <Badge size="sm" className="bg-amber-100 text-amber-700 border border-amber-300">Profilo Top</Badge>
                 )}
@@ -576,7 +579,7 @@ export default function TenantSearchPage() {
         </div>
       ) : (
         <EmptyState
-          icon="👥"
+          icon={<Users size={40} className="text-text-muted" />}
           title="Nessun inquilino trovato"
           description="Prova a modificare i filtri di ricerca"
         />
@@ -623,16 +626,16 @@ export default function TenantSearchPage() {
                   <div className="flex flex-wrap gap-1.5 mt-2">
                     {t.tenantPlan === 'pro' && (
                       <span className="inline-flex items-center gap-1 text-xs font-bold px-2.5 py-1 rounded-full bg-amber-100 text-amber-700 border border-amber-300">
-                        👑 Pro
+                        <Crown size={11} /> Pro
                       </span>
                     )}
                     {t.tenantPlan === 'premium' && (
                       <span className="inline-flex items-center gap-1 text-xs font-bold px-2.5 py-1 rounded-full bg-violet-100 text-violet-700 border border-violet-300">
-                        ⭐ Premium
+                        <Star size={11} /> Premium
                       </span>
                     )}
-                    {t.isVerified && <Badge variant="success" size="sm">✓ Verificato</Badge>}
-                    {t.hasVideo && <Badge variant="info" size="sm">🎥 Video</Badge>}
+                    {t.isVerified && <Badge variant="success" size="sm"><Check size={11} className="inline mr-0.5" />Verificato</Badge>}
+                    {t.hasVideo && <Badge variant="info" size="sm"><Video size={11} className="inline mr-0.5" />Video</Badge>}
                     {(() => { const score = filteredTenants.find(f => f.id === t.id)?.matchScore ?? calculateTenantScore(t); return (
                       <Badge variant={score >= 70 ? 'success' : score >= 50 ? 'warning' : 'error'} size="sm">
                         {score}% match

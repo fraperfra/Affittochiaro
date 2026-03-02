@@ -17,6 +17,10 @@ import {
   ExternalLink,
   Search,
   Trash2,
+  Bookmark,
+  Check,
+  PenLine,
+  Building2,
 } from 'lucide-react';
 import { useListingStore, useAuthStore } from '../../store';
 import type { CachedListing } from '../../store/listingStore';
@@ -273,7 +277,7 @@ export default function ListingsPage() {
   const handleRemoveSaved = useCallback((id: string, e: React.MouseEvent) => {
     e.stopPropagation();
     toggleSavedListing(id);
-    toast('Rimosso dai salvati', { icon: '🗑️' });
+    toast('Rimosso dai salvati');
   }, [toggleSavedListing]);
 
   const handleListingClick = useCallback((listing: SavedDisplay) => {
@@ -283,7 +287,7 @@ export default function ListingsPage() {
   const openApplicationForm = useCallback((listing: SavedDisplay, e?: React.MouseEvent) => {
     if (e) e.stopPropagation();
     if (appliedIds.includes(listing.id)) {
-      toast('Hai già inviato la candidatura per questo annuncio', { icon: '📝' });
+      toast('Hai già inviato la candidatura per questo annuncio');
       return;
     }
     setApplyingTo(listing);
@@ -397,7 +401,7 @@ export default function ListingsPage() {
         </div>
       ) : (
         <EmptyState
-          icon="🔖"
+          icon={<Bookmark size={40} className="text-text-muted" />}
           title="Nessun annuncio salvato"
           description="Salva gli annunci che ti interessano cliccando il cuore ♥ durante la ricerca"
           action={{
@@ -508,14 +512,14 @@ export default function ListingsPage() {
                 <h4 className="font-semibold mb-2">Caratteristiche</h4>
                 <div className="flex flex-wrap gap-2">
                   {selectedListing.features.map((feature) => (
-                    <Badge key={String(feature)} variant="success">✓ {String(feature)}</Badge>
+                    <Badge key={String(feature)} variant="success"><Check size={11} className="inline mr-0.5" />{String(feature)}</Badge>
                   ))}
                 </div>
               </div>
             )}
 
             <div className="flex items-center gap-3 p-4 bg-background-secondary rounded-xl">
-              <div className="w-12 h-12 rounded-full bg-primary-100 flex items-center justify-center">🏢</div>
+              <div className="w-12 h-12 rounded-full bg-primary-100 flex items-center justify-center"><Building2 size={20} className="text-primary-600" /></div>
               <div className="flex-1">
                 <p className="font-medium">{selectedListing.agencyName}</p>
                 <p className="text-sm text-text-muted">Agenzia verificata</p>

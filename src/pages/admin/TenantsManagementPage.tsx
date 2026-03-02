@@ -419,7 +419,7 @@ export default function TenantsManagementPage() {
         </>
       ) : (
         <EmptyState
-          icon="👥"
+          icon={<Users size={40} className="text-text-muted" />}
           title="Nessun inquilino trovato"
           description="Prova a modificare i filtri"
         />
@@ -453,7 +453,7 @@ export default function TenantsManagementPage() {
                 <p className="text-text-secondary">{selectedTenant.email}</p>
                 <div className="flex gap-2 mt-2">
                   <Badge variant={selectedTenant.isVerified ? 'success' : 'warning'}>
-                    {selectedTenant.isVerified ? '✓ Verificato' : 'Non verificato'}
+                    {selectedTenant.isVerified ? <><Check size={11} className="inline mr-0.5" />Verificato</> : 'Non verificato'}
                   </Badge>
                   <Badge variant={selectedTenant.status === 'active' ? 'success' : 'error'}>
                     {selectedTenant.status === 'active' ? 'Attivo' : 'Inattivo'}

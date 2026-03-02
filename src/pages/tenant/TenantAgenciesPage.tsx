@@ -227,7 +227,7 @@ export default function TenantAgenciesPage() {
         </>
       ) : (
         <EmptyState
-          icon="🏢"
+          icon={<Building2 size={40} className="text-text-muted" />}
           title="Nessuna agenzia trovata"
           description="Prova a modificare i filtri di ricerca"
         />
