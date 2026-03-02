@@ -126,7 +126,7 @@ const TabItemComponent = React.memo(function TabItemComponent({
           ? 'text-teal-500 font-semibold'
           : 'text-gray-500 font-normal'
           }`}
-        style={{ fontFamily: "'Mulish', system-ui, sans-serif" }}
+        style={{ fontFamily: "'Inter', 'Roboto', system-ui, sans-serif" }}
       >
         {item.label}
       </span>

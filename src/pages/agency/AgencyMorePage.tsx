@@ -71,83 +71,20 @@ export default function AgencyMorePage() {
     {
       title: 'Strumenti',
       items: [
-        {
-          icon: Unlock,
-          label: 'Profili Sbloccati',
-          path: ROUTES.AGENCY_UNLOCKED_PROFILES,
-          description: 'Contatti e profili già sbloccati',
-          badge: 0,
-          color: 'bg-indigo-50 text-indigo-600',
-        },
-        {
-          icon: FileText,
-          label: 'Documenti',
-          path: ROUTES.AGENCY_DOCUMENTS,
-          description: 'Contratti e file caricati',
-          badge: 0,
-          color: 'bg-orange-50 text-orange-600',
-        },
-        {
-          icon: Calculator,
-          label: 'Calcolatori',
-          path: ROUTES.AGENCY_CALCULATORS,
-          description: '14 calcolatori immobiliari',
-          badge: 0,
-          color: 'bg-teal-50 text-teal-600',
-        },
-        {
-          icon: Sparkles,
-          label: 'Servizi',
-          path: ROUTES.AGENCY_SERVICES,
-          description: 'Strumenti e funzionalità extra',
-          badge: 0,
-          color: 'bg-amber-50 text-amber-600',
-        },
-        {
-          icon: CreditCard,
-          label: 'Piano & Crediti',
-          path: ROUTES.AGENCY_PLAN,
-          description: `${credits} crediti disponibili`,
-          badge: 0,
-          color: 'bg-violet-50 text-violet-600',
-        },
+        { icon: Unlock,     label: 'Profili Sbloccati', path: ROUTES.AGENCY_UNLOCKED_PROFILES },
+        { icon: FileText,   label: 'Documenti',         path: ROUTES.AGENCY_DOCUMENTS },
+        { icon: Calculator, label: 'Calcolatori',       path: ROUTES.AGENCY_CALCULATORS },
+        { icon: Sparkles,   label: 'Servizi',           path: ROUTES.AGENCY_SERVICES },
+        { icon: CreditCard, label: 'Piano & Crediti',   path: ROUTES.AGENCY_PLAN },
       ],
     },
     {
       title: 'Impostazioni',
       items: [
-        {
-          icon: UserCog,
-          label: 'Account',
-          path: `${ROUTES.AGENCY_SETTINGS}?tab=account`,
-          description: 'Informazioni e logo agenzia',
-          badge: 0,
-          color: 'bg-gray-100 text-gray-600',
-        },
-        {
-          icon: ShieldCheck,
-          label: 'Sicurezza',
-          path: `${ROUTES.AGENCY_SETTINGS}?tab=security`,
-          description: 'Password e sessioni attive',
-          badge: 0,
-          color: 'bg-gray-100 text-gray-600',
-        },
-        {
-          icon: Bell,
-          label: 'Notifiche',
-          path: `${ROUTES.AGENCY_SETTINGS}?tab=notifications`,
-          description: 'Email, push e SMS',
-          badge: 0,
-          color: 'bg-gray-100 text-gray-600',
-        },
-        {
-          icon: LifeBuoy,
-          label: 'Assistenza',
-          path: `${ROUTES.AGENCY_SETTINGS}?tab=tickets`,
-          description: 'Apri un ticket di supporto',
-          badge: 0,
-          color: 'bg-gray-100 text-gray-600',
-        },
+        { icon: UserCog,    label: 'Account',    path: `${ROUTES.AGENCY_SETTINGS}?tab=account` },
+        { icon: ShieldCheck,label: 'Sicurezza',  path: `${ROUTES.AGENCY_SETTINGS}?tab=security` },
+        { icon: Bell,       label: 'Notifiche',  path: `${ROUTES.AGENCY_SETTINGS}?tab=notifications` },
+        { icon: LifeBuoy,   label: 'Assistenza', path: `${ROUTES.AGENCY_SETTINGS}?tab=tickets` },
       ],
     },
   ];
@@ -305,22 +242,12 @@ export default function AgencyMorePage() {
                 className="flex items-center justify-between bg-white rounded-2xl p-4 shadow-sm border border-gray-100 hover:border-teal-200 hover:shadow-md transition-all active:scale-[0.98] cursor-pointer group"
               >
                 <div className="flex items-center gap-3">
-                  <div className={`w-10 h-10 rounded-full ${item.color} flex items-center justify-center flex-shrink-0`}>
+                  <div className="w-10 h-10 rounded-full bg-teal-50 flex items-center justify-center text-teal-600 group-hover:bg-teal-100 transition-colors">
                     <Icon size={20} />
                   </div>
-                  <div>
-                    <p className="font-semibold text-gray-800">{item.label}</p>
-                    <p className="text-xs text-gray-400">{item.description}</p>
-                  </div>
+                  <span className="font-semibold text-gray-800">{item.label}</span>
                 </div>
-                <div className="flex items-center gap-2">
-                  {item.badge > 0 && (
-                    <span className="flex items-center justify-center min-w-[20px] h-5 px-1.5 text-[11px] font-bold text-white bg-red-500 rounded-full">
-                      {item.badge > 99 ? '99+' : item.badge}
-                    </span>
-                  )}
-                  <ChevronRight size={20} className="text-gray-400 group-hover:text-teal-600 transition-colors" />
-                </div>
+                <ChevronRight size={20} className="text-gray-400 group-hover:text-teal-600 transition-colors" />
               </NavLink>
             );
           })}
