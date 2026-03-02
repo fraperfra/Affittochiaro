@@ -12,8 +12,12 @@ import {
     Star,
     ArrowRight,
     MessageCircle,
-    Play
+    Play,
+    MapPin,
+    BadgeCheck,
+    Video,
 } from 'lucide-react';
+import { mockTenants } from '../src/utils/mockData';
 
 export const RicercaInquilinoPage: React.FC = () => {
 
@@ -195,6 +199,80 @@ export const RicercaInquilinoPage: React.FC = () => {
                             </div>
                         </div>
 
+                    </div>
+                </div>
+            </section>
+
+            {/* 2b. ULTIMI INQUILINI REGISTRATI */}
+            <section className="py-24 bg-white border-t border-gray-100">
+                <div className="max-w-7xl mx-auto px-4">
+                    <div className="text-center max-w-3xl mx-auto mb-16">
+                        <span className="text-primary-600 font-bold uppercase tracking-widest text-xs mb-2 block">Community</span>
+                        <h2 className="text-4xl font-bold font-serif text-gray-900 mb-6">Gli ultimi inquilini iscritti</h2>
+                        <p className="text-xl text-gray-500">Profili reali, verificati e pronti a trovare casa. Ecco chi si è appena unito alla nostra community.</p>
+                    </div>
+
+                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                        {mockTenants
+                            .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
+                            .slice(0, 20)
+                            .map((tenant) => (
+                                <div key={tenant.id} className="group bg-white rounded-3xl border border-gray-100 shadow-sm hover:shadow-xl hover:border-primary-200 transition-all duration-300 overflow-hidden">
+                                    {/* Avatar */}
+                                    <div className="relative h-48 bg-gradient-to-br from-primary-50 to-teal-50 flex items-center justify-center overflow-hidden">
+                                        {tenant.avatar ? (
+                                            <img
+                                                src={tenant.avatar}
+                                                alt={`${tenant.firstName} ${tenant.lastName}`}
+                                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                            />
+                                        ) : (
+                                            <div className="w-20 h-20 rounded-full bg-white shadow-lg flex items-center justify-center text-2xl font-bold text-primary-600">
+                                                {tenant.firstName.charAt(0)}{tenant.lastName.charAt(0)}
+                                            </div>
+                                        )}
+                                        {/* Badges overlay */}
+                                        <div className="absolute top-3 right-3 flex gap-1.5">
+                                            {tenant.isVerified && (
+                                                <span className="bg-white/90 backdrop-blur-sm text-primary-600 p-1.5 rounded-full shadow-sm" title="Verificato">
+                                                    <BadgeCheck className="w-4 h-4" />
+                                                </span>
+                                            )}
+                                            {tenant.hasVideo && (
+                                                <span className="bg-white/90 backdrop-blur-sm text-orange-500 p-1.5 rounded-full shadow-sm" title="Video presentazione">
+                                                    <Video className="w-4 h-4" />
+                                                </span>
+                                            )}
+                                        </div>
+                                    </div>
+
+                                    {/* Info */}
+                                    <div className="p-4 space-y-2">
+                                        <h3 className="font-bold text-gray-900 text-base truncate">
+                                            {tenant.firstName} {tenant.lastName.charAt(0)}.
+                                        </h3>
+                                        <div className="flex items-center gap-1.5 text-xs text-gray-500">
+                                            <Briefcase className="w-3.5 h-3.5 flex-shrink-0" />
+                                            <span className="truncate">{tenant.occupation || 'Non specificato'}</span>
+                                        </div>
+                                        <div className="flex items-center gap-1.5 text-xs text-gray-500">
+                                            <MapPin className="w-3.5 h-3.5 flex-shrink-0" />
+                                            <span className="truncate">{tenant.currentCity || 'Italia'}</span>
+                                        </div>
+                                        {tenant.bio && (
+                                            <p className="text-xs text-gray-400 line-clamp-2 mt-1 leading-relaxed">{tenant.bio}</p>
+                                        )}
+                                    </div>
+                                </div>
+                            ))}
+                    </div>
+
+                    <div className="text-center mt-12">
+                        <Link to="/register" className="btn bg-primary-600 text-white px-8 py-4 rounded-2xl text-lg font-bold shadow-xl shadow-primary-600/20 hover:bg-primary-700 transition-all inline-flex items-center gap-2">
+                            Scopri tutti gli inquilini
+                            <ArrowRight className="w-5 h-5" />
+                        </Link>
+                        <p className="text-sm text-gray-400 mt-3">Registrati gratis per vedere i profili completi</p>
                     </div>
                 </div>
             </section>

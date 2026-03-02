@@ -17,9 +17,14 @@ import {
     ChevronUp,
     Clock,
     UserX,
-    Briefcase
+    Briefcase,
+    Star,
+    BadgeCheck,
+    Globe,
+    Home,
 } from 'lucide-react';
 import { CityMap } from '../components';
+import { mockAgencies } from '../src/utils/mockData';
 
 export const AgenziePartnerPage: React.FC = () => {
     const navigate = useNavigate();
@@ -252,6 +257,113 @@ export const AgenziePartnerPage: React.FC = () => {
                                 </div>
                             </div>
                         ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* 5b. AGENZIE PARTNER LISTING */}
+            <section className="py-24 bg-gray-50 border-t border-gray-200">
+                <div className="max-w-7xl mx-auto px-4">
+                    <div className="text-center max-w-3xl mx-auto mb-16">
+                        <span className="text-primary-600 font-bold uppercase tracking-widest text-xs mb-2 block">Network</span>
+                        <h2 className="text-4xl font-bold font-serif text-gray-900 mb-6">Le nostre Agenzie Partner</h2>
+                        <p className="text-xl text-gray-500">Collaboriamo con le migliori agenzie immobiliari d'Italia per offrirti un servizio unico e affidabile.</p>
+                    </div>
+
+                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        {mockAgencies
+                            .sort((a, b) => (b.rating || 0) - (a.rating || 0))
+                            .map((agency) => (
+                                <div key={agency.id} className="group bg-white rounded-3xl border border-gray-100 shadow-sm hover:shadow-xl hover:border-primary-200 transition-all duration-300 overflow-hidden flex flex-col">
+                                    {/* Header with gradient */}
+                                    <div className="relative h-32 bg-gradient-to-br from-gray-900 to-gray-700 flex items-center justify-center overflow-hidden">
+                                        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-20"></div>
+                                        {agency.logo ? (
+                                            <img
+                                                src={agency.logo}
+                                                alt={agency.name}
+                                                className="w-16 h-16 rounded-2xl object-cover bg-white p-1 shadow-lg relative z-10"
+                                                onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                                            />
+                                        ) : (
+                                            <div className="w-16 h-16 rounded-2xl bg-white shadow-lg flex items-center justify-center text-2xl font-black text-primary-600 relative z-10">
+                                                {agency.name.charAt(0)}
+                                            </div>
+                                        )}
+                                        {agency.isVerified && (
+                                            <span className="absolute top-3 right-3 bg-primary-500 text-white p-1.5 rounded-full shadow-md z-10" title="Agenzia Verificata">
+                                                <BadgeCheck className="w-4 h-4" />
+                                            </span>
+                                        )}
+                                        {/* Plan Badge */}
+                                        <span className={`absolute top-3 left-3 text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full z-10 ${agency.plan === 'enterprise' ? 'bg-amber-400 text-amber-900' :
+                                                agency.plan === 'professional' ? 'bg-primary-500 text-white' :
+                                                    agency.plan === 'base' ? 'bg-teal-500 text-white' :
+                                                        'bg-gray-200 text-gray-600'
+                                            }`}>
+                                            {agency.plan === 'enterprise' ? '⭐ Enterprise' :
+                                                agency.plan === 'professional' ? 'Professional' :
+                                                    agency.plan === 'base' ? 'Base' : 'Free'}
+                                        </span>
+                                    </div>
+
+                                    {/* Body */}
+                                    <div className="p-6 flex-1 flex flex-col">
+                                        <h3 className="text-lg font-bold text-gray-900 mb-1 truncate">{agency.name}</h3>
+                                        <div className="flex items-center gap-1.5 text-sm text-gray-500 mb-3">
+                                            <MapPin className="w-4 h-4 flex-shrink-0" />
+                                            <span className="truncate">{agency.address?.city || 'Italia'}</span>
+                                        </div>
+
+                                        <p className="text-sm text-gray-500 leading-relaxed line-clamp-2 mb-4 flex-1">{agency.description}</p>
+
+                                        {/* Stats Row */}
+                                        <div className="grid grid-cols-3 gap-3 py-4 border-t border-gray-100">
+                                            <div className="text-center">
+                                                <div className="flex items-center justify-center gap-1 text-yellow-500 mb-0.5">
+                                                    <Star className="w-3.5 h-3.5 fill-current" />
+                                                    <span className="text-sm font-bold text-gray-900">{agency.rating ? agency.rating.toFixed(1) : '—'}</span>
+                                                </div>
+                                                <p className="text-[10px] text-gray-400 uppercase font-medium">Rating</p>
+                                            </div>
+                                            <div className="text-center border-x border-gray-100">
+                                                <div className="flex items-center justify-center gap-1 mb-0.5">
+                                                    <Home className="w-3.5 h-3.5 text-primary-500" />
+                                                    <span className="text-sm font-bold text-gray-900">{agency.activeListingsCount}</span>
+                                                </div>
+                                                <p className="text-[10px] text-gray-400 uppercase font-medium">Annunci</p>
+                                            </div>
+                                            <div className="text-center">
+                                                <div className="flex items-center justify-center gap-1 mb-0.5">
+                                                    <Users className="w-3.5 h-3.5 text-teal-500" />
+                                                    <span className="text-sm font-bold text-gray-900">{agency.reviewsCount}</span>
+                                                </div>
+                                                <p className="text-[10px] text-gray-400 uppercase font-medium">Recensioni</p>
+                                            </div>
+                                        </div>
+
+                                        {/* Contact Row */}
+                                        <div className="flex gap-2 mt-3">
+                                            {agency.phone && (
+                                                <a href={`tel:${agency.phone}`} className="flex-1 flex items-center justify-center gap-1.5 bg-gray-50 hover:bg-primary-50 text-gray-600 hover:text-primary-600 py-2.5 rounded-xl text-xs font-bold transition-colors border border-gray-100 hover:border-primary-200">
+                                                    <Phone className="w-3.5 h-3.5" />
+                                                    Chiama
+                                                </a>
+                                            )}
+                                            {agency.website && (
+                                                <a href={agency.website} target="_blank" rel="noopener noreferrer" className="flex-1 flex items-center justify-center gap-1.5 bg-gray-50 hover:bg-teal-50 text-gray-600 hover:text-teal-600 py-2.5 rounded-xl text-xs font-bold transition-colors border border-gray-100 hover:border-teal-200">
+                                                    <Globe className="w-3.5 h-3.5" />
+                                                    Sito Web
+                                                </a>
+                                            )}
+                                            <a href={`mailto:${agency.email}`} className="flex-1 flex items-center justify-center gap-1.5 bg-primary-600 hover:bg-primary-700 text-white py-2.5 rounded-xl text-xs font-bold transition-colors shadow-sm">
+                                                <Mail className="w-3.5 h-3.5" />
+                                                Contatta
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
                     </div>
                 </div>
             </section>
