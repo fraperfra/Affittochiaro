@@ -1,86 +1,388 @@
-import { NavLink } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { NavLink, useNavigate } from 'react-router-dom';
 import {
+  Building2,
+  Bell,
+  Edit2,
+  ChevronRight,
   Inbox,
+  Home,
+  Users,
+  CreditCard,
   FileText,
   Calculator,
-  CreditCard,
-  Settings,
+  ShieldCheck,
+  UserCog,
+  LifeBuoy,
+  Star,
+  Crown,
+  Zap,
   LogOut,
-  ChevronRight,
-  Users,
+  MapPin,
+  MessageSquare,
+  Unlock,
+  Sparkles,
+  Check,
 } from 'lucide-react';
 import { useAuthStore } from '../../store';
 import { ROUTES } from '../../utils/constants';
 import { formatInitials } from '../../utils/formatters';
 import { AgencyUser } from '../../types';
 
-const menuItems = [
-  { icon: Inbox, label: 'Candidature', path: ROUTES.AGENCY_APPLICATIONS, description: 'Gestisci le candidature ricevute' },
-  { icon: Users, label: 'Archivio Sbloccati', path: ROUTES.AGENCY_UNLOCKED_PROFILES, description: 'Profili e contatti sbloccati' },
-  { icon: FileText, label: 'Documenti', path: ROUTES.AGENCY_DOCUMENTS, description: 'Contratti e documenti' },
-  { icon: Calculator, label: 'Calcolatori', path: ROUTES.AGENCY_CALCULATORS, description: '14 calcolatori immobiliari' },
-  { icon: CreditCard, label: 'Piano', path: ROUTES.AGENCY_PLAN, description: 'Gestisci il tuo abbonamento' },
-  { icon: Settings, label: 'Impostazioni', path: ROUTES.AGENCY_SETTINGS, description: 'Privacy, notifiche, account' },
-];
+const PLAN_LABELS: Record<string, string> = {
+  free: 'Gratuito',
+  base: 'Base',
+  professional: 'Professional',
+  enterprise: 'Enterprise',
+};
+
+const PLAN_COLORS: Record<string, string> = {
+  free: 'text-gray-500',
+  base: 'text-blue-600',
+  professional: 'text-teal-600',
+  enterprise: 'text-purple-600',
+};
 
 export default function AgencyMorePage() {
   const { user, logout } = useAuthStore();
+  const navigate = useNavigate();
   const agencyUser = user as AgencyUser | null;
 
+  const [unreadApplications, setUnreadApplications] = useState(0);
+
+  useEffect(() => {
+    const stored = localStorage.getItem('affittochiaro_agency_notifications');
+    if (stored) {
+      try {
+        const notifications = JSON.parse(stored);
+        setUnreadApplications(notifications.filter((n: { read: boolean }) => !n.read).length);
+      } catch { /* ignore */ }
+    }
+  }, []);
+
   const name = agencyUser?.agency.name || 'Agenzia';
-  const email = user?.email || '';
   const logo = agencyUser?.agency.logoUrl;
+  const credits = agencyUser?.agency.credits ?? 0;
+  const activeListings = agencyUser?.agency.activeListingsCount ?? 0;
+  const city = agencyUser?.agency.city || 'Italia';
+  const plan = agencyUser?.agency.plan || 'free';
+  const isUpgradeable = plan === 'free' || plan === 'base';
+
+  // Sezioni del menu
+  const menuSections = [
+    {
+      title: 'Attività',
+      items: [
+        {
+          icon: Inbox,
+          label: 'Candidature',
+          path: ROUTES.AGENCY_APPLICATIONS,
+          description: 'Richieste di affitto ricevute',
+          badge: unreadApplications,
+          color: 'bg-blue-50 text-blue-600',
+        },
+        {
+          icon: Home,
+          label: 'I Miei Annunci',
+          path: ROUTES.AGENCY_LISTINGS,
+          description: `${activeListings} annunci attivi`,
+          badge: 0,
+          color: 'bg-green-50 text-green-600',
+        },
+        {
+          icon: Users,
+          label: 'Cerca Inquilini',
+          path: ROUTES.AGENCY_TENANTS,
+          description: 'Sfoglia i profili inquilino',
+          badge: 0,
+          color: 'bg-purple-50 text-purple-600',
+        },
+        {
+          icon: MessageSquare,
+          label: 'Messaggi',
+          path: ROUTES.AGENCY_MESSAGES,
+          description: 'Conversazioni con gli inquilini',
+          badge: 0,
+          color: 'bg-sky-50 text-sky-600',
+        },
+      ],
+    },
+    {
+      title: 'Strumenti',
+      items: [
+        {
+          icon: Unlock,
+          label: 'Profili Sbloccati',
+          path: ROUTES.AGENCY_UNLOCKED_PROFILES,
+          description: 'Contatti e profili già sbloccati',
+          badge: 0,
+          color: 'bg-indigo-50 text-indigo-600',
+        },
+        {
+          icon: FileText,
+          label: 'Documenti',
+          path: ROUTES.AGENCY_DOCUMENTS,
+          description: 'Contratti e file caricati',
+          badge: 0,
+          color: 'bg-orange-50 text-orange-600',
+        },
+        {
+          icon: Calculator,
+          label: 'Calcolatori',
+          path: ROUTES.AGENCY_CALCULATORS,
+          description: '14 calcolatori immobiliari',
+          badge: 0,
+          color: 'bg-teal-50 text-teal-600',
+        },
+        {
+          icon: Sparkles,
+          label: 'Servizi',
+          path: ROUTES.AGENCY_SERVICES,
+          description: 'Strumenti e funzionalità extra',
+          badge: 0,
+          color: 'bg-amber-50 text-amber-600',
+        },
+        {
+          icon: CreditCard,
+          label: 'Piano & Crediti',
+          path: ROUTES.AGENCY_PLAN,
+          description: `${credits} crediti disponibili`,
+          badge: 0,
+          color: 'bg-violet-50 text-violet-600',
+        },
+      ],
+    },
+    {
+      title: 'Impostazioni',
+      items: [
+        {
+          icon: UserCog,
+          label: 'Account',
+          path: `${ROUTES.AGENCY_SETTINGS}?tab=account`,
+          description: 'Informazioni e logo agenzia',
+          badge: 0,
+          color: 'bg-gray-100 text-gray-600',
+        },
+        {
+          icon: ShieldCheck,
+          label: 'Sicurezza',
+          path: `${ROUTES.AGENCY_SETTINGS}?tab=security`,
+          description: 'Password e sessioni attive',
+          badge: 0,
+          color: 'bg-gray-100 text-gray-600',
+        },
+        {
+          icon: Bell,
+          label: 'Notifiche',
+          path: `${ROUTES.AGENCY_SETTINGS}?tab=notifications`,
+          description: 'Email, push e SMS',
+          badge: 0,
+          color: 'bg-gray-100 text-gray-600',
+        },
+        {
+          icon: LifeBuoy,
+          label: 'Assistenza',
+          path: `${ROUTES.AGENCY_SETTINGS}?tab=tickets`,
+          description: 'Apri un ticket di supporto',
+          badge: 0,
+          color: 'bg-gray-100 text-gray-600',
+        },
+      ],
+    },
+  ];
 
   return (
-    <div className="space-y-4 max-w-lg mx-auto">
-      {/* Agency card */}
-      <div className="bg-white rounded-2xl shadow-card p-4 flex items-center gap-3">
-        {logo ? (
-          <img src={logo} alt={name} className="w-12 h-12 rounded-full object-cover" />
-        ) : (
-          <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary-400 to-teal-500 text-white flex items-center justify-center font-semibold text-sm">
-            {formatInitials(name.split(' ')[0], name.split(' ')[1])}
-          </div>
-        )}
-        <div className="flex-1 min-w-0">
-          <p className="font-semibold text-text-primary truncate">{name}</p>
-          <p className="text-sm text-text-secondary truncate">{email}</p>
+    <div className="space-y-6 max-w-lg mx-auto pb-8 pt-2">
+
+      {/* Header */}
+      <div className="flex items-center justify-between mb-2">
+        <div className="flex items-center gap-2">
+          <Building2 size={24} className="text-teal-600" />
+          <h1 className="text-xl font-bold text-teal-600">Agenzia</h1>
         </div>
+        <button
+          onClick={() => navigate(ROUTES.AGENCY_APPLICATIONS)}
+          className="p-1 flex items-center justify-center hover:bg-teal-50 rounded-full transition-colors relative cursor-pointer"
+        >
+          <Bell size={22} className="text-teal-600" />
+          {unreadApplications > 0 && (
+            <span className="absolute top-1 right-1 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-white" />
+          )}
+        </button>
       </div>
 
-      {/* Menu list */}
-      <div className="bg-white rounded-2xl shadow-card overflow-hidden divide-y divide-gray-100">
-        {menuItems.map((item) => {
-          const Icon = item.icon;
-          return (
+      {/* Agency Card */}
+      <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-6 relative overflow-hidden">
+        {/* Profile row */}
+        <div className="flex items-center gap-4 mb-6">
+          <div className="relative">
+            {logo ? (
+              <img
+                src={logo}
+                alt={name}
+                className="w-16 h-16 rounded-full object-cover border-2 border-teal-50"
+              />
+            ) : (
+              <div className="w-16 h-16 rounded-full bg-gradient-to-br from-teal-400 to-primary-500 text-white flex items-center justify-center font-bold text-xl border-2 border-teal-100">
+                {formatInitials(name.split(' ')[0], name.split(' ')[1])}
+              </div>
+            )}
             <NavLink
-              key={item.path}
-              to={item.path}
-              className="flex items-center gap-3 px-4 py-3.5 hover:bg-gray-50 active:bg-gray-100 transition-colors"
+              to={`${ROUTES.AGENCY_SETTINGS}?tab=account`}
+              className="absolute bottom-0 right-0 w-6 h-6 bg-white rounded-full shadow border border-gray-100 flex items-center justify-center text-teal-600 hover:bg-gray-50 cursor-pointer"
             >
-              <div className="w-9 h-9 rounded-xl bg-background-secondary flex items-center justify-center shrink-0">
-                <Icon size={18} className="text-primary-500" />
-              </div>
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-text-primary">{item.label}</p>
-                <p className="text-xs text-text-muted">{item.description}</p>
-              </div>
-              <ChevronRight size={16} className="text-gray-300 shrink-0" />
+              <Edit2 size={12} strokeWidth={2.5} />
             </NavLink>
-          );
-        })}
+          </div>
+          <div className="flex-1 min-w-0">
+            <h2 className="text-xl font-bold text-gray-900 truncate">{name}</h2>
+            <div className="flex items-center gap-1 mt-0.5">
+              <MapPin size={12} className="text-gray-400 flex-shrink-0" />
+              <p className="text-sm text-gray-500 truncate">{city}</p>
+            </div>
+            <div className="mt-1">
+              <span className={`text-xs font-semibold ${PLAN_COLORS[plan] || 'text-gray-500'}`}>
+                Piano {PLAN_LABELS[plan] || plan}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        {/* Stats Grid */}
+        <div>
+          <h3 className="text-xs font-bold text-gray-800 uppercase tracking-wider mb-3">Panoramica</h3>
+          <div className="grid grid-cols-2 gap-3">
+            <div className="bg-green-50/50 rounded-2xl p-3 flex items-center gap-3">
+              <div className="w-8 h-8 rounded-full bg-green-100 text-green-600 flex items-center justify-center flex-shrink-0">
+                <Home size={16} />
+              </div>
+              <div className="min-w-0">
+                <p className="text-[10px] text-gray-500 uppercase font-semibold">Annunci</p>
+                <p className="text-sm font-semibold text-gray-900">{activeListings > 0 ? `${activeListings} attivi` : 'Nessuno'}</p>
+              </div>
+            </div>
+            <div className="bg-blue-50/50 rounded-2xl p-3 flex items-center gap-3">
+              <div className="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center flex-shrink-0">
+                <Inbox size={16} />
+              </div>
+              <div className="min-w-0">
+                <p className="text-[10px] text-gray-500 uppercase font-semibold">Candidature</p>
+                <p className="text-sm font-semibold text-gray-900">
+                  {unreadApplications > 0 ? `${unreadApplications} nuove` : 'Aggiornate'}
+                </p>
+              </div>
+            </div>
+            <div className="bg-orange-50/50 rounded-2xl p-3 flex items-center gap-3">
+              <div className="w-8 h-8 rounded-full bg-orange-100 text-orange-600 flex items-center justify-center flex-shrink-0">
+                <CreditCard size={16} />
+              </div>
+              <div className="min-w-0">
+                <p className="text-[10px] text-gray-500 uppercase font-semibold">Crediti</p>
+                <p className="text-sm font-semibold text-gray-900">{credits}</p>
+              </div>
+            </div>
+            <div className="bg-purple-50/50 rounded-2xl p-3 flex items-center gap-3">
+              <div className="w-8 h-8 rounded-full bg-purple-100 text-purple-600 flex items-center justify-center flex-shrink-0">
+                <Crown size={16} />
+              </div>
+              <div className="min-w-0">
+                <p className="text-[10px] text-gray-500 uppercase font-semibold">Piano</p>
+                <p className={`text-sm font-semibold ${PLAN_COLORS[plan] || 'text-gray-900'}`}>
+                  {PLAN_LABELS[plan] || plan}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
-      {/* Logout */}
-      <button
-        onClick={() => logout()}
-        className="w-full bg-white rounded-2xl shadow-card px-4 py-3.5 flex items-center gap-3 hover:bg-red-50 active:bg-red-100 transition-colors"
-      >
-        <div className="w-9 h-9 rounded-xl bg-red-50 flex items-center justify-center">
-          <LogOut size={18} className="text-red-500" />
+      {/* Upgrade Banner — solo per piani free/base */}
+      {isUpgradeable && (
+        <div
+          onClick={() => navigate(ROUTES.AGENCY_PLAN)}
+          className="bg-gradient-to-r from-teal-500 to-primary-600 rounded-3xl p-6 text-white shadow-md relative overflow-hidden cursor-pointer hover:shadow-lg transition-shadow group"
+        >
+          <div className="absolute top-0 right-0 opacity-20 transform translate-x-4 -translate-y-4">
+            <Zap size={100} />
+          </div>
+          <div className="relative z-10">
+            <div className="inline-flex items-center gap-2 bg-white/20 px-3 py-1 rounded-full text-sm font-medium mb-3">
+              <Crown size={14} />
+              Professional
+            </div>
+            <h3 className="text-xl font-bold mb-2">Più accessi, più affitti</h3>
+            <p className="text-teal-50 text-sm mb-4">
+              Sblocca annunci illimitati, più crediti mensili e supporto prioritario.
+            </p>
+            <div className="grid grid-cols-3 gap-2 mb-4">
+              {['Annunci illimitati', 'Crediti extra', 'Supporto H24'].map((f) => (
+                <div key={f} className="flex items-start gap-1 bg-white/10 rounded-xl px-2 py-1.5">
+                  <Check size={11} className="text-teal-200 flex-shrink-0 mt-0.5" />
+                  <span className="text-[10px] text-teal-50 leading-tight">{f}</span>
+                </div>
+              ))}
+            </div>
+            <div className="w-full bg-white text-teal-700 font-bold py-2.5 rounded-xl text-center text-sm group-hover:bg-teal-50 transition-colors">
+              Scopri Professional
+            </div>
+          </div>
         </div>
-        <span className="text-sm font-medium text-red-600">Esci</span>
-      </button>
+      )}
+
+      {/* Menu Sections */}
+      {menuSections.map((section) => (
+        <div key={section.title} className="space-y-3">
+          <p className="text-xs font-bold text-gray-400 uppercase tracking-wider px-1">
+            {section.title}
+          </p>
+          {section.items.map((item) => {
+            const Icon = item.icon;
+            return (
+              <NavLink
+                key={item.path}
+                to={item.path}
+                className="flex items-center justify-between bg-white rounded-2xl p-4 shadow-sm border border-gray-100 hover:border-teal-200 hover:shadow-md transition-all active:scale-[0.98] cursor-pointer group"
+              >
+                <div className="flex items-center gap-3">
+                  <div className={`w-10 h-10 rounded-full ${item.color} flex items-center justify-center flex-shrink-0`}>
+                    <Icon size={20} />
+                  </div>
+                  <div>
+                    <p className="font-semibold text-gray-800">{item.label}</p>
+                    <p className="text-xs text-gray-400">{item.description}</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2">
+                  {item.badge > 0 && (
+                    <span className="flex items-center justify-center min-w-[20px] h-5 px-1.5 text-[11px] font-bold text-white bg-red-500 rounded-full">
+                      {item.badge > 99 ? '99+' : item.badge}
+                    </span>
+                  )}
+                  <ChevronRight size={20} className="text-gray-400 group-hover:text-teal-600 transition-colors" />
+                </div>
+              </NavLink>
+            );
+          })}
+        </div>
+      ))}
+
+      {/* Bottom Actions */}
+      <div className="flex gap-3 pt-2 pb-6">
+        <button
+          onClick={() => window.open('https://it.trustpilot.com/review/affittochiaro.it', '_blank')}
+          className="flex-1 flex items-center justify-center gap-2 bg-yellow-400 hover:bg-yellow-500 text-yellow-900 font-bold py-3.5 px-4 rounded-2xl shadow-sm transition-colors active:scale-[0.98] cursor-pointer"
+        >
+          <Star size={18} className="fill-yellow-900" />
+          Valuta App
+        </button>
+        <button
+          onClick={() => logout()}
+          className="flex-1 flex items-center justify-center gap-2 bg-gray-100 hover:bg-red-50 text-gray-600 hover:text-red-600 font-bold py-3.5 px-4 rounded-2xl shadow-sm transition-colors active:scale-[0.98] cursor-pointer"
+        >
+          <LogOut size={18} />
+          Esci
+        </button>
+      </div>
     </div>
   );
 }
