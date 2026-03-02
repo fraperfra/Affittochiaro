@@ -216,22 +216,28 @@ export default function TenantMorePage() {
       </div>
 
       {/* Extra Visibilità Banner */}
-      <div className="bg-gradient-to-r from-amber-400 to-orange-500 rounded-3xl p-6 text-white text-center shadow-md relative overflow-hidden group hover:shadow-lg transition-shadow cursor-pointer">
-        <div className="absolute top-0 right-0 opacity-20 transform translate-x-4 -translate-y-4">
-          <Sparkles size={100} />
+      <div
+        onClick={() => setIsExtraModalOpen(true)}
+        className="bg-gradient-to-r from-amber-400 to-orange-500 rounded-2xl px-4 py-3.5 text-white shadow-md relative overflow-hidden group hover:shadow-lg transition-shadow cursor-pointer"
+      >
+        <div className="absolute top-0 right-0 opacity-15 transform translate-x-2 -translate-y-2">
+          <Sparkles size={60} />
         </div>
-        <div className="relative z-10">
-          <div className="inline-flex items-center gap-2 bg-white/20 px-3 py-1 rounded-full text-sm font-medium mb-3">
-            <Sparkles size={14} />
-            Extra Visibilità
+        <div className="relative z-10 flex items-center justify-between gap-3">
+          <div className="flex items-center gap-3 min-w-0">
+            <div className="w-9 h-9 rounded-xl bg-white/20 flex items-center justify-center flex-shrink-0">
+              <Sparkles size={18} />
+            </div>
+            <div className="min-w-0">
+              <p className="font-bold text-sm leading-tight">Extra Visibilità</p>
+              <p className="text-orange-100 text-xs leading-tight truncate">Fatti notare di più dalle agenzie</p>
+            </div>
           </div>
-          <h3 className="text-xl font-bold mb-2">Fatti notare di più</h3>
-          <p className="text-orange-50 text-sm mb-4">Aumenta le probabilità di trovare casa prima degli altri.</p>
           <button
-            onClick={() => setIsExtraModalOpen(true)}
-            className="bg-white text-orange-600 font-bold py-2.5 px-6 rounded-xl hover:scale-105 transition-transform shadow-sm w-full block"
+            onClick={(e) => { e.stopPropagation(); setIsExtraModalOpen(true); }}
+            className="bg-white text-orange-600 font-bold py-1.5 px-4 rounded-xl text-sm flex-shrink-0 hover:scale-105 transition-transform shadow-sm"
           >
-            Ottieni Extra
+            Ottieni
           </button>
         </div>
       </div>
