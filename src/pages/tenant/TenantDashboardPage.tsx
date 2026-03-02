@@ -37,23 +37,23 @@ import { Card, CardHeader, CardTitle, Button, Badge, Modal } from '../../compone
 
 // Mock applications
 const mockApplications = [
-  { id: 1, title: 'Bilocale Milano · Via Brera 12', status: 'pending',  date: '2 giorni fa',   price: '1.100€/mese' },
-  { id: 2, title: 'Trilocale Roma · Via Cola di Rienzo',  status: 'accepted', date: '5 giorni fa',   price: '1.450€/mese' },
-  { id: 3, title: 'Monolocale Torino · Cit Turin',        status: 'rejected', date: '1 settimana fa', price: '650€/mese'  },
-  { id: 4, title: 'Bilocale Milano · Navigli',            status: 'pending',  date: '10 giorni fa',  price: '1.300€/mese' },
-  { id: 5, title: 'App. Bologna · Oltre La Fiera',        status: 'viewed',   date: '2 settimane fa', price: '900€/mese'  },
-  { id: 6, title: 'Trilocale Firenze · Santo Spirito',    status: 'pending',  date: '3 settimane fa', price: '1.600€/mese' },
-  { id: 7, title: 'Bilocale Milano · Porta Garibaldi',    status: 'rejected', date: '1 mese fa',     price: '1.250€/mese' },
-  { id: 8, title: 'Monolocale Roma · Trastevere',         status: 'accepted', date: '1 mese fa',     price: '850€/mese'  },
+  { id: 1, title: 'Bilocale Milano · Via Brera 12', status: 'pending', date: '2 giorni fa', price: '1.100€/mese' },
+  { id: 2, title: 'Trilocale Roma · Via Cola di Rienzo', status: 'accepted', date: '5 giorni fa', price: '1.450€/mese' },
+  { id: 3, title: 'Monolocale Torino · Cit Turin', status: 'rejected', date: '1 settimana fa', price: '650€/mese' },
+  { id: 4, title: 'Bilocale Milano · Navigli', status: 'pending', date: '10 giorni fa', price: '1.300€/mese' },
+  { id: 5, title: 'App. Bologna · Oltre La Fiera', status: 'viewed', date: '2 settimane fa', price: '900€/mese' },
+  { id: 6, title: 'Trilocale Firenze · Santo Spirito', status: 'pending', date: '3 settimane fa', price: '1.600€/mese' },
+  { id: 7, title: 'Bilocale Milano · Porta Garibaldi', status: 'rejected', date: '1 mese fa', price: '1.250€/mese' },
+  { id: 8, title: 'Monolocale Roma · Trastevere', status: 'accepted', date: '1 mese fa', price: '850€/mese' },
 ] as const;
 
 type AppStatus = typeof mockApplications[number]['status'];
 
 const statusMap: Record<AppStatus, { label: string; cls: string }> = {
-  pending:  { label: 'In attesa', cls: 'bg-amber-100 text-amber-700' },
+  pending: { label: 'In attesa', cls: 'bg-amber-100 text-amber-700' },
   accepted: { label: 'Accettata', cls: 'bg-green-100 text-green-700' },
-  rejected: { label: 'Rifiutata', cls: 'bg-red-100 text-red-600'   },
-  viewed:   { label: 'Visionata', cls: 'bg-blue-100 text-blue-700'  },
+  rejected: { label: 'Rifiutata', cls: 'bg-red-100 text-red-600' },
+  viewed: { label: 'Visionata', cls: 'bg-blue-100 text-blue-700' },
 };
 
 // Mock recent activity
@@ -314,13 +314,13 @@ function BudgetCalculatorCard() {
 }
 
 const EMPLOYMENT_LABELS: Record<string, string> = {
-  permanent:   'Tempo Indeterminato',
-  fixed_term:  'Tempo Determinato',
-  freelance:   'Libero Professionista',
-  internship:  'Stage/Tirocinio',
-  student:     'Studente',
-  retired:     'Pensionato',
-  unemployed:  'In cerca di occupazione',
+  permanent: 'Tempo Indeterminato',
+  fixed_term: 'Tempo Determinato',
+  freelance: 'Libero Professionista',
+  internship: 'Stage/Tirocinio',
+  student: 'Studente',
+  retired: 'Pensionato',
+  unemployed: 'In cerca di occupazione',
 };
 
 function ProfileHeaderCard({
@@ -399,13 +399,12 @@ function ProfileHeaderCard({
                 </h2>
                 <p className="text-xs text-gray-400 mt-0.5">Benvenuto! come va oggi?</p>
               </div>
-              <span className={`shrink-0 text-xs font-semibold px-2.5 py-1 rounded-full whitespace-nowrap ${
-                calculatedCompletion >= 80
+              <span className={`shrink-0 text-xs font-semibold px-2.5 py-1 rounded-full whitespace-nowrap ${calculatedCompletion >= 80
                   ? 'bg-green-100 text-green-700'
                   : calculatedCompletion >= 50
-                  ? 'bg-amber-100 text-amber-700'
-                  : 'bg-red-100 text-red-600'
-              }`}>
+                    ? 'bg-amber-100 text-amber-700'
+                    : 'bg-red-100 text-red-600'
+                }`}>
                 {calculatedCompletion}% completo
               </span>
             </div>
@@ -659,18 +658,18 @@ export default function TenantDashboardPage() {
         {(() => {
           const pct = calculatedCompletion;
           const color = pct >= 80 ? { bar: 'bg-green-500', text: 'text-green-600', pill: 'bg-green-50' }
-                      : pct >= 50 ? { bar: 'bg-amber-500', text: 'text-amber-600', pill: 'bg-amber-50' }
-                      :             { bar: 'bg-red-500',   text: 'text-red-600',   pill: 'bg-red-50'   };
+            : pct >= 50 ? { bar: 'bg-amber-500', text: 'text-amber-600', pill: 'bg-amber-50' }
+              : { bar: 'bg-red-500', text: 'text-red-600', pill: 'bg-red-50' };
           const completionIcon = pct >= 100 ? <CheckCircle size={20} className="text-green-500" /> : pct >= 80 ? <Star size={20} className="text-amber-500" /> : pct >= 50 ? <Zap size={20} className="text-amber-500" /> : <AlertTriangle size={20} className="text-red-500" />;
-          const msg   = pct >= 100 ? 'Profilo completo! Le agenzie ti noteranno.'
-                      : pct >= 80  ? 'Ottimo! Il tuo profilo è quasi perfetto.'
-                      : pct >= 50  ? 'Buon inizio! Completa il profilo per più visibilità.'
-                      :              'Profilo incompleto. Le agenzie potrebbero non trovarti.';
+          const msg = pct >= 100 ? 'Profilo completo! Le agenzie ti noteranno.'
+            : pct >= 80 ? 'Ottimo! Il tuo profilo è quasi perfetto.'
+              : pct >= 50 ? 'Buon inizio! Completa il profilo per più visibilità.'
+                : 'Profilo incompleto. Le agenzie potrebbero non trovarti.';
           return (
             <div className="bg-white rounded-2xl shadow-card p-4">
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-2">
-                  <span className="text-xl">{emoji}</span>
+                  <span className="text-xl">{pct >= 100 ? '🎉' : pct >= 80 ? '🌟' : pct >= 50 ? '⚡' : '⚠️'}</span>
                   <h3 className="font-semibold text-gray-900 text-sm">Completamento Profilo</h3>
                 </div>
                 <div className={`flex items-center gap-1 px-2.5 py-1 rounded-full ${color.pill}`}>

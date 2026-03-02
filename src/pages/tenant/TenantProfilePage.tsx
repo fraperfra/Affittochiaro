@@ -885,7 +885,7 @@ export default function TenantProfilePage() {
                       const h = HOBBIES.find(x => x.id === id);
                       return h ? (
                         <span key={id} className="text-xs bg-primary-50 text-primary-700 px-2 py-0.5 rounded-full">
-                          {h.emoji} {h.label}
+                          {h.icon} {h.label}
                         </span>
                       ) : null;
                     })}

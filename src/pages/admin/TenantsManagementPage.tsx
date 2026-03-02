@@ -12,6 +12,7 @@ import {
   Video,
   ChevronLeft,
   ChevronRight,
+  Users,
 } from 'lucide-react';
 import { useTenantStore } from '../../store';
 import { mockTenants } from '../../utils/mockData';
