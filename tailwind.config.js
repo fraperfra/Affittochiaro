@@ -79,30 +79,21 @@ export default {
         },
       },
       fontFamily: {
-        sans: [
-          'Inter',
-          'system-ui',
-          '-apple-system',
-          'BlinkMacSystemFont',
-          'Segoe UI',
-          'Roboto',
-          'Helvetica Neue',
-          'Arial',
-          'sans-serif',
-        ],
-        poppins: ['Poppins', 'sans-serif'],
+        sans: ['Mulish', 'system-ui', '-apple-system', 'sans-serif'],
+        serif: ['Lora', 'Georgia', 'serif'],
+        poppins: ['Mulish', 'sans-serif'],
       },
       fontSize: {
-        'xs': ['0.75rem', { lineHeight: '1rem' }],
-        'sm': ['0.875rem', { lineHeight: '1.25rem' }],
-        'base': ['1rem', { lineHeight: '1.5rem' }],
-        'lg': ['1.125rem', { lineHeight: '1.75rem' }],
-        'xl': ['1.25rem', { lineHeight: '1.75rem' }],
-        '2xl': ['1.5rem', { lineHeight: '2rem' }],
-        '3xl': ['1.875rem', { lineHeight: '2.25rem' }],
-        '4xl': ['2.25rem', { lineHeight: '2.5rem' }],
-        '5xl': ['3rem', { lineHeight: '1.16' }],
-        '6xl': ['3.75rem', { lineHeight: '1.1' }],
+        'xs': ['0.75rem', { lineHeight: '1rem' }],          /* 12px */
+        'sm': ['0.9375rem', { lineHeight: '1.25rem' }],     /* 15px */
+        'base': ['1rem', { lineHeight: '1.5rem' }],         /* 16px */
+        'lg': ['1.125rem', { lineHeight: '1.75rem' }],      /* 18px */
+        'xl': ['1.25rem', { lineHeight: '1.75rem' }],       /* 20px */
+        '2xl': ['1.5rem', { lineHeight: '2rem' }],          /* 24px */
+        '3xl': ['1.625rem', { lineHeight: '2rem' }],        /* 26px */
+        '4xl': ['2rem', { lineHeight: '2.5rem' }],          /* 32px */
+        '5xl': ['2.25rem', { lineHeight: '2.5rem' }],       /* 36px */
+        '6xl': ['3rem', { lineHeight: '1.16' }],            /* 48px */
       },
       spacing: {
         '18': '4.5rem',
