@@ -116,7 +116,7 @@ function BudgetCalculatorCard() {
             <Calculator size={20} className="text-primary-600" />
           </div>
           <div>
-            <h3 className="font-poppins font-semibold text-text-primary">Budget Ingresso Casa</h3>
+            <h3 className="font-sans font-semibold text-text-primary">Budget Ingresso Casa</h3>
             <p className="text-sm font-sans text-text-muted">
               {isExpanded ? 'Calcola quanto ti serve per entrare in casa' : `Stima totale: ${formatCurrency(totals.total)}`}
             </p>
@@ -279,8 +279,8 @@ function BudgetCalculatorCard() {
                 )}
                 <div className="border-t border-primary-200 pt-3 mt-1">
                   <div className="flex items-center justify-between">
-                    <span className="font-poppins font-semibold text-text-primary">Totale necessario</span>
-                    <span className="font-poppins text-2xl font-bold text-primary-600">{formatCurrency(totals.total)}</span>
+                    <span className="font-sans font-semibold text-text-primary">Totale necessario</span>
+                    <span className="font-sans text-2xl font-bold text-primary-600">{formatCurrency(totals.total)}</span>
                   </div>
                 </div>
               </div>

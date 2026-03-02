@@ -18,3 +18,4 @@ export {
 } from './Skeleton';
 export { default as AddToHomeScreenModal } from './AddToHomeScreenModal';
 export { default as OnboardingCard } from './OnboardingCard';
+export { PartnersCarousel } from './PartnersCarousel';

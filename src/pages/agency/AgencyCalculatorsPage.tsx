@@ -843,7 +843,7 @@ export default function AgencyCalculatorsPage() {
             <div className="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center mx-auto mb-4">
               <Crown size={32} />
             </div>
-            <h2 className="text-2xl font-bold font-poppins mb-2">Funzionalita Enterprise</h2>
+            <h2 className="text-2xl font-bold font-sans mb-2">Funzionalita Enterprise</h2>
             <p className="text-white/90 max-w-md mx-auto">
               I calcolatori professionali sono disponibili esclusivamente con il piano Enterprise.
               Passa al piano massimo per sbloccare tutti gli strumenti.

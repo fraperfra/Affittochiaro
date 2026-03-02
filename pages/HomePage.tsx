@@ -1,4 +1,5 @@
 import React from 'react';
+import { PartnersCarousel } from '../src/components/ui';
 import {
   Hero,
   Problems,
@@ -29,6 +30,7 @@ export const HomePage: React.FC<HomePageProps> = ({
   return (
     <>
       <Hero counter={counter} activeCityName={activeCityName} />
+      <PartnersCarousel />
       <Problems />
       <Benefits />
       <HowItWorks />

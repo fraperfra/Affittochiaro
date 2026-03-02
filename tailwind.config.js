@@ -81,7 +81,7 @@ export default {
       fontFamily: {
         sans: ['Inter', 'Roboto', 'system-ui', '-apple-system', 'sans-serif'],
         serif: ['Roboto', 'Georgia', 'serif'],
-        poppins: ['Inter', 'sans-serif'],
+        roboto: ['Roboto', 'Inter', 'sans-serif'],
       },
       fontSize: {
         'xs': ['0.75rem', { lineHeight: '1rem' }],          /* 12px */
