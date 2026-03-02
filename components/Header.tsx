@@ -61,6 +61,12 @@ export const Header: React.FC = () => {
             News
           </Link>
           <Link
+            to="/register"
+            className="text-primary-600 bg-primary-50 px-6 py-2.5 rounded-xl font-bold text-sm hover:bg-primary-100 transition-all border border-primary-200"
+          >
+            REGISTRATI
+          </Link>
+          <Link
             to="/login"
             className="bg-brand-green text-white px-6 py-2.5 rounded-xl font-bold text-sm hover:brightness-110 transition-all shadow-lg shadow-brand-green/10"
           >
