@@ -25,7 +25,7 @@ export const PartnersCarousel: React.FC = () => {
                     {partners.map((partner, index) => (
                         <div
                             key={`logo-1-${index}`}
-                            className="flex-shrink-0 mx-8 sm:mx-12 lg:mx-16 flex items-center justify-center grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-300 w-32 h-16 sm:w-40 sm:h-20"
+                            className="flex-shrink-0 mx-8 sm:mx-12 lg:mx-16 flex items-center justify-center opacity-80 hover:opacity-100 transition-all duration-300 w-32 h-16 sm:w-40 sm:h-20"
                         >
                             <img
                                 src={partner.img}
@@ -39,7 +39,7 @@ export const PartnersCarousel: React.FC = () => {
                     {partners.map((partner, index) => (
                         <div
                             key={`logo-2-${index}`}
-                            className="flex-shrink-0 mx-8 sm:mx-12 lg:mx-16 flex items-center justify-center grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-300 w-32 h-16 sm:w-40 sm:h-20"
+                            className="flex-shrink-0 mx-8 sm:mx-12 lg:mx-16 flex items-center justify-center opacity-80 hover:opacity-100 transition-all duration-300 w-32 h-16 sm:w-40 sm:h-20"
                         >
                             <img
                                 src={partner.img}
