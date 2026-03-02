@@ -45,6 +45,7 @@ const ConfirmEmailPage = lazy(() => import('./pages/ConfirmEmailPage'));
 const ForgotPasswordPage = lazy(() => import('./pages/ForgotPasswordPage'));
 
 // Tenant Pages - lazy loaded
+const TenantOnboardingPage = lazy(() => import('./pages/tenant/TenantOnboardingPage'));
 const TenantDashboardPage = lazy(() => import('./pages/tenant/TenantDashboardPage'));
 const TenantProfilePage = lazy(() => import('./pages/tenant/TenantProfilePage'));
 const TenantCVPreviewPage = lazy(() => import('./pages/tenant/TenantCVPreviewPage'));
@@ -372,6 +373,14 @@ function App() {
           />
 
           {/* Tenant Routes */}
+          <Route
+            path="/tenant/onboarding"
+            element={
+              <AuthGuard allowedRoles={['tenant']}>
+                <TenantOnboardingPage />
+              </AuthGuard>
+            }
+          />
           <Route
             path="/tenant"
             element={

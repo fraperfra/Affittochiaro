@@ -104,9 +104,6 @@ export default function SettingsPage() {
 
   // Feedback state
   const [feedbackRating, setFeedbackRating] = useState(0);
-  const [feedbackHover, setFeedbackHover] = useState(0);
-  const [feedbackCategory, setFeedbackCategory] = useState('generale');
-  const [feedbackText, setFeedbackText] = useState('');
 
   // Notification preferences state
   const [notifications, setNotifications] = useState<NotificationPreferences>({
@@ -221,32 +218,20 @@ export default function SettingsPage() {
   };
 
   const handleSendFeedback = () => {
-    if (feedbackRating === 0) {
-      toast.error('Seleziona una valutazione prima di inviare');
-      return;
-    }
-    if (!feedbackText.trim()) {
-      toast.error('Scrivi un commento per il tuo feedback');
-      return;
-    }
-    toast.success('Grazie per il tuo feedback! Lo terremo in grande considerazione.');
-    setFeedbackRating(0);
-    setFeedbackText('');
-    setFeedbackCategory('generale');
+    // Apri il link di Trustpilot in una nuova scheda
+    window.open('https://it.trustpilot.com/review/affittochiaro.it', '_blank');
   };
 
   const ToggleSwitch = ({ checked, onChange }: { checked: boolean; onChange: (v: boolean) => void }) => (
     <button
       type="button"
       onClick={() => onChange(!checked)}
-      className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-        checked ? 'bg-primary-500' : 'bg-gray-200'
-      }`}
+      className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${checked ? 'bg-primary-500' : 'bg-gray-200'
+        }`}
     >
       <span
-        className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-          checked ? 'translate-x-6' : 'translate-x-1'
-        }`}
+        className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${checked ? 'translate-x-6' : 'translate-x-1'
+          }`}
       />
     </button>
   );
@@ -276,11 +261,10 @@ export default function SettingsPage() {
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
-                    activeTab === tab.id
+                  className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${activeTab === tab.id
                       ? 'bg-primary-50 text-primary-600'
                       : 'text-text-secondary hover:bg-background-secondary'
-                  }`}
+                    }`}
                 >
                   {tab.icon}
                   {tab.label}
@@ -898,88 +882,24 @@ export default function SettingsPage() {
           {activeTab === 'feedback' && (
             <div className="space-y-6">
               <Card>
-                <div className="space-y-6">
+                <div className="space-y-6 flex flex-col items-center justify-center py-8 text-center">
+                  <div className="w-16 h-16 bg-green-50 rounded-full flex items-center justify-center mb-2">
+                    <Star className="w-8 h-8 text-green-500 fill-green-500" />
+                  </div>
                   <div>
-                    <h2 className="text-lg font-semibold text-text-primary">Lascia una recensione</h2>
-                    <p className="text-sm text-text-secondary mt-1">
-                      La tua opinione ci aiuta a migliorare Affittochiaro per tutti
+                    <h2 className="text-xl font-bold text-text-primary">Lascia una recensione su Trustpilot</h2>
+                    <p className="text-sm text-text-secondary mt-2 max-w-md mx-auto">
+                      La tua opinione è fondamentale! Aiutaci a migliorare e permetti ad altre persone di scoprire Affittochiaro lasciando una recensione autentica su Trustpilot.
                     </p>
                   </div>
 
-                  {/* Star Rating */}
-                  <div>
-                    <p className="text-sm font-medium text-text-primary mb-3">La tua valutazione complessiva</p>
-                    <div className="flex items-center gap-2">
-                      {[1, 2, 3, 4, 5].map((star) => (
-                        <button
-                          key={star}
-                          type="button"
-                          onClick={() => setFeedbackRating(star)}
-                          onMouseEnter={() => setFeedbackHover(star)}
-                          onMouseLeave={() => setFeedbackHover(0)}
-                          className="transition-transform hover:scale-110 active:scale-95"
-                          aria-label={`${star} stelle`}
-                        >
-                          <Star
-                            size={36}
-                            className={`transition-colors ${
-                              star <= (feedbackHover || feedbackRating)
-                                ? 'text-yellow-400 fill-yellow-400'
-                                : 'text-gray-300'
-                            }`}
-                          />
-                        </button>
-                      ))}
-                      {(feedbackHover || feedbackRating) > 0 && (
-                        <span className="ml-2 text-sm font-medium text-text-secondary">
-                          {ratingLabels[feedbackHover || feedbackRating]}
-                        </span>
-                      )}
-                    </div>
-                  </div>
-
-                  <hr className="border-border" />
-
-                  {/* Category */}
-                  <div>
-                    <label className="block text-sm font-medium text-text-primary mb-2">
-                      Categoria
-                    </label>
-                    <select
-                      className="input w-full md:w-auto text-sm"
-                      value={feedbackCategory}
-                      onChange={(e) => setFeedbackCategory(e.target.value)}
+                  <div className="pt-4">
+                    <Button
+                      onClick={handleSendFeedback}
+                      className="!bg-[#00b67a] hover:!bg-[#009e6a] text-white border-transparent"
                     >
-                      <option value="generale">Esperienza generale</option>
-                      <option value="profilo">Gestione profilo</option>
-                      <option value="annunci">Ricerca annunci</option>
-                      <option value="messaggi">Messaggi e comunicazione</option>
-                      <option value="agenzia">Rapporto con le agenzie</option>
-                      <option value="app">App e usabilita</option>
-                    </select>
-                  </div>
-
-                  {/* Comment */}
-                  <div>
-                    <label className="block text-sm font-medium text-text-primary mb-2">
-                      Il tuo commento
-                    </label>
-                    <textarea
-                      className="input w-full resize-none"
-                      rows={5}
-                      placeholder="Raccontaci la tua esperienza. Cosa ti è piaciuto? Cosa miglioreresti?"
-                      value={feedbackText}
-                      onChange={(e) => setFeedbackText(e.target.value)}
-                      maxLength={1000}
-                    />
-                    <p className="text-xs text-text-muted mt-1 text-right">
-                      {feedbackText.length}/1000
-                    </p>
-                  </div>
-
-                  <div className="pt-2">
-                    <Button onClick={handleSendFeedback} leftIcon={<Send size={16} />}>
-                      Invia Recensione
+                      <Star className="w-4 h-4 mr-2" />
+                      Vai a Trustpilot
                     </Button>
                   </div>
                 </div>
@@ -989,8 +909,7 @@ export default function SettingsPage() {
               <div className="flex items-start gap-3 p-4 bg-background-secondary rounded-xl text-sm text-text-muted">
                 <MessageSquare size={16} className="flex-shrink-0 mt-0.5" />
                 <p>
-                  Le tue recensioni ci aiutano a capire come migliorare il servizio. Il tuo feedback
-                  è anonimo e non verrà condiviso pubblicamente senza il tuo consenso.
+                  Ciccando sul pulsante verrai reindirizzato alla pagina ufficiale di Affittochiaro su Trustpilot.
                 </p>
               </div>
             </div>

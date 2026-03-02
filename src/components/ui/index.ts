@@ -17,3 +17,4 @@ export {
   ChatSkeleton,
 } from './Skeleton';
 export { default as AddToHomeScreenModal } from './AddToHomeScreenModal';
+export { default as OnboardingCard } from './OnboardingCard';

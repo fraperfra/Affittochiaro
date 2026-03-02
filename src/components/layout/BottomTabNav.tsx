@@ -10,6 +10,7 @@ import {
   Megaphone,
   MoreHorizontal,
   Settings,
+  User,
 } from 'lucide-react';
 import { ROUTES } from '../../utils/constants';
 
@@ -29,7 +30,7 @@ const tenantTabs: TabItem[] = [
   { icon: Home, label: 'Home', href: ROUTES.TENANT_DASHBOARD },
   { icon: Sparkles, label: 'Servizi', href: ROUTES.TENANT_SERVICES },
   { icon: Megaphone, label: 'Annunci', href: ROUTES.TENANT_LISTINGS },
-  { icon: MoreHorizontal, label: 'Altro', href: ROUTES.TENANT_MORE },
+  { icon: User, label: 'Profilo', href: ROUTES.TENANT_MORE },
 ];
 
 const agencyTabs: TabItem[] = [
