@@ -10,7 +10,7 @@ export const HowItWorks: React.FC = () => {
   const handleRegistrationComplete = (data: TenantRegistrationData) => {
     toast.success(
       <div>
-        <p className="font-bold">CV creato con successo!</p>
+        <p className="font-bold">Profilo creato con successo!</p>
         <p className="text-sm">Benvenuto {data.firstName}!</p>
       </div>,
       { duration: 4000 }
@@ -36,7 +36,7 @@ export const HowItWorks: React.FC = () => {
             <div className="text-left flex flex-col items-center lg:flex-1 w-full">
               <div className="flex items-center gap-3 mb-6 w-full lg:min-h-[80px]">
                 <div className="w-12 h-12 bg-action-green text-white rounded-full flex items-center justify-center font-bold text-xl shrink-0">1</div>
-                <h3 className="text-xl md:text-2xl lg:text-2xl font-bold text-brand-green leading-tight">Crea il Tuo Curriculum da Inquilino</h3>
+                <h3 className="text-xl md:text-2xl lg:text-2xl font-bold text-brand-green leading-tight">Crea il Tuo Profilo da Inquilino</h3>
               </div>
               <p className="text-lg text-medium-gray mb-12 w-full lg:min-h-[56px]">Registrati gratuitamente e compila il tuo <span className="font-bold text-brand-green">profilo completo</span>.</p>
               <div className="w-full relative mx-auto group flex-1 flex flex-col">
@@ -57,7 +57,7 @@ export const HowItWorks: React.FC = () => {
                     <div>
                       <h4 className="text-lg font-bold text-brand-green">Luca Martini</h4>
                       <div className="flex items-center gap-1.5 text-action-green">
-                        <svg className="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"/></svg>
+                        <svg className="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" /></svg>
                         <span className="text-[10px] font-extrabold uppercase tracking-tight">Profilo verificato</span>
                       </div>
                     </div>
@@ -78,7 +78,7 @@ export const HowItWorks: React.FC = () => {
                     onClick={() => setIsModalOpen(true)}
                     className="w-full py-4 bg-brand-green text-white rounded-2xl font-bold uppercase tracking-widest text-[10px] shadow-xl shadow-brand-green/10 active:scale-95 transition-transform mt-auto hover:bg-black"
                   >
-                    Crea il tuo CV
+                    Crea il tuo Profilo
                   </button>
                 </div>
               </div>
@@ -95,7 +95,7 @@ export const HowItWorks: React.FC = () => {
                 <div className="absolute inset-0 bg-white/20 backdrop-blur-sm"></div>
                 <div className="relative z-10 w-full max-w-[280px] bg-white rounded-[2rem] shadow-2xl p-4 animate-float">
                   <div className="aspect-square bg-gray-100 rounded-2xl mb-4 overflow-hidden">
-                    <img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&q=80&w=400" className="w-full h-full object-cover" alt="Casa"/>
+                    <img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&q=80&w=400" className="w-full h-full object-cover" alt="Casa" />
                   </div>
                   <div className="text-center">
                     <h4 className="font-bold text-brand-green">Appartamento Milano</h4>

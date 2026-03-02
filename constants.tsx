@@ -52,7 +52,7 @@ export const FAQS: FAQItem[] = [
 export const STEPS: Step[] = [
   {
     number: 1,
-    title: 'Crea il Tuo Curriculum da Inquilino',
+    title: 'Crea il Tuo Profilo da Inquilino',
     description: 'Registrati gratuitamente, compila il tuo profilo completo, carica documenti e una video presentazione di 60 secondi.',
     image: 'https://picsum.photos/seed/step1/800/600'
   },
