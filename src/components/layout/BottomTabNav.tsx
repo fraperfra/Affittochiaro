@@ -28,8 +28,8 @@ interface BottomTabNavProps {
 
 const tenantTabs: TabItem[] = [
   { icon: Home, label: 'Home', href: ROUTES.TENANT_DASHBOARD },
-  { icon: Sparkles, label: 'Servizi', href: ROUTES.TENANT_SERVICES },
   { icon: Megaphone, label: 'Annunci', href: ROUTES.TENANT_LISTINGS },
+  { icon: Sparkles, label: 'Servizi', href: ROUTES.TENANT_SERVICES },
   { icon: User, label: 'Profilo', href: ROUTES.TENANT_MORE },
 ];
 

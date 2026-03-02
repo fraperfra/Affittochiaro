@@ -79,9 +79,9 @@ export default {
         },
       },
       fontFamily: {
-        sans: ['Mulish', 'system-ui', '-apple-system', 'sans-serif'],
-        serif: ['Lora', 'Georgia', 'serif'],
-        poppins: ['Mulish', 'sans-serif'],
+        sans: ['Inter', 'Roboto', 'system-ui', '-apple-system', 'sans-serif'],
+        serif: ['Roboto', 'Georgia', 'serif'],
+        poppins: ['Inter', 'sans-serif'],
       },
       fontSize: {
         'xs': ['0.75rem', { lineHeight: '1rem' }],          /* 12px */

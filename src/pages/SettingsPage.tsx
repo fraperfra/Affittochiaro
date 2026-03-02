@@ -1,4 +1,5 @@
 import { useState, useRef } from 'react';
+import { useLocation } from 'react-router-dom';
 import {
   Bell,
   Shield,
@@ -87,7 +88,11 @@ export default function SettingsPage() {
   const isTenant = user?.role === 'tenant';
   const isAgency = user?.role === 'agency';
 
-  const [activeTab, setActiveTab] = useState<SettingsTab>('notifications');
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const initialTab = (searchParams.get('tab') as SettingsTab) || 'notifications';
+
+  const [activeTab, setActiveTab] = useState<SettingsTab>(initialTab);
   const [showPauseModal, setShowPauseModal] = useState(false);
   const [showPasswordModal, setShowPasswordModal] = useState(false);
 
@@ -262,8 +267,8 @@ export default function SettingsPage() {
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
                   className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${activeTab === tab.id
-                      ? 'bg-primary-50 text-primary-600'
-                      : 'text-text-secondary hover:bg-background-secondary'
+                    ? 'bg-primary-50 text-primary-600'
+                    : 'text-text-secondary hover:bg-background-secondary'
                     }`}
                 >
                   {tab.icon}
