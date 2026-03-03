@@ -82,13 +82,14 @@ export const Header: React.FC = () => {
         className={`fixed inset-0 bg-black/40 z-40 md:hidden transition-opacity duration-300 ${mobileOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
           }`}
         onClick={() => setMobileOpen(false)}
-        style={{ top: '64px' }}
+        style={{ top: 'calc(4rem + env(safe-area-inset-top, 0px))' }}
       />
 
       {/* Slide panel */}
       <div
-        className={`fixed top-16 right-0 bottom-0 w-[280px] bg-white z-50 md:hidden transform transition-transform duration-300 ease-out shadow-2xl ${mobileOpen ? 'translate-x-0' : 'translate-x-full'
+        className={`fixed right-0 bottom-0 w-[280px] bg-white z-50 md:hidden transform transition-transform duration-300 ease-out shadow-2xl ${mobileOpen ? 'translate-x-0' : 'translate-x-full'
           }`}
+        style={{ top: 'calc(4rem + env(safe-area-inset-top, 0px))' }}
       >
         <nav className="flex flex-col h-full">
           {/* Navigation links */}

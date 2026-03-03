@@ -149,7 +149,8 @@ function AuthMobileMenu({ role }: { role: string }) {
       {/* Hamburger button — top-right, mobile only */}
       <button
         onClick={() => setOpen(true)}
-        className="md:hidden fixed top-3 right-4 z-[60] p-2.5 bg-white rounded-xl shadow-md border border-gray-100"
+        className="md:hidden fixed right-4 z-[60] p-2.5 bg-white rounded-xl shadow-md border border-gray-100"
+        style={{ top: 'calc(0.75rem + env(safe-area-inset-top, 0px))' }}
         aria-label="Menu"
       >
         <Menu size={22} className="text-gray-700" />
@@ -165,7 +166,10 @@ function AuthMobileMenu({ role }: { role: string }) {
 
       {/* Drawer */}
       <div className={`md:hidden fixed top-0 right-0 h-full w-72 z-[80] bg-white shadow-2xl transform transition-transform duration-300 ${open ? 'translate-x-0' : 'translate-x-full'}`}>
-        <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100">
+        <div
+          className="flex items-center justify-between px-5 py-4 border-b border-gray-100"
+          style={{ paddingTop: 'calc(1rem + env(safe-area-inset-top, 0px))' }}
+        >
           <span className="font-bold text-gray-900 text-base">Menu</span>
           <button onClick={() => setOpen(false)} className="p-1.5 rounded-lg hover:bg-gray-100">
             <XIcon size={20} className="text-gray-600" />
