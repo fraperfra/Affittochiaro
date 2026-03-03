@@ -33,10 +33,10 @@ export const Header: React.FC = () => {
 
   return (
     <div
-      className="fixed top-0 left-0 right-0 z-50 flex flex-col shadow-sm bg-white/95 backdrop-blur-md"
+      className="fixed top-0 left-0 right-0 z-50 flex flex-col shadow-sm bg-white"
       style={{ paddingTop: 'env(safe-area-inset-top, 0px)' }}
     >
-      <header className="px-4 md:px-8 h-16 md:h-20 flex items-center justify-between border-b border-gray-100">
+      <header className="bg-white/95 backdrop-blur-md px-4 md:px-8 h-16 md:h-20 flex items-center justify-between border-b border-gray-100">
         <Link to="/" className="flex items-center">
           <img src="/assets/logoaffittochiaro_pic.webp" alt="Affittochiaro" className="h-8 md:h-10 w-auto" />
         </Link>
