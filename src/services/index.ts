@@ -29,7 +29,6 @@ export const authService = mockAuthApi;
 export type { ICVService } from './cv/ICVService';
 
 import { mockCVService } from './mock/mockCVService';
-// import { cvApiService } from './cv/cvApiService'; // Da implementare con backend
 export const cvService = mockCVService; // USE_MOCK ? mockCVService : cvApiService
 
 // ============================================================

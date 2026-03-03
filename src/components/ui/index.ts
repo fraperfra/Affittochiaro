@@ -6,7 +6,6 @@ export { default as Badge } from './Badge';
 export { default as Modal, ModalFooter } from './Modal';
 export { default as Spinner, FullPageSpinner } from './Spinner';
 export { default as EmptyState } from './EmptyState';
-export { ProfileCompletionCard } from './ProfileCompletionCard';
 export {
   default as Skeleton,
   StatCardsSkeleton,
