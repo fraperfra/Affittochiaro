@@ -546,9 +546,11 @@ export default function DashboardLayout({ userRole }: DashboardLayoutProps) {
               </div>
             </div>
 
-            {/* Desktop: search + actions */}
+            {/* Desktop: search */}
             <GlobalSearch userRole={userRole} navigate={navigate} />
-            <div className="hidden md:flex items-center gap-3 ml-auto">
+
+            {/* Actions: bell (mobile + desktop) + user menu (desktop only) */}
+            <div className="flex items-center gap-1 ml-auto">
               {/* Notification bell + dropdown */}
               <div className="relative" ref={notifRef}>
                 <button
@@ -604,7 +606,8 @@ export default function DashboardLayout({ userRole }: DashboardLayoutProps) {
                   </div>
                 )}
               </div>
-              <div className="relative">
+              {/* User menu — desktop only */}
+              <div className="relative hidden md:block">
                 <button
                   onClick={() => setUserMenuOpen(!userMenuOpen)}
                   className="flex items-center gap-2 p-1.5 rounded-lg hover:bg-background-secondary"

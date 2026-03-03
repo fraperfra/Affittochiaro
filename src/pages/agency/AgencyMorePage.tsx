@@ -91,24 +91,6 @@ export default function AgencyMorePage() {
 
   return (
     <div className="space-y-6 max-w-lg mx-auto pb-8 pt-2">
-
-      {/* Header */}
-      <div className="flex items-center justify-between mb-2">
-        <div className="flex items-center gap-2">
-          <Building2 size={24} className="text-teal-600" />
-          <h1 className="text-xl font-bold text-teal-600">Agenzia</h1>
-        </div>
-        <button
-          onClick={() => navigate(ROUTES.AGENCY_APPLICATIONS)}
-          className="p-1 flex items-center justify-center hover:bg-teal-50 rounded-full transition-colors relative cursor-pointer"
-        >
-          <Bell size={22} className="text-teal-600" />
-          {unreadApplications > 0 && (
-            <span className="absolute top-1 right-1 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-white" />
-          )}
-        </button>
-      </div>
-
       {/* Agency Card */}
       <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-6 relative overflow-hidden">
         {/* Profile row */}

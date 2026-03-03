@@ -3,7 +3,6 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import {
   User,
   Bell,
-  Lightbulb,
   Edit2,
   ChevronRight,
   MapPin,
@@ -124,25 +123,6 @@ export default function TenantMorePage() {
 
   return (
     <div className="space-y-6 max-w-lg mx-auto pb-8 pt-2">
-      {/* Header */}
-      <div className="flex items-center justify-between mb-2">
-        <div className="flex items-center gap-2">
-          <User size={24} className="text-teal-600" />
-          <h1 className="text-xl font-bold text-teal-600">Profilo</h1>
-        </div>
-        <div className="flex items-center gap-4 text-teal-600">
-          <button className="p-1 hover:bg-teal-50 flex items-center justify-center rounded-full transition-colors cursor-pointer">
-            <Lightbulb size={22} className="text-teal-600" />
-          </button>
-          <NavLink to={ROUTES.TENANT_NOTIFICATIONS} className="p-1 flex items-center justify-center hover:bg-teal-50 rounded-full transition-colors relative cursor-pointer">
-            <Bell size={22} className="text-teal-600" />
-            {tenantUser && (
-              <span className="absolute top-1 right-1 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-white" />
-            )}
-          </NavLink>
-        </div>
-      </div>
-
       {/* Profile Card */}
       <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-6 relative overflow-hidden">
         <div className="flex items-center gap-4 mb-6">
