@@ -515,11 +515,72 @@ export default function DashboardLayout({ userRole }: DashboardLayoutProps) {
 
       {/* Main Content */}
       <div className="md:pl-72">
+        {/* Top Bar */}
+        <header className="sticky top-0 z-30 bg-white border-b border-border backdrop-blur-sm" style={{ paddingTop: 'env(safe-area-inset-top, 0px)' }}>
+          <div className="flex items-center justify-between h-14 px-4 lg:px-6">
+            {/* Mobile: centered logo only */}
+            <div className="flex md:hidden absolute inset-x-0 justify-center pointer-events-none" style={{ top: 'calc(env(safe-area-inset-top, 0px))' }}>
+              <div className="h-14 flex items-center">
+                <img src="/assets/logoaffittochiaro_pic.webp" alt="Affittochiaro" className="h-8 w-auto" />
+              </div>
+            </div>
+
+            {/* Desktop: search + actions */}
+            <GlobalSearch userRole={userRole} navigate={navigate} />
+            <div className="hidden md:flex items-center gap-3 ml-auto">
+              <button className="relative p-2 rounded-lg hover:bg-background-secondary" onClick={() => navigate(userRole === 'tenant' ? ROUTES.TENANT_NOTIFICATIONS : '#')}>
+                <Bell size={20} className="text-text-secondary" />
+                <span className="absolute top-1 right-1 w-2 h-2 bg-accent-500 rounded-full" />
+              </button>
+              <div className="relative">
+                <button
+                  onClick={() => setUserMenuOpen(!userMenuOpen)}
+                  className="flex items-center gap-2 p-1.5 rounded-lg hover:bg-background-secondary"
+                >
+                  {userInfo.avatar ? (
+                    <img src={userInfo.avatar} alt={userInfo.name} className="avatar avatar-sm" />
+                  ) : (
+                    <div className="avatar avatar-sm bg-gradient-to-br from-primary-400 to-teal-500 text-white text-xs">
+                      {formatInitials(userInfo.name.split(' ')[0], userInfo.name.split(' ')[1])}
+                    </div>
+                  )}
+                  <ChevronDown size={16} className="text-text-muted" />
+                </button>
+                {userMenuOpen && (
+                  <>
+                    <div className="fixed inset-0 z-40" onClick={() => setUserMenuOpen(false)} />
+                    <div className="absolute right-0 top-full mt-2 w-48 bg-white rounded-xl shadow-medium border border-border z-50">
+                      <div className="p-2">
+                        <button
+                          onClick={() => { setUserMenuOpen(false); navigate(userRole === 'tenant' ? ROUTES.TENANT_PROFILE : '#'); }}
+                          className="w-full px-3 py-2 text-left text-sm rounded-lg hover:bg-background-secondary"
+                        >
+                          <User size={16} className="inline mr-2" />Profilo
+                        </button>
+                        <button
+                          onClick={() => { setUserMenuOpen(false); navigate(userRole === 'tenant' ? ROUTES.TENANT_SETTINGS : userRole === 'agency' ? ROUTES.AGENCY_SETTINGS : ROUTES.ADMIN_SYSTEM); }}
+                          className="w-full px-3 py-2 text-left text-sm rounded-lg hover:bg-background-secondary"
+                        >
+                          <Settings size={16} className="inline mr-2" />Impostazioni
+                        </button>
+                        <hr className="my-2 border-border" />
+                        <button
+                          onClick={handleLogout}
+                          className="w-full px-3 py-2 text-left text-sm rounded-lg text-error hover:bg-red-50"
+                        >
+                          <LogOut size={16} className="inline mr-2" />Esci
+                        </button>
+                      </div>
+                    </div>
+                  </>
+                )}
+              </div>
+            </div>
+          </div>
+        </header>
+
         {/* Page Content */}
-        <main
-          className="p-4 md:p-6 pb-32 md:pb-6"
-          style={{ paddingTop: 'calc(1rem + env(safe-area-inset-top, 0px))' }}
-        >
+        <main className="p-4 md:p-6 pb-32 md:pb-6">
           <Outlet />
         </main>
       </div>
