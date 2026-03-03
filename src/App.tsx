@@ -218,7 +218,6 @@ function LandingWrapper({ children }: { children: React.ReactNode }) {
         {children}
       </main>
       <Footer />
-      {!isAuthenticated && <StickyBottomBar onMenuToggle={() => { }} />}
       {!isAuthenticated && <ExitIntentPopup />}
       <AddToHomeScreenModal />
       <CMSEditToggle />

@@ -39,13 +39,15 @@ export const Hero: React.FC<HeroProps> = ({ counter, activeCityName }) => {
               NOVITÀ: VIDEO PRESENTAZIONE INQUILINO
             </InlineEditor>
             <div className="mb-8">
-              <InlineEditor id="home.hero.title" as="h1" className="text-3xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-brand-green leading-[1.1]" multiline>
-                Smetti di inviare email a vuoto. Trova casa in meno di 2 Settimane
-              </InlineEditor>
+              <h1 className="text-3xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-brand-green leading-[1.1]">
+                Smetti di inviare <br />
+                <span className="text-error-red">email a vuoto</span>. <br />
+                Trova casa in meno di <span className="underline-green text-action-green">2 Settimane</span>
+              </h1>
             </div>
-            <InlineEditor id="home.hero.subtitle" as="p" className="text-xl md:text-2xl text-medium-gray max-w-3xl mx-auto lg:mx-0 mb-12 leading-relaxed" multiline>
-              Basta ignorare annunci già scaduti. Crea il tuo Profilo Verificato, presenta te stesso con un CV dedicato e ricevi risposte dai proprietari in meno di 24 ore.
-            </InlineEditor>
+            <p className="text-xl md:text-2xl text-medium-gray max-w-3xl mx-auto lg:mx-0 mb-12 leading-relaxed">
+              Basta ignorare annunci già scaduti. Crea il tuo <span className="font-bold text-brand-green">Profilo Verificato</span>, presenta te stesso con un <span className="font-bold text-brand-green">CV dedicato</span> e ricevi risposte dai proprietari in <span className="font-bold text-brand-green">meno di 24 ore.</span>
+            </p>
 
             <div className="flex flex-col sm:flex-row items-center gap-4 mb-12">
               <button
