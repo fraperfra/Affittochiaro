@@ -27,10 +27,10 @@ import {
   Check,
   Video,
 } from 'lucide-react';
-import { useAuthStore } from '../../store';
+import { useAuthStore, useNotificationStore } from '../../store';
 import { ROUTES } from '../../utils/constants';
-import { formatInitials } from '../../utils/formatters';
-import { mockTenants, mockAgencies, mockListings } from '../../utils/mockData';
+import { formatInitials, formatRelativeTime } from '../../utils/formatters';
+import { mockTenants, mockAgencies, mockListings, generateMockNotifications } from '../../utils/mockData';
 import { TenantUser, AgencyUser, AdminUser } from '../../types';
 import BottomTabNav from './BottomTabNav';
 
@@ -315,8 +315,11 @@ const PAGE_TITLES: Record<string, string> = {
 export default function DashboardLayout({ userRole }: DashboardLayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const [notifOpen, setNotifOpen] = useState(false);
   const [unreadApplications, setUnreadApplications] = useState(0);
+  const notifRef = useRef<HTMLDivElement>(null);
   const { user, logout } = useAuthStore();
+  const { notifications, unreadCount, setNotifications, markAsRead } = useNotificationStore();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -331,6 +334,24 @@ export default function DashboardLayout({ userRole }: DashboardLayoutProps) {
     logout();
     navigate(ROUTES.LOGIN);
   };
+
+  // Seed mock notifications if store is empty
+  useEffect(() => {
+    if (notifications.length === 0) {
+      setNotifications(generateMockNotifications('user-1', 20));
+    }
+  }, []);
+
+  // Close notif dropdown on outside click
+  useEffect(() => {
+    const handleClick = (e: MouseEvent) => {
+      if (notifRef.current && !notifRef.current.contains(e.target as Node)) {
+        setNotifOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClick);
+    return () => document.removeEventListener('mousedown', handleClick);
+  }, []);
 
   // Load unread applications count from localStorage
   useEffect(() => {
@@ -528,10 +549,61 @@ export default function DashboardLayout({ userRole }: DashboardLayoutProps) {
             {/* Desktop: search + actions */}
             <GlobalSearch userRole={userRole} navigate={navigate} />
             <div className="hidden md:flex items-center gap-3 ml-auto">
-              <button className="relative p-2 rounded-lg hover:bg-background-secondary" onClick={() => navigate(userRole === 'tenant' ? ROUTES.TENANT_NOTIFICATIONS : '#')}>
-                <Bell size={20} className="text-text-secondary" />
-                <span className="absolute top-1 right-1 w-2 h-2 bg-accent-500 rounded-full" />
-              </button>
+              {/* Notification bell + dropdown */}
+              <div className="relative" ref={notifRef}>
+                <button
+                  className="relative p-2 rounded-lg hover:bg-background-secondary"
+                  onClick={() => setNotifOpen(o => !o)}
+                >
+                  <Bell size={20} className="text-text-secondary" />
+                  {unreadCount > 0 && (
+                    <span className="absolute top-1 right-1 w-2 h-2 bg-accent-500 rounded-full" />
+                  )}
+                </button>
+
+                {notifOpen && (
+                  <div className="absolute right-0 top-full mt-2 w-80 bg-white rounded-xl shadow-medium border border-border z-50 overflow-hidden">
+                    <div className="px-4 py-3 border-b border-border flex items-center justify-between">
+                      <span className="font-semibold text-sm text-text-primary">Notifiche</span>
+                      {unreadCount > 0 && (
+                        <span className="text-xs text-text-muted">{unreadCount} non lette</span>
+                      )}
+                    </div>
+
+                    <ul>
+                      {notifications.slice(0, 5).map(n => (
+                        <li
+                          key={n.id}
+                          className={`px-4 py-3 border-b border-border last:border-0 cursor-pointer hover:bg-background-secondary transition-colors ${!n.isRead ? 'bg-primary-50' : ''}`}
+                          onClick={() => markAsRead(n.id)}
+                        >
+                          <div className="flex items-start gap-3">
+                            {!n.isRead && <span className="mt-1.5 w-2 h-2 rounded-full bg-primary-500 flex-shrink-0" />}
+                            {n.isRead && <span className="mt-1.5 w-2 h-2 flex-shrink-0" />}
+                            <div className="min-w-0">
+                              <p className="text-sm font-medium text-text-primary truncate">{n.title}</p>
+                              <p className="text-xs text-text-secondary line-clamp-2 mt-0.5">{n.message}</p>
+                              <p className="text-xs text-text-muted mt-1">{formatRelativeTime(n.createdAt)}</p>
+                            </div>
+                          </div>
+                        </li>
+                      ))}
+                      {notifications.length === 0 && (
+                        <li className="px-4 py-6 text-center text-sm text-text-muted">Nessuna notifica</li>
+                      )}
+                    </ul>
+
+                    {userRole === 'tenant' && (
+                      <button
+                        className="w-full px-4 py-3 text-sm font-medium text-primary-600 hover:bg-primary-50 transition-colors text-center border-t border-border"
+                        onClick={() => { setNotifOpen(false); navigate(ROUTES.TENANT_NOTIFICATIONS); }}
+                      >
+                        Vedi tutte le notifiche
+                      </button>
+                    )}
+                  </div>
+                )}
+              </div>
               <div className="relative">
                 <button
                   onClick={() => setUserMenuOpen(!userMenuOpen)}
