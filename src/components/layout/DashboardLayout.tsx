@@ -405,7 +405,7 @@ export default function DashboardLayout({ userRole }: DashboardLayoutProps) {
       >
         <div className="flex flex-col h-full">
           {/* Logo & Role Badge */}
-          <div className="p-6 border-b border-border">
+          <div className="p-6 border-b border-border" style={{ paddingTop: 'calc(1.5rem + env(safe-area-inset-top, 0px))' }}>
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <img
@@ -516,7 +516,10 @@ export default function DashboardLayout({ userRole }: DashboardLayoutProps) {
       {/* Main Content */}
       <div className="md:pl-72">
         {/* Page Content */}
-        <main className="p-4 md:p-6 pb-32 md:pb-6">
+        <main
+          className="p-4 md:p-6 pb-32 md:pb-6"
+          style={{ paddingTop: 'calc(1rem + env(safe-area-inset-top, 0px))' }}
+        >
           <Outlet />
         </main>
       </div>

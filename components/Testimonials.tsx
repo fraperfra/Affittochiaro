@@ -1,6 +1,5 @@
 import React from 'react';
 import { TESTIMONIALS } from '../constants';
-import { InlineEditor } from '../src/cms';
 
 export const Testimonials: React.FC = () => {
   return (
@@ -9,9 +8,9 @@ export const Testimonials: React.FC = () => {
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-10">
           <div>
             <p className="text-xs font-bold text-brand-green uppercase tracking-widest mb-3 border-l-2 border-action-green pl-3">TESTIMONIANZE</p>
-            <InlineEditor id="home.testimonials.title" as="h2" className="text-3xl md:text-5xl font-bold text-brand-green leading-tight">
+            <h2 className="text-3xl md:text-5xl font-bold text-brand-green leading-tight">
               Cosa dicono i nostri inquilini
-            </InlineEditor>
+            </h2>
           </div>
           <div className="flex items-center gap-2 shrink-0 pb-1">
             <div className="flex items-center gap-0.5">

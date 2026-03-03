@@ -4,9 +4,6 @@ import { useAuthStore } from './store';
 import { ROUTES } from './utils/constants';
 import { Analytics } from '@vercel/analytics/react';
 
-// CMS
-import { CMSProvider, CMSEditToggle } from './cms';
-
 // Landing Page Components (from root) - eagerly loaded (entry point)
 import { useNotifications } from '../hooks';
 import {
@@ -79,8 +76,6 @@ const AdminZonesPage = lazy(() => import('./pages/admin/AdminZonesPage'));
 const AdminServicesManagementPage = lazy(() => import('./pages/admin/AdminServicesManagementPage'));
 const AdminBlogPage = lazy(() => import('./pages/admin/AdminBlogPage'));
 const AdminAdsPage = lazy(() => import('./pages/admin/AdminAdsPage'));
-const CMSAdminPage = lazy(() => import('./pages/admin/CMSAdminPage'));
-
 // Shared Pages - lazy loaded
 const SettingsPage = lazy(() => import('./pages/SettingsPage'));
 const MessagesPage = lazy(() => import('./pages/MessagesPage'));
@@ -214,13 +209,12 @@ function LandingWrapper({ children }: { children: React.ReactNode }) {
       <LandingHeader />
       {!isAuthenticated && <LiveNotifications notifications={notifications} onDismiss={dismissNotification} />}
       {isAuthenticated && user && <AuthMobileMenu role={user.role} />}
-      <main className={isAuthenticated && user ? "pt-[124px]" : "pt-20"}>
+      <main className={isAuthenticated && user ? "pt-safe-header-auth" : "pt-safe-header"}>
         {children}
       </main>
       <Footer />
       {!isAuthenticated && <ExitIntentPopup />}
       <AddToHomeScreenModal />
-      <CMSEditToggle />
     </div>
   );
 }
@@ -252,8 +246,8 @@ function App() {
   }
 
   return (
-    <CMSProvider>
-      <Suspense fallback={<FullPageSpinner />}>
+    <>
+    <Suspense fallback={<FullPageSpinner />}>
         <Routes>
           {/* Landing Pages (public with landing layout) */}
           <Route
@@ -451,7 +445,6 @@ function App() {
             <Route path="services" element={<AdminServicesManagementPage />} />
             <Route path="blog" element={<AdminBlogPage />} />
             <Route path="ads" element={<AdminAdsPage />} />
-            <Route path="cms" element={<CMSAdminPage />} />
             <Route path="*" element={<Navigate to={ROUTES.ADMIN_DASHBOARD} replace />} />
           </Route>
 
@@ -467,7 +460,7 @@ function App() {
         </Routes>
       </Suspense>
       <Analytics />
-    </CMSProvider>
+    </>
   );
 }
 

@@ -1,18 +1,17 @@
 import React from 'react';
 import { benefits } from '../data';
-import { InlineEditor } from '../src/cms';
 
 export const Benefits: React.FC = () => {
   return (
     <section id="come-funziona-info" className="py-16 bg-white px-4 border-b border-gray-100">
       <div className="max-w-full lg:px-20 mx-auto">
         <p className="text-xs font-bold text-brand-green uppercase tracking-widest mb-3 border-l-2 border-action-green pl-3">I VANTAGGI</p>
-        <InlineEditor id="home.benefits.title" as="h2" className="text-3xl md:text-5xl font-bold text-brand-green mb-4 leading-tight" multiline>
+        <h2 className="text-3xl md:text-5xl font-bold text-brand-green mb-4 leading-tight">
           Presenta Te Stesso Come il Candidato Ideale
-        </InlineEditor>
-        <InlineEditor id="home.benefits.subtitle" as="p" className="text-lg md:text-xl text-medium-gray mb-10 max-w-4xl" multiline>
+        </h2>
+        <p className="text-lg md:text-xl text-medium-gray mb-10 max-w-4xl">
           Non sei solo un numero in una lista. Con Affittochiaro crei il curriculum perfetto dell'inquilino.
-        </InlineEditor>
+        </p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 text-left">
           {benefits.map((benefit, idx) => (

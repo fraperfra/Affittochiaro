@@ -143,11 +143,10 @@ export default function BottomTabNav({ userRole, badges = {} }: BottomTabNavProp
       className="bottom-tab-nav"
       style={{
         position: 'fixed',
-        bottom: '4px',
+        bottom: 'calc(env(safe-area-inset-bottom, 0px) + 8px)',
         left: '12px',
         right: '12px',
         zIndex: 100,
-        paddingBottom: 'env(safe-area-inset-bottom, 0px)',
         transform: 'translateZ(0)',
         WebkitTransform: 'translateZ(0)',
         backfaceVisibility: 'hidden',

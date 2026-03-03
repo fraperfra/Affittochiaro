@@ -346,6 +346,25 @@
   }
 }
 
+/* PWA safe area — ensures content is never hidden behind iPhone notch / Dynamic Island / home indicator */
+.pt-safe-header {
+  padding-top: calc(4rem + env(safe-area-inset-top, 0px)); /* mobile: h-16 (64px) + notch */
+}
+@media (min-width: 768px) {
+  .pt-safe-header {
+    padding-top: 5rem; /* desktop: h-20 (80px), no notch */
+  }
+}
+
+.pt-safe-header-auth {
+  padding-top: calc(124px + env(safe-area-inset-top, 0px));
+}
+@media (min-width: 768px) {
+  .pt-safe-header-auth {
+    padding-top: 124px;
+  }
+}
+
 /* Print styles */
 @media print {
   .no-print {

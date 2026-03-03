@@ -1,17 +1,16 @@
 import React from 'react';
 import { problems } from '../data';
-import { InlineEditor } from '../src/cms';
 
 export const Problems: React.FC = () => {
   return (
     <section className="py-16 bg-white px-4">
       <div className="max-w-full lg:px-20 mx-auto text-center">
-        <InlineEditor id="home.problems.title" as="h2" className="text-3xl md:text-5xl font-bold text-brand-green mb-6 leading-tight">
+        <h2 className="text-3xl md:text-5xl font-bold text-brand-green mb-6 leading-tight">
           Cercare Casa in Affitto è un Incubo?
-        </InlineEditor>
-        <InlineEditor id="home.problems.subtitle" as="p" className="text-lg md:text-xl text-medium-gray mb-12 max-w-4xl mx-auto" multiline>
+        </h2>
+        <p className="text-lg md:text-xl text-medium-gray mb-12 max-w-4xl mx-auto">
           Sappiamo cosa provi. Il mercato degli affitti oggi è frammentato, lento e spesso frustrante.
-        </InlineEditor>
+        </p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-10 mb-16 text-left">
           {problems.map((item, idx) => (

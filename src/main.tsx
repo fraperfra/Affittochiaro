@@ -44,7 +44,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
             },
           }}
           containerStyle={{
-            top: 80, // Push down below header (64px) + some buffer
+            top: 'calc(80px + env(safe-area-inset-top, 0px))' as unknown as number,
             left: 20,
             bottom: 20,
             right: 20,
