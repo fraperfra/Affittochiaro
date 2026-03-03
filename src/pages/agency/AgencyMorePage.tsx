@@ -3,7 +3,6 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import {
   Building2,
   Bell,
-  Edit2,
   ChevronRight,
   Inbox,
   Home,
@@ -22,6 +21,7 @@ import {
   Sparkles,
   Check,
 } from 'lucide-react';
+import { AvatarUpload } from '../../components/ui';
 import { useAuthStore } from '../../store';
 import { ROUTES } from '../../utils/constants';
 import { formatInitials } from '../../utils/formatters';
@@ -42,7 +42,7 @@ const PLAN_COLORS: Record<string, string> = {
 };
 
 export default function AgencyMorePage() {
-  const { user, logout } = useAuthStore();
+  const { user, logout, setUser } = useAuthStore();
   const navigate = useNavigate();
   const agencyUser = user as AgencyUser | null;
 
@@ -60,6 +60,11 @@ export default function AgencyMorePage() {
 
   const name = agencyUser?.agency.name || 'Agenzia';
   const logo = agencyUser?.agency.logoUrl;
+
+  const handleLogoUpload = (blobUrl: string) => {
+    if (!agencyUser) return;
+    setUser({ ...agencyUser, agency: { ...agencyUser.agency, logoUrl: blobUrl } } as AgencyUser);
+  };
   const credits = agencyUser?.agency.credits ?? 0;
   const activeListings = agencyUser?.agency.activeListingsCount ?? 0;
   const city = agencyUser?.agency.city || 'Italia';
@@ -95,25 +100,12 @@ export default function AgencyMorePage() {
       <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-6 relative overflow-hidden">
         {/* Profile row */}
         <div className="flex items-center gap-4 mb-6">
-          <div className="relative">
-            {logo ? (
-              <img
-                src={logo}
-                alt={name}
-                className="w-16 h-16 rounded-full object-cover border-2 border-teal-50"
-              />
-            ) : (
-              <div className="w-16 h-16 rounded-full bg-gradient-to-br from-teal-400 to-primary-500 text-white flex items-center justify-center font-bold text-xl border-2 border-teal-100">
-                {formatInitials(name.split(' ')[0], name.split(' ')[1])}
-              </div>
-            )}
-            <NavLink
-              to={`${ROUTES.AGENCY_SETTINGS}?tab=account`}
-              className="absolute bottom-0 right-0 w-6 h-6 bg-white rounded-full shadow border border-gray-100 flex items-center justify-center text-teal-600 hover:bg-gray-50 cursor-pointer"
-            >
-              <Edit2 size={12} strokeWidth={2.5} />
-            </NavLink>
-          </div>
+          <AvatarUpload
+            src={logo}
+            initials={formatInitials(name.split(' ')[0], name.split(' ')[1])}
+            onUpload={handleLogoUpload}
+            avatarClassName="w-16 h-16 text-xl"
+          />
           <div className="flex-1 min-w-0">
             <h2 className="text-xl font-bold text-gray-900 truncate">{name}</h2>
             <div className="flex items-center gap-1 mt-0.5">

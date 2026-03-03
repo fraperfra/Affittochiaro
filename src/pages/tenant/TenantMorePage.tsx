@@ -18,7 +18,7 @@ import {
   Crown,
   Check
 } from 'lucide-react';
-import { Modal, Button } from '../../components/ui';
+import { Modal, Button, AvatarUpload } from '../../components/ui';
 import { useAuthStore } from '../../store';
 import { ROUTES } from '../../utils/constants';
 import { formatInitials } from '../../utils/formatters';
@@ -95,12 +95,17 @@ const visibilityPlans: VisibilityPlan[] = [
 ];
 
 export default function TenantMorePage() {
-  const { user } = useAuthStore();
+  const { user, setUser } = useAuthStore();
   const navigate = useNavigate();
   const tenantUser = user as TenantUser | null;
 
   const [isExtraModalOpen, setIsExtraModalOpen] = useState(false);
   const [activePlan, setActivePlan] = useState<string | null>(null);
+
+  const handleAvatarUpload = (blobUrl: string) => {
+    if (!tenantUser) return;
+    setUser({ ...tenantUser, profile: { ...tenantUser.profile, avatarUrl: blobUrl } } as TenantUser);
+  };
 
   const name = tenantUser
     ? `${tenantUser.profile.firstName} ${tenantUser.profile.lastName}`
@@ -126,21 +131,12 @@ export default function TenantMorePage() {
       {/* Profile Card */}
       <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-6 relative overflow-hidden">
         <div className="flex items-center gap-4 mb-6">
-          <div className="relative">
-            {avatar ? (
-              <img src={avatar} alt={name} className="w-16 h-16 rounded-full object-cover border-2 border-teal-50" />
-            ) : (
-              <div className="w-16 h-16 rounded-full bg-teal-50 text-teal-600 flex items-center justify-center font-bold text-xl border-2 border-teal-100">
-                {formatInitials(name.split(' ')[0], name.split(' ')[1])}
-              </div>
-            )}
-            <NavLink
-              to={ROUTES.TENANT_PROFILE}
-              className="absolute bottom-0 right-0 w-6 h-6 bg-white rounded-full shadow border border-gray-100 flex items-center justify-center text-teal-600 hover:bg-gray-50 cursor-pointer"
-            >
-              <Edit2 size={12} strokeWidth={2.5} />
-            </NavLink>
-          </div>
+          <AvatarUpload
+            src={avatar}
+            initials={formatInitials(name.split(' ')[0], name.split(' ')[1])}
+            onUpload={handleAvatarUpload}
+            avatarClassName="w-16 h-16 text-xl"
+          />
           <div className="flex-1">
             <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2">
               {name.split(' ')[0]}

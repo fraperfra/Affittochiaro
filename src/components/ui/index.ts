@@ -18,3 +18,4 @@ export {
 export { default as AddToHomeScreenModal } from './AddToHomeScreenModal';
 export { default as OnboardingCard } from './OnboardingCard';
 export { PartnersCarousel } from './PartnersCarousel';
+export { AvatarUpload } from './AvatarUpload';
