@@ -230,8 +230,8 @@ export default function LoginPage() {
         <div className="relative z-10 flex flex-col justify-between p-12 xl:p-16 text-white w-full">
           {/* Top brand */}
           <div>
-            <span className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full px-4 py-1.5 text-xs font-semibold tracking-wide uppercase">
-              🏠 La piattaforma per l'affitto in Italia
+            <span className="inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-4 py-1.5 text-xs font-semibold tracking-wide uppercase">
+              La piattaforma per l'affitto in Italia
             </span>
           </div>
 

@@ -8,7 +8,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { Building2, Globe, Mail, Lock, User, Phone, Check, ArrowRight, ArrowLeft, AlertCircle, Eye, EyeOff, CheckCircle } from 'lucide-react';
+import { Building2, Globe, Mail, Lock, User, Phone, Check, ArrowRight, ArrowLeft, AlertCircle, Eye, EyeOff, CheckCircle, Home } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { useAuthStore } from '../store';
 import { ROUTES, ITALIAN_CITIES, OCCUPATIONS } from '../utils/constants';
@@ -276,7 +276,7 @@ export default function RegisterPage() {
                   onClick={() => handleAccountTypeSelect('tenant')}
                   className="w-full p-5 text-center rounded-xl border-2 border-border hover:border-primary-500 hover:bg-primary-50 transition-all flex flex-col items-center justify-center gap-2 group"
                 >
-                  <span className="text-3xl">🏠</span>
+                  <Home size={28} className="text-primary-500 group-hover:text-primary-600" />
                   <div>
                     <h3 className="font-semibold text-base group-hover:text-primary-600">Inquilino</h3>
                     <p className="text-xs text-text-secondary mt-0.5">Cerco casa</p>
@@ -286,7 +286,7 @@ export default function RegisterPage() {
                   onClick={() => handleAccountTypeSelect('agency')}
                   className="w-full p-5 text-center rounded-xl border-2 border-border hover:border-primary-500 hover:bg-primary-50 transition-all flex flex-col items-center justify-center gap-2 group"
                 >
-                  <span className="text-3xl">🏢</span>
+                  <Building2 size={28} className="text-primary-500 group-hover:text-primary-600" />
                   <div>
                     <h3 className="font-semibold text-base group-hover:text-primary-600">Agenzia</h3>
                     <p className="text-xs text-text-secondary mt-0.5">Cerco inquilini</p>
@@ -554,8 +554,8 @@ export default function RegisterPage() {
         <div className="relative z-10 flex flex-col justify-between p-12 xl:p-16 text-white w-full">
           {/* Top brand */}
           <div>
-            <span className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full px-4 py-1.5 text-xs font-semibold tracking-wide uppercase">
-              🏠 Registrazione
+            <span className="inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-4 py-1.5 text-xs font-semibold tracking-wide uppercase">
+              Registrazione
             </span>
           </div>
 

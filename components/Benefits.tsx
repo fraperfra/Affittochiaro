@@ -4,23 +4,24 @@ import { InlineEditor } from '../src/cms';
 
 export const Benefits: React.FC = () => {
   return (
-    <section id="come-funziona-info" className="py-16 bg-soft-green/30 px-4">
-      <div className="max-w-full lg:px-20 mx-auto text-center">
-        <InlineEditor id="home.benefits.title" as="h2" className="text-3xl md:text-5xl font-bold text-brand-green mb-6 leading-tight font-poppins" multiline>
+    <section id="come-funziona-info" className="py-16 bg-white px-4 border-b border-gray-100">
+      <div className="max-w-full lg:px-20 mx-auto">
+        <p className="text-xs font-bold text-brand-green uppercase tracking-widest mb-3 border-l-2 border-action-green pl-3">I VANTAGGI</p>
+        <InlineEditor id="home.benefits.title" as="h2" className="text-3xl md:text-5xl font-bold text-brand-green mb-4 leading-tight" multiline>
           Presenta Te Stesso Come il Candidato Ideale
         </InlineEditor>
-        <InlineEditor id="home.benefits.subtitle" as="p" className="text-lg md:text-xl text-medium-gray mb-10 max-w-4xl mx-auto" multiline>
+        <InlineEditor id="home.benefits.subtitle" as="p" className="text-lg md:text-xl text-medium-gray mb-10 max-w-4xl" multiline>
           Non sei solo un numero in una lista. Con Affittochiaro crei il curriculum perfetto dell'inquilino.
         </InlineEditor>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 text-left">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 text-left">
           {benefits.map((benefit, idx) => (
-            <div key={idx} className={`bg-white rounded-[2.5rem] p-8 shadow-sm border border-gray-100 hover:shadow-xl transition-all group ${benefit.highlight ? 'ring-2 ring-action-green/20' : ''} flex items-start gap-5`}>
-              <div className="w-12 h-12 bg-soft-green rounded-2xl flex items-center justify-center text-2xl shrink-0 group-hover:bg-action-green group-hover:scale-110 transition-all shadow-inner">
+            <div key={idx} className={`bg-white rounded-xl p-6 border flex items-start gap-4 hover:border-gray-300 transition-colors ${benefit.highlight ? 'border-action-green/40 bg-soft-green/10' : 'border-gray-200'}`}>
+              <div className="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center text-xl shrink-0">
                 {benefit.icon}
               </div>
-              <div className="pt-1">
-                <h3 className="text-xl font-bold text-brand-green mb-3">{benefit.title}</h3>
+              <div>
+                <h3 className="text-base font-bold text-brand-green mb-2">{benefit.title}</h3>
                 <p className="text-medium-gray text-sm leading-relaxed" dangerouslySetInnerHTML={{ __html: benefit.description }} />
               </div>
             </div>

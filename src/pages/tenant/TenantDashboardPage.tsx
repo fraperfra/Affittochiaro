@@ -669,7 +669,7 @@ export default function TenantDashboardPage() {
             <div className="bg-white rounded-2xl shadow-card p-4">
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-2">
-                  <span className="text-xl">{pct >= 100 ? '🎉' : pct >= 80 ? '🌟' : pct >= 50 ? '⚡' : '⚠️'}</span>
+                  {pct >= 100 ? <CheckCircle size={20} className="text-green-500" /> : pct >= 80 ? <Star size={20} className="text-amber-500" /> : pct >= 50 ? <Zap size={20} className="text-amber-500" /> : <AlertTriangle size={20} className="text-red-500" />}
                   <h3 className="font-semibold text-gray-900 text-sm">Completamento Profilo</h3>
                 </div>
                 <div className={`flex items-center gap-1 px-2.5 py-1 rounded-full ${color.pill}`}>
