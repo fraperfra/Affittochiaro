@@ -33,7 +33,8 @@ export const FinalCTA: React.FC = () => {
 
             <form onSubmit={handleSubmit} className="bg-white/10 rounded-xl p-6 md:p-8 border border-white/15">
               <div className="grid md:grid-cols-3 gap-4 mb-5">
-                <div>
+                {/* Nome: nascosto su mobile, visibile su desktop */}
+                <div className="hidden md:block">
                   <label htmlFor="nome" className="block text-white/80 text-sm font-medium mb-1.5">Il tuo nome</label>
                   <input
                     type="text"
@@ -41,12 +42,13 @@ export const FinalCTA: React.FC = () => {
                     name="nome"
                     value={formData.nome}
                     onChange={handleChange}
-                    required
                     placeholder="Mario"
+                    autoComplete="given-name"
                     className="w-full px-4 py-3 bg-white rounded-lg text-brand-green placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-action-green transition-all text-sm"
                   />
                 </div>
-                <div>
+                {/* Email: sempre visibile, full-width su mobile */}
+                <div className="md:col-span-1">
                   <label htmlFor="email" className="block text-white/80 text-sm font-medium mb-1.5">La tua email</label>
                   <input
                     type="email"
@@ -56,17 +58,19 @@ export const FinalCTA: React.FC = () => {
                     onChange={handleChange}
                     required
                     placeholder="mario@email.com"
+                    autoComplete="email"
+                    inputMode="email"
                     className="w-full px-4 py-3 bg-white rounded-lg text-brand-green placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-action-green transition-all text-sm"
                   />
                 </div>
-                <div>
+                {/* Tipologia: nascosto su mobile */}
+                <div className="hidden md:block">
                   <label htmlFor="tipologia" className="block text-white/80 text-sm font-medium mb-1.5">Cosa cerchi?</label>
                   <select
                     id="tipologia"
                     name="tipologia"
                     value={formData.tipologia}
                     onChange={handleChange}
-                    required
                     className="w-full px-4 py-3 bg-white rounded-lg text-brand-green focus:outline-none focus:ring-2 focus:ring-action-green transition-all appearance-none cursor-pointer text-sm"
                     style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23004832'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E")`, backgroundRepeat: 'no-repeat', backgroundPosition: 'right 1rem center', backgroundSize: '1.25rem' }}
                   >
@@ -83,7 +87,7 @@ export const FinalCTA: React.FC = () => {
 
               <button
                 type="submit"
-                className="w-full bg-action-green text-white py-4 rounded-lg font-bold text-base hover:brightness-110 transition-all flex items-center justify-center gap-3"
+                className="w-full bg-action-green text-white py-4 min-h-[44px] rounded-lg font-bold text-base hover:brightness-110 transition-all flex items-center justify-center gap-3"
               >
                 Voglio ricevere proposte
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

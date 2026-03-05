@@ -24,6 +24,11 @@ export const Testimonials: React.FC = () => {
         <div className="flex overflow-x-auto pb-6 gap-4 snap-x snap-mandatory lg:grid lg:grid-cols-3 lg:overflow-visible no-scrollbar">
           {TESTIMONIALS.map((t, idx) => (
             <div key={idx} className="min-w-[300px] md:min-w-0 flex-shrink-0 snap-center bg-white rounded-xl p-6 border border-gray-200 flex flex-col justify-between hover:border-gray-300 transition-colors">
+              <div className="flex items-center gap-0.5 mb-3">
+                {[1,2,3,4,5].map(s => (
+                  <svg key={s} className="w-4 h-4 text-[#00b67a] fill-current" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" /></svg>
+                ))}
+              </div>
               <p className="text-brand-green text-base italic leading-relaxed mb-6">"{t.quote}"</p>
               <div className="flex items-center gap-3 border-t border-gray-100 pt-4">
                 <img src={t.image} alt={t.name} className="w-10 h-10 rounded-full border border-gray-200" />

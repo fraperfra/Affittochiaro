@@ -13,6 +13,9 @@ npx tsc --noEmit # always run before commit
 Always work on `main`, push to `main` → Vercel auto-deploys.
 Flow: edit → `tsc --noEmit` → commit → `git push origin main`
 
+**After every modification**: always commit and push to `main`, or deploy via Vercel MCP.
+Never leave changes uncommitted — the site is live on Vercel and changes must be reflected immediately.
+
 ## Global Rules
 - Fonts: **Inter + Roboto only** — never Mulish, Poppins, Lora
 - Icons: **lucide-react only** — never emoji in JSX/TSX

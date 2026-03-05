@@ -39,13 +39,16 @@ export const Hero: React.FC<HeroProps> = ({ counter, activeCityName }) => {
             </p>
             <div className="mb-8">
               <h1 className="text-3xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-brand-green leading-[1.1]">
+                Trova casa in <span className="underline-green text-action-green">2 Settimane</span>. <br />
                 Smetti di inviare <br />
-                <span className="text-error-red">email a vuoto</span>. <br />
-                Trova casa in meno di <span className="underline-green text-action-green">2 Settimane</span>
+                <span className="text-error-red">email a vuoto</span>.
               </h1>
             </div>
-            <p className="text-xl md:text-2xl text-medium-gray max-w-3xl mx-auto lg:mx-0 mb-12 leading-relaxed">
-              Basta ignorare annunci già scaduti. Crea il tuo <span className="font-bold text-brand-green">Profilo Verificato</span>, presenta te stesso con un <span className="font-bold text-brand-green">CV dedicato</span> e ricevi risposte dai proprietari in <span className="font-bold text-brand-green">meno di 24 ore.</span>
+            <p className="text-xl md:text-2xl text-medium-gray max-w-3xl mx-auto lg:mx-0 mb-4 leading-relaxed">
+              Crea il tuo <span className="font-bold text-brand-green">Profilo Verificato</span> con <span className="font-bold text-brand-green">CV dedicato</span>. Ricevi risposte dai proprietari in <span className="font-bold text-brand-green">meno di 24 ore</span>.
+            </p>
+            <p className="text-base text-medium-gray max-w-3xl mx-auto lg:mx-0 mb-8">
+              Basta annunci già scaduti e silenzi radio. Con Affittochiaro sei visibile, verificato e preferito.
             </p>
 
             <div className="flex flex-col sm:flex-row items-center gap-4 mb-12">
@@ -64,9 +67,17 @@ export const Hero: React.FC<HeroProps> = ({ counter, activeCityName }) => {
                   <img key={i} src={`https://i.pravatar.cc/100?img=${i + 10}`} className="w-11 h-11 rounded-full border-2 border-white" alt="User" />
                 ))}
               </div>
-              <p className="text-sm font-semibold text-medium-gray">
-                Unisciti a 30.000+ inquilini felici
-              </p>
+              <div>
+                <p className="text-sm font-semibold text-medium-gray">
+                  Unisciti a 30.000+ inquilini felici
+                </p>
+                <div className="flex items-center gap-1 mt-0.5">
+                  {[1,2,3,4,5].map(i => (
+                    <svg key={i} className="w-3.5 h-3.5 text-[#00b67a] fill-current" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" /></svg>
+                  ))}
+                  <span className="text-xs text-medium-gray ml-1">4.9/5 su <span className="font-semibold text-brand-green">Trustpilot</span></span>
+                </div>
+              </div>
             </div>
           </div>
 

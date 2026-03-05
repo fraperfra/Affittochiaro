@@ -75,7 +75,7 @@ export const ExitIntentPopup: React.FC = () => {
         {/* Header decorativo */}
         <div className="bg-gradient-to-r from-brand-green to-action-green p-6 text-white text-center">
           <span className="text-5xl mb-2 block">🎁</span>
-          <h2 className="text-2xl md:text-3xl font-bold font-poppins">
+          <h2 className="text-2xl md:text-3xl font-bold">
             Aspetta!
           </h2>
         </div>
