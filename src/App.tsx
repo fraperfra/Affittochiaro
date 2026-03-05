@@ -23,6 +23,7 @@ import {
   RicercaInquilinoPage,
   ServiziCasaPage,
   AgenziePartnerPage,
+  AgenziaDetailPage,
   AffittoNewsPage,
   ChiSiamoPage,
   ArticlePresentarsiProprietario,
@@ -307,6 +308,14 @@ function App() {
             element={
               <LandingWrapper>
                 <AgenziePartnerPage />
+              </LandingWrapper>
+            }
+          />
+          <Route
+            path="/agenzie/:id"
+            element={
+              <LandingWrapper>
+                <AgenziaDetailPage />
               </LandingWrapper>
             }
           />

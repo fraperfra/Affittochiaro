@@ -6,6 +6,7 @@ export * from './NotFoundPage';
 export * from './RicercaInquilinoPage';
 export * from './ServiziCasaPage';
 export * from './AgenziePartnerPage';
+export * from './AgenziaDetailPage';
 export * from './AffittoNewsPage';
 export * from './ChiSiamoPage';
 export * from './ArticlePresentarsiProprietario';

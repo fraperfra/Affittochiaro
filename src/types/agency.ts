@@ -33,6 +33,12 @@ export interface Agency {
   rating?: number;
   reviewsCount: number;
 
+  // Public profile (landing)
+  coverImage?: string;
+  contractsLastYear?: number;
+  videoUrl?: string;
+  partnerSince?: string;
+
   // Status
   status: Status;
   createdAt: Date;

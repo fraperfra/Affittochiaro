@@ -210,12 +210,18 @@ export function generateMockAgencies(count: number): Agency[] {
       enterprise: 200,
     };
 
+    const agencySlug = `agency-${i + 1}`;
+    const partnerYears = ['2022', '2023', '2024'];
     const agency: Agency = {
-      id: `agency-${i + 1}`,
+      id: agencySlug,
       email: `info@${name.toLowerCase().replace(/\s+/g, '')}.it`,
       name,
       logo: randomBoolean(0.6) ? `https://logo.clearbit.com/${name.toLowerCase().replace(/\s+/g, '')}.it` : undefined,
+      coverImage: `https://picsum.photos/seed/${agencySlug}/800/450`,
       description: `Agenzia immobiliare con sede a ${city}. Specializzati in affitti residenziali e commerciali.`,
+      contractsLastYear: randomNumber(8, 65),
+      videoUrl: randomBoolean(0.55) ? `https://www.youtube.com/embed/dQw4w9WgXcQ` : undefined,
+      partnerSince: randomElement(partnerYears),
       vatNumber: `IT${randomNumber(10000000000, 99999999999)}`,
       phone: `+39 0${randomNumber(2, 6)} ${randomNumber(1000000, 9999999)}`,
       website: `https://www.${name.toLowerCase().replace(/\s+/g, '')}.it`,
