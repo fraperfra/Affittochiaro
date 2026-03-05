@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { MapPin, BadgeCheck, Home, Star, ArrowRight, ChevronDown } from 'lucide-react';
 import { CityMap } from '../components';
 import { mockAgencies } from '../src/utils/mockData';
@@ -7,7 +7,6 @@ import { mockAgencies } from '../src/utils/mockData';
 const CITY_OPTIONS = ['Tutte', ...Array.from(new Set(mockAgencies.map(a => a.address?.city).filter(Boolean) as string[])).sort()];
 
 export const AgenziePartnerPage: React.FC = () => {
-  const navigate = useNavigate();
   const [activeCity, setActiveCity] = useState('Tutte');
   const [showAllCities, setShowAllCities] = useState(false);
 
@@ -28,36 +27,70 @@ export const AgenziePartnerPage: React.FC = () => {
     <div className="bg-white">
 
       {/* ── HERO ──────────────────────────────────────────────── */}
-      <section className="pt-16 pb-12 px-4 border-b border-gray-100">
-        <div className="max-w-5xl mx-auto">
-          <p className="text-xs font-bold text-brand-green uppercase tracking-widest mb-4 border-l-2 border-action-green pl-3">
-            RETE PARTNER AFFITTOCHIARO
-          </p>
-          <h1 className="text-3xl md:text-5xl font-bold text-brand-green leading-tight mb-4 max-w-3xl">
-            Le agenzie che trovi su Affittochiaro<br className="hidden md:block" /> sono selezionate e verificate.
-          </h1>
-          <p className="text-base md:text-lg text-medium-gray max-w-2xl mb-2">
-            Ogni agenzia partner supera una verifica documentale prima di entrare nella rete.
-          </p>
-          <p className="text-base md:text-lg text-medium-gray max-w-2xl mb-10">
-            Trovi solo chi gestisce davvero affitti nella tua zona.
-          </p>
+      <section className="pt-16 pb-0 px-4 border-b border-gray-100 overflow-hidden">
+        <div className="max-w-6xl mx-auto flex flex-col lg:flex-row items-center gap-10 lg:gap-16">
 
-          {/* Stats bar */}
-          <div className="flex flex-wrap gap-6 md:gap-10">
-            <div>
-              <p className="text-3xl font-bold text-brand-green">{mockAgencies.filter(a => a.isVerified).length}+</p>
-              <p className="text-xs uppercase tracking-widest text-medium-gray font-semibold mt-0.5">agenzie attive</p>
-            </div>
-            <div className="border-l border-gray-200 pl-6 md:pl-10">
-              <p className="text-3xl font-bold text-brand-green">{avgRating}/5</p>
-              <p className="text-xs uppercase tracking-widest text-medium-gray font-semibold mt-0.5">soddisfazione inquilini</p>
-            </div>
-            <div className="border-l border-gray-200 pl-6 md:pl-10">
-              <p className="text-3xl font-bold text-brand-green">{totalContracts.toLocaleString()}+</p>
-              <p className="text-xs uppercase tracking-widest text-medium-gray font-semibold mt-0.5">contratti gestiti negli ultimi 12 mesi</p>
+          {/* Left: copy */}
+          <div className="lg:w-[55%] py-10 lg:py-16">
+            <p className="text-xs font-bold text-brand-green uppercase tracking-widest mb-5 border-l-2 border-action-green pl-3">
+              RETE PARTNER AFFITTOCHIARO
+            </p>
+            <h1 className="text-3xl md:text-5xl font-bold text-brand-green leading-tight mb-5">
+              Le agenzie che trovi su Affittochiaro sono selezionate e verificate.
+            </h1>
+            <p className="text-base md:text-lg text-medium-gray mb-2 max-w-lg">
+              Ogni agenzia supera una verifica documentale prima di entrare nella rete.
+            </p>
+            <p className="text-base md:text-lg text-medium-gray mb-10 max-w-lg">
+              Trovi solo chi gestisce davvero affitti nella tua zona.
+            </p>
+
+            {/* Stats */}
+            <div className="flex flex-wrap gap-6 md:gap-10">
+              <div>
+                <p className="text-3xl font-bold text-brand-green">{mockAgencies.filter(a => a.isVerified).length}+</p>
+                <p className="text-xs uppercase tracking-widest text-medium-gray font-semibold mt-0.5">agenzie attive</p>
+              </div>
+              <div className="border-l border-gray-200 pl-6 md:pl-10">
+                <p className="text-3xl font-bold text-brand-green">{avgRating}/5</p>
+                <p className="text-xs uppercase tracking-widest text-medium-gray font-semibold mt-0.5">soddisfazione inquilini</p>
+              </div>
+              <div className="border-l border-gray-200 pl-6 md:pl-10">
+                <p className="text-3xl font-bold text-brand-green">{totalContracts.toLocaleString()}+</p>
+                <p className="text-xs uppercase tracking-widest text-medium-gray font-semibold mt-0.5">contratti gestiti</p>
+              </div>
             </div>
           </div>
+
+          {/* Right: image collage */}
+          <div className="lg:w-[45%] w-full self-end relative flex justify-center lg:justify-end">
+            {/* Immagine principale */}
+            <div className="relative w-full max-w-sm lg:max-w-none">
+              <img
+                src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=700&q=80&auto=format&fit=crop"
+                alt="Agenzia immobiliare partner"
+                className="w-full h-[340px] lg:h-[420px] object-cover rounded-tl-2xl rounded-tr-2xl lg:rounded-tr-none rounded-br-none rounded-bl-none lg:rounded-tl-2xl"
+              />
+
+              {/* Card flottante: agenzia verificata */}
+              <div className="absolute -left-4 lg:-left-10 bottom-10 bg-white rounded-xl shadow-lg border border-gray-100 px-4 py-3 flex items-center gap-3 max-w-[220px]">
+                <div className="w-9 h-9 rounded-lg bg-soft-green flex items-center justify-center flex-shrink-0">
+                  <BadgeCheck size={18} className="text-action-green" />
+                </div>
+                <div>
+                  <p className="text-xs font-bold text-brand-green leading-tight">Agenzia verificata</p>
+                  <p className="text-[10px] text-medium-gray mt-0.5">Documenti e attività controllati</p>
+                </div>
+              </div>
+
+              {/* Card flottante: contratti */}
+              <div className="absolute -right-2 lg:-right-6 top-8 bg-brand-green text-white rounded-xl shadow-lg px-4 py-3">
+                <p className="text-2xl font-bold leading-none">{totalContracts.toLocaleString()}+</p>
+                <p className="text-[10px] text-white/70 uppercase tracking-widest font-semibold mt-0.5">contratti/anno</p>
+              </div>
+            </div>
+          </div>
+
         </div>
       </section>
 
