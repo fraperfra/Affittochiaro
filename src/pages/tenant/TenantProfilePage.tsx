@@ -51,8 +51,7 @@ import {
 import { ITALIAN_CITIES, OCCUPATIONS, CONTRACT_TYPES } from '../../utils/constants';
 import { VideoRecorder, VideoUploader, VideoPlayer, VideoPlaceholder } from '../../components/video';
 import { ProfileEditModal, ProfileFormData } from '../../components/profile';
-import { mockVideoApi, mockProfileApi, USE_MOCK_API } from '../../services/mock/mockTenantService';
-import { tenantsApi } from '../../services/api/tenants';
+import { mockVideoApi, mockProfileApi } from '../../services/mock/mockTenantService';
 import { generateTenantPitch } from '../../../services/aiService';
 import toast from 'react-hot-toast';
 
@@ -318,16 +317,8 @@ export default function TenantProfilePage() {
   const handleVideoComplete = async (file: File, duration: number) => {
     setIsUploadingVideo(true);
     try {
-      let url: string;
-      if (USE_MOCK_API) {
-        url = await mockVideoApi.uploadVideo(file);
-        await mockVideoApi.confirmVideoUpload(url, duration);
-      } else {
-        const { uploadUrl, videoUrl: finalUrl } = await tenantsApi.getVideoUploadUrl();
-        await fetch(uploadUrl, { method: 'PUT', body: file, headers: { 'Content-Type': file.type } });
-        await tenantsApi.confirmVideoUpload(finalUrl, duration);
-        url = finalUrl;
-      }
+      const url = await mockVideoApi.uploadVideo(file);
+      await mockVideoApi.confirmVideoUpload(url, duration);
       setVideoUrl(url); setVideoDuration(duration); setHasVideo(true); setVideoMode('view');
       toast.success('Video caricato con successo!');
     } catch (error: any) {
@@ -339,7 +330,7 @@ export default function TenantProfilePage() {
     if (!confirm('Sei sicuro di voler eliminare il video?')) return;
     setIsDeletingVideo(true);
     try {
-      if (USE_MOCK_API) await mockVideoApi.deleteVideo(); else await tenantsApi.deleteVideo();
+      await mockVideoApi.deleteVideo();
       setVideoUrl(null); setVideoDuration(0); setHasVideo(false);
       toast.success('Video eliminato');
     } catch (error: any) { toast.error(error.message || 'Errore'); }
@@ -349,7 +340,7 @@ export default function TenantProfilePage() {
   const handleProfileSave = async (data: ProfileFormData) => {
     setIsSavingProfile(true);
     try {
-      if (USE_MOCK_API) await mockProfileApi.updateProfile(data); else await tenantsApi.updateProfile(data);
+      await mockProfileApi.updateProfile(data);
       if (user) {
         setUser({
           ...user,

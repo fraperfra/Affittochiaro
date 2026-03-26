@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import { MapPin, BadgeCheck, Home, Star, ArrowRight, ChevronDown } from 'lucide-react';
+import { MapPin, BadgeCheck, Home, Star, ArrowRight, ChevronDown, FileCheck } from 'lucide-react';
 import { CityMap } from '../components';
 import { mockAgencies } from '../src/utils/mockData';
 
@@ -27,68 +27,85 @@ export const AgenziePartnerPage: React.FC = () => {
     <div className="bg-white">
 
       {/* ── HERO ──────────────────────────────────────────────── */}
-      <section className="pt-16 pb-0 px-4 border-b border-gray-100 overflow-hidden">
-        <div className="max-w-6xl mx-auto flex flex-col lg:flex-row items-center gap-10 lg:gap-16">
+      <section className="relative pt-12 pb-20 lg:pt-20 lg:pb-28 overflow-hidden bg-gradient-to-b from-primary-50/50 to-white">
+        <div className="max-w-7xl mx-auto px-4 grid lg:grid-cols-2 gap-12 items-center">
 
           {/* Left: copy */}
-          <div className="lg:w-[55%] py-10 lg:py-16">
-            <p className="text-xs font-bold text-brand-green uppercase tracking-widest mb-5 border-l-2 border-action-green pl-3">
-              RETE PARTNER AFFITTOCHIARO
-            </p>
-            <h1 className="text-3xl md:text-5xl font-bold text-brand-green leading-tight mb-5">
-              Le agenzie che trovi su Affittochiaro sono selezionate e verificate.
+          <div className="space-y-8 relative z-10 animate-fade-in-up">
+            <div className="flex items-center gap-2 text-sm text-primary-600 font-bold tracking-wide uppercase">
+              <span className="bg-primary-100 px-3 py-1 rounded-full">Rete Partner</span>
+              <span>•</span>
+              <span>AffittoChiaro</span>
+            </div>
+
+            <h1 className="text-4xl lg:text-6xl font-bold font-serif text-gray-900 leading-tight">
+              Agenzie Partner <br />
+              <span className="text-primary-600 relative inline-block">
+                Selezionate
+                <svg className="absolute w-full h-3 -bottom-1 left-0 text-primary-200 -z-10" viewBox="0 0 100 10" preserveAspectRatio="none">
+                  <path d="M0 5 Q 50 10 100 5" stroke="currentColor" strokeWidth="8" fill="none" />
+                </svg>
+              </span>
             </h1>
-            <p className="text-base md:text-lg text-medium-gray mb-2 max-w-lg">
-              Ogni agenzia supera una verifica documentale prima di entrare nella rete.
-            </p>
-            <p className="text-base md:text-lg text-medium-gray mb-10 max-w-lg">
-              Trovi solo chi gestisce davvero affitti nella tua zona.
+
+            <p className="text-xl text-gray-600 leading-relaxed max-w-lg">
+              Ogni agenzia supera una verifica documentale rigorosa prima di entrare nella rete. Trovi solo chi gestisce davvero affitti nella tua zona.
             </p>
 
             {/* Stats */}
-            <div className="flex flex-wrap gap-6 md:gap-10">
-              <div>
-                <p className="text-3xl font-bold text-brand-green">{mockAgencies.filter(a => a.isVerified).length}+</p>
-                <p className="text-xs uppercase tracking-widest text-medium-gray font-semibold mt-0.5">agenzie attive</p>
-              </div>
-              <div className="border-l border-gray-200 pl-6 md:pl-10">
-                <p className="text-3xl font-bold text-brand-green">{avgRating}/5</p>
-                <p className="text-xs uppercase tracking-widest text-medium-gray font-semibold mt-0.5">soddisfazione inquilini</p>
-              </div>
-              <div className="border-l border-gray-200 pl-6 md:pl-10">
-                <p className="text-3xl font-bold text-brand-green">{totalContracts.toLocaleString()}+</p>
-                <p className="text-xs uppercase tracking-widest text-medium-gray font-semibold mt-0.5">contratti gestiti</p>
+            <div className="flex items-center gap-6 pt-4 text-sm text-gray-500">
+              <div className="flex flex-wrap gap-6 md:gap-10">
+                <div>
+                  <p className="text-3xl font-bold font-serif text-gray-900">{mockAgencies.filter(a => a.isVerified).length}+</p>
+                  <p className="text-xs uppercase tracking-widest text-gray-500 font-semibold mt-0.5">agenzie attive</p>
+                </div>
+                <div className="border-l border-gray-200 pl-6 md:pl-10">
+                  <p className="text-3xl font-bold font-serif text-gray-900">{avgRating}/5</p>
+                  <p className="text-xs uppercase tracking-widest text-gray-500 font-semibold mt-0.5">soddisfazione inquilini</p>
+                </div>
+                <div className="border-l border-gray-200 pl-6 md:pl-10">
+                  <p className="text-3xl font-bold font-serif text-gray-900">{totalContracts.toLocaleString()}+</p>
+                  <p className="text-xs uppercase tracking-widest text-gray-500 font-semibold mt-0.5">contratti gestiti</p>
+                </div>
               </div>
             </div>
           </div>
 
           {/* Right: image collage */}
-          <div className="lg:w-[45%] w-full self-end relative flex justify-center lg:justify-end">
-            {/* Immagine principale */}
-            <div className="relative w-full max-w-sm lg:max-w-none">
-              <img
-                src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=700&q=80&auto=format&fit=crop"
-                alt="Agenzia immobiliare partner"
-                className="w-full h-[340px] lg:h-[420px] object-cover rounded-tl-2xl rounded-tr-2xl lg:rounded-tr-none rounded-br-none rounded-bl-none lg:rounded-tl-2xl"
-              />
+          <div className="relative lg:h-[600px] flex items-center justify-center">
+            <div className="absolute inset-0 bg-gradient-to-tr from-primary-100 to-teal-50 rounded-full blur-3xl opacity-30 transform rotate-12"></div>
+            <img
+              src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=700&q=80&auto=format&fit=crop"
+              alt="Agenzia immobiliare partner"
+              className="relative z-10 w-full h-auto max-w-md rounded-2xl shadow-2xl border-4 border-white transform hover:-translate-y-2 transition-transform duration-500"
+            />
 
-              {/* Card flottante: agenzia verificata */}
-              <div className="absolute -left-4 lg:-left-10 bottom-10 bg-white rounded-xl shadow-lg border border-gray-100 px-4 py-3 flex items-center gap-3 max-w-[220px]">
-                <div className="w-9 h-9 rounded-lg bg-soft-green flex items-center justify-center flex-shrink-0">
-                  <BadgeCheck size={18} className="text-action-green" />
+            {/* Floating Card: Agenzia verificata */}
+            <div className="absolute top-20 -left-10 bg-white p-4 rounded-xl shadow-xl z-20 animate-bounce-slow hidden md:block border border-gray-100">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center text-green-600 flex-shrink-0">
+                  <BadgeCheck className="w-6 h-6" />
                 </div>
                 <div>
-                  <p className="text-xs font-bold text-brand-green leading-tight">Agenzia verificata</p>
-                  <p className="text-[10px] text-medium-gray mt-0.5">Documenti e attività controllati</p>
+                  <p className="font-bold text-gray-900 leading-tight">Agenzia Verificata</p>
+                  <p className="text-xs text-gray-500 mt-0.5">Documenti controllati</p>
                 </div>
               </div>
+            </div>
 
-              {/* Card flottante: contratti */}
-              <div className="absolute -right-2 lg:-right-6 top-8 bg-brand-green text-white rounded-xl shadow-lg px-4 py-3">
-                <p className="text-2xl font-bold leading-none">{totalContracts.toLocaleString()}+</p>
-                <p className="text-[10px] text-white/70 uppercase tracking-widest font-semibold mt-0.5">contratti/anno</p>
+            {/* Floating Card: Contratti */}
+            <div className="absolute bottom-40 -right-4 bg-white p-4 rounded-xl shadow-xl z-20 animate-bounce-slow delay-700 hidden md:block border border-gray-100">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 flex-shrink-0">
+                  <FileCheck className="w-6 h-6" />
+                </div>
+                <div>
+                  <p className="font-bold text-gray-900 leading-tight">{totalContracts.toLocaleString()}+</p>
+                  <p className="text-xs text-gray-500 mt-0.5">contratti/anno</p>
+                </div>
               </div>
             </div>
+
           </div>
 
         </div>
@@ -101,11 +118,10 @@ export const AgenziePartnerPage: React.FC = () => {
             <button
               key={city}
               onClick={() => setActiveCity(city)}
-              className={`px-3 py-1.5 rounded-full text-sm font-semibold transition-colors whitespace-nowrap ${
-                activeCity === city
+              className={`px-3 py-1.5 rounded-full text-sm font-semibold transition-colors whitespace-nowrap ${activeCity === city
                   ? 'bg-brand-green text-white'
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-              }`}
+                }`}
             >
               {city}
             </button>

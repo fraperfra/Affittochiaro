@@ -5,8 +5,7 @@
 
 import { useState, useCallback, useEffect } from 'react';
 import { TenantDocument, DocumentType } from '@/types/tenant';
-import { tenantsApi } from '@/services/api/tenants';
-import { mockDocumentsApi, USE_MOCK_API } from '@/services/mock/mockTenantService';
+import { mockDocumentsApi } from '@/services/mock/mockTenantService';
 import { useFileUpload, UploadStatus } from './useFileUpload';
 import { DOCUMENT_CONSTRAINTS } from '@/utils/fileValidation';
 
@@ -59,32 +58,7 @@ export function useDocuments(): UseDocumentsReturn {
     setError(null);
 
     try {
-      let docs: TenantDocument[];
-
-      if (USE_MOCK_API) {
-        docs = await mockDocumentsApi.getDocuments();
-      } else {
-        const response = await tenantsApi.getDocuments();
-        // Mappa la risposta API al tipo TenantDocument
-        docs = response.map((doc: any) => ({
-          id: doc.id,
-          type: doc.type as DocumentType,
-          name: doc.name,
-          file: {
-            id: doc.id,
-            name: doc.name,
-            type: 'application/octet-stream',
-            size: 0,
-            url: doc.fileUrl,
-            uploadedAt: new Date(doc.uploadedAt),
-          },
-          status: doc.status,
-          uploadedAt: new Date(doc.uploadedAt),
-          verifiedAt: doc.verifiedAt ? new Date(doc.verifiedAt) : undefined,
-          rejectionReason: doc.rejectionReason,
-        }));
-      }
-
+      const docs = await mockDocumentsApi.getDocuments();
       setDocuments(docs);
     } catch (err: any) {
       const errorMessage = err.message || 'Errore nel caricamento dei documenti';
@@ -101,24 +75,8 @@ export function useDocuments(): UseDocumentsReturn {
   const uploadDocument = useCallback(
     async (file: File, type: DocumentType) => {
       try {
-        if (USE_MOCK_API) {
-          // Usa mock API con progress simulato
-          const doc = await mockDocumentsApi.uploadDocument(
-            type,
-            file,
-            (progress) => {
-              // Il progress viene gestito internamente dal mock
-            }
-          );
-          setDocuments((prev) => [...prev, doc]);
-        } else {
-          // Usa API reale
-          const formData = new FormData();
-          formData.append('file', file);
-          formData.append('type', type);
-
-          await upload(file, { type });
-        }
+        const doc = await mockDocumentsApi.uploadDocument(type, file, () => {});
+        setDocuments((prev) => [...prev, doc]);
       } catch (err: any) {
         console.error('Upload document error:', err);
         throw err;
@@ -134,12 +92,7 @@ export function useDocuments(): UseDocumentsReturn {
     setDeletingId(id);
 
     try {
-      if (USE_MOCK_API) {
-        await mockDocumentsApi.deleteDocument(id);
-      } else {
-        await tenantsApi.deleteDocument(id);
-      }
-
+      await mockDocumentsApi.deleteDocument(id);
       setDocuments((prev) => prev.filter((doc) => doc.id !== id));
     } catch (err: any) {
       console.error('Delete document error:', err);
