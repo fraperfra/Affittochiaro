@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import {
   SlidersHorizontal,
   Unlock,
@@ -43,6 +43,31 @@ export default function TenantSearchPage() {
 
   const unlockedIds = unlockedTenants.map(t => t.tenantId);
   const [geoLoading, setGeoLoading] = useState(false);
+
+  // City autocomplete
+  const [cityQuery, setCityQuery] = useState(filters.city || '');
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const cityDropdownRef = useRef<HTMLDivElement>(null);
+
+  const citySuggestions = cityQuery.length >= 3
+    ? ITALIAN_CITIES.filter(c => c.toLowerCase().startsWith(cityQuery.toLowerCase())).slice(0, 8)
+    : [];
+
+  // Sync input when geolocation sets the city externally
+  useEffect(() => {
+    if (filters.city) setCityQuery(filters.city);
+  }, [filters.city]);
+
+  // Close dropdown on outside click
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (cityDropdownRef.current && !cityDropdownRef.current.contains(e.target as Node)) {
+        setShowSuggestions(false);
+      }
+    };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, []);
 
   const handleGeolocate = useCallback(() => {
     if (!navigator.geolocation) {
@@ -191,9 +216,53 @@ export default function TenantSearchPage() {
             <span className="hidden sm:inline">Vicino a me</span>
           </button>
 
+          {/* City autocomplete */}
+          <div className="relative flex-1" ref={cityDropdownRef}>
+            <MapPin size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-text-muted pointer-events-none z-10" />
+            <input
+              type="text"
+              className="input pl-8 pr-8 w-full"
+              placeholder="Cerca per città..."
+              value={cityQuery}
+              onChange={(e) => {
+                const val = e.target.value;
+                setCityQuery(val);
+                setShowSuggestions(val.length >= 3);
+                if (!val) setFilters({ city: '' });
+              }}
+              onFocus={() => { if (cityQuery.length >= 3) setShowSuggestions(true); }}
+            />
+            {cityQuery && (
+              <button
+                type="button"
+                onClick={() => { setCityQuery(''); setFilters({ city: '' }); setShowSuggestions(false); }}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-text-muted hover:text-text-primary transition-colors"
+              >
+                <X size={14} />
+              </button>
+            )}
+            {showSuggestions && citySuggestions.length > 0 && (
+              <ul className="absolute top-full left-0 right-0 mt-1 bg-white border border-border rounded-xl shadow-lg z-50 max-h-52 overflow-y-auto">
+                {citySuggestions.map((city) => (
+                  <li key={city}>
+                    <button
+                      type="button"
+                      onMouseDown={(e) => e.preventDefault()}
+                      onClick={() => { setFilters({ city }); setCityQuery(city); setShowSuggestions(false); }}
+                      className="w-full text-left px-4 py-2.5 hover:bg-background-secondary text-sm transition-colors flex items-center gap-2"
+                    >
+                      <MapPin size={13} className="text-text-muted flex-shrink-0" />
+                      {city}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+
           <Button
             variant={showFilters ? 'primary' : 'secondary'}
-            className="flex-1 sm:flex-none"
+            className="flex-none"
             onClick={() => setShowFilters(true)}
             leftIcon={<SlidersHorizontal size={18} />}
           >
