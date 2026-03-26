@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useState, useEffect, useMemo, useCallback } from 'react';
 import {
-  Plus, Edit2, Eye, Trash2, Users, Pause, Play, Save, MapPin,
+  Edit2, Eye, Trash2, Users, Pause, Play, MapPin,
   Phone, Mail, CheckCircle, XCircle, Clock, ChevronDown, ChevronUp,
   Briefcase, Calendar, Home, MessageSquare, PawPrint, Cigarette,
   ImagePlus, X, Check,
@@ -387,12 +387,6 @@ export default function MyListingsPage() {
     };
   }, [allApplications, viewingListing]);
 
-  const openCreateModal = useCallback(() => {
-    setEditingId(null);
-    setFormData(EMPTY_FORM);
-    setShowFormModal(true);
-  }, []);
-
   const openEditModal = useCallback((listing: AgencyListing) => {
     setEditingId(listing.id);
     setFormData({
@@ -418,41 +412,23 @@ export default function MyListingsPage() {
     setShowFormModal(true);
   }, []);
 
-  const handleSave = (asDraft = false) => {
+  const handleSave = () => {
     if (!formData.title.trim()) { toast.error('Inserisci un titolo'); return; }
     if (!formData.city) { toast.error('Seleziona una citta'); return; }
     if (!formData.price || parseInt(formData.price) <= 0) { toast.error('Inserisci un prezzo valido'); return; }
 
-    if (editingId) {
-      setListings(listings.map(l => l.id === editingId ? {
-        ...l,
-        title: formData.title, description: formData.description, city: formData.city, zone: formData.zone,
-        price: parseInt(formData.price), expenses: parseInt(formData.expenses) || 0,
-        deposit: parseInt(formData.deposit) || 0, rooms: parseInt(formData.rooms) || 1,
-        bathrooms: parseInt(formData.bathrooms) || 1, sqm: parseInt(formData.sqm) || 0,
-        floor: parseInt(formData.floor) || 0, propertyType: formData.propertyType,
-        furnished: formData.furnished, heatingType: formData.heatingType,
-        features: formData.features, petsAllowed: formData.petsAllowed, smokingAllowed: formData.smokingAllowed,
-        photos: formData.photos,
-      } : l));
-      toast.success('Annuncio aggiornato!');
-    } else {
-      const newListing: AgencyListing = {
-        id: Date.now(),
-        title: formData.title, description: formData.description, city: formData.city, zone: formData.zone,
-        price: parseInt(formData.price), expenses: parseInt(formData.expenses) || 0,
-        deposit: parseInt(formData.deposit) || 0, rooms: parseInt(formData.rooms) || 1,
-        bathrooms: parseInt(formData.bathrooms) || 1, sqm: parseInt(formData.sqm) || 0,
-        floor: parseInt(formData.floor) || 0, propertyType: formData.propertyType,
-        furnished: formData.furnished, heatingType: formData.heatingType,
-        features: formData.features, petsAllowed: formData.petsAllowed, smokingAllowed: formData.smokingAllowed,
-        photos: formData.photos,
-        status: asDraft ? 'draft' : 'active',
-        views: 0, applications: 0, createdAt: new Date(),
-      };
-      setListings([newListing, ...listings]);
-      toast.success(asDraft ? 'Bozza salvata!' : 'Annuncio pubblicato!');
-    }
+    setListings(listings.map(l => l.id === editingId ? {
+      ...l,
+      title: formData.title, description: formData.description, city: formData.city, zone: formData.zone,
+      price: parseInt(formData.price), expenses: parseInt(formData.expenses) || 0,
+      deposit: parseInt(formData.deposit) || 0, rooms: parseInt(formData.rooms) || 1,
+      bathrooms: parseInt(formData.bathrooms) || 1, sqm: parseInt(formData.sqm) || 0,
+      floor: parseInt(formData.floor) || 0, propertyType: formData.propertyType,
+      furnished: formData.furnished, heatingType: formData.heatingType,
+      features: formData.features, petsAllowed: formData.petsAllowed, smokingAllowed: formData.smokingAllowed,
+      photos: formData.photos,
+    } : l));
+    toast.success('Annuncio aggiornato!');
     setShowFormModal(false);
     setFormData(EMPTY_FORM);
   };
@@ -525,9 +501,6 @@ export default function MyListingsPage() {
             {activeCount} annunci attivi &bull; {formatNumber(totalViews)} visualizzazioni totali
           </p>
         </div>
-        <Button leftIcon={<Plus size={18} />} onClick={openCreateModal}>
-          Nuovo Annuncio
-        </Button>
       </div>
 
       {/* Stats */}
@@ -626,7 +599,6 @@ export default function MyListingsPage() {
           icon={<Home size={40} className="text-text-muted" />}
           title="Nessun annuncio"
           description="Inizia a pubblicare i tuoi immobili"
-          action={{ label: 'Crea Annuncio', onClick: openCreateModal }}
         />
       )}
 
@@ -832,7 +804,7 @@ export default function MyListingsPage() {
       <Modal
         isOpen={showFormModal}
         onClose={() => { setShowFormModal(false); setFormData(EMPTY_FORM); }}
-        title={editingId ? 'Modifica Annuncio' : 'Nuovo Annuncio'}
+        title="Modifica Annuncio"
         size="lg"
       >
         <div className="space-y-6">
@@ -1046,13 +1018,8 @@ export default function MyListingsPage() {
           <Button variant="secondary" onClick={() => { setShowFormModal(false); setFormData(EMPTY_FORM); }}>
             Annulla
           </Button>
-          {!editingId && (
-            <Button variant="outline" leftIcon={<Save size={16} />} onClick={() => handleSave(true)}>
-              Salva Bozza
-            </Button>
-          )}
-          <Button onClick={() => handleSave(false)}>
-            {editingId ? 'Aggiorna' : 'Pubblica'}
+          <Button onClick={() => handleSave()}>
+            Aggiorna
           </Button>
         </ModalFooter>
       </Modal>
