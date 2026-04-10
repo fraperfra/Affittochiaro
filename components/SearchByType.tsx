@@ -29,29 +29,29 @@ export const SearchByType: React.FC<Props> = ({ onTypeSelect, variant = 'default
           </p>
         </div>
 
-        <div className={isHero ? 'grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-5 gap-3' : 'grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4'}>
+        {!isHero && (
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
           {TIPOLOGIE.map(({ label, slug, icon: Icon, annunci }) => (
             <button
               key={slug}
               type="button"
               onClick={() => onTypeSelect(slug)}
-              className={isHero
-                ? 'group flex items-center justify-start gap-2.5 bg-white border border-gray-200 hover:border-action-green hover:bg-soft-green rounded-xl px-3 py-2.5 transition-all active:scale-[0.98] cursor-pointer text-left'
-                : 'group flex flex-col items-center gap-3 bg-white border border-gray-200 hover:border-action-green rounded-2xl p-5 transition-all hover:shadow-medium active:scale-[0.97] cursor-pointer'}
+              className="group flex flex-col items-center gap-3 bg-white border border-gray-200 hover:border-action-green rounded-2xl p-5 transition-all hover:shadow-medium active:scale-[0.97] cursor-pointer"
             >
-              <div className={isHero ? 'w-8 h-8 rounded-lg bg-soft-green flex items-center justify-center group-hover:bg-action-green transition-colors flex-shrink-0' : 'w-12 h-12 rounded-xl bg-soft-green flex items-center justify-center group-hover:bg-action-green transition-colors'}>
+              <div className="w-12 h-12 rounded-xl bg-soft-green flex items-center justify-center group-hover:bg-action-green transition-colors">
                 <Icon
-                  size={isHero ? 16 : 24}
+                  size={24}
                   className="text-brand-green group-hover:text-white transition-colors"
                 />
               </div>
-              <div className={isHero ? 'flex flex-col items-start leading-tight' : 'flex flex-col items-center'}>
+              <div className="flex flex-col items-center">
                 <span className="font-bold text-sm text-brand-green">{label}</span>
                 <span className="text-xs text-medium-gray">{annunci} annunci</span>
               </div>
             </button>
           ))}
         </div>
+        )}
       </div>
     </section>
   );
