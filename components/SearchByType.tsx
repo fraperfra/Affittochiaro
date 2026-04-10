@@ -20,11 +20,11 @@ export const SearchByType: React.FC<Props> = ({ onTypeSelect, variant = 'default
   return (
     <section className={isHero ? 'px-0' : 'bg-gray-50 border-b border-gray-100 py-16 px-4'}>
       <div className={isHero ? 'max-w-3xl mx-auto lg:mx-0' : 'max-w-7xl mx-auto'}>
-        <div className={isHero ? 'text-center lg:text-left mb-5' : 'text-center mb-10'}>
-          <h2 className={isHero ? 'text-xs font-bold text-medium-gray uppercase tracking-wider mb-2' : 'text-2xl md:text-3xl font-bold text-brand-green mb-2'}>
+        <div className={isHero ? 'text-center lg:text-left mb-4' : 'text-center mb-10'}>
+          <h2 className={isHero ? 'text-sm md:text-base font-semibold text-medium-gray uppercase tracking-[0.08em] mb-2' : 'text-2xl md:text-3xl font-bold text-brand-green mb-2'}>
             Cosa stai cercando?
           </h2>
-          <p className={isHero ? 'text-sm text-medium-gray max-w-xl mx-auto lg:mx-0' : 'text-medium-gray'}>
+          <p className={isHero ? 'text-base text-medium-gray max-w-xl mx-auto lg:mx-0 leading-relaxed' : 'text-medium-gray'}>
             Seleziona la tipologia e la città. Ti mostriamo subito gli annunci disponibili.
           </p>
         </div>

@@ -116,7 +116,7 @@ export const QuickSearchBox: React.FC<Props> = ({
       <div
         className={
           isLarge
-            ? 'flex flex-col sm:flex-row gap-3 sm:gap-0 sm:bg-white sm:rounded-2xl sm:shadow-large sm:border sm:border-gray-200 sm:p-2'
+            ? 'flex flex-col sm:flex-row gap-3 sm:gap-0 bg-white rounded-2xl shadow-sm border border-gray-300 p-2'
             : 'flex flex-col sm:flex-row gap-3'
         }
       >
@@ -125,7 +125,7 @@ export const QuickSearchBox: React.FC<Props> = ({
           <div
             className={
               isLarge
-                ? 'relative flex items-center sm:border-r sm:border-gray-200'
+                ? 'relative flex items-center border border-gray-300 rounded-xl sm:border-0 sm:rounded-none sm:border-r sm:border-gray-300'
                 : 'relative flex items-center bg-white border border-gray-200 rounded-xl'
             }
           >
@@ -146,7 +146,7 @@ export const QuickSearchBox: React.FC<Props> = ({
                 activeIndex >= 0 ? `city-option-${activeIndex}` : undefined
               }
               className={`w-full pl-9 pr-8 bg-transparent outline-none text-gray-800 placeholder-gray-400 ${
-                isLarge ? 'py-3 text-base' : 'py-2.5 text-sm rounded-xl'
+                isLarge ? 'py-3.5 text-base rounded-xl sm:rounded-none' : 'py-2.5 text-sm rounded-xl'
               }`}
             />
             {query && (
@@ -210,7 +210,7 @@ export const QuickSearchBox: React.FC<Props> = ({
             aria-label="Tipologia immobile"
             className={`w-full appearance-none bg-transparent outline-none cursor-pointer pr-8 ${
               isLarge
-                ? 'py-3 pl-4 text-base sm:border-r sm:border-gray-200'
+                ? 'py-3.5 pl-4 text-base border border-gray-300 rounded-xl sm:border-0 sm:rounded-none sm:border-r sm:border-gray-300'
                 : 'py-2.5 pl-3 text-sm bg-white border border-gray-200 rounded-xl'
             } ${!tipologia ? 'text-gray-400' : 'text-gray-800'}`}
           >
