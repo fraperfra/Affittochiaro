@@ -2,8 +2,6 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import {
   Users,
-  Home,
-  Eye,
   ArrowRight,
   CreditCard,
   Inbox,
@@ -145,10 +143,6 @@ export default function AgencyDashboardPage() {
                 <CreditCard size={15} />
                 <span><strong>{credits}</strong> crediti</span>
               </div>
-              <div className="flex items-center gap-1.5">
-                <Home size={15} />
-                <span><strong>{agencyUser?.agency?.activeListingsCount ?? 12}</strong> annunci attivi</span>
-              </div>
               <span className="px-2 py-0.5 bg-white/20 rounded-full text-xs font-semibold capitalize">{plan}</span>
             </div>
           </div>
@@ -163,7 +157,7 @@ export default function AgencyDashboardPage() {
       </Card>
 
       {/* Quick Action Cards */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 gap-4">
         {/* Cerca inquilino */}
         <Link to={ROUTES.AGENCY_TENANTS} className="group block">
           <div className="bg-white rounded-2xl p-5 border border-border hover:border-primary-300 hover:shadow-md transition-all duration-200 h-full flex flex-col gap-3">
@@ -175,20 +169,6 @@ export default function AgencyDashboardPage() {
               <p className="text-xs text-text-muted mt-1">245 profili disponibili</p>
             </div>
             <ArrowRight size={15} className="text-text-muted group-hover:text-primary-500 group-hover:translate-x-0.5 transition-all mt-auto" />
-          </div>
-        </Link>
-
-        {/* Pubblica annuncio */}
-        <Link to={ROUTES.AGENCY_LISTINGS} className="group block">
-          <div className="bg-white rounded-2xl p-5 border border-border hover:border-teal-300 hover:shadow-md transition-all duration-200 h-full flex flex-col gap-3">
-            <div className="w-11 h-11 rounded-xl bg-teal-50 group-hover:bg-teal-100 flex items-center justify-center transition-colors">
-              <Home size={22} className="text-teal-600" />
-            </div>
-            <div>
-              <p className="font-semibold text-text-primary text-sm leading-tight">Pubblica annuncio</p>
-              <p className="text-xs text-text-muted mt-1">Aggiungi un nuovo immobile</p>
-            </div>
-            <ArrowRight size={15} className="text-text-muted group-hover:text-teal-500 group-hover:translate-x-0.5 transition-all mt-auto" />
           </div>
         </Link>
 
@@ -208,20 +188,6 @@ export default function AgencyDashboardPage() {
               <p className="text-xs text-text-muted mt-1">{applicationCount} candidature totali</p>
             </div>
             <ArrowRight size={15} className="text-text-muted group-hover:text-amber-500 group-hover:translate-x-0.5 transition-all mt-auto" />
-          </div>
-        </Link>
-
-        {/* Annunci attivi */}
-        <Link to={ROUTES.AGENCY_LISTINGS} className="group block">
-          <div className="bg-white rounded-2xl p-5 border border-border hover:border-violet-300 hover:shadow-md transition-all duration-200 h-full flex flex-col gap-3">
-            <div className="w-11 h-11 rounded-xl bg-violet-50 group-hover:bg-violet-100 flex items-center justify-center transition-colors">
-              <Eye size={22} className="text-violet-600" />
-            </div>
-            <div>
-              <p className="font-semibold text-text-primary text-sm leading-tight">Annunci attivi</p>
-              <p className="text-xs text-text-muted mt-1">{agencyUser?.agency?.activeListingsCount ?? 12} pubblicati</p>
-            </div>
-            <ArrowRight size={15} className="text-text-muted group-hover:text-violet-500 group-hover:translate-x-0.5 transition-all mt-auto" />
           </div>
         </Link>
       </div>

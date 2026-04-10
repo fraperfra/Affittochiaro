@@ -58,7 +58,6 @@ const agencyNavItems: NavItem[] = [
   { icon: <LayoutDashboard size={20} />, label: 'Dashboard', path: ROUTES.AGENCY_DASHBOARD },
   { icon: <Inbox size={20} />, label: 'Candidature', path: ROUTES.AGENCY_APPLICATIONS, badge: 0 },
   { icon: <Users size={20} />, label: 'Cerca Inquilini', path: ROUTES.AGENCY_TENANTS },
-  { icon: <Home size={20} />, label: 'I Miei Annunci', path: ROUTES.AGENCY_LISTINGS },
   { icon: <CreditCard size={20} />, label: 'Piano & Crediti', path: ROUTES.AGENCY_PLAN },
   { icon: <FolderOpen size={20} />, label: 'Documenti', path: ROUTES.AGENCY_DOCUMENTS },
   { icon: <Sparkles size={20} />, label: 'Servizi', path: ROUTES.AGENCY_SERVICES },
@@ -145,24 +144,25 @@ function GlobalSearch({ userRole, navigate }: { userRole: string; navigate: (pat
         });
     }
 
-    // Search listings (all roles)
-    mockListings
-      .filter(l =>
-        l.title.toLowerCase().includes(s) ||
-        l.address.city.toLowerCase().includes(s) ||
-        (l.address.street || '').toLowerCase().includes(s)
-      )
-      .slice(0, 5)
-      .forEach(l => {
-        found.push({
-          id: `listing_${l.id}`,
-          title: l.title,
-          subtitle: `${l.address.city} - €${l.price}/mese`,
-          category: 'Annunci',
-          path: userRole === 'tenant' ? ROUTES.TENANT_LISTINGS :
-            userRole === 'agency' ? ROUTES.AGENCY_LISTINGS : ROUTES.ADMIN_LISTINGS,
+    // Search listings (tenant & admin only — agency listing management removed)
+    if (userRole !== 'agency') {
+      mockListings
+        .filter(l =>
+          l.title.toLowerCase().includes(s) ||
+          l.address.city.toLowerCase().includes(s) ||
+          (l.address.street || '').toLowerCase().includes(s)
+        )
+        .slice(0, 5)
+        .forEach(l => {
+          found.push({
+            id: `listing_${l.id}`,
+            title: l.title,
+            subtitle: `${l.address.city} - €${l.price}/mese`,
+            category: 'Annunci',
+            path: userRole === 'tenant' ? ROUTES.TENANT_LISTINGS : ROUTES.ADMIN_LISTINGS,
+          });
         });
-      });
+    }
 
     // Search agencies (tenant & admin)
     if (userRole === 'tenant' || userRole === 'admin') {
@@ -291,7 +291,6 @@ const PAGE_TITLES: Record<string, string> = {
   '/tenant/more': 'Altro',
   '/agency': 'Dashboard',
   '/agency/tenants': 'Cerca Inquilini',
-  '/agency/listings': 'I Miei Annunci',
   '/agency/applications': 'Candidature',
   '/agency/plan': 'Piano & Crediti',
   '/agency/messages': 'Messaggi',

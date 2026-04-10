@@ -59,7 +59,6 @@ const TenantMorePage = lazy(() => import('./pages/tenant/TenantMorePage'));
 const AgencyDashboardPage = lazy(() => import('./pages/agency/AgencyDashboardPage'));
 const TenantSearchPage = lazy(() => import('./pages/agency/TenantSearchPage'));
 const AgencyUnlockedProfilesPage = lazy(() => import('./pages/agency/AgencyUnlockedProfilesPage'));
-const MyListingsPage = lazy(() => import('./pages/agency/MyListingsPage'));
 const ApplicationsPage = lazy(() => import('./pages/agency/ApplicationsPage'));
 const PlanPage = lazy(() => import('./pages/agency/PlanPage'));
 const AgencyMorePage = lazy(() => import('./pages/agency/AgencyMorePage'));
@@ -156,7 +155,6 @@ function AuthMobileMenu({ role }: { role: string }) {
   ];
   const agencyLinks = [
     { label: 'Dashboard', icon: <DashIcon size={18} />, to: '/agency' },
-    { label: 'Annunci', icon: <Heart size={18} />, to: '/agency/listings' },
     { label: 'Messaggi', icon: <MessageSquare size={18} />, to: '/agency/messages' },
     { label: 'Impostazioni', icon: <Settings size={18} />, to: '/agency/settings' },
   ];
@@ -549,7 +547,7 @@ function App() {
             <Route index element={<AgencyDashboardPage />} />
             <Route path="tenants" element={<TenantSearchPage />} />
             <Route path="unlocked-profiles" element={<AgencyUnlockedProfilesPage />} />
-            <Route path="listings" element={<MyListingsPage />} />
+            <Route path="listings" element={<Navigate to={ROUTES.AGENCY_DASHBOARD} replace />} />
             <Route path="applications" element={<ApplicationsPage />} />
             <Route path="plan" element={<PlanPage />} />
             <Route path="messages" element={<MessagesPage />} />

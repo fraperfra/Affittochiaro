@@ -5,7 +5,6 @@ import {
   Bell,
   ChevronRight,
   Inbox,
-  Home,
   CreditCard,
   FileText,
   Calculator,
@@ -66,7 +65,6 @@ export default function AgencyMorePage() {
     setUser({ ...agencyUser, agency: { ...agencyUser.agency, logoUrl: blobUrl } } as AgencyUser);
   };
   const credits = agencyUser?.agency.credits ?? 0;
-  const activeListings = agencyUser?.agency.activeListingsCount ?? 0;
   const city = agencyUser?.agency.city || 'Italia';
   const plan = agencyUser?.agency.plan || 'free';
   const isUpgradeable = plan === 'free' || plan === 'base';
@@ -124,15 +122,6 @@ export default function AgencyMorePage() {
         <div>
           <h3 className="text-xs font-bold text-gray-800 uppercase tracking-wider mb-3">Panoramica</h3>
           <div className="grid grid-cols-2 gap-3">
-            <div className="bg-green-50/50 rounded-2xl p-3 flex items-center gap-3">
-              <div className="w-8 h-8 rounded-full bg-green-100 text-green-600 flex items-center justify-center flex-shrink-0">
-                <Home size={16} />
-              </div>
-              <div className="min-w-0">
-                <p className="text-[10px] text-gray-500 uppercase font-semibold">Annunci</p>
-                <p className="text-sm font-semibold text-gray-900">{activeListings > 0 ? `${activeListings} attivi` : 'Nessuno'}</p>
-              </div>
-            </div>
             <div className="bg-blue-50/50 rounded-2xl p-3 flex items-center gap-3">
               <div className="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center flex-shrink-0">
                 <Inbox size={16} />

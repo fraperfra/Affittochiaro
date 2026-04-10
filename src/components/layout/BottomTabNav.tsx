@@ -37,7 +37,6 @@ const tenantTabs: TabItem[] = [
 const agencyTabs: TabItem[] = [
   { icon: LayoutDashboard, label: 'Home', href: ROUTES.AGENCY_DASHBOARD },
   { icon: SearchIcon, label: 'Cerca', href: ROUTES.AGENCY_TENANTS },
-  { icon: Megaphone, label: 'Annunci', href: ROUTES.AGENCY_LISTINGS },
   { icon: Inbox, label: 'Candidature', href: ROUTES.AGENCY_APPLICATIONS, badgeKey: 'applications' },
   { icon: MoreHorizontal, label: 'Altro', href: ROUTES.AGENCY_MORE },
 ];
