@@ -10,8 +10,11 @@ import { Breadcrumb } from '@/components/ui/Breadcrumb';
 import { getNomeCitta, getNomeRegione } from '@/lib/geo-mock';
 import { getListingBySlug, getSimilarListings, getAgenziaById } from '@/lib/mock-data';
 import { buildListingUrl, formatPrice } from '@/lib/utils';
+import { useAuthStore } from '@/store';
+import { ApplicationModal, type ApplicationData, TenantRegistrationModal, type TenantRegistrationData } from '../../../components';
 
 export default function AnnuncioDetailPage() {
+  const { isAuthenticated } = useAuthStore();
   const { regione = '', comune = '', tipologia = '', slug = '' } = useParams<{
     regione: string;
     comune: string;
@@ -21,6 +24,8 @@ export default function AnnuncioDetailPage() {
 
   const listing = getListingBySlug(slug);
   const [imgIndex, setImgIndex] = useState(0);
+  const [isApplicationModalOpen, setIsApplicationModalOpen] = useState(false);
+  const [isRegistrationModalOpen, setIsRegistrationModalOpen] = useState(false);
 
   if (!listing) return <Navigate to="/case-e-stanze-in-affitto" replace />;
 
@@ -32,6 +37,56 @@ export default function AnnuncioDetailPage() {
 
   const prevImg = () => setImgIndex((i) => (i - 1 + immagini.length) % immagini.length);
   const nextImg = () => setImgIndex((i) => (i + 1) % immagini.length);
+
+  const applicationListing = {
+    id: listing.id,
+    title: listing.titolo,
+    price: formatPrice(listing.prezzo),
+    type: listing.tipologia,
+    image: listing.immagini[0],
+  };
+
+  const handleApplyClick = () => {
+    if (!isAuthenticated) {
+      setIsRegistrationModalOpen(true);
+      return;
+    }
+    setIsApplicationModalOpen(true);
+  };
+
+  const handleApplicationSubmit = (data: ApplicationData) => {
+    const existing = JSON.parse(localStorage.getItem('affittochiaro_applications') || '[]');
+    const newApp = {
+      ...data,
+      id: Date.now().toString(),
+      submittedAt: new Date().toISOString(),
+      status: 'pending',
+      agencyId: listing.agenziaId || 'agency_1',
+      viewed: false,
+    };
+    localStorage.setItem('affittochiaro_applications', JSON.stringify([...existing, newApp]));
+
+    const existingAppliedIds = JSON.parse(localStorage.getItem('affittochiaro_applied_ids') || '[]');
+    if (!existingAppliedIds.includes(listing.id)) {
+      localStorage.setItem('affittochiaro_applied_ids', JSON.stringify([...existingAppliedIds, listing.id]));
+    }
+
+    const existingNotifs = JSON.parse(localStorage.getItem('affittochiaro_agency_notifications') || '[]');
+    const notif = {
+      id: Date.now().toString(),
+      type: 'new_application',
+      title: 'Nuova Candidatura',
+      message: `${data.firstName} ${data.lastName} si è candidato per "${data.listingTitle}"`,
+      applicantName: `${data.firstName} ${data.lastName}`,
+      listingTitle: data.listingTitle,
+      listingId: data.listingId,
+      applicationId: newApp.id,
+      createdAt: new Date().toISOString(),
+      read: false,
+      agencyId: listing.agenziaId || 'agency_1',
+    };
+    localStorage.setItem('affittochiaro_agency_notifications', JSON.stringify([notif, ...existingNotifs]));
+  };
 
   return (
     <>
@@ -215,13 +270,14 @@ export default function AnnuncioDetailPage() {
                 <p className="text-text-muted text-sm mt-0.5 capitalize">{listing.tipologia} · {listing.mq} m²</p>
               </div>
 
-              <Link
-                to="/register"
-                className="btn btn-primary w-full text-center mb-3 flex items-center justify-center gap-2"
+              <button
+                type="button"
+                onClick={handleApplyClick}
+                className="w-full text-center mb-3 flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-soft-green text-brand-green border border-action-green/40 font-bold hover:bg-action-green/20 transition-colors"
               >
-                Candidati a questo affitto
+                Candidati
                 <ArrowRight size={16} />
-              </Link>
+              </button>
 
               {!listing.isExclusive && (
                 <p className="text-xs text-text-muted text-center">
@@ -280,6 +336,21 @@ export default function AnnuncioDetailPage() {
           </div>
         </div>
       </div>
+
+      <ApplicationModal
+        isOpen={isApplicationModalOpen}
+        onClose={() => setIsApplicationModalOpen(false)}
+        listing={applicationListing}
+        onSubmit={handleApplicationSubmit}
+      />
+
+      <TenantRegistrationModal
+        isOpen={isRegistrationModalOpen}
+        onClose={() => setIsRegistrationModalOpen(false)}
+        onComplete={(_data: TenantRegistrationData) => {
+          setIsRegistrationModalOpen(false);
+        }}
+      />
     </>
   );
 }
