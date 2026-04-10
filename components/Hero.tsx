@@ -1,30 +1,29 @@
 import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Home, BedSingle, Building2, Building, TreePine } from 'lucide-react';
 import { TenantRegistrationModal, TenantRegistrationData } from './TenantRegistrationModal';
 import { QuickSearchBox } from './search/QuickSearchBox';
 import toast from 'react-hot-toast';
 
+const TIPOLOGIE = [
+  { label: 'Appartamento', slug: 'appartamento', icon: Home,      annunci: 87  },
+  { label: 'Stanza',       slug: 'stanza',       icon: BedSingle, annunci: 52  },
+  { label: 'Bilocale',     slug: 'bilocale',     icon: Building2, annunci: 44  },
+  { label: 'Trilocale',    slug: 'trilocale',    icon: Building,  annunci: 31  },
+  { label: 'Villa',        slug: 'villa',        icon: TreePine,  annunci: 18  },
+];
+
 interface HeroProps {
   counter: number;
   activeCityName: string;
-  prefilledTipologia?: string | null;
-  onTipologiaFilled?: () => void;
-  searchSectionRef?: React.RefObject<HTMLDivElement | null>;
 }
 
-export const Hero: React.FC<HeroProps> = ({
-  counter,
-  activeCityName,
-  prefilledTipologia,
-  onTipologiaFilled,
-  searchSectionRef,
-}) => {
+export const Hero: React.FC<HeroProps> = ({ counter, activeCityName }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedTipologia, setSelectedTipologia] = useState<string | null>(null);
   const navigate = useNavigate();
-  const internalSearchRef = useRef<HTMLDivElement>(null);
-  const resolvedSearchRef = (searchSectionRef ?? internalSearchRef) as React.RefObject<HTMLDivElement>;
+  const searchRef = useRef<HTMLDivElement>(null);
 
-  const ctaText = 'CREA IL TUO PROFILO GRATIS';
   const cardCtaText = 'UNISCITI A LORO →';
 
   const handleRegistrationComplete = (data: TenantRegistrationData) => {
@@ -39,9 +38,16 @@ export const Hero: React.FC<HeroProps> = ({
     setTimeout(() => { navigate('/tenant'); }, 500);
   };
 
+  const handleTypeSelect = (slug: string) => {
+    setSelectedTipologia(slug);
+    setTimeout(() => {
+      searchRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 50);
+  };
+
   return (
     <>
-      <section className="bg-white pt-16 pb-20 px-4 border-b border-gray-100">
+      <section className="bg-white pt-16 pb-16 px-4 border-b border-gray-100">
         <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
 
           {/* Left Side: Copy */}
@@ -49,30 +55,42 @@ export const Hero: React.FC<HeroProps> = ({
             <p className="text-xs font-bold text-brand-green uppercase tracking-widest mb-6 border-l-2 border-action-green pl-3 text-left">
               NOVITÀ: VIDEO PRESENTAZIONE INQUILINO
             </p>
-            <div className="mb-8">
+            <div className="mb-6">
               <h1 className="text-3xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-brand-green leading-[1.1]">
                 Trova casa in <span className="underline-green text-action-green">2 Settimane</span>. <br />
                 Smetti di inviare <br />
                 <span className="text-error-red">email a vuoto</span>.
               </h1>
             </div>
-            <p className="text-xl md:text-2xl text-medium-gray max-w-3xl mx-auto lg:mx-0 mb-4 leading-relaxed">
+            <p className="text-xl md:text-2xl text-medium-gray max-w-3xl mx-auto lg:mx-0 mb-3 leading-relaxed">
               Crea il tuo <span className="font-bold text-brand-green">Profilo Verificato</span> con <span className="font-bold text-brand-green">CV dedicato</span>. Ricevi risposte dai proprietari in <span className="font-bold text-brand-green">meno di 24 ore</span>.
             </p>
-            <p className="text-base text-medium-gray max-w-3xl mx-auto lg:mx-0 mb-8">
+            <p className="text-base text-medium-gray max-w-3xl mx-auto lg:mx-0 mb-7">
               Basta annunci già scaduti e silenzi radio. Con Affittochiaro sei visibile, verificato e preferito.
             </p>
 
-            <div className="flex flex-col sm:flex-row items-center gap-4 mb-12">
-              <button
-                onClick={() => setIsModalOpen(true)}
-                className="w-full sm:w-auto bg-brand-green text-white px-8 py-4 rounded-xl font-bold text-lg flex items-center justify-center gap-3 hover:bg-black transition-colors uppercase tracking-tight"
-              >
-                {ctaText}
-                <span className="group-hover:translate-x-1 transition-transform">→</span>
-              </button>
+            {/* Tipologie — sostituisce CTA primario */}
+            <div className="mb-8">
+              <p className="text-xs font-bold text-medium-gray uppercase tracking-wider mb-3 text-left">
+                Cosa stai cercando?
+              </p>
+              <div className="flex flex-wrap gap-2 justify-center lg:justify-start">
+                {TIPOLOGIE.map(({ label, slug, icon: Icon, annunci }) => (
+                  <button
+                    key={slug}
+                    type="button"
+                    onClick={() => handleTypeSelect(slug)}
+                    className="flex items-center gap-2 bg-white border border-gray-200 hover:border-action-green hover:bg-soft-green px-3.5 py-2 rounded-xl text-sm font-semibold text-brand-green transition-all active:scale-95"
+                  >
+                    <Icon size={15} className="flex-shrink-0" />
+                    <span>{label}</span>
+                    <span className="text-xs text-medium-gray font-normal">{annunci}</span>
+                  </button>
+                ))}
+              </div>
             </div>
 
+            {/* Social proof */}
             <div className="flex flex-col lg:flex-row items-center gap-4">
               <div className="flex -space-x-3">
                 {[1, 2, 3, 4].map(i => (
@@ -135,14 +153,11 @@ export const Hero: React.FC<HeroProps> = ({
         </div>
 
         {/* Quick Search — full width below two-column layout */}
-        <div
-          ref={resolvedSearchRef}
-          className="mt-12 pt-10 border-t border-gray-100"
-        >
+        <div ref={searchRef} className="max-w-7xl mx-auto mt-10 pt-10 border-t border-gray-100">
           <QuickSearchBox
             size="large"
-            prefilledTipologia={prefilledTipologia}
-            onTipologiaFilled={onTipologiaFilled}
+            prefilledTipologia={selectedTipologia}
+            onTipologiaFilled={() => setSelectedTipologia(null)}
           />
           <p className="mt-3 text-center text-xs text-medium-gray">
             Oltre 40 città disponibili · Agenzie verificate · Candidatura senza costi
