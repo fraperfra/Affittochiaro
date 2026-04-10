@@ -36,9 +36,9 @@ export const Header: React.FC = () => {
       className="fixed top-0 left-0 right-0 z-50 flex flex-col shadow-sm bg-white"
       style={{ paddingTop: 'env(safe-area-inset-top, 0px)' }}
     >
-      <header className="bg-white/95 backdrop-blur-md px-4 md:px-8 h-16 md:h-20 flex items-center justify-between border-b border-gray-100">
-        <Link to="/" className="flex items-center">
-          <img src="/assets/logoaffittochiaro_pic.webp" alt="Affittochiaro" className="h-8 md:h-10 w-auto" />
+      <header className="relative bg-white/95 backdrop-blur-md px-4 md:px-8 h-16 md:h-20 flex items-center justify-center md:justify-between border-b border-gray-100">
+        <Link to="/" className="flex items-center md:static md:translate-x-0 absolute left-1/2 -translate-x-1/2">
+          <img src="/assets/logoaffittochiaro_pic.webp" alt="Affittochiaro" className="h-9 md:h-10 w-auto" />
         </Link>
 
         {/* Desktop nav */}
@@ -69,7 +69,7 @@ export const Header: React.FC = () => {
         {/* Mobile hamburger button */}
         <button
           onClick={() => setMobileOpen(!mobileOpen)}
-          className="md:hidden flex items-center justify-center w-10 h-10 rounded-xl text-brand-green hover:bg-gray-100 transition-colors"
+          className="md:hidden ml-auto flex items-center justify-center w-10 h-10 rounded-xl text-brand-green hover:bg-gray-100 transition-colors"
           aria-label={mobileOpen ? 'Chiudi menu' : 'Apri menu'}
         >
           {mobileOpen ? <X size={24} /> : <Menu size={24} />}
