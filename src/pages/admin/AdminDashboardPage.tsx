@@ -116,8 +116,8 @@ export default function AdminDashboardPage() {
 
   // Plan distribution from real agency data
   const planDistribution = [
-    { name: 'Free', value: mockAgencyStats.planDistribution.free, color: '#94A3B8' },
-    { name: 'Base', value: mockAgencyStats.planDistribution.base, color: '#00C48C' },
+    { name: 'Free', value: mockAgencyStats.planDistribution.free, color: '#999999' },
+    { name: 'Base', value: mockAgencyStats.planDistribution.base, color: '#3DB83A' },
     { name: 'Professional', value: mockAgencyStats.planDistribution.professional, color: '#0A5E4D' },
     { name: 'Enterprise', value: mockAgencyStats.planDistribution.enterprise, color: '#FF6B35' },
   ];
@@ -266,9 +266,9 @@ export default function AdminDashboardPage() {
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={revenueData}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#E2E8F0" />
-                <XAxis dataKey="name" stroke="#64748B" fontSize={12} />
+                <XAxis dataKey="name" stroke="#666666" fontSize={12} />
                 <YAxis
-                  stroke="#64748B"
+                  stroke="#666666"
                   fontSize={12}
                   tickFormatter={(v) => `€${(v / 1000).toFixed(0)}k`}
                 />
@@ -283,9 +283,9 @@ export default function AdminDashboardPage() {
                 <Line
                   type="monotone"
                   dataKey="revenue"
-                  stroke="#00C48C"
+                  stroke="#3DB83A"
                   strokeWidth={2}
-                  dot={{ fill: '#00C48C', strokeWidth: 2 }}
+                  dot={{ fill: '#3DB83A', strokeWidth: 2 }}
                 />
               </LineChart>
             </ResponsiveContainer>
@@ -339,8 +339,8 @@ export default function AdminDashboardPage() {
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={userGrowthData}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#E2E8F0" />
-                <XAxis dataKey="name" stroke="#64748B" fontSize={12} />
-                <YAxis stroke="#64748B" fontSize={12} />
+                <XAxis dataKey="name" stroke="#666666" fontSize={12} />
+                <YAxis stroke="#666666" fontSize={12} />
                 <Tooltip
                   contentStyle={{
                     backgroundColor: '#fff',
@@ -349,7 +349,7 @@ export default function AdminDashboardPage() {
                   }}
                 />
                 <Legend />
-                <Bar dataKey="tenants" name="Inquilini" fill="#00C48C" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="tenants" name="Inquilini" fill="#3DB83A" radius={[4, 4, 0, 0]} />
                 <Bar dataKey="agencies" name="Agenzie" fill="#0A5E4D" radius={[4, 4, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>

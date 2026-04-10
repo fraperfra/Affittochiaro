@@ -74,7 +74,7 @@ export const ChatButton: React.FC = () => {
       {/* FAB */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className={`fixed right-4 z-[100] bg-[#00D094] text-white px-8 py-5 rounded-full shadow-2xl flex items-center gap-3 hover:scale-110 transition-transform md:right-10
+        className={`fixed right-4 z-[100] bg-[#3DB83A] text-white px-8 py-5 rounded-full shadow-2xl flex items-center gap-3 hover:scale-110 transition-transform md:right-10
           ${isAuthenticated ? 'bottom-6 md:bottom-10' : 'bottom-[104px] md:bottom-[104px]'}`}
         aria-label="Chat"
       >

@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import { SpeedInsights } from '@vercel/speed-insights/react';
+import { HelmetProvider } from 'react-helmet-async';
 import App from './App';
 import ErrorBoundary from './components/ErrorBoundary';
 import ScrollToTop from './components/ScrollToTop';
@@ -12,6 +13,7 @@ import './styles/custom.css';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
+    <HelmetProvider>
     <ErrorBoundary>
       <BrowserRouter>
         <ScrollToTop />
@@ -24,7 +26,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
             duration: 2000,
             style: {
               background: '#fff',
-              color: '#2C3E50',
+              color: '#1A1A1A',
               borderRadius: '12px',
               boxShadow: '0 8px 30px rgba(0, 0, 0, 0.12)',
               padding: '12px 16px',
@@ -32,7 +34,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
             },
             success: {
               iconTheme: {
-                primary: '#00C48C',
+                primary: '#3DB83A',
                 secondary: '#fff',
               },
             },
@@ -53,5 +55,6 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
       </BrowserRouter>
       <SpeedInsights />
     </ErrorBoundary>
+    </HelmetProvider>
   </React.StrictMode>
 );

@@ -18,10 +18,10 @@ export const StickyBottomBar: React.FC<StickyBottomBarProps> = ({ onRegister }) 
           onClick={onRegister}
           className="flex-1 h-12 bg-brand-green text-white rounded-xl font-bold text-sm active:scale-95 transition-transform shadow-lg uppercase tracking-tight"
         >
-          Iscriviti Gratis
+          Cerca casa
         </button>
         <Link
-          to="/annunci"
+          to="/case-e-stanze-in-affitto"
           className="h-12 px-4 bg-action-green/10 text-action-green border border-action-green/30 rounded-xl font-bold text-sm flex items-center justify-center gap-1.5 active:scale-95 transition-transform whitespace-nowrap"
         >
           <Search size={15} strokeWidth={2.5} />

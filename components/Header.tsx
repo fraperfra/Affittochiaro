@@ -5,11 +5,11 @@ import { ArrowLeft, LayoutDashboard, Menu, X } from 'lucide-react';
 
 const NAV_LINKS = [
   { to: '/come-funziona', label: 'Come Funziona' },
-  { to: '/annunci', label: 'Annunci' },
-  { to: '/ricerca-inquilino', label: 'Cerca Inquilino' },
+  { to: '/case-e-stanze-in-affitto', label: 'Annunci' },
+  { to: '/cerca-inquilino', label: 'Cerca Inquilino' },
   { to: '/servizi', label: 'Servizi' },
   { to: '/agenzie', label: 'Agenzie' },
-  { to: '/affittonews', label: 'News' },
+  { to: '/guide-affitto', label: 'News' },
 ];
 
 export const Header: React.FC = () => {

@@ -132,7 +132,7 @@ export function VideoPlayer({
                 [&::-webkit-slider-thumb]:rounded-full
                 [&::-webkit-slider-thumb]:cursor-pointer"
               style={{
-                background: `linear-gradient(to right, #00D094 ${progress}%, rgba(255,255,255,0.3) ${progress}%)`,
+                background: `linear-gradient(to right, #3DB83A ${progress}%, rgba(255,255,255,0.3) ${progress}%)`,
               }}
             />
           </div>

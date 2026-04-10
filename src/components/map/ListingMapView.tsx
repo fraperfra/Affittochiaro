@@ -16,7 +16,7 @@ const MARKER_STYLES = `
     z-index: 0 !important;
   }
   .price-marker {
-    background: #004832;
+    background: #1A5C38;
     color: white;
     font-weight: 700;
     font-size: 12px;
@@ -34,8 +34,8 @@ const MARKER_STYLES = `
     z-index: 1000 !important;
   }
   .price-marker--active {
-    background: #00D094;
-    color: #004832;
+    background: #3DB83A;
+    color: #1A5C38;
     transform: scale(1.15);
     z-index: 1000 !important;
   }
@@ -59,7 +59,7 @@ const MARKER_STYLES = `
     background-color: rgba(0, 72, 50, 0.2) !important;
   }
   .marker-cluster-small div {
-    background-color: #004832 !important;
+    background-color: #1A5C38 !important;
     color: white !important;
     font-weight: 700;
   }
@@ -67,15 +67,15 @@ const MARKER_STYLES = `
     background-color: rgba(0, 208, 148, 0.3) !important;
   }
   .marker-cluster-medium div {
-    background-color: #00D094 !important;
-    color: #004832 !important;
+    background-color: #3DB83A !important;
+    color: #1A5C38 !important;
     font-weight: 700;
   }
   .marker-cluster-large {
     background-color: rgba(0, 72, 50, 0.3) !important;
   }
   .marker-cluster-large div {
-    background-color: #004832 !important;
+    background-color: #1A5C38 !important;
     color: white !important;
     font-weight: 700;
   }

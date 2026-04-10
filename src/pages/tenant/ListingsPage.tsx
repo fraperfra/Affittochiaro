@@ -362,7 +362,7 @@ export default function ListingsPage() {
           </div>
         </div>
         <button
-          onClick={() => navigate('/annunci')}
+          onClick={() => navigate('/case-e-stanze-in-affitto')}
           className="flex items-center gap-1.5 shrink-0 bg-white text-primary-700 font-bold text-xs md:text-sm px-3 md:px-4 py-2 rounded-lg hover:bg-primary-50 transition-colors"
         >
           Vai agli annunci
@@ -406,7 +406,7 @@ export default function ListingsPage() {
           description="Salva gli annunci che ti interessano cliccando il cuore ♥ durante la ricerca"
           action={{
             label: 'Cerca annunci',
-            onClick: () => navigate('/annunci'),
+            onClick: () => navigate('/case-e-stanze-in-affitto'),
           }}
         />
       )}

@@ -11,25 +11,25 @@ export default {
     extend: {
       colors: {
         // Landing Page Colors (legacy)
-        'brand-green': '#004832',
-        'action-green': '#00D094',
-        'soft-green': '#F4F9F6',
+        'brand-green': '#1A5C38',
+        'action-green': '#3DB83A',
+        'soft-green': '#E8F5E9',
         'error-red': '#FF5A5F',
         'trust-blue': '#2B7DE9',
         'dark-gray': '#1A1A1A',
         'medium-gray': '#666666',
         // Brand Colors Affittochiaro
         primary: {
-          50: '#E6FFF5',
-          100: '#B3FFE0',
-          200: '#80FFCC',
-          300: '#4DFFB8',
-          400: '#1AFFA3',
-          500: '#00C48C', // Main primary
-          600: '#00A376',
-          700: '#008261',
-          800: '#00614B',
-          900: '#004036',
+          50: '#E8F5E9',
+          100: '#C8E6C9',
+          200: '#A5D6A7',
+          300: '#81C784',
+          400: '#66BB6A',
+          500: '#3DB83A', // Main primary
+          600: '#2E9B2B',
+          700: '#1A5C38',
+          800: '#145230',
+          900: '#0D3B22',
         },
         teal: {
           50: '#E6F5F2',
@@ -56,20 +56,20 @@ export default {
           900: '#99290B',
         },
         // UI Colors
-        success: '#00C48C',
+        success: '#3DB83A',
         warning: '#FFB020',
         error: '#FF5A5F',
         info: '#2B7DE9',
         // Background & Text
         background: {
           DEFAULT: '#FFFFFF',
-          secondary: '#F8FAFB',
+          secondary: '#F5F5F5',
           tertiary: '#F1F5F9',
         },
         text: {
-          primary: '#2C3E50',
-          secondary: '#64748B',
-          muted: '#94A3B8',
+          primary: '#1A1A1A',
+          secondary: '#666666',
+          muted: '#999999',
           inverse: '#FFFFFF',
         },
         border: {
@@ -79,9 +79,8 @@ export default {
         },
       },
       fontFamily: {
-        sans: ['Inter', 'Roboto', 'system-ui', '-apple-system', 'sans-serif'],
-        serif: ['Roboto', 'Georgia', 'serif'],
-        roboto: ['Roboto', 'Inter', 'sans-serif'],
+        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+        serif: ['Inter', 'sans-serif'],
       },
       fontSize: {
         'xs': ['0.75rem', { lineHeight: '1rem' }],          /* 12px */

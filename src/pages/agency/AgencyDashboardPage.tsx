@@ -237,8 +237,8 @@ export default function AgencyDashboardPage() {
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={viewsData}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#E2E8F0" />
-                <XAxis dataKey="name" stroke="#64748B" fontSize={12} />
-                <YAxis stroke="#64748B" fontSize={12} />
+                <XAxis dataKey="name" stroke="#666666" fontSize={12} />
+                <YAxis stroke="#666666" fontSize={12} />
                 <Tooltip
                   contentStyle={{
                     backgroundColor: '#fff',
@@ -249,9 +249,9 @@ export default function AgencyDashboardPage() {
                 <Line
                   type="monotone"
                   dataKey="views"
-                  stroke="#00C48C"
+                  stroke="#3DB83A"
                   strokeWidth={2}
-                  dot={{ fill: '#00C48C', strokeWidth: 2 }}
+                  dot={{ fill: '#3DB83A', strokeWidth: 2 }}
                 />
               </LineChart>
             </ResponsiveContainer>
@@ -267,8 +267,8 @@ export default function AgencyDashboardPage() {
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={applicationsData}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#E2E8F0" />
-                <XAxis dataKey="name" stroke="#64748B" fontSize={12} />
-                <YAxis stroke="#64748B" fontSize={12} />
+                <XAxis dataKey="name" stroke="#666666" fontSize={12} />
+                <YAxis stroke="#666666" fontSize={12} />
                 <Tooltip
                   contentStyle={{
                     backgroundColor: '#fff',

@@ -9,9 +9,9 @@ import { DOCUMENT_TYPE_LABELS } from '../types/tenant';
 
 const COLORS = {
   primary: [10, 94, 77] as [number, number, number],     // #0A5E4D
-  teal: [0, 196, 140] as [number, number, number],       // #00C48C
+  teal: [61, 184, 58] as [number, number, number],        // #3DB83A
   text: [30, 41, 59] as [number, number, number],        // #1E293B
-  muted: [100, 116, 139] as [number, number, number],    // #64748B
+  muted: [102, 102, 102] as [number, number, number],    // #666666
   border: [226, 232, 240] as [number, number, number],   // #E2E8F0
   white: [255, 255, 255] as [number, number, number],
   bg: [248, 250, 252] as [number, number, number],       // #F8FAFC

@@ -57,7 +57,7 @@ export function VideoRecordingControls({
                 cy="40"
                 r="36"
                 fill="none"
-                stroke={timeRemaining <= 10 ? '#ef4444' : '#00D094'}
+                stroke={timeRemaining <= 10 ? '#ef4444' : '#3DB83A'}
                 strokeWidth="4"
                 strokeLinecap="round"
                 strokeDasharray={`${2 * Math.PI * 36}`}

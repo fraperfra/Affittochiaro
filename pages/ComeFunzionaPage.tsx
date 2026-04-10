@@ -224,7 +224,7 @@ export const ComeFunzionaPage: React.FC = () => {
 
           <div className="mt-12 text-center">
             <Link
-              to={activeTab === 'inquilini' ? '/annunci' : '/landing-inquilino'}
+              to={activeTab === 'inquilini' ? '/case-e-stanze-in-affitto' : '/landing-inquilino'}
               className="btn btn-primary btn-lg inline-flex items-center gap-2 shadow-lg shadow-primary-500/20"
             >
               {activeTab === 'inquilini' ? 'Cerca Casa Ora' : 'Pubblica Annuncio Gratis'}
@@ -379,7 +379,7 @@ export const ComeFunzionaPage: React.FC = () => {
                 Unisciti a oltre 12.000 utenti che hanno già trovato o affittato casa con noi questo mese.
               </p>
               <div className="flex flex-col sm:flex-row justify-center gap-4">
-                <Link to="/annunci" className="btn bg-white text-primary-600 hover:bg-gray-50 btn-lg border-0 shadow-xl font-bold px-8">
+                <Link to="/case-e-stanze-in-affitto" className="btn bg-white text-primary-600 hover:bg-gray-50 btn-lg border-0 shadow-xl font-bold px-8">
                   Trova Casa
                 </Link>
                 <Link to="/landing-inquilino" className="btn bg-primary-700/30 backdrop-blur-sm border border-white/30 text-white hover:bg-white/10 btn-lg font-bold px-8">

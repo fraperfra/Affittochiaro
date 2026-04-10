@@ -258,7 +258,7 @@ export const AgenziePartnerPage: React.FC = () => {
             </p>
           </div>
           <Link
-            to="/ricerca-inquilino"
+            to="/cerca-inquilino"
             className="flex-shrink-0 inline-flex items-center gap-2 bg-action-green text-white font-bold px-6 py-3.5 rounded-xl min-h-[44px] hover:brightness-110 transition-all whitespace-nowrap"
           >
             Richiedi informazioni <ArrowRight size={16} />

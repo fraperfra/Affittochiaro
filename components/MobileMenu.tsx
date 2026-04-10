@@ -30,10 +30,10 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
           Come Funziona
         </Link>
         <Link
-          to="/annunci"
+          to="/case-e-stanze-in-affitto"
           onClick={onClose}
           className={`text-lg font-bold py-4 border-b border-gray-50 flex justify-between items-center ${
-            isActive('/annunci') ? 'text-action-green' : 'text-brand-green'
+            isActive('/case-e-stanze-in-affitto') ? 'text-action-green' : 'text-brand-green'
           }`}
         >
           Annunci

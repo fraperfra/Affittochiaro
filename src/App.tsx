@@ -87,6 +87,26 @@ const TenantServicesPage = lazy(() => import('./pages/tenant/TenantServicesPage'
 const AgencyDocumentsPage = lazy(() => import('./pages/agency/AgencyDocumentsPage'));
 const AgencyServicesPage = lazy(() => import('./pages/agency/AgencyServicesPage'));
 
+// Listing sub-pages - lazy loaded
+const ExclusiveListingsPage = lazy(() => import('./pages/listings/ExclusiveListingsPage'));
+const RegionePage = lazy(() => import('./pages/listings/RegionePage'));
+const CittaPage = lazy(() => import('./pages/listings/CittaPage'));
+const TipologiaPage = lazy(() => import('./pages/listings/TipologiaPage'));
+const AnnuncioDetailPage = lazy(() => import('./pages/listings/AnnuncioDetailPage'));
+
+// Guide sub-pages - lazy loaded
+const ArticoloPage = lazy(() => import('./pages/guide/ArticoloPage'));
+
+// Servizi + Come funziona sub-pages - lazy loaded
+const ServizioDetailPage = lazy(() => import('./pages/servizi/ServizioDetailPage'));
+const ComeFunzionaInquilinoPage = lazy(() => import('./pages/ComeFunzionaInquilinoPage'));
+const ComeFunzionaAgenziaPage = lazy(() => import('./pages/ComeFunzionaAgenziaPage'));
+
+// Pagine legali - lazy loaded
+const PrivacyPolicyPage = lazy(() => import('./pages/PrivacyPolicyPage'));
+const CookiePolicyPage = lazy(() => import('./pages/CookiePolicyPage'));
+const TerminiServiziPage = lazy(() => import('./pages/TerminiServiziPage'));
+
 
 // Auth Guard Component
 function AuthGuard({ children, allowedRoles }: { children: React.ReactNode; allowedRoles?: string[] }) {
@@ -263,11 +283,58 @@ function App() {
               </LandingWrapper>
             }
           />
+          {/* Redirect vecchi URL → nuovi */}
+          <Route path="/annunci" element={<Navigate to="/case-e-stanze-in-affitto" replace />} />
+          <Route path="/affittonews" element={<Navigate to="/guide-affitto" replace />} />
+          <Route path="/ricerca-inquilino" element={<Navigate to="/cerca-inquilino" replace />} />
+          <Route path="/registrati" element={<Navigate to={ROUTES.REGISTER} replace />} />
+          <Route path="/accedi" element={<Navigate to={ROUTES.LOGIN} replace />} />
+
           <Route
-            path="/annunci"
+            path="/case-e-stanze-in-affitto"
             element={
               <LandingWrapper>
                 <AnnunciPage />
+              </LandingWrapper>
+            }
+          />
+          <Route
+            path="/case-e-stanze-in-affitto/affitti-esclusivi-affittochiaro"
+            element={
+              <LandingWrapper>
+                <ExclusiveListingsPage />
+              </LandingWrapper>
+            }
+          />
+          <Route
+            path="/case-e-stanze-in-affitto/:regione"
+            element={
+              <LandingWrapper>
+                <RegionePage />
+              </LandingWrapper>
+            }
+          />
+          <Route
+            path="/case-e-stanze-in-affitto/:regione/:comune"
+            element={
+              <LandingWrapper>
+                <CittaPage />
+              </LandingWrapper>
+            }
+          />
+          <Route
+            path="/case-e-stanze-in-affitto/:regione/:comune/:tipologia"
+            element={
+              <LandingWrapper>
+                <TipologiaPage />
+              </LandingWrapper>
+            }
+          />
+          <Route
+            path="/case-e-stanze-in-affitto/:regione/:comune/:tipologia/:slug"
+            element={
+              <LandingWrapper>
+                <AnnuncioDetailPage />
               </LandingWrapper>
             }
           />
@@ -288,7 +355,7 @@ function App() {
             }
           />
           <Route
-            path="/ricerca-inquilino"
+            path="/cerca-inquilino"
             element={
               <LandingWrapper>
                 <RicercaInquilinoPage />
@@ -320,10 +387,42 @@ function App() {
             }
           />
           <Route
-            path="/affittonews"
+            path="/guide-affitto"
             element={
               <LandingWrapper>
                 <AffittoNewsPage />
+              </LandingWrapper>
+            }
+          />
+          <Route
+            path="/guide-affitto/:slugArticolo"
+            element={
+              <LandingWrapper>
+                <ArticoloPage />
+              </LandingWrapper>
+            }
+          />
+          <Route
+            path="/servizi/:nomeServizio"
+            element={
+              <LandingWrapper>
+                <ServizioDetailPage />
+              </LandingWrapper>
+            }
+          />
+          <Route
+            path="/come-funziona/per-chi-cerca-casa"
+            element={
+              <LandingWrapper>
+                <ComeFunzionaInquilinoPage />
+              </LandingWrapper>
+            }
+          />
+          <Route
+            path="/come-funziona/per-agenzie"
+            element={
+              <LandingWrapper>
+                <ComeFunzionaAgenziaPage />
               </LandingWrapper>
             }
           />
@@ -336,6 +435,30 @@ function App() {
             }
           />
 
+          <Route
+            path="/privacy-policy"
+            element={
+              <LandingWrapper>
+                <PrivacyPolicyPage />
+              </LandingWrapper>
+            }
+          />
+          <Route
+            path="/cookie-policy"
+            element={
+              <LandingWrapper>
+                <CookiePolicyPage />
+              </LandingWrapper>
+            }
+          />
+          <Route
+            path="/termini-di-servizio"
+            element={
+              <LandingWrapper>
+                <TerminiServiziPage />
+              </LandingWrapper>
+            }
+          />
           <Route
             path="/design-system"
             element={

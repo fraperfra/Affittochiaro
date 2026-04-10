@@ -235,7 +235,7 @@ export const AgenziaDetailPage: React.FC = () => {
 
             {/* CTA principale */}
             <Link
-              to={`/annunci?agency=${agency.id}`}
+              to={`/case-e-stanze-in-affitto?agency=${agency.id}`}
               className="flex items-center justify-center gap-2 bg-brand-green text-white font-bold px-5 py-3.5 rounded-xl min-h-[44px] w-full hover:bg-black transition-colors text-sm"
             >
               Vedi gli immobili gestiti da questa agenzia

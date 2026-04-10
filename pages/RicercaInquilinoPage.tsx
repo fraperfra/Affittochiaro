@@ -358,7 +358,7 @@ export const RicercaInquilinoPage: React.FC = () => {
                                     className="flex items-center justify-center gap-1.5 w-full py-2 rounded-xl bg-gray-100 hover:bg-primary-50 text-gray-500 hover:text-primary-600 text-xs font-bold transition-colors"
                                 >
                                     <Lock size={12} />
-                                    Registrati per il profilo
+                                    Vedi il profilo completo
                                 </Link>
                             </div>
                         </div>
@@ -368,10 +368,10 @@ export const RicercaInquilinoPage: React.FC = () => {
                 {/* Load more CTA */}
                 <div className="text-center mt-12">
                     <Link to="/register" className="btn bg-primary-600 text-white px-8 py-4 rounded-2xl text-lg font-bold shadow-xl shadow-primary-600/20 hover:bg-primary-700 transition-all inline-flex items-center gap-2">
-                        Scopri tutti gli inquilini
+                        Vedi i candidati disponibili
                         <ArrowRight className="w-5 h-5" />
                     </Link>
-                    <p className="text-sm text-gray-400 mt-3">Registrati gratis per vedere i profili completi</p>
+                    <p className="text-sm text-gray-400 mt-3">Crea un account per accedere ai profili completi</p>
                 </div>
             </div>
 

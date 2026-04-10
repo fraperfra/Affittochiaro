@@ -73,31 +73,31 @@ const INITIAL_ADS: Ad[] = [
   {
     id: '1', name: 'Promo Piano Pro Agenzie', placement: 'agency_dashboard_top', type: 'banner', target: 'agency',
     status: 'active',
-    content: { title: 'Passa al Piano Pro', subtitle: 'Sblocca profili illimitati e funzionalità avanzate', ctaText: 'Scopri il Piano Pro', ctaUrl: '/agency/plan', bgColor: '#004832', textColor: '#ffffff', badgeText: 'Offerta Limitata' },
+    content: { title: 'Passa al Piano Pro', subtitle: 'Sblocca profili illimitati e funzionalità avanzate', ctaText: 'Scopri il Piano Pro', ctaUrl: '/agency/plan', bgColor: '#1A5C38', textColor: '#ffffff', badgeText: 'Offerta Limitata' },
     impressions: 4820, clicks: 312, createdAt: new Date(Date.now() - 15 * 86400000).toISOString(), updatedAt: new Date(Date.now() - 15 * 86400000).toISOString(),
   },
   {
     id: '2', name: 'Completa il Profilo — Inquilini', placement: 'tenant_dashboard_top', type: 'cta', target: 'tenant',
     status: 'active',
-    content: { title: 'Il tuo profilo è incompleto', body: 'Completa il tuo CV dell\'inquilino per aumentare le possibilità di trovare casa.', ctaText: 'Completa ora', ctaUrl: '/tenant/profile', bgColor: '#f0fdf4', textColor: '#004832' },
+    content: { title: 'Il tuo profilo è incompleto', body: 'Completa il tuo CV dell\'inquilino per aumentare le possibilità di trovare casa.', ctaText: 'Completa ora', ctaUrl: '/tenant/profile', bgColor: '#f0fdf4', textColor: '#1A5C38' },
     impressions: 6120, clicks: 891, createdAt: new Date(Date.now() - 30 * 86400000).toISOString(), updatedAt: new Date(Date.now() - 5 * 86400000).toISOString(),
   },
   {
     id: '3', name: 'Banner Homepage — Registrazione', placement: 'homepage_hero_banner', type: 'banner', target: 'public',
     status: 'draft',
-    content: { title: 'Trova casa con il tuo CV inquilino', subtitle: 'La piattaforma che mette in contatto inquilini affidabili con le migliori agenzie', ctaText: 'Inizia Gratis', ctaUrl: '/register', bgColor: '#00D094', textColor: '#004832', badgeText: 'Nuovo' },
+    content: { title: 'Trova casa con il tuo CV inquilino', subtitle: 'La piattaforma che mette in contatto inquilini affidabili con le migliori agenzie', ctaText: 'Inizia Gratis', ctaUrl: '/register', bgColor: '#3DB83A', textColor: '#1A5C38', badgeText: 'Nuovo' },
     impressions: 0, clicks: 0, createdAt: new Date(Date.now() - 2 * 86400000).toISOString(), updatedAt: new Date(Date.now() - 2 * 86400000).toISOString(),
   },
 ];
 
 const EMPTY_AD: Omit<Ad, 'id' | 'impressions' | 'clicks' | 'createdAt' | 'updatedAt'> = {
   name: '', placement: 'tenant_dashboard_top', type: 'banner', target: 'all', status: 'draft',
-  content: { title: '', subtitle: '', body: '', ctaText: 'Scopri di più', ctaUrl: '', bgColor: '#004832', textColor: '#ffffff' },
+  content: { title: '', subtitle: '', body: '', ctaText: 'Scopri di più', ctaUrl: '', bgColor: '#1A5C38', textColor: '#ffffff' },
 };
 
 // Live Preview component
 function AdPreview({ content, type, placement }: { content: AdContent; type: AdType; placement: AdPlacement }) {
-  const bg = content.bgColor || '#004832';
+  const bg = content.bgColor || '#1A5C38';
   const text = content.textColor || '#ffffff';
   const isLight = text === '#ffffff' || text.toLowerCase() === '#ffffff';
 
@@ -374,8 +374,8 @@ export default function AdminAdsPage() {
                 <div>
                   <label className="block text-sm font-medium mb-1.5">Colore sfondo</label>
                   <div className="flex items-center gap-2">
-                    <input type="color" value={form.content.bgColor || '#004832'} onChange={e => updateContent('bgColor', e.target.value)} className="w-10 h-10 rounded-lg border border-border cursor-pointer p-1" />
-                    <Input value={form.content.bgColor || ''} onChange={e => updateContent('bgColor', e.target.value)} className="flex-1" placeholder="#004832" />
+                    <input type="color" value={form.content.bgColor || '#1A5C38'} onChange={e => updateContent('bgColor', e.target.value)} className="w-10 h-10 rounded-lg border border-border cursor-pointer p-1" />
+                    <Input value={form.content.bgColor || ''} onChange={e => updateContent('bgColor', e.target.value)} className="flex-1" placeholder="#1A5C38" />
                   </div>
                 </div>
                 <div>

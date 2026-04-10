@@ -19,7 +19,7 @@ export const ServiziCasaPage: React.FC = () => {
 
     // Handler for map selection to navigate to listings
     const handleCityChange = (city: string) => {
-        navigate(`/annunci?city=${encodeURIComponent(city)}`);
+        navigate(`/case-e-stanze-in-affitto?city=${encodeURIComponent(city)}`);
     };
 
     return (
@@ -72,7 +72,7 @@ export const ServiziCasaPage: React.FC = () => {
                                 <li className="flex items-center gap-2 text-sm font-bold text-gray-700"><CheckCircle2 className="w-4 h-4 text-green-500" /> Cedolare Secca</li>
                             </ul>
                             <Link to="/servizi/contratti" className="inline-flex items-center font-bold text-blue-600 hover:text-blue-700 transition-colors">
-                                Scopri di più <ArrowRight className="w-4 h-4 ml-1" />
+                                Scopri il servizio <ArrowRight className="w-4 h-4 ml-1" />
                             </Link>
                         </div>
 
@@ -88,7 +88,7 @@ export const ServiziCasaPage: React.FC = () => {
                                 <li className="flex items-center gap-2 text-sm font-bold text-gray-700"><CheckCircle2 className="w-4 h-4 text-green-500" /> Zero Burocrazia</li>
                             </ul>
                             <Link to="/servizi/utenze" className="inline-flex items-center font-bold text-yellow-600 hover:text-yellow-700 transition-colors">
-                                Scopri di più <ArrowRight className="w-4 h-4 ml-1" />
+                                Scopri il servizio <ArrowRight className="w-4 h-4 ml-1" />
                             </Link>
                         </div>
 
@@ -104,7 +104,7 @@ export const ServiziCasaPage: React.FC = () => {
                                 <li className="flex items-center gap-2 text-sm font-bold text-gray-700"><CheckCircle2 className="w-4 h-4 text-green-500" /> Assicurazione All-Risk</li>
                             </ul>
                             <Link to="/servizi/traslochi" className="inline-flex items-center font-bold text-purple-600 hover:text-purple-700 transition-colors">
-                                Scopri di più <ArrowRight className="w-4 h-4 ml-1" />
+                                Scopri il servizio <ArrowRight className="w-4 h-4 ml-1" />
                             </Link>
                         </div>
 
@@ -116,7 +116,7 @@ export const ServiziCasaPage: React.FC = () => {
                             <h3 className="text-2xl font-bold font-serif mb-2 text-gray-900">Pulizie Professionali</h3>
                             <p className="text-gray-500 mb-6 leading-relaxed">Pulizie di fine locazione per restituire l'immobile perfetto o igienizzazione profonda pre-ingresso.</p>
                             <Link to="/servizi/pulizie" className="inline-flex items-center font-bold text-teal-600 hover:text-teal-700 transition-colors">
-                                Scopri di più <ArrowRight className="w-4 h-4 ml-1" />
+                                Scopri il servizio <ArrowRight className="w-4 h-4 ml-1" />
                             </Link>
                         </div>
 
@@ -128,7 +128,7 @@ export const ServiziCasaPage: React.FC = () => {
                             <h3 className="text-2xl font-bold font-serif mb-2 text-gray-900">Assicurazioni Casa</h3>
                             <p className="text-gray-500 mb-6 leading-relaxed">Polizze RC Inquilino, protezione affitto e tutela legale. La sicurezza prima di tutto.</p>
                             <Link to="/servizi/assicurazioni" className="inline-flex items-center font-bold text-red-600 hover:text-red-700 transition-colors">
-                                Scopri di più <ArrowRight className="w-4 h-4 ml-1" />
+                                Scopri il servizio <ArrowRight className="w-4 h-4 ml-1" />
                             </Link>
                         </div>
 
@@ -140,7 +140,7 @@ export const ServiziCasaPage: React.FC = () => {
                             <h3 className="text-2xl font-bold font-serif mb-2 text-gray-900">Certificazione APE</h3>
                             <p className="text-gray-500 mb-6 leading-relaxed">Richiedi l'Attestato di Prestazione Energetica online. Obbligatorio per vendere o affittare.</p>
                             <Link to="/servizi/ape" className="inline-flex items-center font-bold text-orange-600 hover:text-orange-700 transition-colors">
-                                Scopri di più <ArrowRight className="w-4 h-4 ml-1" />
+                                Scopri il servizio <ArrowRight className="w-4 h-4 ml-1" />
                             </Link>
                         </div>
 
