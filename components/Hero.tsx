@@ -48,7 +48,7 @@ export const Hero: React.FC<HeroProps> = ({ counter, activeCityName }) => {
               NOVITÀ: VIDEO PRESENTAZIONE INQUILINO
             </p>
             <div className="mb-6">
-              <h1 className="text-3xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-brand-green leading-[1.1]">
+              <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-brand-green leading-[1.1]">
                 Trova casa in <span className="underline-green text-action-green">2 Settimane</span>. <br />
                 Smetti di inviare <br />
                 <span className="text-error-red">email a vuoto</span>.
@@ -63,6 +63,17 @@ export const Hero: React.FC<HeroProps> = ({ counter, activeCityName }) => {
 
             <div className="mb-8">
               <SearchByType onTypeSelect={handleTypeSelect} variant="hero" />
+            </div>
+
+            <div ref={searchRef} className="mb-8">
+              <QuickSearchBox
+                size="large"
+                prefilledTipologia={selectedTipologia}
+                onTipologiaFilled={() => setSelectedTipologia(null)}
+              />
+              <p className="mt-3 text-center lg:text-left text-xs text-medium-gray">
+                Oltre 40 città disponibili · Agenzie verificate · Candidatura senza costi
+              </p>
             </div>
 
             {/* Social proof */}
@@ -127,17 +138,6 @@ export const Hero: React.FC<HeroProps> = ({ counter, activeCityName }) => {
           </div>
         </div>
 
-        {/* Quick Search — full width below two-column layout */}
-        <div ref={searchRef} className="max-w-7xl mx-auto mt-10 pt-10 border-t border-gray-100">
-          <QuickSearchBox
-            size="large"
-            prefilledTipologia={selectedTipologia}
-            onTipologiaFilled={() => setSelectedTipologia(null)}
-          />
-          <p className="mt-3 text-center text-xs text-medium-gray">
-            Oltre 40 città disponibili · Agenzie verificate · Candidatura senza costi
-          </p>
-        </div>
       </section>
 
       <TenantRegistrationModal
