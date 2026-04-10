@@ -1,24 +1,14 @@
-/**
- * LoginPage
- * Layout split: form a sinistra, pannello branded a destra
- */
-
 import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Eye, EyeOff, Mail, Lock, AlertCircle, Shield, User, Building2, CheckCircle } from 'lucide-react';
+import { Eye, EyeOff, Mail, Lock, AlertCircle, Shield, User, Building2, ArrowLeft } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { useAuthStore } from '../store';
 import { loginSchema, LoginFormData } from '../utils/validators';
 import { ROUTES } from '../utils/constants';
-import { Button, Input, Card } from '../components/ui';
-
-const trustPoints = [
-  '30.000+ profili inquilino verificati',
-  'Matching intelligente in pochi secondi',
-  'Agenzie partner in tutta Italia',
-];
+import { Button, Input } from '../components/ui';
+import { Header as LandingHeader, Footer } from '../../components';
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
@@ -66,27 +56,41 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex font-sans">
+    <div className="min-h-screen bg-white flex flex-col font-sans">
 
-      {/* ── LEFT PANEL – Form ─────────────────────────────────────────────── */}
-      <div className="w-full lg:w-[480px] xl:w-[520px] flex flex-col bg-white overflow-y-auto">
-        <div className="flex-1 flex flex-col justify-center px-8 py-10 sm:px-12">
+      {/* Freccia back — solo mobile */}
+      <Link
+        to="/"
+        className="lg:hidden fixed top-4 left-4 z-50 flex items-center justify-center w-10 h-10 rounded-full bg-white border border-gray-200 shadow-sm hover:bg-gray-50 transition-colors"
+        aria-label="Torna al sito"
+      >
+        <ArrowLeft size={20} className="text-gray-700" />
+      </Link>
 
-          {/* Logo */}
-          <Link to="/" className="flex items-center gap-2 mb-10 self-start">
+      {/* Header sito — solo desktop */}
+      <div className="hidden lg:block">
+        <LandingHeader />
+      </div>
+
+      {/* Form centrato */}
+      <main className="flex-1 flex items-center justify-center px-4 py-16">
+        <div className="w-full max-w-[440px]">
+
+          {/* Logo — solo mobile (desktop ha header) */}
+          <Link to="/" className="lg:hidden flex items-center gap-2 mb-10">
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-teal-700 to-primary-500 flex items-center justify-center">
               <span className="text-white font-black text-sm">A</span>
             </div>
             <span className="font-bold text-lg text-gray-900">Affittochiaro</span>
           </Link>
 
-          {/* Header Text */}
+          {/* Titolo */}
           <div className="mb-7">
             <h1 className="text-3xl font-bold text-gray-900 mb-1">Bentornato!</h1>
             <p className="text-gray-500 text-sm">Accedi al tuo account Affittochiaro</p>
           </div>
 
-          {/* Error */}
+          {/* Errore */}
           {error && (
             <div className="mb-5 p-4 bg-red-50 border border-red-200 rounded-xl flex items-start gap-3">
               <AlertCircle className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" />
@@ -94,7 +98,7 @@ export default function LoginPage() {
             </div>
           )}
 
-          {/* Social Logins */}
+          {/* Social login */}
           <div className="space-y-3 mb-5">
             <button
               type="button"
@@ -123,7 +127,7 @@ export default function LoginPage() {
             </div>
           </div>
 
-          {/* Login Form */}
+          {/* Form */}
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <Input
               label="Email"
@@ -209,68 +213,15 @@ export default function LoginPage() {
               </button>
             </div>
           </div>
+
         </div>
+      </main>
+
+      {/* Footer sito — solo desktop */}
+      <div className="hidden lg:block">
+        <Footer />
       </div>
 
-      {/* ── RIGHT PANEL – Branded image ───────────────────────────────────── */}
-      <div className="hidden lg:flex flex-1 relative overflow-hidden bg-gradient-to-br from-teal-800 via-teal-700 to-primary-500">
-        {/* Background photo */}
-        <img
-          src="/assets/logoaffittochiaro_pic.webp"
-          alt=""
-          className="absolute inset-0 w-full h-full object-cover opacity-15 mix-blend-luminosity"
-        />
-
-        {/* Decorative blobs */}
-        <div className="absolute -top-24 -right-24 w-80 h-80 bg-primary-400/30 rounded-full blur-3xl" />
-        <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-teal-600/40 rounded-full blur-3xl" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-white/5 rounded-full blur-2xl" />
-
-        {/* Content */}
-        <div className="relative z-10 flex flex-col justify-between p-12 xl:p-16 text-white w-full">
-          {/* Top brand */}
-          <div>
-            <span className="inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-4 py-1.5 text-xs font-semibold tracking-wide uppercase">
-              La piattaforma per l'affitto in Italia
-            </span>
-          </div>
-
-          {/* Main copy */}
-          <div>
-            <h2 className="text-4xl xl:text-5xl font-bold leading-tight mb-4">
-              Il Curriculum<br />
-              <span className="text-primary-300">dell'Inquilino</span>
-            </h2>
-            <p className="text-lg text-white/75 mb-8 max-w-sm leading-relaxed">
-              Crea il tuo profilo, dimostra la tua affidabilità e trova casa più velocemente.
-            </p>
-
-            {/* Trust points */}
-            <ul className="space-y-3">
-              {trustPoints.map((point) => (
-                <li key={point} className="flex items-center gap-3 text-white/85 text-sm">
-                  <CheckCircle className="w-4 h-4 text-primary-300 flex-shrink-0" />
-                  {point}
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Bottom stats */}
-          <div className="grid grid-cols-3 gap-6 pt-8 border-t border-white/20">
-            {[
-              { value: '30k+', label: 'Inquilini' },
-              { value: '500+', label: 'Agenzie' },
-              { value: '98%', label: 'Soddisfazione' },
-            ].map((stat) => (
-              <div key={stat.label}>
-                <p className="text-2xl font-bold">{stat.value}</p>
-                <p className="text-xs text-white/60 mt-0.5">{stat.label}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
     </div>
   );
 }

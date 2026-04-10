@@ -1,18 +1,14 @@
-/**
- * RegisterPage
- * Layout split: form a sinistra, pannello branded a destra
- */
-
 import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { Building2, Globe, Mail, Lock, User, Phone, Check, ArrowRight, ArrowLeft, AlertCircle, Eye, EyeOff, CheckCircle, Home } from 'lucide-react';
+import { Building2, Globe, Mail, Lock, User, Phone, Check, ArrowRight, ArrowLeft, AlertCircle, Eye, EyeOff, Home } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { useAuthStore } from '../store';
 import { ROUTES, ITALIAN_CITIES, OCCUPATIONS } from '../utils/constants';
 import { Button, Input } from '../components/ui';
+import { Header as LandingHeader, Footer } from '../../components';
 
 type AccountType = 'tenant' | 'agency';
 type Step = 1 | 2 | 3 | 4;
@@ -63,25 +59,6 @@ const agencySchema = z.object({
 
 type TenantFormData = z.infer<typeof tenantSchema>;
 type AgencyFormData = z.infer<typeof agencySchema>;
-
-const rightPanelContent: Record<Step, { title: string; subtitle: string }> = {
-  1: {
-    title: 'Unisciti ad Affittochiaro',
-    subtitle: 'Il profilo inquilino che convince le agenzie. Crea il tuo curriculum digitale in pochi minuti.',
-  },
-  2: {
-    title: 'Le tue credenziali',
-    subtitle: 'Crea una password sicura per proteggere il tuo account.',
-  },
-  3: {
-    title: 'Il tuo profilo',
-    subtitle: 'Più dati fornisci, più sarai visibile alle agenzie partner.',
-  },
-  4: {
-    title: 'Quasi fatto!',
-    subtitle: 'Conferma i tuoi dati per completare la registrazione.',
-  },
-};
 
 export default function RegisterPage() {
   const [accountType, setAccountType] = useState<AccountType | null>(null);
@@ -179,24 +156,36 @@ export default function RegisterPage() {
     { num: 4, label: 'Conferma' },
   ];
 
-  const panelContent = rightPanelContent[step];
-
   return (
-    <div className="min-h-screen flex font-sans">
+    <div className="min-h-screen bg-white flex flex-col font-sans">
 
-      {/* ── LEFT PANEL – Form ─────────────────────────────────────────────── */}
-      <div className="w-full lg:w-[500px] xl:w-[540px] flex flex-col bg-white overflow-y-auto">
-        <div className="flex-1 flex flex-col justify-center px-8 py-10 sm:px-12">
+      {/* Freccia back — solo mobile */}
+      <Link
+        to="/"
+        className="lg:hidden fixed top-4 left-4 z-50 flex items-center justify-center w-10 h-10 rounded-full bg-white border border-gray-200 shadow-sm hover:bg-gray-50 transition-colors"
+        aria-label="Torna al sito"
+      >
+        <ArrowLeft size={20} className="text-gray-700" />
+      </Link>
 
-          {/* Logo */}
-          <Link to="/" className="flex items-center gap-2 mb-8 self-start">
+      {/* Header sito — solo desktop */}
+      <div className="hidden lg:block">
+        <LandingHeader />
+      </div>
+
+      {/* Form centrato */}
+      <main className="flex-1 flex items-center justify-center px-4 py-16">
+        <div className="w-full max-w-[480px]">
+
+          {/* Logo — solo mobile */}
+          <Link to="/" className="lg:hidden flex items-center gap-2 mb-8">
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-teal-700 to-primary-500 flex items-center justify-center">
               <span className="text-white font-black text-sm">A</span>
             </div>
             <span className="font-bold text-lg text-gray-900">Affittochiaro</span>
           </Link>
 
-          {/* Header */}
+          {/* Titolo */}
           <div className="mb-6">
             <h1 className="text-3xl font-bold text-gray-900 mb-1">Crea il tuo Account</h1>
             <p className="text-gray-500 text-sm">Unisciti ad Affittochiaro oggi stesso</p>
@@ -230,7 +219,7 @@ export default function RegisterPage() {
             </div>
           </div>
 
-          {/* Error */}
+          {/* Errore */}
           {error && (
             <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-xl flex items-start gap-3">
               <AlertCircle className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" />
@@ -238,7 +227,7 @@ export default function RegisterPage() {
             </div>
           )}
 
-          {/* ── Step 1: Account Type ── */}
+          {/* Step 1: Tipo account */}
           {step === 1 && (
             <div className="space-y-4">
               <h2 className="text-base font-semibold text-center text-gray-700 mb-4">Come vuoi registrarti?</h2>
@@ -296,7 +285,7 @@ export default function RegisterPage() {
             </div>
           )}
 
-          {/* ── Step 2: Credentials ── */}
+          {/* Step 2: Credenziali */}
           {step === 2 && (
             <div className="space-y-4">
               <h2 className="text-base font-semibold text-center text-gray-700 mb-4">Crea le tue credenziali</h2>
@@ -339,7 +328,7 @@ export default function RegisterPage() {
             </div>
           )}
 
-          {/* ── Step 3: Profile – Tenant ── */}
+          {/* Step 3: Profilo Inquilino */}
           {step === 3 && accountType === 'tenant' && (
             <div className="space-y-4">
               <h2 className="text-base font-semibold text-center text-gray-700 mb-4">I tuoi dati personali</h2>
@@ -391,7 +380,7 @@ export default function RegisterPage() {
             </div>
           )}
 
-          {/* ── Step 3: Profile – Agency ── */}
+          {/* Step 3: Profilo Agenzia */}
           {step === 3 && accountType === 'agency' && (
             <div className="space-y-4">
               <h2 className="text-base font-semibold text-center text-gray-700 mb-4">Dati della tua Agenzia</h2>
@@ -440,7 +429,7 @@ export default function RegisterPage() {
             </div>
           )}
 
-          {/* ── Step 4: Confirmation ── */}
+          {/* Step 4: Conferma */}
           {step === 4 && (
             <div className="space-y-5">
               <h2 className="text-base font-semibold text-center text-gray-700 mb-4">Conferma la registrazione</h2>
@@ -496,7 +485,7 @@ export default function RegisterPage() {
             </div>
           )}
 
-          {/* Navigation Buttons */}
+          {/* Navigazione step */}
           {step > 1 && (
             <div className="flex gap-3 mt-6">
               <Button
@@ -534,79 +523,15 @@ export default function RegisterPage() {
               </Link>
             </p>
           </div>
+
         </div>
+      </main>
+
+      {/* Footer sito — solo desktop */}
+      <div className="hidden lg:block">
+        <Footer />
       </div>
 
-      {/* ── RIGHT PANEL – Branded image (dynamic per step) ───────────────── */}
-      <div className="hidden lg:flex flex-1 relative overflow-hidden bg-gradient-to-br from-teal-800 via-teal-700 to-primary-500">
-        {/* Background photo */}
-        <img
-          src="/assets/logoaffittochiaro_pic.webp"
-          alt=""
-          className="absolute inset-0 w-full h-full object-cover opacity-15 mix-blend-luminosity"
-        />
-
-        {/* Decorative blobs */}
-        <div className="absolute -top-24 -right-24 w-80 h-80 bg-primary-400/30 rounded-full blur-3xl" />
-        <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-teal-600/40 rounded-full blur-3xl" />
-
-        {/* Content */}
-        <div className="relative z-10 flex flex-col justify-between p-12 xl:p-16 text-white w-full">
-          {/* Top brand */}
-          <div>
-            <span className="inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-4 py-1.5 text-xs font-semibold tracking-wide uppercase">
-              Registrazione
-            </span>
-          </div>
-
-          {/* Dynamic copy per step */}
-          <div key={step} className="animate-fade-in">
-            <div className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center text-sm font-bold">
-                {step}
-              </div>
-              <div className="h-px flex-1 bg-white/20" />
-              <span className="text-xs text-white/50">di 4</span>
-            </div>
-            <h2 className="text-3xl xl:text-4xl font-bold leading-tight mb-3">
-              {panelContent.title}
-            </h2>
-            <p className="text-base text-white/70 max-w-sm leading-relaxed">
-              {panelContent.subtitle}
-            </p>
-
-            {/* Step 1 extra: trust points */}
-            {step === 1 && (
-              <ul className="mt-8 space-y-3">
-                {[
-                  'Profilo verificato in 24h',
-                  'Matching con 500+ agenzie',
-                  'Zero costi per gli inquilini',
-                ].map((point) => (
-                  <li key={point} className="flex items-center gap-3 text-white/85 text-sm">
-                    <CheckCircle className="w-4 h-4 text-primary-300 flex-shrink-0" />
-                    {point}
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
-
-          {/* Bottom stats */}
-          <div className="grid grid-cols-3 gap-6 pt-8 border-t border-white/20">
-            {[
-              { value: '30k+', label: 'Inquilini' },
-              { value: '500+', label: 'Agenzie' },
-              { value: '98%', label: 'Soddisfazione' },
-            ].map((stat) => (
-              <div key={stat.label}>
-                <p className="text-2xl font-bold">{stat.value}</p>
-                <p className="text-xs text-white/60 mt-0.5">{stat.label}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
     </div>
   );
 }
