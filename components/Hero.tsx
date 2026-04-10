@@ -1,17 +1,9 @@
 import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Home, BedSingle, Building2, Building, TreePine } from 'lucide-react';
 import { TenantRegistrationModal, TenantRegistrationData } from './TenantRegistrationModal';
 import { QuickSearchBox } from './search/QuickSearchBox';
+import { SearchByType } from './SearchByType';
 import toast from 'react-hot-toast';
-
-const TIPOLOGIE = [
-  { label: 'Appartamento', slug: 'appartamento', icon: Home,      annunci: 87  },
-  { label: 'Stanza',       slug: 'stanza',       icon: BedSingle, annunci: 52  },
-  { label: 'Bilocale',     slug: 'bilocale',     icon: Building2, annunci: 44  },
-  { label: 'Trilocale',    slug: 'trilocale',    icon: Building,  annunci: 31  },
-  { label: 'Villa',        slug: 'villa',        icon: TreePine,  annunci: 18  },
-];
 
 interface HeroProps {
   counter: number;
@@ -69,25 +61,8 @@ export const Hero: React.FC<HeroProps> = ({ counter, activeCityName }) => {
               Basta annunci già scaduti e silenzi radio. Con Affittochiaro sei visibile, verificato e preferito.
             </p>
 
-            {/* Tipologie — sostituisce CTA primario */}
             <div className="mb-8">
-              <p className="text-xs font-bold text-medium-gray uppercase tracking-wider mb-3 text-left">
-                Cosa stai cercando?
-              </p>
-              <div className="flex flex-wrap gap-2 justify-center lg:justify-start">
-                {TIPOLOGIE.map(({ label, slug, icon: Icon, annunci }) => (
-                  <button
-                    key={slug}
-                    type="button"
-                    onClick={() => handleTypeSelect(slug)}
-                    className="flex items-center gap-2 bg-white border border-gray-200 hover:border-action-green hover:bg-soft-green px-3.5 py-2 rounded-xl text-sm font-semibold text-brand-green transition-all active:scale-95"
-                  >
-                    <Icon size={15} className="flex-shrink-0" />
-                    <span>{label}</span>
-                    <span className="text-xs text-medium-gray font-normal">{annunci}</span>
-                  </button>
-                ))}
-              </div>
+              <SearchByType onTypeSelect={handleTypeSelect} variant="hero" />
             </div>
 
             {/* Social proof */}
