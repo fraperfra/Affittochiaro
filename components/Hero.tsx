@@ -1,16 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { TenantRegistrationModal, TenantRegistrationData } from './TenantRegistrationModal';
+import { QuickSearchBox } from './search/QuickSearchBox';
 import toast from 'react-hot-toast';
 
 interface HeroProps {
   counter: number;
   activeCityName: string;
+  prefilledTipologia?: string | null;
+  onTipologiaFilled?: () => void;
+  searchSectionRef?: React.RefObject<HTMLDivElement | null>;
 }
 
-export const Hero: React.FC<HeroProps> = ({ counter, activeCityName }) => {
+export const Hero: React.FC<HeroProps> = ({
+  counter,
+  activeCityName,
+  prefilledTipologia,
+  onTipologiaFilled,
+  searchSectionRef,
+}) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
+  const internalSearchRef = useRef<HTMLDivElement>(null);
+  const resolvedSearchRef = (searchSectionRef ?? internalSearchRef) as React.RefObject<HTMLDivElement>;
 
   const ctaText = 'CREA IL TUO PROFILO GRATIS';
   const cardCtaText = 'UNISCITI A LORO →';
@@ -120,6 +132,21 @@ export const Hero: React.FC<HeroProps> = ({ counter, activeCityName }) => {
               </p>
             </div>
           </div>
+        </div>
+
+        {/* Quick Search — full width below two-column layout */}
+        <div
+          ref={resolvedSearchRef}
+          className="mt-12 pt-10 border-t border-gray-100"
+        >
+          <QuickSearchBox
+            size="large"
+            prefilledTipologia={prefilledTipologia}
+            onTipologiaFilled={onTipologiaFilled}
+          />
+          <p className="mt-3 text-center text-xs text-medium-gray">
+            Oltre 40 città disponibili · Agenzie verificate · Candidatura senza costi
+          </p>
         </div>
       </section>
 
