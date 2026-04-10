@@ -48,47 +48,49 @@ export const Hero: React.FC<HeroProps> = ({ counter, activeCityName }) => {
               NOVITÀ: VIDEO PRESENTAZIONE INQUILINO
             </p>
             <div className="mb-5">
-              <h1 className="text-[2rem] md:text-3xl lg:text-4xl xl:text-5xl font-bold text-brand-green leading-[1.08] tracking-[-0.01em]">
+              <h1 className="text-[2.35rem] md:text-3xl lg:text-4xl xl:text-5xl font-bold text-brand-green leading-[1.06] tracking-[-0.01em]">
                 Trova casa in <span className="underline-green text-action-green">2 Settimane</span>. <br />
                 Smetti di inviare <br />
                 <span className="text-error-red">email a vuoto</span>.
               </h1>
             </div>
-            <p className="text-lg md:text-xl text-medium-gray max-w-3xl mx-auto lg:mx-0 mb-4 leading-relaxed">
+            <p className="text-base md:text-xl text-medium-gray max-w-3xl mx-auto lg:mx-0 mb-4 leading-relaxed">
               Crea il tuo <span className="font-bold text-brand-green">profilo</span> e ricevi proposte dai proprietari in <span className="font-bold text-brand-green">meno di 48 ore</span>.
             </p>
 
-            <div className="mb-8">
-              <SearchByType onTypeSelect={handleTypeSelect} variant="hero" />
-            </div>
-
-            <div ref={searchRef} className="mb-8">
-              <QuickSearchBox
-                size="large"
-                prefilledTipologia={selectedTipologia}
-                onTipologiaFilled={() => setSelectedTipologia(null)}
-              />
-              <p className="mt-3 text-center lg:text-left text-xs text-medium-gray">
-                Oltre 40 città disponibili · Agenzie verificate · Candidatura senza costi
-              </p>
-            </div>
-
-            {/* Social proof */}
-            <div className="flex flex-col lg:flex-row items-center gap-4">
-              <div className="flex -space-x-3">
-                {[1, 2, 3, 4].map(i => (
-                  <img key={i} src={`https://i.pravatar.cc/100?img=${i + 10}`} className="w-11 h-11 rounded-full border-2 border-white" alt="User" />
-                ))}
+            <div className="rounded-2xl border border-gray-200 bg-white p-4 md:p-0 md:border-0 md:bg-transparent">
+              <div className="mb-8">
+                <SearchByType onTypeSelect={handleTypeSelect} variant="hero" />
               </div>
-              <div>
-                <p className="text-sm font-semibold text-medium-gray">
-                  Unisciti a 30.000+ inquilini felici
+
+              <div ref={searchRef} className="mb-8">
+                <QuickSearchBox
+                  size="large"
+                  prefilledTipologia={selectedTipologia}
+                  onTipologiaFilled={() => setSelectedTipologia(null)}
+                />
+                <p className="mt-3 text-center lg:text-left text-xs text-medium-gray">
+                  Oltre 40 città disponibili · Agenzie verificate · Candidatura senza costi
                 </p>
-                <div className="flex items-center gap-1 mt-0.5">
-                  {[1,2,3,4,5].map(i => (
-                    <svg key={i} className="w-3.5 h-3.5 text-[#00b67a] fill-current" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" /></svg>
+              </div>
+
+              {/* Social proof */}
+              <div className="flex flex-col lg:flex-row items-center gap-4">
+                <div className="flex -space-x-3">
+                  {[1, 2, 3, 4].map(i => (
+                    <img key={i} src={`https://i.pravatar.cc/100?img=${i + 10}`} className="w-11 h-11 rounded-full border-2 border-white" alt="User" />
                   ))}
-                  <span className="text-xs text-medium-gray ml-1">4.9/5 su <span className="font-semibold text-brand-green">Trustpilot</span></span>
+                </div>
+                <div>
+                  <p className="text-sm font-semibold text-medium-gray">
+                    Unisciti a 30.000+ inquilini felici
+                  </p>
+                  <div className="flex items-center gap-1 mt-0.5">
+                    {[1,2,3,4,5].map(i => (
+                      <svg key={i} className="w-3.5 h-3.5 text-[#00b67a] fill-current" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" /></svg>
+                    ))}
+                    <span className="text-xs text-medium-gray ml-1">4.9/5 su <span className="font-semibold text-brand-green">Trustpilot</span></span>
+                  </div>
                 </div>
               </div>
             </div>
