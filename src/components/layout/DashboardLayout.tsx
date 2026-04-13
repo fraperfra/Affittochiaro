@@ -31,11 +31,11 @@ import { useAuthStore, useNotificationStore } from '../../store';
 import { ROUTES } from '../../utils/constants';
 import { formatInitials, formatRelativeTime } from '../../utils/formatters';
 import { mockTenants, mockAgencies, mockListings, generateMockNotifications } from '../../utils/mockData';
-import { TenantUser, AgencyUser, AdminUser } from '../../types';
+import { TenantUser, AgencyUser, AdminUser, LandlordUser } from '../../types';
 import BottomTabNav from './BottomTabNav';
 
 interface DashboardLayoutProps {
-  userRole: 'tenant' | 'agency' | 'admin';
+  userRole: 'tenant' | 'agency' | 'landlord' | 'admin';
 }
 
 interface NavItem {
@@ -62,6 +62,14 @@ const agencyNavItems: NavItem[] = [
   { icon: <FolderOpen size={20} />, label: 'Documenti', path: ROUTES.AGENCY_DOCUMENTS },
   { icon: <Sparkles size={20} />, label: 'Servizi', path: ROUTES.AGENCY_SERVICES },
   { icon: <Settings size={20} />, label: 'Impostazioni', path: ROUTES.AGENCY_SETTINGS },
+];
+
+const landlordNavItems: NavItem[] = [
+  { icon: <User size={20} />, label: 'Profilo', path: ROUTES.LANDLORD_MORE },
+  { icon: <Home size={20} />, label: 'I miei annunci', path: ROUTES.LANDLORD_LISTINGS },
+  { icon: <Inbox size={20} />, label: 'Candidature', path: ROUTES.LANDLORD_APPLICATIONS },
+  { icon: <FileText size={20} />, label: 'Contratti', path: ROUTES.LANDLORD_DOCUMENTS },
+  { icon: <Settings size={20} />, label: 'Impostazioni', path: ROUTES.LANDLORD_SETTINGS },
 ];
 
 const adminNavItems: NavItem[] = [
@@ -91,6 +99,12 @@ const roleConfig = {
     label: 'Area Agenzia',
     icon: <Building2 size={16} />,
     color: 'teal',
+  },
+  landlord: {
+    navItems: landlordNavItems,
+    label: 'Area Proprietario',
+    icon: <Home size={16} />,
+    color: 'primary',
   },
   admin: {
     navItems: adminNavItems,
@@ -297,6 +311,13 @@ const PAGE_TITLES: Record<string, string> = {
   '/agency/settings': 'Impostazioni',
   '/agency/documents': 'Documenti',
   '/agency/services': 'Servizi',
+  '/landlord': 'Profilo',
+  '/landlord/more': 'Profilo',
+  '/landlord/listings': 'I miei annunci',
+  '/landlord/applications': 'Candidature',
+  '/landlord/documents': 'Contratti',
+  '/landlord/calculators': 'Calcolatori',
+  '/landlord/settings': 'Impostazioni',
   '/admin': 'Dashboard',
   '/admin/tenants': 'Gestione Inquilini',
   '/admin/agencies': 'Gestione Agenzie',
@@ -402,6 +423,14 @@ export default function DashboardLayout({ userRole }: DashboardLayoutProps) {
         name: agencyUser.agency.name,
         email: user.email,
         avatar: agencyUser.agency.logoUrl,
+      };
+    }
+    if (user.role === 'landlord') {
+      const landlordUser = user as LandlordUser;
+      return {
+        name: `${landlordUser.profile.firstName} ${landlordUser.profile.lastName}`.trim(),
+        email: user.email,
+        avatar: landlordUser.profile.avatarUrl,
       };
     }
     return { name: 'Admin', email: user.email };

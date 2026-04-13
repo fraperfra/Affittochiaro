@@ -29,6 +29,24 @@ export interface AdminUser extends User {
   permissions: AdminPermission[];
 }
 
+export interface LandlordProfile {
+  firstName: string;
+  lastName: string;
+  avatarUrl?: string;
+  city?: string;
+  isVerified: boolean;
+  verifiedAt?: Date;
+  propertiesCount?: number;
+  activeListingsCount?: number;
+  activeTenantsCount?: number;
+  applicationsCount?: number;
+}
+
+export interface LandlordUser extends User {
+  role: 'landlord';
+  profile: LandlordProfile;
+}
+
 export interface TenantProfile {
   firstName: string;
   lastName: string;

@@ -23,7 +23,7 @@ interface TabItem {
 }
 
 interface BottomTabNavProps {
-  userRole: 'tenant' | 'agency' | 'admin';
+  userRole: 'tenant' | 'agency' | 'landlord' | 'admin';
   badges?: { applications?: number };
 }
 
@@ -41,6 +41,12 @@ const agencyTabs: TabItem[] = [
   { icon: MoreHorizontal, label: 'Altro', href: ROUTES.AGENCY_MORE },
 ];
 
+const landlordTabs: TabItem[] = [
+  { icon: Home, label: 'Annunci', href: ROUTES.LANDLORD_LISTINGS },
+  { icon: Inbox, label: 'Candidature', href: ROUTES.LANDLORD_APPLICATIONS, badgeKey: 'applications' },
+  { icon: User, label: 'Profilo', href: ROUTES.LANDLORD_MORE },
+];
+
 const adminTabs: TabItem[] = [
   { icon: LayoutDashboard, label: 'Dashboard', href: ROUTES.ADMIN_DASHBOARD },
   { icon: Users, label: 'Inquilini', href: ROUTES.ADMIN_TENANTS },
@@ -52,6 +58,7 @@ const adminTabs: TabItem[] = [
 const tabConfig: Record<string, TabItem[]> = {
   tenant: tenantTabs,
   agency: agencyTabs,
+  landlord: landlordTabs,
   admin: adminTabs,
 };
 
@@ -86,6 +93,10 @@ const TabItemComponent = React.memo(function TabItemComponent({
         || path === ROUTES.AGENCY_CALCULATORS || path.startsWith(ROUTES.AGENCY_CALCULATORS + '/')
         || path === ROUTES.AGENCY_PLAN || path.startsWith(ROUTES.AGENCY_PLAN + '/')
         || path === ROUTES.AGENCY_SETTINGS || path.startsWith(ROUTES.AGENCY_SETTINGS + '/');
+    }
+    if (item.href === ROUTES.LANDLORD_MORE) {
+      return path === ROUTES.LANDLORD_MORE
+        || path === ROUTES.LANDLORD_SETTINGS || path.startsWith(ROUTES.LANDLORD_SETTINGS + '/');
     }
     return path === item.href || path.startsWith(item.href + '/');
   }, [location.pathname, item.href]);

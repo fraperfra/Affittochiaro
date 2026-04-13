@@ -16,7 +16,8 @@ import {
   LifeBuoy,
   Eye,
   Crown,
-  Check
+  Check,
+  LogOut,
 } from 'lucide-react';
 import { Modal, Button, AvatarUpload } from '../../components/ui';
 import { useAuthStore } from '../../store';
@@ -95,7 +96,7 @@ const visibilityPlans: VisibilityPlan[] = [
 ];
 
 export default function TenantMorePage() {
-  const { user, setUser } = useAuthStore();
+  const { user, setUser, logout } = useAuthStore();
   const navigate = useNavigate();
   const tenantUser = user as TenantUser | null;
 
@@ -241,13 +242,20 @@ export default function TenantMorePage() {
       </div>
 
       {/* Bottom Actions */}
-      <div className="pt-2 pb-6">
+      <div className="flex gap-3 pt-2 pb-6">
         <button
           onClick={() => window.open('https://it.trustpilot.com/review/affittochiaro.it', '_blank')}
-          className="w-full flex items-center justify-center gap-2 bg-yellow-400 hover:bg-yellow-500 text-yellow-900 font-bold py-3.5 px-4 rounded-2xl shadow-sm transition-colors active:scale-[0.98] cursor-pointer"
+          className="flex-1 flex items-center justify-center gap-2 bg-yellow-400 hover:bg-yellow-500 text-yellow-900 font-bold py-3.5 px-4 rounded-2xl shadow-sm transition-colors active:scale-[0.98] cursor-pointer"
         >
           <Star size={18} className="fill-yellow-900" />
-          Valuta App su Trustpilot
+          Valuta App
+        </button>
+        <button
+          onClick={() => logout()}
+          className="flex-1 flex items-center justify-center gap-2 bg-gray-100 hover:bg-red-50 text-gray-600 hover:text-red-600 font-bold py-3.5 px-4 rounded-2xl shadow-sm transition-colors active:scale-[0.98] cursor-pointer"
+        >
+          <LogOut size={18} />
+          Esci
         </button>
       </div>
 

@@ -55,6 +55,9 @@ const NotificationsPage = lazy(() => import('./pages/tenant/NotificationsPage'))
 const TenantAgenciesPage = lazy(() => import('./pages/tenant/TenantAgenciesPage'));
 const TenantMorePage = lazy(() => import('./pages/tenant/TenantMorePage'));
 
+// Landlord Pages - lazy loaded
+const LandlordMorePage = lazy(() => import('./pages/landlord/LandlordMorePage'));
+
 // Agency Pages - lazy loaded
 const AgencyDashboardPage = lazy(() => import('./pages/agency/AgencyDashboardPage'));
 const TenantSearchPage = lazy(() => import('./pages/agency/TenantSearchPage'));
@@ -118,6 +121,7 @@ function AuthGuard({ children, allowedRoles }: { children: React.ReactNode; allo
   if (allowedRoles && user && !allowedRoles.includes(user.role)) {
     if (user.role === 'tenant') return <Navigate to={ROUTES.TENANT_DASHBOARD} replace />;
     if (user.role === 'agency') return <Navigate to={ROUTES.AGENCY_DASHBOARD} replace />;
+    if (user.role === 'landlord') return <Navigate to={ROUTES.LANDLORD_MORE} replace />;
     if (user.role === 'admin') return <Navigate to={ROUTES.ADMIN_DASHBOARD} replace />;
   }
 
@@ -131,6 +135,7 @@ function PublicGuard({ children }: { children: React.ReactNode }) {
   if (isAuthenticated && user) {
     if (user.role === 'tenant') return <Navigate to={ROUTES.TENANT_DASHBOARD} replace />;
     if (user.role === 'agency') return <Navigate to={ROUTES.AGENCY_DASHBOARD} replace />;
+    if (user.role === 'landlord') return <Navigate to={ROUTES.LANDLORD_MORE} replace />;
     if (user.role === 'admin') return <Navigate to={ROUTES.ADMIN_DASHBOARD} replace />;
   }
 
@@ -556,6 +561,20 @@ function App() {
             <Route path="services" element={<AgencyServicesPage />} />
             <Route path="more" element={<AgencyMorePage />} />
             <Route path="*" element={<Navigate to={ROUTES.AGENCY_DASHBOARD} replace />} />
+          </Route>
+
+          {/* Landlord Routes (Proprietario Privato) */}
+          <Route
+            path="/landlord"
+            element={
+              <AuthGuard allowedRoles={['landlord']}>
+                <DashboardLayout userRole="landlord" />
+              </AuthGuard>
+            }
+          >
+            <Route index element={<LandlordMorePage />} />
+            <Route path="more" element={<LandlordMorePage />} />
+            <Route path="*" element={<Navigate to={ROUTES.LANDLORD_MORE} replace />} />
           </Route>
 
           {/* Admin Routes */}

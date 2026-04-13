@@ -140,6 +140,15 @@ export const ROUTES = {
   TENANT_TEMPLATES: '/tenant/templates',
   TENANT_MORE: '/tenant/more',
 
+  // Landlord (Proprietario Privato)
+  LANDLORD_DASHBOARD: '/landlord',
+  LANDLORD_LISTINGS: '/landlord/listings',
+  LANDLORD_APPLICATIONS: '/landlord/applications',
+  LANDLORD_DOCUMENTS: '/landlord/documents',
+  LANDLORD_CALCULATORS: '/landlord/calculators',
+  LANDLORD_SETTINGS: '/landlord/settings',
+  LANDLORD_MORE: '/landlord/more',
+
   // Agency
   AGENCY_DASHBOARD: '/agency',
   AGENCY_TENANTS: '/agency/tenants',

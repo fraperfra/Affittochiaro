@@ -1,6 +1,6 @@
 // Common types used across the application
 
-export type UserRole = 'tenant' | 'agency' | 'admin';
+export type UserRole = 'tenant' | 'agency' | 'landlord' | 'admin';
 
 export type Status = 'pending' | 'approved' | 'rejected' | 'active' | 'inactive' | 'suspended';
 
