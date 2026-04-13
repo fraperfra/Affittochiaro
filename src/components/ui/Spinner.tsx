@@ -19,11 +19,13 @@ export default function Spinner({ size = 'md', className = '' }: SpinnerProps) {
 
 export function FullPageSpinner() {
   return (
-    <div className="flex items-center justify-center min-h-[400px]">
-      <div className="text-center">
-        <Spinner size="lg" />
-        <p className="mt-4 text-text-secondary">Caricamento...</p>
-      </div>
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-white">
+      <img
+        src="/m_walk_hq.gif"
+        alt="Caricamento..."
+        className="w-[min(220px,55vw)] h-auto"
+        draggable={false}
+      />
     </div>
   );
 }
