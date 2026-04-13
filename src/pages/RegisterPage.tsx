@@ -1,9 +1,10 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { Mail, User, Phone, ArrowLeft, AlertCircle, MapPin } from 'lucide-react';
+import { Mail, User, Phone, ArrowLeft, AlertCircle, MapPin, Loader2 } from 'lucide-react';
+import toast from 'react-hot-toast';
 import { useAuthStore } from '../store';
 import { ROUTES, ITALIAN_CITIES } from '../utils/constants';
 import { Button, Input } from '../components/ui';
@@ -25,6 +26,7 @@ const generateSystemPassword = () => `TmpA${Date.now()}9`;
 export default function RegisterPage() {
   const { register: registerUser, isLoading, error, clearError, pendingConfirmation } = useAuthStore();
   const navigate = useNavigate();
+  const [isGeolocating, setIsGeolocating] = useState(false);
 
   const tenantForm = useForm<TenantFormData>({
     resolver: zodResolver(tenantSchema),
@@ -33,6 +35,38 @@ export default function RegisterPage() {
       acceptTerms: true,
     },
   });
+
+  const handleGeolocateCity = async () => {
+    if (!navigator.geolocation) {
+      toast.error('Geolocalizzazione non supportata dal browser');
+      return;
+    }
+    setIsGeolocating(true);
+    try {
+      const position = await new Promise<GeolocationPosition>((resolve, reject) =>
+        navigator.geolocation.getCurrentPosition(resolve, reject, { timeout: 10000 })
+      );
+      const { latitude, longitude } = position.coords;
+      const res = await fetch(
+        `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&accept-language=it`
+      );
+      const data = await res.json();
+      const raw: string = data.address?.city || data.address?.town || data.address?.village || '';
+      const match = ITALIAN_CITIES.find(
+        (c) => c.toLowerCase() === raw.toLowerCase() || raw.toLowerCase().includes(c.toLowerCase())
+      );
+      if (match) {
+        tenantForm.setValue('city', match, { shouldValidate: true });
+        toast.success(`Posizione rilevata: ${match}`);
+      } else {
+        toast.error(raw ? `Città non disponibile: ${raw}` : 'Impossibile determinare la città');
+      }
+    } catch {
+      toast.error('Impossibile accedere alla posizione');
+    } finally {
+      setIsGeolocating(false);
+    }
+  };
 
   useEffect(() => {
     if (pendingConfirmation) {
@@ -93,6 +127,35 @@ export default function RegisterPage() {
             </div>
           )}
 
+          {/* Social signup */}
+          <div className="space-y-3 mb-5">
+            <button
+              type="button"
+              className="w-full flex items-center justify-center gap-3 bg-white border border-gray-200 hover:bg-gray-50 text-gray-700 font-semibold py-2.5 px-4 rounded-xl transition-colors shadow-sm text-sm"
+              onClick={() => toast.success("Registrazione con Google in arrivo!")}
+            >
+              <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" className="w-5 h-5" />
+              Registrati con Google
+            </button>
+            <button
+              type="button"
+              className="w-full flex items-center justify-center gap-3 bg-[#1877F2] hover:bg-[#166FE5] text-white font-semibold py-2.5 px-4 rounded-xl transition-colors shadow-sm text-sm"
+              onClick={() => toast.success("Registrazione con Facebook in arrivo!")}
+            >
+              <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.469h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.469h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" /></svg>
+              Registrati con Facebook
+            </button>
+          </div>
+
+          <div className="relative mb-5">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-gray-200"></div>
+            </div>
+            <div className="relative flex justify-center text-xs">
+              <span className="px-3 bg-white text-gray-400 font-medium">oppure con email</span>
+            </div>
+          </div>
+
           <div className="space-y-4">
             <div className="grid grid-cols-2 gap-3">
               <Input
@@ -111,9 +174,19 @@ export default function RegisterPage() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Citta di ricerca</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Città di ricerca</label>
               <div className="relative">
-                <MapPin size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                <button
+                  type="button"
+                  onClick={handleGeolocateCity}
+                  disabled={isGeolocating}
+                  title="Rileva la mia posizione"
+                  className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-primary-500 transition-colors disabled:opacity-50 z-10"
+                >
+                  {isGeolocating
+                    ? <Loader2 size={16} className="animate-spin" />
+                    : <MapPin size={16} />}
+                </button>
                 <select
                   className="w-full pl-9 pr-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm"
                   {...tenantForm.register('city')}

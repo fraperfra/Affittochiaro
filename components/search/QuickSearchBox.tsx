@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Search, MapPin, ChevronDown, X } from 'lucide-react';
+import { Search, MapPin, ChevronDown, X, Loader2 } from 'lucide-react';
+import toast from 'react-hot-toast';
 import { CITTA, type Citta } from '../../src/lib/geo-mock';
 import { buildListingUrl } from '../../src/lib/utils';
 
@@ -35,9 +36,46 @@ export const QuickSearchBox: React.FC<Props> = ({
   const [activeIndex, setActiveIndex] = useState(-1);
   const [cityError, setCityError] = useState(false);
 
+  const [isGeolocating, setIsGeolocating] = useState(false);
+
   const internalRef = useRef<HTMLInputElement>(null);
   const cityInputRef = (externalRef ?? internalRef) as React.RefObject<HTMLInputElement>;
   const containerRef = useRef<HTMLDivElement>(null);
+
+  const handleGeolocate = async () => {
+    if (!navigator.geolocation) {
+      toast.error('Geolocalizzazione non supportata dal browser');
+      return;
+    }
+    setIsGeolocating(true);
+    try {
+      const position = await new Promise<GeolocationPosition>((resolve, reject) =>
+        navigator.geolocation.getCurrentPosition(resolve, reject, { timeout: 10000 })
+      );
+      const { latitude, longitude } = position.coords;
+      const res = await fetch(
+        `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&accept-language=it`
+      );
+      const data = await res.json();
+      const raw: string = data.address?.city || data.address?.town || data.address?.village || '';
+      const match = CITTA.find(
+        (c) =>
+          c.nome.toLowerCase() === raw.toLowerCase() ||
+          raw.toLowerCase().includes(c.nome.toLowerCase()) ||
+          c.nome.toLowerCase().includes(raw.toLowerCase().split(' ')[0])
+      );
+      if (match) {
+        selectComune(match);
+        toast.success(`Posizione rilevata: ${match.nome}`);
+      } else {
+        toast.error(raw ? `Città non disponibile: ${raw}` : 'Impossibile determinare la città');
+      }
+    } catch {
+      toast.error('Impossibile accedere alla posizione');
+    } finally {
+      setIsGeolocating(false);
+    }
+  };
 
   // Prefill tipologia from parent
   useEffect(() => {
@@ -129,7 +167,17 @@ export const QuickSearchBox: React.FC<Props> = ({
                 : 'relative flex items-center bg-white border border-gray-200 rounded-xl'
             }
           >
-            <MapPin size={16} className="absolute left-3 text-gray-400 pointer-events-none" />
+            <button
+              type="button"
+              onClick={handleGeolocate}
+              disabled={isGeolocating}
+              title="Rileva la mia posizione"
+              className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-brand-green transition-colors disabled:opacity-50 z-10"
+            >
+              {isGeolocating
+                ? <Loader2 size={16} className="animate-spin" />
+                : <MapPin size={16} />}
+            </button>
             <input
               ref={cityInputRef}
               type="text"
