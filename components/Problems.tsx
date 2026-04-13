@@ -21,21 +21,28 @@ export const Problems: React.FC = () => {
           ))}
         </div>
 
-        <div className="relative mt-12 max-w-4xl mx-auto">
-          <div className="bg-white rounded-[2rem] md:rounded-[2.5rem] shadow-2xl p-6 md:p-12 border border-gray-200 relative z-10">
-            <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-orange-500 to-orange-400 rounded-t-full"></div>
-            <div className="absolute -top-4 -right-3 md:-top-10 md:-right-10 w-12 h-12 md:w-24 md:h-24 bg-action-green rounded-full flex items-center justify-center text-white text-2xl md:text-5xl font-bold shadow-xl shadow-action-green/25">👍</div>
-            <p className="text-[1.9rem] md:text-4xl font-bold text-brand-green leading-[1.15] mb-8 md:mb-12 font-poppins">
-              "Il <span className="text-black font-extrabold">73% degli inquilini</span> impiega oltre 2 mesi per trovare casa. <span className="text-orange-500">Tu puoi farlo in 2 settimane</span>."
-            </p>
-            <div className="space-y-4">
-              <div className="w-full h-2.5 bg-gray-100 rounded-full overflow-hidden">
-                <div className="h-full bg-orange-500 rounded-full shadow-[0_0_10px_rgba(249,115,22,0.4)]" style={{ width: '73%' }}></div>
+        {/* Stat insight strip */}
+        <div className="mt-10 max-w-xl mx-auto">
+          <div className="flex items-center gap-4 bg-orange-50 border border-orange-100 rounded-2xl px-5 py-4 text-left">
+            <div className="flex-shrink-0 w-9 h-9 rounded-xl bg-orange-100 flex items-center justify-center text-base select-none">
+              ⚡
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-semibold text-gray-800 leading-snug">
+                Il <span className="text-orange-500 font-bold">73%</span> degli inquilini impiega oltre 2 mesi.
+                {' '}Con Affittochiaro puoi farcela in{' '}
+                <span className="text-brand-green font-bold">2 settimane</span>.
+              </p>
+              <div className="mt-2.5 flex items-center gap-3">
+                <div className="flex-1 h-1 bg-orange-100 rounded-full overflow-hidden">
+                  <div className="h-full bg-orange-400 rounded-full" style={{ width: '73%' }} />
+                </div>
+                <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider whitespace-nowrap">
+                  Statistica di settore
+                </span>
               </div>
-              <span className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] block">STATISTICA DEL SETTORE</span>
             </div>
           </div>
-          <div className="absolute top-8 left-8 right-8 bottom-0 bg-soft-green rounded-[3rem] -z-10 translate-y-4 blur-sm opacity-50"></div>
         </div>
       </div>
     </section>
