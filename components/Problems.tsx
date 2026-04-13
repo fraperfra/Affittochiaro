@@ -23,8 +23,8 @@ export const Problems: React.FC = () => {
 
         {/* Stat insight strip */}
         <div className="mt-10 max-w-xl mx-auto">
-          <div className="flex items-center gap-4 bg-orange-50 border border-orange-100 rounded-2xl px-5 py-4 text-left">
-            <div className="flex-shrink-0 w-9 h-9 rounded-xl bg-orange-100 flex items-center justify-center text-base select-none">
+          <div className="flex items-center gap-4 bg-soft-green border border-action-green/20 rounded-2xl px-5 py-4 text-left">
+            <div className="flex-shrink-0 w-9 h-9 rounded-xl bg-action-green/20 flex items-center justify-center text-base select-none">
               ⚡
             </div>
             <div className="flex-1 min-w-0">
@@ -34,8 +34,8 @@ export const Problems: React.FC = () => {
                 <span className="text-brand-green font-bold">2 settimane</span>.
               </p>
               <div className="mt-2.5 flex items-center gap-3">
-                <div className="flex-1 h-1 bg-orange-100 rounded-full overflow-hidden">
-                  <div className="h-full bg-orange-400 rounded-full" style={{ width: '73%' }} />
+                <div className="flex-1 h-1 bg-action-green/20 rounded-full overflow-hidden">
+                  <div className="h-full bg-action-green rounded-full" style={{ width: '73%' }} />
                 </div>
                 <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider whitespace-nowrap">
                   Statistica di settore
