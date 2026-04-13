@@ -3,7 +3,7 @@
  * Per testing locale senza backend AWS
  */
 
-import { User, TenantUser, AgencyUser, AdminUser, UserRole } from '@/types';
+import { User, TenantUser, AgencyUser, AdminUser, LandlordUser, UserRole } from '@/types';
 
 // Utenti mock predefiniti
 export const MOCK_USERS = {
@@ -86,6 +86,27 @@ export const MOCK_USERS = {
       reviewsCount: 28,
     },
   } as AgencyUser,
+
+  landlord: {
+    id: 'landlord_001',
+    email: 'giuseppe.bianchi@example.com',
+    role: 'landlord' as UserRole,
+    status: 'active',
+    emailVerified: true,
+    createdAt: new Date('2024-02-01'),
+    updatedAt: new Date(),
+    lastLogin: new Date(),
+    profile: {
+      firstName: 'Giuseppe',
+      lastName: 'Bianchi',
+      city: 'Roma',
+      isVerified: true,
+      propertiesCount: 3,
+      activeListingsCount: 2,
+      activeTenantsCount: 1,
+      applicationsCount: 4,
+    },
+  } as LandlordUser,
 };
 
 // Storage per sessione corrente
@@ -141,7 +162,7 @@ export const mockAuthApi = {
   /**
    * Login rapido per ruolo (per testing)
    */
-  async quickLogin(role: 'admin' | 'tenant' | 'agency'): Promise<User> {
+  async quickLogin(role: 'admin' | 'tenant' | 'agency' | 'landlord'): Promise<User> {
     await delay(300);
 
     const user = MOCK_USERS[role];

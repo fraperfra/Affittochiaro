@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Eye, EyeOff, Mail, Lock, AlertCircle, Shield, User, Building2, ArrowLeft } from 'lucide-react';
+import { Eye, EyeOff, Mail, Lock, AlertCircle, Shield, User, Building2, ArrowLeft, Home } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { useAuthStore } from '../store';
 import { loginSchema, LoginFormData } from '../utils/validators';
@@ -15,7 +15,7 @@ export default function LoginPage() {
   const { login, quickLogin, isLoading, error, clearError, isAuthenticated, user } = useAuthStore();
   const navigate = useNavigate();
 
-  const handleQuickLogin = async (role: 'admin' | 'tenant' | 'agency') => {
+  const handleQuickLogin = async (role: 'admin' | 'tenant' | 'agency' | 'landlord') => {
     try {
       await quickLogin(role);
       toast.success(`Accesso come ${role} riuscito!`);
@@ -39,7 +39,9 @@ export default function LoginPage() {
         ? ROUTES.TENANT_DASHBOARD
         : user.role === 'agency'
           ? ROUTES.AGENCY_DASHBOARD
-          : ROUTES.ADMIN_DASHBOARD;
+          : user.role === 'landlord'
+            ? ROUTES.LANDLORD_MORE
+            : ROUTES.ADMIN_DASHBOARD;
       navigate(route);
     }
   }, [isAuthenticated, user, navigate]);
@@ -183,7 +185,7 @@ export default function LoginPage() {
           {/* Quick Login demo */}
           <div className="mt-7 pt-5 border-t border-gray-100">
             <p className="text-xs text-center text-gray-400 mb-3">Accesso rapido (modalità demo)</p>
-            <div className="grid grid-cols-3 gap-2">
+            <div className="grid grid-cols-4 gap-2">
               <button
                 type="button"
                 onClick={() => handleQuickLogin('admin')}
@@ -210,6 +212,15 @@ export default function LoginPage() {
               >
                 <Building2 className="w-5 h-5 text-blue-500 group-hover:scale-110 transition-transform" />
                 <span className="text-xs font-medium text-gray-500">Agenzia</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => handleQuickLogin('landlord')}
+                disabled={isLoading}
+                className="flex flex-col items-center gap-1.5 p-2.5 rounded-xl border-2 border-dashed border-gray-200 hover:border-teal-300 hover:bg-teal-50 transition-all group disabled:opacity-50"
+              >
+                <Home className="w-5 h-5 text-teal-500 group-hover:scale-110 transition-transform" />
+                <span className="text-xs font-medium text-gray-500">Proprietario</span>
               </button>
             </div>
           </div>

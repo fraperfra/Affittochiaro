@@ -6,7 +6,7 @@ import { User } from '@/types';
  */
 export interface IAuthService {
   login(email: string, password: string): Promise<User>;
-  quickLogin(role: 'admin' | 'tenant' | 'agency'): Promise<User>;
+  quickLogin(role: 'admin' | 'tenant' | 'agency' | 'landlord'): Promise<User>;
   logout(): Promise<void>;
   getCurrentSession(): Promise<User | null>;
   register(data: RegisterData): Promise<User>;

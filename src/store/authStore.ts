@@ -21,7 +21,7 @@ interface AuthState {
 
   // Actions
   login: (email: string, password: string) => Promise<void>;
-  quickLogin: (role: 'admin' | 'tenant' | 'agency') => Promise<void>;
+  quickLogin: (role: 'admin' | 'tenant' | 'agency' | 'landlord') => Promise<void>;
   register: (data: {
     email: string;
     password: string;
@@ -58,7 +58,7 @@ export const useAuthStore = create<AuthState>()(
       pendingConfirmation: null,
 
       // Quick login per testing
-      quickLogin: async (role: 'admin' | 'tenant' | 'agency') => {
+      quickLogin: async (role: 'admin' | 'tenant' | 'agency' | 'landlord') => {
         set({ isLoading: true, error: null });
 
         try {
