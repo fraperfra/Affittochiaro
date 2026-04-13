@@ -14,9 +14,9 @@ export const Problems: React.FC = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-10 mb-16 text-left">
           {problems.map((item, idx) => (
-            <div key={idx} className="bg-white border border-gray-100 rounded-2xl p-6 lg:p-10 flex flex-col lg:flex-row items-center lg:items-start gap-6 shadow-sm hover:shadow-md transition-shadow">
-              <span className="text-3xl lg:text-5xl shrink-0">{item.emoji}</span>
-              <p className="text-brand-green font-medium text-base lg:text-xl leading-tight" dangerouslySetInnerHTML={{ __html: item.text }} />
+            <div key={idx} className="bg-white border border-gray-100 rounded-2xl p-6 lg:p-8 flex flex-row items-start gap-4 shadow-sm hover:shadow-md transition-shadow">
+              <span className="text-2xl lg:text-3xl shrink-0 mt-0.5">{item.emoji}</span>
+              <p className="text-brand-green font-medium text-base lg:text-lg leading-[1.4]" dangerouslySetInnerHTML={{ __html: item.text }} />
             </div>
           ))}
         </div>
