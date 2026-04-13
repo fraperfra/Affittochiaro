@@ -172,7 +172,7 @@ export const QuickSearchBox: React.FC<Props> = ({
               onClick={handleGeolocate}
               disabled={isGeolocating}
               title="Rileva la mia posizione"
-              className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-brand-green transition-colors disabled:opacity-50 z-10"
+              className="absolute left-3 top-1/2 -translate-y-1/2 text-brand-green transition-colors disabled:opacity-50 z-10"
             >
               {isGeolocating
                 ? <Loader2 size={16} className="animate-spin" />

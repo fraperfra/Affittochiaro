@@ -181,7 +181,7 @@ export default function RegisterPage() {
                   onClick={handleGeolocateCity}
                   disabled={isGeolocating}
                   title="Rileva la mia posizione"
-                  className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-primary-500 transition-colors disabled:opacity-50 z-10"
+                  className="absolute left-3 top-1/2 -translate-y-1/2 text-primary-500 transition-colors disabled:opacity-50 z-10"
                 >
                   {isGeolocating
                     ? <Loader2 size={16} className="animate-spin" />

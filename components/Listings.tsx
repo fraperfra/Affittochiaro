@@ -97,7 +97,7 @@ export const Listings: React.FC<ListingsProps> = ({
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-            {filteredListings.map((item) => (
+            {filteredListings.slice(0, 6).map((item) => (
               <div key={item.id} className="bg-white rounded-[2.5rem] overflow-hidden shadow-xl shadow-black/5 border border-gray-50 flex flex-col group hover:-translate-y-2 transition-all duration-500">
                 <div className="relative aspect-[16/10] overflow-hidden rounded-t-[2.5rem]">
                   <img src={item.image} alt={item.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" />
