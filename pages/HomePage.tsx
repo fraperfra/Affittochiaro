@@ -10,7 +10,6 @@ import {
   Testimonials,
   FAQ,
   FinalCTA,
-  SearchByCity,
 } from '../components';
 
 interface HomePageProps {
@@ -35,7 +34,6 @@ export const HomePage: React.FC<HomePageProps> = ({
       <Problems />
       <Benefits />
       <HowItWorks />
-      <SearchByCity />
       <CityMap activeCityName={activeCityName} onCityChange={onCityChange} />
       <Listings activeCityName={activeCityName} activeFilter={activeFilter} onFilterChange={onFilterChange} />
       <Testimonials />
