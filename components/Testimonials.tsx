@@ -8,7 +8,7 @@ export const Testimonials: React.FC = () => {
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-10">
           <div>
             <p className="text-xs font-bold text-brand-green uppercase tracking-widest mb-3 border-l-2 border-action-green pl-3">TESTIMONIANZE</p>
-            <h2 className="text-3xl md:text-5xl font-bold text-brand-green leading-tight">
+            <h2 className="text-2xl md:text-[28px] xl:text-[32px] font-bold text-brand-green leading-[1.2]">
               Cosa dicono i nostri inquilini
             </h2>
           </div>
@@ -29,7 +29,7 @@ export const Testimonials: React.FC = () => {
                   <svg key={s} className="w-4 h-4 text-[#00b67a] fill-current" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" /></svg>
                 ))}
               </div>
-              <p className="text-brand-green text-base italic leading-relaxed mb-6">"{t.quote}"</p>
+              <p className="text-brand-green text-base italic leading-[1.6] mb-6">"{t.quote}"</p>
               <div className="flex items-center gap-3 border-t border-gray-100 pt-4">
                 <img src={t.image} alt={t.name} className="w-10 h-10 rounded-full border border-gray-200" />
                 <div>

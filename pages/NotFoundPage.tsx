@@ -6,10 +6,10 @@ export const NotFoundPage: React.FC = () => {
     <div className="min-h-[60vh] flex items-center justify-center px-4">
       <div className="text-center">
         <div className="text-8xl font-bold text-action-green mb-4">404</div>
-        <h1 className="text-3xl md:text-4xl font-bold text-brand-green mb-4 font-poppins">
+        <h1 className="text-[2rem] md:text-5xl font-bold text-brand-green mb-4 leading-[1.1]">
           Pagina non trovata
         </h1>
-        <p className="text-lg text-medium-gray mb-8 max-w-md mx-auto">
+        <p className="text-lg text-medium-gray mb-8 max-w-[60ch] mx-auto leading-[1.5]">
           La pagina che stai cercando non esiste o è stata spostata.
         </p>
         <Link

@@ -48,13 +48,13 @@ export const Hero: React.FC<HeroProps> = ({ counter, activeCityName }) => {
               NOVITÀ: VIDEO PRESENTAZIONE INQUILINO
             </p>
             <div className="mb-5">
-              <h1 className="text-[2.35rem] md:text-3xl lg:text-4xl xl:text-5xl font-bold text-brand-green leading-[1.06] tracking-[-0.01em]">
+              <h1 className="text-[2rem] md:text-5xl xl:text-[4rem] font-bold text-brand-green leading-[1.1] tracking-[-0.01em]">
                 Trova casa in <span className="underline-green text-action-green">2 Settimane</span>. <br />
                 Smetti di inviare <br />
                 <span className="text-error-red">email a vuoto</span>.
               </h1>
             </div>
-            <p className="text-base md:text-xl text-medium-gray max-w-3xl mx-auto lg:mx-0 mb-4 leading-relaxed">
+            <p className="text-lg md:text-xl text-medium-gray max-w-[65ch] mx-auto lg:mx-0 mb-4 leading-[1.5]">
               Crea il tuo <span className="font-bold text-brand-green">profilo</span> e ricevi proposte dai proprietari in <span className="font-bold text-brand-green">meno di 48 ore</span>.
             </p>
 

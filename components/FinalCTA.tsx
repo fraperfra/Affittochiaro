@@ -21,11 +21,11 @@ export const FinalCTA: React.FC = () => {
           <>
             <div className="mb-10">
               <p className="text-xs font-bold text-action-green uppercase tracking-widest mb-3">INIZIA ORA</p>
-              <h2 className="text-3xl md:text-5xl font-bold text-white mb-4 leading-tight">
+              <h2 className="text-2xl md:text-[28px] xl:text-[32px] font-bold text-white mb-4 leading-[1.2]">
                 La tua prossima casa <br />
                 <span className="text-action-green">ti sta cercando</span>
               </h2>
-              <p className="text-white/70 text-lg max-w-2xl">
+              <p className="text-white/70 text-lg max-w-[65ch] leading-[1.5]">
                 Lascia i tuoi dati e ricevi proposte personalizzate direttamente nella tua email.
                 Niente spam, solo annunci che fanno per te.
               </p>
@@ -120,10 +120,10 @@ export const FinalCTA: React.FC = () => {
             <div className="w-16 h-16 bg-action-green/20 rounded-full flex items-center justify-center mx-auto mb-6 border border-action-green/30">
               <CheckCircle className="w-8 h-8 text-action-green" />
             </div>
-            <h3 className="text-3xl font-bold text-white mb-4">
+            <h3 className="text-2xl md:text-[28px] font-bold text-white mb-4 leading-[1.2]">
               Perfetto, {formData.nome}!
             </h3>
-            <p className="text-white/70 text-lg max-w-md mx-auto mb-6">
+            <p className="text-white/70 text-lg max-w-[60ch] mx-auto mb-6 leading-[1.5]">
               Inizierai a ricevere proposte personalizzate a <span className="text-action-green font-semibold">{formData.email}</span>
             </p>
             <p className="text-white/50 text-sm">Controlla la tua email per confermare</p>

@@ -25,8 +25,8 @@ export const HowItWorks: React.FC = () => {
         <div className="max-w-full lg:px-20 mx-auto">
           <div className="mb-12">
             <p className="text-xs font-bold text-brand-green uppercase tracking-widest mb-3 border-l-2 border-action-green pl-3">PROCESSO SEMPLIFICATO</p>
-            <h2 className="text-3xl md:text-5xl font-bold text-brand-green mb-4 leading-tight">Candidati in 3 Semplici Passaggi</h2>
-            <p className="text-lg md:text-xl text-medium-gray max-w-2xl">Dalla registrazione alla tua nuova casa, senza intoppi e con la massima professionalità.</p>
+            <h2 className="text-2xl md:text-[28px] xl:text-[32px] font-bold text-brand-green mb-4 leading-[1.2]">Candidati in 3 Semplici Passaggi</h2>
+            <p className="text-lg md:text-xl text-medium-gray max-w-[65ch] leading-[1.5]">Dalla registrazione alla tua nuova casa, senza intoppi e con la massima professionalità.</p>
           </div>
 
           <div className="flex flex-col lg:flex-row lg:space-y-0 space-y-16 lg:gap-12 gap-8 lg:items-stretch">
@@ -35,9 +35,9 @@ export const HowItWorks: React.FC = () => {
             <div className="text-left flex flex-col items-center lg:flex-1 w-full">
               <div className="flex items-center gap-3 mb-5 w-full lg:min-h-[80px]">
                 <div className="w-10 h-10 bg-brand-green text-white rounded-full flex items-center justify-center font-bold text-base shrink-0">1</div>
-                <h3 className="text-xl md:text-2xl font-bold text-brand-green leading-tight">Crea il Tuo Profilo da Inquilino</h3>
+                <h3 className="text-xl md:text-[22px] xl:text-2xl font-bold text-brand-green leading-[1.3]">Crea il Tuo Profilo da Inquilino</h3>
               </div>
-              <p className="text-base text-medium-gray mb-8 w-full lg:min-h-[56px]">Registrati gratuitamente e compila il tuo <span className="font-bold text-brand-green">profilo completo</span>.</p>
+              <p className="text-base text-medium-gray mb-8 w-full lg:min-h-[56px] leading-[1.6]">Registrati gratuitamente e compila il tuo <span className="font-bold text-brand-green">profilo completo</span>.</p>
               <div className="w-full relative mx-auto flex-1 flex flex-col">
                 <div className="bg-white rounded-xl p-6 md:p-8 border border-gray-200 flex-1 flex flex-col">
                   <div className="flex justify-between items-center mb-6">
@@ -87,9 +87,9 @@ export const HowItWorks: React.FC = () => {
             <div className="text-left flex flex-col items-center lg:flex-1 w-full">
               <div className="flex items-center gap-3 mb-5 w-full lg:min-h-[80px]">
                 <div className="w-10 h-10 bg-brand-green text-white rounded-full flex items-center justify-center font-bold text-base shrink-0">2</div>
-                <h3 className="text-xl md:text-2xl font-bold text-brand-green leading-tight">Sfoglia Tutti gli Annunci d'Italia</h3>
+                <h3 className="text-xl md:text-[22px] xl:text-2xl font-bold text-brand-green leading-[1.3]">Sfoglia Tutti gli Annunci d'Italia</h3>
               </div>
-              <p className="text-base text-medium-gray mb-8 w-full lg:min-h-[56px]">Aggreghiamo TUTTI gli annunci del web in un unico posto.</p>
+              <p className="text-base text-medium-gray mb-8 w-full lg:min-h-[56px] leading-[1.6]">Aggreghiamo TUTTI gli annunci del web in un unico posto.</p>
               <div className="w-full mx-auto bg-gray-50 rounded-xl p-10 border border-gray-200 relative flex flex-col items-center justify-center flex-1">
                 <div className="w-full max-w-[280px] bg-white rounded-xl shadow-card p-4 border border-gray-100">
                   <div className="aspect-square bg-gray-100 rounded-lg mb-3 overflow-hidden">
@@ -107,9 +107,9 @@ export const HowItWorks: React.FC = () => {
             <div className="text-left flex flex-col items-center lg:flex-1 w-full">
               <div className="flex items-center gap-3 mb-5 w-full lg:min-h-[80px]">
                 <div className="w-10 h-10 bg-brand-green text-white rounded-full flex items-center justify-center font-bold text-base shrink-0">3</div>
-                <h3 className="text-xl md:text-2xl font-bold text-brand-green leading-tight">Candidati con Un Click</h3>
+                <h3 className="text-xl md:text-[22px] xl:text-2xl font-bold text-brand-green leading-[1.3]">Candidati con Un Click</h3>
               </div>
-              <p className="text-base text-medium-gray mb-8 w-full lg:min-h-[56px]">Il proprietario riceve subito il tuo profilo d'eccellenza.</p>
+              <p className="text-base text-medium-gray mb-8 w-full lg:min-h-[56px] leading-[1.6]">Il proprietario riceve subito il tuo profilo d'eccellenza.</p>
               <div className="w-full mx-auto rounded-xl overflow-hidden border border-gray-200 bg-white flex-1 flex items-center justify-center">
                 <img
                   src="https://image2url.com/r2/default/gifs/1769734403153-266d9d2d-1812-40a2-9c69-a4b54e0161f0.gif"

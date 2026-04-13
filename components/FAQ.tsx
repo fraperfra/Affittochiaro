@@ -58,10 +58,10 @@ export const FAQ: React.FC = () => {
           <span className="inline-block bg-action-green/10 text-action-green text-xs font-bold uppercase tracking-widest px-4 py-2 rounded-full mb-4">
             Domande Frequenti
           </span>
-          <h2 className="text-3xl md:text-4xl font-bold text-brand-green mb-4">
+          <h2 className="text-2xl md:text-[28px] xl:text-[32px] font-bold text-brand-green mb-4 leading-[1.2]">
             Hai qualche dubbio?
           </h2>
-          <p className="text-medium-gray text-lg max-w-2xl mx-auto">
+          <p className="text-medium-gray text-lg max-w-[65ch] mx-auto leading-[1.5]">
             Trova le risposte alle domande più comuni sul nostro servizio
           </p>
         </div>
@@ -86,7 +86,7 @@ export const FAQ: React.FC = () => {
               <div
                 className={`overflow-hidden transition-all duration-300 ${openIndex === index ? 'max-h-96' : 'max-h-0'}`}
               >
-                <p className="px-6 pb-5 text-medium-gray leading-relaxed">
+                <p className="px-6 pb-5 text-base text-medium-gray leading-[1.6] max-w-[65ch]">
                   {faq.answer}
                 </p>
               </div>
@@ -95,7 +95,7 @@ export const FAQ: React.FC = () => {
         </div>
 
         <div className="mt-12 text-center">
-          <p className="text-medium-gray mb-4">Non hai trovato la risposta che cercavi?</p>
+          <p className="text-base text-medium-gray mb-4 leading-[1.6]">Non hai trovato la risposta che cercavi?</p>
           <button className="inline-flex items-center gap-2 bg-brand-green text-white px-8 py-4 rounded-xl font-bold hover:brightness-110 transition-all shadow-lg">
             Contattaci
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

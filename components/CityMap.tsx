@@ -98,10 +98,10 @@ export const CityMap: React.FC<CityMapProps & { compact?: boolean }> = ({ active
         {!compact && (
           <div className="lg:w-1/2">
             <div className="inline-block bg-action-green/10 text-action-green px-5 py-2 rounded-full font-bold text-[10px] mb-6 uppercase tracking-[0.2em]">PRESENZA CAPILLARE</div>
-            <h2 className="text-4xl md:text-5xl font-bold text-brand-green mb-8 leading-tight font-poppins">
+            <h2 className="text-2xl md:text-[28px] xl:text-[32px] font-bold text-brand-green mb-8 leading-[1.2]">
               Affittochiaro è <br /><span className="text-action-green">Vicino a Te</span>
             </h2>
-            <p className="text-lg text-medium-gray mb-12 leading-relaxed max-w-xl">
+            <p className="text-lg text-medium-gray mb-12 leading-[1.5] max-w-[65ch]">
               Siamo presenti in tutte le principali città italiane. <span className="font-bold text-brand-green">Seleziona la tua città</span> per scoprire le opportunità in tempo reale.
             </p>
 
@@ -123,7 +123,7 @@ export const CityMap: React.FC<CityMapProps & { compact?: boolean }> = ({ active
             {/* Agency Quote Block */}
             <div className="mb-12 relative overflow-hidden p-8 rounded-3xl bg-soft-green/50 border border-gray-100">
               <div className="relative z-10">
-                <p className="text-lg italic text-brand-green font-medium leading-relaxed mb-4">
+                <p className="text-lg italic text-brand-green font-medium leading-[1.6] mb-4">
                   "Grazie alla capillarità di Affittochiaro, abbiamo trovato l'inquilino ideale per il nostro immobile a {activeCityName} in soli {activeCityName === 'Milano' ? '2' : '4'} giorni."
                 </p>
                 <div className="flex items-center gap-3">

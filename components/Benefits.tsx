@@ -6,10 +6,10 @@ export const Benefits: React.FC = () => {
     <section id="come-funziona-info" className="py-16 bg-white px-4 border-b border-gray-100">
       <div className="max-w-full lg:px-20 mx-auto">
         <p className="text-xs font-bold text-brand-green uppercase tracking-widest mb-3 border-l-2 border-action-green pl-3">I VANTAGGI</p>
-        <h2 className="text-3xl md:text-5xl font-bold text-brand-green mb-4 leading-tight">
+        <h2 className="text-2xl md:text-[28px] xl:text-[32px] font-bold text-brand-green mb-4 leading-[1.2]">
           Presenta Te Stesso Come il Candidato Ideale
         </h2>
-        <p className="text-lg md:text-xl text-medium-gray mb-10 max-w-4xl">
+        <p className="text-lg md:text-xl text-medium-gray mb-10 max-w-[65ch] leading-[1.5]">
           Non sei solo un numero in una lista. Con Affittochiaro crei il curriculum perfetto dell'inquilino.
         </p>
 
@@ -20,8 +20,8 @@ export const Benefits: React.FC = () => {
                 {benefit.icon}
               </div>
               <div>
-                <h3 className="text-base font-bold text-brand-green mb-2">{benefit.title}</h3>
-                <p className="text-medium-gray text-sm leading-relaxed" dangerouslySetInnerHTML={{ __html: benefit.description }} />
+                <h3 className="text-base md:text-lg font-bold text-brand-green mb-2">{benefit.title}</h3>
+                <p className="text-medium-gray text-base leading-[1.6]" dangerouslySetInnerHTML={{ __html: benefit.description }} />
               </div>
             </div>
           ))}

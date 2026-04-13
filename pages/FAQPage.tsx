@@ -11,10 +11,10 @@ export const FAQPage: React.FC = () => {
           <div className="inline-block bg-action-green/10 text-action-green px-5 py-2 rounded-full font-bold text-[10px] mb-6 uppercase tracking-[0.2em]">
             DOMANDE FREQUENTI
           </div>
-          <h1 className="text-4xl md:text-5xl font-bold text-brand-green mb-4 font-poppins">
+          <h1 className="text-[2rem] md:text-5xl xl:text-[4rem] font-bold text-brand-green mb-4 leading-[1.1]">
             Hai delle domande?
           </h1>
-          <p className="text-lg text-medium-gray">
+          <p className="text-lg text-medium-gray leading-[1.5] max-w-[65ch] mx-auto">
             Trova le risposte alle domande più comuni
           </p>
         </div>

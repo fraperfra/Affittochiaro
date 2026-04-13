@@ -5,10 +5,10 @@ export const Problems: React.FC = () => {
   return (
     <section className="py-16 bg-white px-4">
       <div className="max-w-full lg:px-20 mx-auto text-center">
-        <h2 className="text-3xl md:text-5xl font-bold text-brand-green mb-6 leading-tight">
+        <h2 className="text-2xl md:text-[28px] xl:text-[32px] font-bold text-brand-green mb-6 leading-[1.2]">
           Cercare Casa in Affitto è un Incubo?
         </h2>
-        <p className="text-lg md:text-xl text-medium-gray mb-12 max-w-4xl mx-auto">
+        <p className="text-lg md:text-xl text-medium-gray mb-12 max-w-[65ch] mx-auto leading-[1.5]">
           Sappiamo cosa provi. Il mercato degli affitti oggi è frammentato, lento e spesso frustrante.
         </p>
 

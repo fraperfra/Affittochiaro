@@ -81,8 +81,8 @@ export const Listings: React.FC<ListingsProps> = ({
       <section id="annunci" className="py-16 bg-[#F8F9FA] px-4">
         <div className="max-w-full lg:px-20 mx-auto text-center">
           <div className="inline-block bg-trust-blue/10 text-trust-blue px-5 py-2 rounded-full font-bold text-[10px] mb-8 uppercase tracking-[0.2em]">ANNUNCI SELEZIONATI</div>
-          <h2 className="text-3xl md:text-5xl font-bold text-brand-green mb-6 leading-tight font-poppins">Scegli la Tua Prossima Casa</h2>
-          <p className="text-lg text-medium-gray mb-12 max-w-2xl mx-auto">Sfoglia le migliori opportunità immobiliari aggiornate in tempo reale dai portali e dai social a <span className="font-bold text-brand-green">{activeCityName}</span> e dintorni.</p>
+          <h2 className="text-2xl md:text-[28px] xl:text-[32px] font-bold text-brand-green mb-6 leading-[1.2]">Scegli la Tua Prossima Casa</h2>
+          <p className="text-lg text-medium-gray mb-12 max-w-[65ch] mx-auto leading-[1.5]">Sfoglia le migliori opportunità immobiliari aggiornate in tempo reale dai portali e dai social a <span className="font-bold text-brand-green">{activeCityName}</span> e dintorni.</p>
 
           <div className="flex flex-wrap gap-3 justify-center mb-10">
             {filters.map((f) => (
@@ -110,7 +110,7 @@ export const Listings: React.FC<ListingsProps> = ({
                     <h3 className="text-xl font-bold text-brand-green leading-snug group-hover:text-action-green transition-colors">{item.title}</h3>
                     <div className="text-action-green font-black text-xl tabular-nums tracking-tighter shrink-0">{item.price}<span className="text-xs font-bold text-medium-gray">/mese</span></div>
                   </div>
-                  <p className="text-medium-gray text-sm leading-relaxed mb-8">{item.desc}</p>
+                  <p className="text-medium-gray text-base leading-[1.6] mb-8">{item.desc}</p>
                   <button
                     onClick={() => handleApplyClick(item)}
                     className="mt-auto w-full py-4 bg-brand-green text-white rounded-2xl font-bold text-xs uppercase tracking-widest shadow-lg shadow-brand-green/10 hover:bg-black transition-colors"
