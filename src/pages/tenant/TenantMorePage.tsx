@@ -138,7 +138,7 @@ export default function TenantMorePage() {
             avatarClassName="w-16 h-16 text-xl"
           />
           <div className="flex-1">
-            <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2">
+            <h2 className="font-bold text-gray-900 flex items-center gap-2">
               {name.split(' ')[0]}
               <NavLink to={ROUTES.TENANT_PROFILE} className="text-gray-400 hover:text-teal-600 cursor-pointer">
                 <Edit2 size={14} />

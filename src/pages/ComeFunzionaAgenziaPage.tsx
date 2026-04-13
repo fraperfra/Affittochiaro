@@ -55,7 +55,7 @@ export default function ComeFunzionaAgenziaPage() {
 
         {/* Hero */}
         <div className="text-center mb-12">
-          <h1 className="text-2xl md:text-4xl font-bold text-text-primary mb-3">
+          <h1 className="font-bold text-text-primary mb-3">
             AffittoChiaro per le agenzie
           </h1>
           <p className="text-text-secondary text-lg max-w-2xl mx-auto">
@@ -114,7 +114,7 @@ export default function ComeFunzionaAgenziaPage() {
         {/* CTA */}
         <div className="card bg-primary-500 text-white text-center py-10">
           <BadgeCheck size={36} className="mx-auto mb-3 text-white/80" />
-          <h2 className="text-xl font-bold mb-2">Diventa partner AffittoChiaro</h2>
+          <h2 className="font-bold mb-2">Diventa partner AffittoChiaro</h2>
           <p className="text-white/80 text-sm mb-6 max-w-sm mx-auto">
             Ti contattiamo entro 24 ore per una chiamata conoscitiva.
           </p>

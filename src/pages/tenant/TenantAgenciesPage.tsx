@@ -62,7 +62,7 @@ export default function TenantAgenciesPage() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-text-primary">Agenzie Partner</h1>
+        <h1 className="font-bold text-text-primary">Agenzie Partner</h1>
         <p className="text-text-secondary">
           Scopri le agenzie immobiliari attive sulla piattaforma
         </p>
@@ -257,7 +257,7 @@ export default function TenantAgenciesPage() {
               )}
               <div>
                 <div className="flex items-center gap-2">
-                  <h3 className="text-xl font-bold">{selectedAgency.name}</h3>
+                  <h3 className="font-bold">{selectedAgency.name}</h3>
                   {selectedAgency.isVerified && (
                     <CheckCircle size={20} className="text-success" />
                   )}

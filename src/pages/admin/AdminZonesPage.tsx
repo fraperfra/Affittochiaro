@@ -101,7 +101,7 @@ export default function AdminZonesPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-text-primary">Zone (Città)</h1>
+          <h1 className="font-bold text-text-primary">Zone (Città)</h1>
           <p className="text-text-secondary">Gestisci le città attive sulla piattaforma</p>
         </div>
         <Button leftIcon={<Plus size={16} />} onClick={openCreate}>Aggiungi Zona</Button>

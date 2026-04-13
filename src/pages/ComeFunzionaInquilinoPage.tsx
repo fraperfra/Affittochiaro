@@ -95,7 +95,7 @@ export default function ComeFunzionaInquilinoPage() {
 
         {/* Hero */}
         <div className="text-center mb-12">
-          <h1 className="text-2xl md:text-4xl font-bold text-text-primary mb-3">
+          <h1 className="font-bold text-text-primary mb-3">
             Trovare casa con AffittoChiaro
           </h1>
           <p className="text-text-secondary text-lg max-w-2xl mx-auto">

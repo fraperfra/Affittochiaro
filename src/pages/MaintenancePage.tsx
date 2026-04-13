@@ -17,7 +17,7 @@ export default function MaintenancePage() {
         </div>
 
         {/* Heading */}
-        <h1 className="text-3xl md:text-4xl font-bold text-white mb-4">
+        <h1 className="font-bold text-white mb-4">
           Stiamo migliorando il sito
         </h1>
         <p className="text-lg text-white/70 mb-10 leading-relaxed">

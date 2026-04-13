@@ -63,7 +63,7 @@ export default function AgenciesManagementPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-text-primary">Gestione Agenzie</h1>
+          <h1 className="font-bold text-text-primary">Gestione Agenzie</h1>
           <p className="text-text-secondary">
             {filteredAgencies.length} agenzie totali
           </p>
@@ -432,7 +432,7 @@ export default function AgenciesManagementPage() {
                 {selectedAgency.name.charAt(0)}
               </div>
               <div>
-                <h3 className="text-xl font-bold">{selectedAgency.name}</h3>
+                <h3 className="font-bold">{selectedAgency.name}</h3>
                 <p className="text-text-secondary">{selectedAgency.email}</p>
                 <div className="flex gap-2 mt-2">
                   <Badge variant={planColors[selectedAgency.plan]} className="capitalize">

@@ -62,7 +62,7 @@ export default function AdminUnlockedProfilesPage() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-text-primary">Profili Sbloccati</h1>
+        <h1 className="font-bold text-text-primary">Profili Sbloccati</h1>
         <p className="text-text-secondary">Tutti i profili inquilini sbloccati dalle agenzie</p>
       </div>
 

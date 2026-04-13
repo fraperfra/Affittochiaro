@@ -150,7 +150,7 @@ export default function TenantTemplatesPage() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-text-primary">Template</h1>
+        <h1 className="font-bold text-text-primary">Template</h1>
         <p className="text-text-secondary">
           Scegli tra modelli professionali per il tuo CV, lettere e candidature
         </p>

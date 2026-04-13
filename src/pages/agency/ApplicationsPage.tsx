@@ -172,7 +172,7 @@ export default function ApplicationsPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-text-primary">Candidature Ricevute</h1>
+          <h1 className="font-bold text-text-primary">Candidature Ricevute</h1>
           <p className="text-text-secondary">
             {applications.length} candidature totali
           </p>
@@ -493,7 +493,7 @@ export default function ApplicationsPage() {
                 {selectedApplication.firstName.charAt(0)}{selectedApplication.lastName.charAt(0)}
               </div>
               <div>
-                <h3 className="text-xl font-bold">
+                <h3 className="font-bold">
                   {selectedApplication.firstName} {selectedApplication.lastName}
                 </h3>
                 <p className="text-text-secondary">{selectedApplication.occupation}</p>

@@ -107,7 +107,7 @@ export default function PlanPage() {
             <p className="text-white/80 text-sm">Il tuo piano attuale</p>
             <div className="flex items-center gap-2 mt-1">
               {(() => { const Icon = PLAN_ICONS[currentPlan]; return <Icon size={24} />; })()}
-              <h2 className="text-2xl font-bold">{currentPlanDetails.name}</h2>
+              <h2 className="font-bold">{currentPlanDetails.name}</h2>
             </div>
             <div className="flex items-center gap-6 mt-3">
               <div className="flex items-center gap-2">

@@ -187,7 +187,7 @@ export default function TenantSearchPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-text-primary">Cerca Inquilini</h1>
+          <h1 className="font-bold text-text-primary">Cerca Inquilini</h1>
           <p className="text-text-secondary">
             {agencyUser?.agency?.credits || 0} crediti disponibili per sbloccare profili
           </p>
@@ -686,7 +686,7 @@ export default function TenantSearchPage() {
                   </div>
                 )}
                 <div className="min-w-0">
-                  <h2 className="text-xl font-bold text-text-primary">
+                  <h2 className="font-bold text-text-primary">
                     {t.firstName} {t.lastName}
                   </h2>
                   <p className="text-text-secondary text-sm mt-0.5">

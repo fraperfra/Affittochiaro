@@ -98,7 +98,7 @@ export default function AdminServicesManagementPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-text-primary">Gestione Servizi</h1>
+          <h1 className="font-bold text-text-primary">Gestione Servizi</h1>
           <p className="text-text-secondary">Catalogo servizi visibile a inquilini e agenzie</p>
         </div>
         <Button leftIcon={<Plus size={16} />} onClick={openCreate}>Nuovo Servizio</Button>

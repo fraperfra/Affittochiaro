@@ -192,7 +192,7 @@ export default function TenantServicesPage() {
 
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">Servizi per Inquilini</h1>
+        <h1 className="font-bold text-gray-900">Servizi per Inquilini</h1>
         <p className="mt-1 text-gray-500 text-sm">
           Tutto ciò di cui hai bisogno per trovare casa e viverci al meglio, in un unico posto.
         </p>
@@ -241,7 +241,7 @@ export default function TenantServicesPage() {
             <TrendingUp size={20} className="text-white" />
           </div>
           <div>
-            <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2">
+            <h2 className="font-bold text-gray-900 flex items-center gap-2">
               Extra Visibilità
               <span className="inline-flex items-center gap-1 bg-amber-100 text-amber-700 text-xs font-semibold px-2 py-0.5 rounded-full">
                 <Sparkles size={10} />

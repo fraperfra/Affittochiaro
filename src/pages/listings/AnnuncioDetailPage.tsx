@@ -173,7 +173,7 @@ export default function AnnuncioDetailPage() {
                 <MapPin size={14} />
                 <span>{listing.zona}, {listing.comune}</span>
               </div>
-              <h1 className="text-2xl md:text-3xl font-bold text-text-primary mb-3">
+              <h1 className="font-bold text-text-primary mb-3">
                 {listing.titolo}
               </h1>
               <div className="flex flex-wrap items-center gap-4 text-text-secondary text-sm">

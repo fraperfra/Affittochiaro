@@ -30,7 +30,7 @@ export default function ExclusiveListingsPage() {
             <Star size={18} className="fill-yellow-300 text-yellow-300" />
             <span className="text-sm font-semibold uppercase tracking-wider text-white/80">Solo su AffittoChiaro</span>
           </div>
-          <h1 className="text-2xl md:text-4xl font-bold mb-3">Affitti Esclusivi</h1>
+          <h1 className="font-bold mb-3">Affitti Esclusivi</h1>
           <p className="text-white/80 max-w-xl">
             Questi annunci sono disponibili solo su AffittoChiaro. Le agenzie partner hanno
             selezionato immobili di qualità per inquilini verificati con profilo completo.
@@ -60,7 +60,7 @@ export default function ExclusiveListingsPage() {
         </div>
 
         {/* Griglia annunci */}
-        <h2 className="text-xl font-bold text-text-primary mb-4">
+        <h2 className="font-bold text-text-primary mb-4">
           Annunci in esclusiva ({listings.length})
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -108,7 +108,7 @@ export default function ExclusiveListingsPage() {
         {/* CTA registrazione */}
         <div className="mt-12 card bg-background-secondary text-center py-10">
           <Home size={36} className="text-primary-500 mx-auto mb-3" />
-          <h3 className="text-xl font-bold text-text-primary mb-2">Candidati agli esclusivi</h3>
+          <h3 className="font-bold text-text-primary mb-2">Candidati agli esclusivi</h3>
           <p className="text-text-secondary mb-5 max-w-md mx-auto">
             Per candidarti agli annunci esclusivi è necessario un profilo completo e verificato.
           </p>

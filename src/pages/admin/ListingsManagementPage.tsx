@@ -101,7 +101,7 @@ export default function ListingsManagementPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-text-primary">Gestione Annunci</h1>
+          <h1 className="font-bold text-text-primary">Gestione Annunci</h1>
           <p className="text-text-secondary">
             {formatNumber(filteredListings.length)} annunci totali
           </p>
@@ -496,7 +496,7 @@ export default function ListingsManagementPage() {
 
             <div className="flex items-start justify-between">
               <div>
-                <h3 className="text-xl font-bold">{selectedListing.title}</h3>
+                <h3 className="font-bold">{selectedListing.title}</h3>
                 <p className="text-text-secondary flex items-center gap-1 mt-1">
                   <MapPin size={14} />
                   {selectedListing.address.city}, {selectedListing.address.street}

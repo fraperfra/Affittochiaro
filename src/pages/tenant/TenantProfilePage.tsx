@@ -376,7 +376,7 @@ export default function TenantProfilePage() {
 
       {/* Page header */}
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-text-primary">Il Mio Profilo</h1>
+        <h1 className="font-bold text-text-primary">Il Mio Profilo</h1>
         <button
           onClick={() => setEditProfileOpen(true)}
           className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 bg-gray-50 hover:bg-gray-100 rounded-xl border border-gray-200 transition-all hover:shadow-sm"

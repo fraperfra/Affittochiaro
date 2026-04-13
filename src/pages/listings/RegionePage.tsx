@@ -30,7 +30,7 @@ export default function RegionePage() {
           ]}
         />
 
-        <h1 className="text-2xl md:text-4xl font-bold text-text-primary mb-2">
+        <h1 className="font-bold text-text-primary mb-2">
           Affitti in {nomeRegione}
         </h1>
         <p className="text-text-secondary mb-8">

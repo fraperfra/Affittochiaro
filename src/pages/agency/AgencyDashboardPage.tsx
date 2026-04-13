@@ -111,7 +111,7 @@ export default function AgencyDashboardPage() {
           {/* Info */}
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 flex-wrap">
-              <h1 className="text-2xl font-bold">{agencyUser?.agency?.name || 'Agenzia'}</h1>
+              <h1 className="font-bold">{agencyUser?.agency?.name || 'Agenzia'}</h1>
               {agencyUser?.agency?.isVerified && (
                 <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-white/20 rounded-full text-xs font-medium">
                   <Check size={11} /> Verificata

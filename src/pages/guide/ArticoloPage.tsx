@@ -40,7 +40,7 @@ export default function ArticoloPage() {
     return lines.map((line, i) => {
       if (line.startsWith('## ')) {
         return (
-          <h2 key={i} className="text-xl font-bold text-text-primary mt-8 mb-3">
+          <h2 key={i} className="font-bold text-text-primary mt-8 mb-3">
             {line.replace('## ', '')}
           </h2>
         );
@@ -114,7 +114,7 @@ export default function ArticoloPage() {
         </div>
 
         {/* Titolo */}
-        <h1 className="text-2xl md:text-4xl font-bold text-text-primary mb-4 leading-tight">
+        <h1 className="font-bold text-text-primary mb-4 leading-tight">
           {articolo.titolo}
         </h1>
 
@@ -174,7 +174,7 @@ export default function ArticoloPage() {
         {/* Altri articoli */}
         {altriArticoli.length > 0 && (
           <div>
-            <h2 className="text-xl font-bold text-text-primary mb-6">Altre guide</h2>
+            <h2 className="font-bold text-text-primary mb-6">Altre guide</h2>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               {altriArticoli.map((a) => (
                 <Link

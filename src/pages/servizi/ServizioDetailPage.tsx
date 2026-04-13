@@ -28,7 +28,7 @@ export default function ServizioDetailPage() {
           ]}
         />
 
-        <h1 className="text-2xl md:text-4xl font-bold text-text-primary mb-4">
+        <h1 className="font-bold text-text-primary mb-4">
           {servizio.nome}
         </h1>
 
@@ -53,7 +53,7 @@ export default function ServizioDetailPage() {
 
         {/* CTA */}
         <div className="card bg-primary-50 border border-primary-100 text-center py-10 mb-10">
-          <h2 className="text-xl font-bold text-text-primary mb-2">
+          <h2 className="font-bold text-text-primary mb-2">
             Vuoi attivare questo servizio?
           </h2>
           <p className="text-text-secondary text-sm mb-5">

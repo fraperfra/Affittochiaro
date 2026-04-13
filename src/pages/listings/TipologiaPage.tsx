@@ -44,7 +44,7 @@ export default function TipologiaPage() {
           ]}
         />
 
-        <h1 className="text-2xl md:text-4xl font-bold text-text-primary mb-1">
+        <h1 className="font-bold text-text-primary mb-1">
           {nomeTipologia} in affitto a {nomeCitta}
         </h1>
         <p className="text-text-secondary mb-8">

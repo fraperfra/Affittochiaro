@@ -108,7 +108,7 @@ export default function AdminTicketsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-text-primary">Ticket di Supporto</h1>
+        <h1 className="font-bold text-text-primary">Ticket di Supporto</h1>
         <p className="text-text-secondary">Gestisci le richieste di supporto di inquilini e agenzie</p>
       </div>
 

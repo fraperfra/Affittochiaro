@@ -76,7 +76,7 @@ export default function TenantsManagementPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-text-primary">Gestione Inquilini</h1>
+          <h1 className="font-bold text-text-primary">Gestione Inquilini</h1>
           <p className="text-text-secondary">
             {filteredTenants.length} inquilini totali
           </p>
@@ -448,7 +448,7 @@ export default function TenantsManagementPage() {
                 </div>
               )}
               <div>
-                <h3 className="text-xl font-bold">
+                <h3 className="font-bold">
                   {selectedTenant.firstName} {selectedTenant.lastName}
                 </h3>
                 <p className="text-text-secondary">{selectedTenant.email}</p>

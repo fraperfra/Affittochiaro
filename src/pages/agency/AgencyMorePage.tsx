@@ -105,7 +105,7 @@ export default function AgencyMorePage() {
             avatarClassName="w-16 h-16 text-xl"
           />
           <div className="flex-1 min-w-0">
-            <h2 className="text-xl font-bold text-gray-900 truncate">{name}</h2>
+            <h2 className="font-bold text-gray-900 truncate">{name}</h2>
             <div className="flex items-center gap-1 mt-0.5">
               <MapPin size={12} className="text-gray-400 flex-shrink-0" />
               <p className="text-sm text-gray-500 truncate">{city}</p>
@@ -171,7 +171,7 @@ export default function AgencyMorePage() {
               <Crown size={14} />
               Professional
             </div>
-            <h3 className="text-xl font-bold mb-2">Più accessi, più affitti</h3>
+            <h3 className="font-bold mb-2">Più accessi, più affitti</h3>
             <p className="text-teal-50 text-sm mb-4">
               Sblocca annunci illimitati, più crediti mensili e supporto prioritario.
             </p>

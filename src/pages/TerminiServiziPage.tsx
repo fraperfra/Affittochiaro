@@ -17,7 +17,7 @@ export default function TerminiServiziPage() {
           ]}
         />
 
-        <h1 className="text-2xl md:text-3xl font-bold text-text-primary mb-2">
+        <h1 className="font-bold text-text-primary mb-2">
           Termini di Servizio
         </h1>
         <p className="text-text-muted text-sm mb-8">

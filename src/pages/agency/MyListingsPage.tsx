@@ -496,7 +496,7 @@ export default function MyListingsPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-text-primary">I Miei Annunci</h1>
+          <h1 className="font-bold text-text-primary">I Miei Annunci</h1>
           <p className="text-text-secondary">
             {activeCount} annunci attivi &bull; {formatNumber(totalViews)} visualizzazioni totali
           </p>

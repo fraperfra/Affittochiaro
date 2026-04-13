@@ -190,7 +190,7 @@ export default function SystemPage() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-text-primary">Impostazioni Sistema</h1>
+        <h1 className="font-bold text-text-primary">Impostazioni Sistema</h1>
         <p className="text-text-secondary">Gestisci le configurazioni della piattaforma</p>
       </div>
 

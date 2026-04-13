@@ -267,7 +267,7 @@ export default function SettingsPage() {
     <div className="space-y-6">
       {/* Header – nascosto su mobile quando si visualizza un singolo tab */}
       <div className={hasMobileTab ? 'hidden md:block' : ''}>
-        <h1 className="text-2xl font-bold text-text-primary">Impostazioni</h1>
+        <h1 className="font-bold text-text-primary">Impostazioni</h1>
         <p className="text-text-secondary">Gestisci le tue preferenze e impostazioni account</p>
       </div>
 
@@ -280,7 +280,7 @@ export default function SettingsPage() {
           >
             <ChevronLeft size={22} />
           </button>
-          <h1 className="text-xl font-bold text-text-primary">{tabTitles[activeTab]}</h1>
+          <h1 className="font-bold text-text-primary">{tabTitles[activeTab]}</h1>
         </div>
       )}
 
@@ -923,7 +923,7 @@ export default function SettingsPage() {
                     <Star className="w-8 h-8 text-green-500 fill-green-500" />
                   </div>
                   <div>
-                    <h2 className="text-xl font-bold text-text-primary">Lascia una recensione su Trustpilot</h2>
+                    <h2 className="font-bold text-text-primary">Lascia una recensione su Trustpilot</h2>
                     <p className="text-sm text-text-secondary mt-2 max-w-md mx-auto">
                       La tua opinione è fondamentale! Aiutaci a migliorare e permetti ad altre persone di scoprire Affittochiaro lasciando una recensione autentica su Trustpilot.
                     </p>

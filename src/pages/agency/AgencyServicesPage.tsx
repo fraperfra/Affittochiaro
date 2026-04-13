@@ -141,7 +141,7 @@ export default function AgencyServicesPage() {
             <Sparkles size={24} />
           </div>
           <div>
-            <h1 className="text-2xl font-bold">Servizi</h1>
+            <h1 className="font-bold">Servizi</h1>
             <p className="text-white/80 mt-1">
               Strumenti e partner selezionati per semplificare il lavoro della tua agenzia
             </p>

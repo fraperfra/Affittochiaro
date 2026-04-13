@@ -394,7 +394,7 @@ function ProfileHeaderCard({
             {/* Name + completion */}
             <div className="flex items-start justify-between gap-2">
               <div className="min-w-0">
-                <h2 className="text-lg md:text-xl font-bold text-gray-900 leading-tight truncate">
+                <h2 className="text-lg font-bold text-gray-900 leading-tight truncate">
                   {firstName} {lastName}
                 </h2>
                 <p className="text-xs text-gray-400 mt-0.5">Benvenuto! come va oggi?</p>

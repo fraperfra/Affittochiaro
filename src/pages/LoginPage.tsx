@@ -86,7 +86,7 @@ export default function LoginPage() {
 
           {/* Titolo */}
           <div className="mb-7">
-            <h1 className="text-3xl font-bold text-gray-900 mb-1">Bentornato!</h1>
+            <h1 className="font-bold text-gray-900 mb-1">Bentornato!</h1>
             <p className="text-gray-500 text-sm">Accedi al tuo account Affittochiaro</p>
           </div>
 

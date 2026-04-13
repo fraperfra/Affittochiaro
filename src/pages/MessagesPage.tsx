@@ -29,7 +29,7 @@ export default function MessagesPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-text-primary">Messaggi</h1>
+          <h1 className="font-bold text-text-primary">Messaggi</h1>
           <p className="text-text-secondary">
             {totalUnread > 0 ? `${totalUnread} messaggi non letti` : 'Tutte le conversazioni'}
           </p>

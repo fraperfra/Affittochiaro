@@ -154,7 +154,7 @@ export default function AdminDashboardPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-text-primary">Dashboard Admin</h1>
+          <h1 className="font-bold text-text-primary">Dashboard Admin</h1>
           <p className="text-text-secondary">
             Panoramica completa della piattaforma Affittochiaro
           </p>

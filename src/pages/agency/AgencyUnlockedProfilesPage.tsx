@@ -92,7 +92,7 @@ export default function AgencyUnlockedProfilesPage() {
       {/* Header */}
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-text-primary">Archivio Profili</h1>
+          <h1 className="font-bold text-text-primary">Archivio Profili</h1>
           <p className="text-text-secondary">Gestisci i contatti e le note dei tuoi candidati</p>
         </div>
         <Link to={ROUTES.AGENCY_TENANTS}>

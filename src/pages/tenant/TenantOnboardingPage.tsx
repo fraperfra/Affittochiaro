@@ -95,7 +95,7 @@ export default function TenantOnboardingPage() {
                     {step === 1 && (
                         <div className="space-y-10 animate-slide-up">
                             <div className="text-center">
-                                <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3 tracking-tight">
+                                <h1 className="font-bold text-gray-900 mb-3 tracking-tight">
                                     Cosa stai cercando?
                                 </h1>
                                 <p className="text-lg text-gray-500 font-medium tracking-wide">
@@ -135,7 +135,7 @@ export default function TenantOnboardingPage() {
                     {step === 2 && (
                         <div className="space-y-10 animate-slide-up">
                             <div className="text-center">
-                                <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3 tracking-tight">
+                                <h1 className="font-bold text-gray-900 mb-3 tracking-tight">
                                     Qual è la tua situazione lavorativa?
                                 </h1>
                                 <p className="text-lg text-gray-500 font-medium tracking-wide">
@@ -175,7 +175,7 @@ export default function TenantOnboardingPage() {
                     {step === 3 && (
                         <div className="space-y-10 animate-slide-up">
                             <div className="text-center">
-                                <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3 tracking-tight">
+                                <h1 className="font-bold text-gray-900 mb-3 tracking-tight">
                                     Come hai conosciuto AffittoChiaro?
                                 </h1>
                                 <p className="text-lg text-gray-500 font-medium tracking-wide">

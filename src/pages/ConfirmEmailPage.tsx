@@ -126,7 +126,7 @@ export default function ConfirmEmailPage() {
           <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
             <CheckCircle className="w-10 h-10 text-green-600" />
           </div>
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">Email Confermata!</h1>
+          <h1 className="font-bold text-gray-900 mb-2">Email Confermata!</h1>
           <p className="text-gray-500 mb-6">
             Il tuo account è stato verificato con successo.
           </p>
@@ -157,7 +157,7 @@ export default function ConfirmEmailPage() {
             alt="Affittochiaro"
             className="h-16 mx-auto mb-4"
           />
-          <h1 className="text-2xl font-bold text-white">Conferma la tua Email</h1>
+          <h1 className="font-bold text-white">Conferma la tua Email</h1>
         </div>
 
         <Card className="animate-slide-up">

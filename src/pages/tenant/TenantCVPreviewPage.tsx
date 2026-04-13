@@ -85,7 +85,7 @@ export default function TenantCVPreviewPage() {
                 </div>
               )}
               <div>
-                <h1 className="text-xl font-bold">
+                <h1 className="font-bold">
                   {cv.personalInfo.firstName} {cv.personalInfo.lastName}
                 </h1>
                 <p className="text-white/80 text-sm mt-0.5">

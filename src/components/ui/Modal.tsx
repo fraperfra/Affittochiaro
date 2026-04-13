@@ -68,7 +68,7 @@ export default function Modal({
         {/* Header */}
         {(title || showClose) && (
           <div className="flex items-center justify-between p-4 md:p-6 border-b border-border shrink-0">
-            {title && <h2 className="text-xl font-semibold text-text-primary line-clamp-1 pr-4">{title}</h2>}
+            {title && <h2 className="font-semibold text-text-primary line-clamp-1 pr-4">{title}</h2>}
             {showClose && (
               <button
                 onClick={onClose}
