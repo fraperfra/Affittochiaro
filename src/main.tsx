@@ -1,5 +1,19 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+
+// When a new deploy changes chunk filenames, cached index.html tries to load
+// old JS chunks that no longer exist. Vercel returns HTML (SPA fallback) which
+// fails the MIME check. Force a hard reload once to pick up the new index.html.
+window.addEventListener('unhandledrejection', (event) => {
+  const msg: string = event?.reason?.message ?? '';
+  if (msg.includes('Failed to fetch dynamically imported module') || msg.includes('Importing a module script failed')) {
+    const reloadKey = '__chunk_reload__';
+    if (!sessionStorage.getItem(reloadKey)) {
+      sessionStorage.setItem(reloadKey, '1');
+      window.location.reload();
+    }
+  }
+});
 import { BrowserRouter } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import { SpeedInsights } from '@vercel/speed-insights/react';
