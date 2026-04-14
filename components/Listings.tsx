@@ -58,41 +58,43 @@ export const Listings: React.FC<ListingsProps> = ({
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 text-left">
-          {filteredListings.slice(0, 6).map((listing) => (
-            <Link
-              key={listing.id}
-              to={buildListingUrl(listing.regioneSlug, listing.comuneSlug, listing.tipologiaSlug, listing.slug)}
-              className="card group overflow-hidden hover:shadow-card-hover transition-shadow p-0 block"
-            >
-              <div className="relative h-44 overflow-hidden">
-                <img
-                  src={listing.immagini[0]}
-                  alt={listing.titolo}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                />
-                {listing.isExclusive && (
-                  <div className="absolute top-3 left-3 flex items-center gap-1 bg-primary-500 text-white text-xs font-bold px-2.5 py-1 rounded-full">
-                    <Star size={10} className="fill-white" /> Esclusiva
+          {filteredListings.slice(0, 6).map((listing) => {
+            const url = buildListingUrl(listing.regioneSlug, listing.comuneSlug, listing.tipologiaSlug, listing.slug);
+            return (
+              <div key={listing.id} className="card group overflow-hidden hover:shadow-card-hover transition-shadow p-0 flex flex-col">
+                <Link to={url} className="relative h-44 overflow-hidden block">
+                  <img
+                    src={listing.immagini[0]}
+                    alt={listing.titolo}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                  {listing.isExclusive && (
+                    <div className="absolute top-3 left-3 flex items-center gap-1 bg-primary-500 text-white text-xs font-bold px-2.5 py-1 rounded-full">
+                      <Star size={10} className="fill-white" /> Esclusiva
+                    </div>
+                  )}
+                </Link>
+                <div className="p-4 flex flex-col flex-1">
+                  <div className="flex items-center gap-1 text-text-muted text-xs mb-1">
+                    <MapPin size={11} /><span>{listing.zona}</span>
                   </div>
-                )}
-              </div>
-              <div className="p-4">
-                <div className="flex items-center gap-1 text-text-muted text-xs mb-1">
-                  <MapPin size={11} /><span>{listing.zona}</span>
-                </div>
-                <h3 className="font-semibold text-text-primary text-sm line-clamp-2 mb-2">{listing.titolo}</h3>
-                <div className="flex items-center gap-3 text-text-secondary text-xs mb-3">
-                  <span className="flex items-center gap-1"><Maximize2 size={11} />{listing.mq} m²</span>
-                  <span className="flex items-center gap-1"><BedDouble size={11} />{listing.camere} cam.</span>
-                  <span className="flex items-center gap-1"><Bath size={11} />{listing.bagni} bagni</span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="font-bold text-primary-600">{formatPrice(listing.prezzo)}</span>
-                  <span className="text-xs text-text-muted capitalize">{listing.tipologia}</span>
+                  <h3 className="font-semibold text-text-primary text-sm line-clamp-2 mb-2">{listing.titolo}</h3>
+                  <div className="flex items-center gap-3 text-text-secondary text-xs mb-3">
+                    <span className="flex items-center gap-1"><Maximize2 size={11} />{listing.mq} m²</span>
+                    <span className="flex items-center gap-1"><BedDouble size={11} />{listing.camere} cam.</span>
+                    <span className="flex items-center gap-1"><Bath size={11} />{listing.bagni} bagni</span>
+                  </div>
+                  <div className="flex items-center justify-between mb-4">
+                    <span className="font-bold text-primary-600">{formatPrice(listing.prezzo)}</span>
+                    <span className="text-xs text-text-muted capitalize">{listing.tipologia}</span>
+                  </div>
+                  <Link to={url} className="btn btn-primary w-full justify-center text-sm mt-auto">
+                    Candidati
+                  </Link>
                 </div>
               </div>
-            </Link>
-          ))}
+            );
+          })}
         </div>
 
         <div className="mt-10 group">
