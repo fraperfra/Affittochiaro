@@ -9,7 +9,7 @@ export const Benefits: React.FC = () => {
         <h2 className="text-2xl md:text-[28px] xl:text-[32px] font-bold text-brand-green mb-4 leading-[1.2]">
           Presenta Te Stesso Come il Candidato Ideale
         </h2>
-        <p className="text-lg md:text-xl text-medium-gray mb-10 max-w-[65ch] leading-[1.5]">
+        <p className="text-lg md:text-xl text-medium-gray mb-10 max-w-[65ch] lg:max-w-none leading-[1.5]">
           Su AffittoChiaro non cerchi casa: la casa trova te. Bastano pochi minuti per costruire il tuo profilo inquilino.
         </p>
 
