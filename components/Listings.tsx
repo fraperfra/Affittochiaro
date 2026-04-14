@@ -1,150 +1,114 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { listings } from '../data';
-import { ApplicationModal, ApplicationData } from './ApplicationModal';
+import React from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { MapPin, Maximize2, BedDouble, Bath, Star } from 'lucide-react';
+import { publicListings } from '../src/lib/mock-data';
+import { buildListingUrl, formatPrice } from '../src/lib/utils';
 
 interface ListingsProps {
   activeCityName: string;
   activeFilter: string;
   onFilterChange: (filter: string) => void;
-  onApplicationSubmit?: (data: ApplicationData) => void;
 }
+
+const FILTERS = ['Tutti', 'appartamento', 'bilocale', 'trilocale', 'stanza', 'villa'];
+const FILTER_LABELS: Record<string, string> = {
+  Tutti: 'Tutti',
+  appartamento: 'Appartamento',
+  bilocale: 'Bilocale',
+  trilocale: 'Trilocale',
+  stanza: 'Stanza',
+  villa: 'Villa',
+};
 
 export const Listings: React.FC<ListingsProps> = ({
   activeCityName,
   activeFilter,
   onFilterChange,
-  onApplicationSubmit
 }) => {
   const navigate = useNavigate();
-  const filters = ['Tutti', 'Appartamento', 'Attico', 'Villa'];
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedListing, setSelectedListing] = useState<{
-    id: string;
-    title: string;
-    price: string;
-    type: string;
-    image: string;
-  } | null>(null);
 
   const filteredListings = activeFilter === 'Tutti'
-    ? listings
-    : listings.filter(item => item.type === activeFilter);
-
-  const handleApplyClick = (listing: typeof listings[0]) => {
-    setSelectedListing({
-      id: listing.id,
-      title: listing.title,
-      price: listing.price,
-      type: listing.type,
-      image: listing.image,
-    });
-    setIsModalOpen(true);
-  };
-
-  const handleApplicationSubmit = (data: ApplicationData) => {
-    // Store the application in localStorage for now (will be used by agency dashboard)
-    const existingApplications = JSON.parse(localStorage.getItem('affittochiaro_applications') || '[]');
-    const newApplication = {
-      ...data,
-      id: Date.now().toString(),
-      submittedAt: new Date().toISOString(),
-      status: 'pending',
-      agencyId: 'agency_1', // Default agency for demo
-    };
-    localStorage.setItem('affittochiaro_applications', JSON.stringify([...existingApplications, newApplication]));
-
-    // Create a notification for the agency
-    const existingNotifications = JSON.parse(localStorage.getItem('affittochiaro_agency_notifications') || '[]');
-    const newNotification = {
-      id: Date.now().toString(),
-      type: 'new_application',
-      title: 'Nuova Candidatura',
-      message: `${data.firstName} ${data.lastName} si e candidato per "${data.listingTitle}"`,
-      applicantName: `${data.firstName} ${data.lastName}`,
-      listingTitle: data.listingTitle,
-      listingId: data.listingId,
-      applicationId: newApplication.id,
-      createdAt: new Date().toISOString(),
-      read: false,
-    };
-    localStorage.setItem('affittochiaro_agency_notifications', JSON.stringify([newNotification, ...existingNotifications]));
-
-    // Call the optional callback
-    if (onApplicationSubmit) {
-      onApplicationSubmit(data);
-    }
-  };
+    ? publicListings
+    : publicListings.filter(item => item.tipologiaSlug === activeFilter);
 
   return (
-    <>
-      <section id="annunci" className="py-16 bg-[#F8F9FA] px-4">
-        <div className="max-w-full lg:px-20 mx-auto text-center">
-          <div className="inline-block bg-trust-blue/10 text-trust-blue px-5 py-2 rounded-full font-bold text-[10px] mb-8 uppercase tracking-[0.2em]">ANNUNCI SELEZIONATI</div>
-          <h2 className="text-2xl md:text-[28px] xl:text-[32px] font-bold text-brand-green mb-6 leading-[1.2]">Scegli la Tua Prossima Casa</h2>
-          <p className="text-lg text-medium-gray mb-12 max-w-[65ch] mx-auto leading-[1.5]">Sfoglia le migliori opportunità immobiliari aggiornate in tempo reale dai portali e dai social a <span className="font-bold text-brand-green">{activeCityName}</span> e dintorni.</p>
+    <section id="annunci" className="py-16 bg-[#F8F9FA] px-4">
+      <div className="max-w-full lg:px-20 mx-auto text-center">
+        <div className="inline-block bg-trust-blue/10 text-trust-blue px-5 py-2 rounded-full font-bold text-[10px] mb-8 uppercase tracking-[0.2em]">ANNUNCI SELEZIONATI</div>
+        <h2 className="text-2xl md:text-[28px] xl:text-[32px] font-bold text-brand-green mb-6 leading-[1.2]">Scegli la Tua Prossima Casa</h2>
+        <p className="text-lg text-medium-gray mb-12 max-w-[65ch] mx-auto leading-[1.5]">
+          Sfoglia le migliori opportunità immobiliari aggiornate in tempo reale dai portali e dai social a{' '}
+          <span className="font-bold text-brand-green">{activeCityName}</span> e dintorni.
+        </p>
 
-          <div className="flex flex-wrap gap-3 justify-center mb-10">
-            {filters.map((f) => (
-              <button
-                key={f}
-                onClick={() => onFilterChange(f)}
-                className={`px-8 py-3 rounded-2xl font-bold text-sm border transition-all ${activeFilter === f ? 'bg-brand-green text-white border-brand-green shadow-xl shadow-brand-green/20' : 'bg-white text-brand-green border-gray-100 hover:border-brand-green/20'}`}
-              >
-                {f}
-              </button>
-            ))}
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-            {filteredListings.slice(0, 6).map((item) => (
-              <div key={item.id} className="bg-white rounded-[2.5rem] overflow-hidden shadow-xl shadow-black/5 border border-gray-50 flex flex-col group hover:-translate-y-2 transition-all duration-500">
-                <div className="relative aspect-[16/10] overflow-hidden rounded-t-[2.5rem]">
-                  <img src={item.image} alt={item.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" />
-                  <div className="absolute top-6 right-6 bg-brand-green/10 backdrop-blur-md text-brand-green px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest border border-brand-green/10">
-                    {item.type}
-                  </div>
-                </div>
-                <div className="p-8 flex-grow flex flex-col text-left">
-                  <div className="flex justify-between items-start mb-4">
-                    <h3 className="text-xl font-bold text-brand-green leading-snug group-hover:text-action-green transition-colors">{item.title}</h3>
-                    <div className="text-action-green font-black text-xl tabular-nums tracking-tighter shrink-0">{item.price}<span className="text-xs font-bold text-medium-gray">/mese</span></div>
-                  </div>
-                  <p className="text-medium-gray text-base leading-[1.6] mb-8">{item.desc}</p>
-                  <button
-                    onClick={() => handleApplyClick(item)}
-                    className="mt-auto w-full py-4 bg-brand-green text-white rounded-2xl font-bold text-xs uppercase tracking-widest shadow-lg shadow-brand-green/10 hover:bg-black transition-colors"
-                  >
-                    Candidati ora
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <div className="mt-10 group">
+        <div className="flex flex-wrap gap-3 justify-center mb-10">
+          {FILTERS.map((f) => (
             <button
-              onClick={() => navigate(`/tenant/listings?city=${encodeURIComponent(activeCityName)}`)}
-              className="inline-flex items-center gap-3 text-brand-green font-bold text-lg hover:text-action-green transition-all"
+              key={f}
+              onClick={() => onFilterChange(f)}
+              className={`px-8 py-3 rounded-2xl font-bold text-sm border transition-all ${
+                activeFilter === f
+                  ? 'bg-brand-green text-white border-brand-green shadow-xl shadow-brand-green/20'
+                  : 'bg-white text-brand-green border-gray-100 hover:border-brand-green/20'
+              }`}
             >
-              <span>Vedi tutti gli annunci disponibili a {activeCityName}</span>
-              <div className="w-10 h-10 bg-brand-green/5 rounded-full flex items-center justify-center group-hover:bg-action-green group-hover:text-white transition-all">
-                <svg className="w-5 h-5 translate-x-0 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
-                </svg>
-              </div>
+              {FILTER_LABELS[f]}
             </button>
-          </div>
+          ))}
         </div>
-      </section>
 
-      {/* Application Modal */}
-      <ApplicationModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        listing={selectedListing}
-        onSubmit={handleApplicationSubmit}
-      />
-    </>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 text-left">
+          {filteredListings.slice(0, 6).map((listing) => (
+            <Link
+              key={listing.id}
+              to={buildListingUrl(listing.regioneSlug, listing.comuneSlug, listing.tipologiaSlug, listing.slug)}
+              className="card group overflow-hidden hover:shadow-card-hover transition-shadow p-0 block"
+            >
+              <div className="relative h-44 overflow-hidden">
+                <img
+                  src={listing.immagini[0]}
+                  alt={listing.titolo}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                />
+                {listing.isExclusive && (
+                  <div className="absolute top-3 left-3 flex items-center gap-1 bg-primary-500 text-white text-xs font-bold px-2.5 py-1 rounded-full">
+                    <Star size={10} className="fill-white" /> Esclusiva
+                  </div>
+                )}
+              </div>
+              <div className="p-4">
+                <div className="flex items-center gap-1 text-text-muted text-xs mb-1">
+                  <MapPin size={11} /><span>{listing.zona}</span>
+                </div>
+                <h3 className="font-semibold text-text-primary text-sm line-clamp-2 mb-2">{listing.titolo}</h3>
+                <div className="flex items-center gap-3 text-text-secondary text-xs mb-3">
+                  <span className="flex items-center gap-1"><Maximize2 size={11} />{listing.mq} m²</span>
+                  <span className="flex items-center gap-1"><BedDouble size={11} />{listing.camere} cam.</span>
+                  <span className="flex items-center gap-1"><Bath size={11} />{listing.bagni} bagni</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="font-bold text-primary-600">{formatPrice(listing.prezzo)}</span>
+                  <span className="text-xs text-text-muted capitalize">{listing.tipologia}</span>
+                </div>
+              </div>
+            </Link>
+          ))}
+        </div>
+
+        <div className="mt-10 group">
+          <button
+            onClick={() => navigate('/case-e-stanze-in-affitto')}
+            className="inline-flex items-center gap-3 text-brand-green font-bold text-lg hover:text-action-green transition-all"
+          >
+            <span>Vedi tutti gli annunci disponibili a {activeCityName}</span>
+            <div className="w-10 h-10 bg-brand-green/5 rounded-full flex items-center justify-center group-hover:bg-action-green group-hover:text-white transition-all">
+              <svg className="w-5 h-5 translate-x-0 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+              </svg>
+            </div>
+          </button>
+        </div>
+      </div>
+    </section>
   );
 };
