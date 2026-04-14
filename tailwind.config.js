@@ -62,7 +62,7 @@ export default {
         info: '#2B7DE9',
         // Background & Text
         background: {
-          DEFAULT: '#FFFFFF',
+          DEFAULT: '#FAFAFA',
           secondary: '#F5F5F5',
           tertiary: '#F1F5F9',
         },

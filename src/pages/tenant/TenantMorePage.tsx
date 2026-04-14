@@ -53,7 +53,7 @@ const visibilityPlans: VisibilityPlan[] = [
     borderColor: 'border-gray-200',
     features: [
       'Profilo visibile nelle ricerche',
-      'Curriculum completo'
+      'Profilo completo'
     ],
     cta: 'Piano attuale',
     highlighted: false,

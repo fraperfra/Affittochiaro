@@ -296,7 +296,7 @@ function GlobalSearch({ userRole, navigate }: { userRole: string; navigate: (pat
 const PAGE_TITLES: Record<string, string> = {
   '/tenant': 'Dashboard',
   '/tenant/profile': 'Il Mio Profilo',
-  '/tenant/cv/preview': 'Anteprima CV',
+  '/tenant/cv/preview': 'Anteprima Profilo',
   '/tenant/listings': 'Cerca Annunci',
   '/tenant/notifications': 'Notifiche',
   '/tenant/agencies': 'Agenzie',

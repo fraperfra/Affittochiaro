@@ -134,7 +134,7 @@ const visibilityPlans: VisibilityPlan[] = [
     borderColor: 'border-gray-200',
     features: [
       'Profilo visibile nelle ricerche',
-      'Curriculum Inquilino completo',
+      'Profilo Inquilino completo',
       'Badge di verifica base',
       'Candidatura agli annunci',
     ],

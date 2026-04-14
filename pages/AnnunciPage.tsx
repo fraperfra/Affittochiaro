@@ -151,7 +151,7 @@ export const AnnunciPage: React.FC = () => {
 
   // ── Render ────────────────────────────────────────────────────────────────
   return (
-    <div className="bg-gray-50 min-h-screen flex flex-col">
+    <div className="bg-[#FAFAFA] min-h-screen flex flex-col">
 
       {/* ── 1. Search Header ─────────────────────────────────────────────── */}
       <div className="bg-brand-green text-white py-6 px-4">
@@ -436,7 +436,7 @@ export const AnnunciPage: React.FC = () => {
               Scopri la più ampia selezione di case in affitto {filters.comune ? `a ${filters.comune}` : 'nelle principali città italiane'} su AffittoChiaro.
               Aggiorniamo gli annunci ogni giorno per offrirti solo soluzioni verificate e disponibili.
               Usa i filtri per tipologia e prezzo per trovare la casa perfetta.
-              Ogni inquilino può inviare la sua candidatura direttamente dall'annuncio con il Curriculum dell'Inquilino.
+              Ogni inquilino può inviare la sua candidatura direttamente dall'annuncio con il Profilo Inquilino.
             </p>
           </div>
         )}

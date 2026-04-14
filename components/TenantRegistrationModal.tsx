@@ -82,7 +82,7 @@ const MOTIVATIONAL_MESSAGES = [
   { step: 4, message: "Descrivi la casa dei tuoi sogni", emoji: "🏠", tip: "Piu dettagli = proposte piu mirate" },
   { step: 5, message: "Racconta il tuo stile di vita", emoji: "🌟", tip: "La trasparenza crea fiducia" },
   { step: 6, message: "Ultimo tocco! Una presentazione efficace", emoji: "✨", tip: "I profili con bio hanno 3x piu risposte" },
-  { step: 7, message: "Fantastico! Il tuo CV e pronto!", emoji: "🎉", tip: "Ora le agenzie possono trovarti" },
+  { step: 7, message: "Fantastico! Il tuo Profilo è pronto!", emoji: "🎉", tip: "Ora le agenzie possono trovarti" },
 ];
 
 const OCCUPATIONS = [
@@ -603,7 +603,7 @@ export const TenantRegistrationModal: React.FC<TenantRegistrationModalProps> = (
               <FileText size={24} />
             </div>
             <div>
-              <h2 className="text-xl font-bold">Crea il tuo CV Inquilino</h2>
+              <h2 className="text-xl font-bold">Crea il tuo Profilo Inquilino</h2>
               <p className="text-white/80 text-sm">Il tuo passaporto per trovare casa</p>
             </div>
           </div>
@@ -1140,7 +1140,7 @@ export const TenantRegistrationModal: React.FC<TenantRegistrationModalProps> = (
                   </h3>
                   <p className="text-gray-500 text-sm mt-1">
                     {completion >= 80
-                      ? 'Il tuo CV e molto completo. Le agenzie ti noteranno!'
+                      ? 'Il tuo Profilo è molto completo. Le agenzie ti noteranno!'
                       : completion >= 50
                         ? 'Puoi sempre migliorare il tuo profilo dalla dashboard'
                         : 'Completa piu campi per essere visibile alle agenzie'}
@@ -1192,7 +1192,7 @@ export const TenantRegistrationModal: React.FC<TenantRegistrationModalProps> = (
                 <div className="p-4 bg-green-50 rounded-xl">
                   <p className="text-sm text-green-700 flex items-start gap-2">
                     <CheckCircle size={16} className="mt-0.5 shrink-0" />
-                    <span>Cliccando "Crea il mio CV" accetti i Termini di Servizio e la Privacy Policy. Potrai accedere con le credenziali create.</span>
+                    <span>Cliccando "Crea il mio Profilo" accetti i Termini di Servizio e la Privacy Policy. Potrai accedere con le credenziali create.</span>
                   </p>
                 </div>
               </div>
@@ -1225,7 +1225,7 @@ export const TenantRegistrationModal: React.FC<TenantRegistrationModalProps> = (
               </>
             ) : currentStep === 7 ? (
               <>
-                Crea il mio CV
+                Crea il mio Profilo
                 <Trophy size={18} />
               </>
             ) : (

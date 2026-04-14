@@ -31,13 +31,13 @@ export default function CVCompletenessBar({ completeness, onSectionClick }: CVCo
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
         <div>
-          <h3 className="text-lg font-semibold text-text-primary">Completezza CV</h3>
+          <h3 className="text-lg font-semibold text-text-primary">Completezza Profilo</h3>
           <p className="text-sm text-text-secondary mt-0.5">
             {completeness.total < 50
-              ? 'Il tuo CV ha bisogno di attenzione'
+              ? 'Il tuo profilo ha bisogno di attenzione'
               : completeness.total < 80
               ? 'Buon inizio, continua a completare'
-              : 'Ottimo! Il tuo CV e\' quasi completo'}
+              : 'Ottimo! Il tuo profilo è quasi completo'}
           </p>
         </div>
         <div className={`text-3xl font-bold ${completeness.total >= 80 ? 'text-green-600' : completeness.total >= 50 ? 'text-yellow-600' : 'text-red-500'}`}>

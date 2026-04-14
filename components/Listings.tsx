@@ -32,7 +32,7 @@ export const Listings: React.FC<ListingsProps> = ({
     : publicListings.filter(item => item.tipologiaSlug === activeFilter);
 
   return (
-    <section id="annunci" className="py-16 bg-[#F8F9FA] px-4">
+    <section id="annunci" className="py-16 bg-[#FAFAFA] px-4">
       <div className="max-w-full lg:px-20 mx-auto text-center">
         <div className="inline-block bg-trust-blue/10 text-trust-blue px-5 py-2 rounded-full font-bold text-[10px] mb-8 uppercase tracking-[0.2em]">ANNUNCI SELEZIONATI</div>
         <h2 className="text-2xl md:text-[28px] xl:text-[32px] font-bold text-brand-green mb-6 leading-[1.2]">Scegli la Tua Prossima Casa</h2>

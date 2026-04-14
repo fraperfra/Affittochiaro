@@ -18,7 +18,7 @@ interface Template {
 const TEMPLATES: Template[] = [
   {
     id: 'cv_standard',
-    name: 'CV Standard',
+    name: 'Profilo Standard',
     description: 'Layout classico e professionale, ideale per la maggior parte delle candidature.',
     category: 'cv',
     preview: 'Formato A4, sezioni ordinate, colori neutri',
@@ -28,7 +28,7 @@ const TEMPLATES: Template[] = [
   },
   {
     id: 'cv_compact',
-    name: 'CV Compatto',
+    name: 'Profilo Compatto',
     description: 'Versione sintetica su una pagina. Perfetto per prime presentazioni.',
     category: 'cv',
     preview: 'Una pagina, informazioni essenziali, design pulito',
@@ -38,7 +38,7 @@ const TEMPLATES: Template[] = [
   },
   {
     id: 'cv_detailed',
-    name: 'CV Dettagliato',
+    name: 'Profilo Dettagliato',
     description: 'Include tutte le sezioni con grafici e referenze complete.',
     category: 'cv',
     preview: 'Multi-pagina, grafici punteggio, referenze dettagliate',
@@ -48,7 +48,7 @@ const TEMPLATES: Template[] = [
   },
   {
     id: 'cv_modern',
-    name: 'CV Moderno',
+    name: 'Profilo Moderno',
     description: 'Design contemporaneo con sidebar colorata e icone.',
     category: 'cv',
     preview: 'Layout a due colonne, icone, palette moderna',
@@ -110,7 +110,7 @@ const TEMPLATES: Template[] = [
 
 const CATEGORIES = [
   { id: 'all', label: 'Tutti', icon: Layout },
-  { id: 'cv', label: 'CV Inquilino', icon: FileText },
+  { id: 'cv', label: 'Profilo Inquilino', icon: FileText },
   { id: 'letter', label: 'Lettere', icon: Mail },
   { id: 'application', label: 'Candidature', icon: FileCheck },
 ];
@@ -141,7 +141,7 @@ export default function TenantTemplatesPage() {
   };
 
   const categoryLabels: Record<string, string> = {
-    cv: 'CV Inquilino',
+    cv: 'Profilo Inquilino',
     letter: 'Lettera',
     application: 'Candidatura',
   };
@@ -152,7 +152,7 @@ export default function TenantTemplatesPage() {
       <div>
         <h1 className="font-bold text-text-primary">Template</h1>
         <p className="text-text-secondary">
-          Scegli tra modelli professionali per il tuo CV, lettere e candidature
+          Scegli tra modelli professionali per il tuo profilo, lettere e candidature
         </p>
       </div>
 

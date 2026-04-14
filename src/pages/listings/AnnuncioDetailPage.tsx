@@ -11,7 +11,7 @@ import { getNomeCitta, getNomeRegione } from '@/lib/geo-mock';
 import { getListingBySlug, getSimilarListings, getAgenziaById } from '@/lib/mock-data';
 import { buildListingUrl, formatPrice } from '@/lib/utils';
 import { useAuthStore } from '@/store';
-import { ApplicationModal, type ApplicationData, TenantRegistrationModal, type TenantRegistrationData } from '../../../components';
+import { ApplicationModal, type ApplicationData, CandidaturaModal } from '../../../components';
 
 export default function AnnuncioDetailPage() {
   const { isAuthenticated } = useAuthStore();
@@ -49,9 +49,9 @@ export default function AnnuncioDetailPage() {
   const handleApplyClick = () => {
     if (!isAuthenticated) {
       setIsRegistrationModalOpen(true);
-      return;
+    } else {
+      setIsApplicationModalOpen(true);
     }
-    setIsApplicationModalOpen(true);
   };
 
   const handleApplicationSubmit = (data: ApplicationData) => {
@@ -344,11 +344,14 @@ export default function AnnuncioDetailPage() {
         onSubmit={handleApplicationSubmit}
       />
 
-      <TenantRegistrationModal
+      <CandidaturaModal
         isOpen={isRegistrationModalOpen}
         onClose={() => setIsRegistrationModalOpen(false)}
-        onComplete={(_data: TenantRegistrationData) => {
-          setIsRegistrationModalOpen(false);
+        listing={{
+          id: listing.id,
+          titolo: listing.titolo,
+          prezzo: formatPrice(listing.prezzo),
+          immagine: listing.immagini[0],
         }}
       />
     </>

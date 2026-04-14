@@ -164,7 +164,7 @@ export const ComeFunzionaPage: React.FC = () => {
               {
                 icon: UserPlus,
                 title: "1. Crea Profilo",
-                desc: "Compila il tuo CV abitativo digitale in pochi minuti.",
+                desc: "Compila il tuo profilo inquilino in pochi minuti.",
                 color: "bg-blue-100 text-blue-600"
               },
               {

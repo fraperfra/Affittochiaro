@@ -20,3 +20,4 @@ export * from './ExitIntentPopup';
 export * from './ApplicationModal';
 export * from './ListingsMap';
 export * from './TenantRegistrationModal';
+export * from './CandidaturaModal';
