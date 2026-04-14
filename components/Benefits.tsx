@@ -10,7 +10,7 @@ export const Benefits: React.FC = () => {
           Presenta Te Stesso Come il Candidato Ideale
         </h2>
         <p className="text-lg md:text-xl text-medium-gray mb-10 max-w-[65ch] leading-[1.5]">
-          Non sei solo un numero in una lista. Con Affittochiaro crei il curriculum perfetto dell'inquilino.
+          Su AffittoChiaro non cerchi casa: la casa trova te. Bastano pochi minuti per costruire il tuo profilo inquilino.
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 text-left">
