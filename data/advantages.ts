@@ -48,8 +48,8 @@ export const benefits: Advantage[] = [
 ];
 
 export const problems = [
-  { emoji: "📱", text: "Decine di <b>annunci su Facebook</b> pieni di informazioni confuse" },
-  { emoji: "📧", text: "Centinaia di <b>email inviate</b> senza mai ricevere risposta" },
-  { emoji: "😤", text: "Proprietari che non ti considerano perché <b>non sanno chi sei</b>" },
-  { emoji: "⏰", text: "Settimane perse a rincorrere annunci già <b>affittati</b>" }
+  { emoji: "📱", text: "Annunci su <b>Facebook e Subito</b> già affittati prima che tu risponda" },
+  { emoji: "📧", text: "Email nel vuoto: il proprietario <b>non sa chi sei</b> e non ti risponde" },
+  { emoji: "😤", text: "Senza un <b>profilo verificato</b>, per il proprietario sei solo uno sconosciuto" },
+  { emoji: "⏰", text: "Ogni settimana persa è un <b>mese di affitto in più</b> sul mercato" }
 ];

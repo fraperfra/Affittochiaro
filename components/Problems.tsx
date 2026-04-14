@@ -29,8 +29,8 @@ export const Problems: React.FC = () => {
             </div>
             <div className="flex-1 min-w-0">
               <p className="text-sm font-semibold text-gray-800 leading-snug">
-                Il <span className="text-orange-500 font-bold">73%</span> degli inquilini impiega oltre 2 mesi.
-                {' '}Con Affittochiaro puoi farcela in{' '}
+                Il <span className="text-orange-500 font-bold">73%</span> degli inquilini cerca casa da oltre 2 mesi.
+                {' '}Con AffittoChiaro bastano{' '}
                 <span className="text-brand-green font-bold">2 settimane</span>.
               </p>
               <div className="mt-2.5 flex items-center gap-3">

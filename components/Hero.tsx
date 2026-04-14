@@ -47,7 +47,7 @@ export const Hero: React.FC<HeroProps> = ({ counter, activeCityName }) => {
             <div className="inline-flex items-center gap-2 border border-gray-200 rounded-xl px-3 py-2 bg-white mb-6">
               <div className="w-1.5 h-1.5 rounded-full bg-action-green flex-shrink-0"></div>
               <p className="text-[10px] font-bold text-brand-green">
-                Questa settimana, <span className="text-action-green">42 inquilini</span> hanno trovato casa a {activeCityName}
+                Questa settimana <span className="text-action-green">127 inquilini verificati</span> hanno trovato casa tramite AffittoChiaro
               </p>
             </div>
             <div className="mb-5">
@@ -72,7 +72,7 @@ export const Hero: React.FC<HeroProps> = ({ counter, activeCityName }) => {
                   onTipologiaFilled={() => setSelectedTipologia(null)}
                 />
                 <p className="mt-3 text-center lg:text-left text-xs text-medium-gray">
-                  Oltre 40 città disponibili · Agenzie verificate · Candidatura senza costi
+                  Annunci verificati in 40+ città · Candidatura gratuita · Nessuna commissione
                 </p>
               </div>
 
