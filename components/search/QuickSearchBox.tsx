@@ -194,7 +194,7 @@ export const QuickSearchBox: React.FC<Props> = ({
                 activeIndex >= 0 ? `city-option-${activeIndex}` : undefined
               }
               className={`w-full pl-9 pr-8 bg-transparent outline-none text-gray-800 placeholder-gray-400 ${
-                isLarge ? 'py-3.5 text-base rounded-xl sm:rounded-none' : 'py-2.5 text-sm rounded-xl'
+                isLarge ? 'py-3.5 text-sm rounded-xl sm:rounded-none' : 'py-2.5 text-sm rounded-xl'
               }`}
             />
             {query && (
@@ -258,7 +258,7 @@ export const QuickSearchBox: React.FC<Props> = ({
             aria-label="Tipologia immobile"
             className={`w-full appearance-none bg-transparent outline-none cursor-pointer pr-8 ${
               isLarge
-                ? 'py-3.5 pl-4 text-base border border-gray-300 rounded-xl sm:border-0 sm:rounded-none sm:border-r sm:border-gray-300'
+                ? 'py-3.5 pl-4 text-sm border border-gray-300 rounded-xl sm:border-0 sm:rounded-none'
                 : 'py-2.5 pl-3 text-sm bg-white border border-gray-200 rounded-xl'
             } ${!tipologia ? 'text-gray-400' : 'text-gray-800'}`}
           >
