@@ -15,7 +15,7 @@ export const PartnersCarousel: React.FC = () => {
     return (
         <section className="bg-white py-12 border-b border-gray-100 overflow-hidden">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8 text-center">
-                <p className="text-sm font-semibold tracking-wide text-gray-500 uppercase">
+                <p className="text-sm font-semibold tracking-wide text-gray-500 uppercase mx-auto text-center">
                     I nostri partner
                 </p>
             </div>
