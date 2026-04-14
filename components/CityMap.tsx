@@ -14,9 +14,9 @@ export const CityMap: React.FC<CityMapProps & { compact?: boolean }> = ({ active
   return (
     <section className={`${compact ? 'h-full flex flex-col' : 'py-24 bg-white px-4 border-y border-gray-50'}`}>
       <div className={`max-w-7xl mx-auto flex flex-col ${compact ? '' : 'lg:flex-row'} items-center gap-12 lg:gap-20 h-full`}>
-        {/* Map Column (Interactive Visual) */}
-        <div className={`${compact ? 'w-full h-full' : 'lg:w-1/2'} relative min-h-[400px] flex items-center justify-center`}>
-          <div className="relative w-full aspect-[3/4] flex items-center justify-center">
+        {/* Map Column (Visual only) */}
+        <div className={`${compact ? 'w-full h-full' : 'lg:w-[42%]'} relative flex items-center justify-center`}>
+          <div className="relative w-[75%] lg:w-[85%] aspect-[3/4] flex items-center justify-center">
             {/* Italy Map from SVG file */}
             <div className="relative w-full h-full">
               <img
@@ -24,52 +24,6 @@ export const CityMap: React.FC<CityMapProps & { compact?: boolean }> = ({ active
                 alt="Mappa Italia"
                 className="w-full h-full object-contain opacity-90"
               />
-
-              {/* City Markers Overlay */}
-              <svg viewBox="0 0 1200 1500" className="absolute inset-0 w-full h-full" preserveAspectRatio="xMidYMid meet">
-                {Object.entries(cityDetails).map(([name, data]) => {
-                  const isMainCity = nearbyCities.some(c => c.name === name);
-                  const isActive = activeCityName === name;
-
-                  return (
-                    <g
-                      key={name}
-                      className={isMainCity ? "cursor-pointer" : ""}
-                      onClick={() => isMainCity && onCityChange(name)}
-                    >
-                      {/* Pulse effect for active city */}
-                      {isActive && (
-                        <>
-                          <circle
-                            cx={data.marker.cx}
-                            cy={data.marker.cy}
-                            r="45"
-                            className="fill-action-green/30 animate-ping"
-                          />
-                          <circle
-                            cx={data.marker.cx}
-                            cy={data.marker.cy}
-                            r="35"
-                            className="fill-action-green/20"
-                          />
-                        </>
-                      )}
-                      {/* City dot */}
-                      <circle
-                        cx={data.marker.cx}
-                        cy={data.marker.cy}
-                        r={isActive ? "20" : isMainCity ? "12" : "8"}
-                        className={`transition-all duration-300 ${isActive
-                            ? 'fill-action-green drop-shadow-lg'
-                            : isMainCity
-                              ? 'fill-brand-green/80 hover:fill-action-green'
-                              : 'fill-brand-green/40'
-                          }`}
-                      />
-                    </g>
-                  );
-                })}
-              </svg>
             </div>
 
             {/* DYNAMIC TOOLTIP */}
@@ -102,23 +56,8 @@ export const CityMap: React.FC<CityMapProps & { compact?: boolean }> = ({ active
               Affittochiaro è <br /><span className="text-action-green">Vicino a Te</span>
             </h2>
             <p className="text-lg text-medium-gray mb-12 leading-[1.5] max-w-[65ch]">
-              Siamo presenti in tutte le principali città italiane. <span className="font-bold text-brand-green">Seleziona la tua città</span> per scoprire le opportunità in tempo reale.
+              Siamo attivi in tutte le principali città italiane — da Milano a Palermo. Ogni giorno aggiungiamo nuovi annunci verificati, così trovi sempre l'opportunità giusta nella tua zona.
             </p>
-
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-12">
-              {nearbyCities.map((city, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => onCityChange(city.name)}
-                  className={`p-5 rounded-[1.8rem] border text-left transition-all duration-300 group ${activeCityName === city.name ? 'border-action-green bg-action-green/5 shadow-xl shadow-action-green/5 -translate-y-1' : 'border-gray-100 bg-white hover:border-gray-300 hover:bg-gray-50'}`}
-                >
-                  <p className={`font-bold text-base mb-1 transition-colors ${activeCityName === city.name ? 'text-brand-green' : 'text-gray-400'}`}>{city.name}</p>
-                  <p className={`text-[9px] font-bold uppercase tracking-widest ${activeCityName === city.name ? 'text-action-green' : 'text-gray-300'}`}>
-                    {cityDetails[city.name].ads} ANNUNCI
-                  </p>
-                </button>
-              ))}
-            </div>
 
             {/* Agency Quote Block */}
             <div className="mb-12 relative overflow-hidden p-8 rounded-3xl bg-soft-green/50 border border-gray-100">
@@ -139,7 +78,7 @@ export const CityMap: React.FC<CityMapProps & { compact?: boolean }> = ({ active
               onClick={() => navigate(`/tenant/listings?city=${encodeURIComponent(activeCityName)}&view=map`)}
               className="w-full md:w-auto bg-brand-green text-white px-12 py-6 rounded-3xl font-bold uppercase tracking-widest text-xs shadow-2xl shadow-brand-green/20 hover:bg-black transition-all active:scale-95"
             >
-              CERCA A {activeCityName.toUpperCase()} ORA
+              CERCA LA TUA CASA
             </button>
           </div>
         )}
