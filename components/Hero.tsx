@@ -77,25 +77,6 @@ export const Hero: React.FC<HeroProps> = ({ counter, activeCityName }) => {
                 </p>
               </div>
 
-              {/* Social proof */}
-              <div className="flex flex-col lg:flex-row items-center gap-4">
-                <div className="flex -space-x-3">
-                  {[1, 2, 3, 4].map(i => (
-                    <img key={i} src={`https://i.pravatar.cc/100?img=${i + 10}`} className="w-11 h-11 rounded-full border-2 border-white" alt="User" />
-                  ))}
-                </div>
-                <div>
-                  <p className="text-sm font-semibold text-medium-gray">
-                    Unisciti a 30.000+ inquilini felici
-                  </p>
-                  <div className="flex items-center gap-1 mt-0.5">
-                    {[1,2,3,4,5].map(i => (
-                      <svg key={i} className="w-3.5 h-3.5 text-[#00b67a] fill-current" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" /></svg>
-                    ))}
-                    <span className="text-xs text-medium-gray ml-1">4.9/5 su <span className="font-semibold text-brand-green">Trustpilot</span></span>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
 
@@ -129,6 +110,26 @@ export const Hero: React.FC<HeroProps> = ({ counter, activeCityName }) => {
               >
                 {cardCtaText}
               </button>
+
+              {/* Social proof — dentro la card */}
+              <div className="flex items-center gap-3 mt-5 pt-5 border-t border-white/10">
+                <div className="flex -space-x-2.5 shrink-0">
+                  {[1, 2, 3, 4].map(i => (
+                    <img key={i} src={`https://i.pravatar.cc/100?img=${i + 10}`} className="w-8 h-8 rounded-full border-2 border-brand-green" alt="User" />
+                  ))}
+                </div>
+                <div>
+                  <p className="text-xs font-semibold text-white">
+                    Unisciti a 30.000+ inquilini felici
+                  </p>
+                  <div className="flex items-center gap-0.5 mt-0.5">
+                    {[1,2,3,4,5].map(i => (
+                      <svg key={i} className="w-3 h-3 text-[#00b67a] fill-current" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" /></svg>
+                    ))}
+                    <span className="text-[10px] text-white/60 ml-1">4.9/5 su Trustpilot</span>
+                  </div>
+                </div>
+              </div>
             </div>
 
           </div>
