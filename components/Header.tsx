@@ -52,18 +52,20 @@ export const Header: React.FC = () => {
               {link.label}
             </Link>
           ))}
-          <Link
-            to="/register"
-            className="text-primary-600 bg-primary-50 px-6 py-2.5 rounded-xl font-bold text-sm hover:bg-primary-100 transition-all border border-primary-200"
-          >
-            REGISTRATI
-          </Link>
-          <Link
-            to="/login"
-            className="bg-brand-green text-white px-6 py-2.5 rounded-xl font-bold text-sm hover:brightness-110 transition-all shadow-lg shadow-brand-green/10"
-          >
-            ACCEDI
-          </Link>
+          <div className="flex items-center gap-2">
+            <Link
+              to="/register"
+              className="bg-brand-green text-white px-6 py-2.5 rounded-xl font-bold text-sm hover:brightness-110 transition-all shadow-lg shadow-brand-green/10"
+            >
+              REGISTRATI
+            </Link>
+            <Link
+              to="/login"
+              className="text-brand-green bg-white px-6 py-2.5 rounded-xl font-bold text-sm hover:bg-gray-50 transition-all border border-brand-green/30"
+            >
+              ACCEDI
+            </Link>
+          </div>
         </nav>
 
         {/* Mobile hamburger button */}
@@ -114,14 +116,14 @@ export const Header: React.FC = () => {
             <Link
               to="/register"
               onClick={() => setMobileOpen(false)}
-              className="block w-full text-center text-primary-600 bg-primary-50 px-6 py-3 rounded-xl font-bold text-sm hover:bg-primary-100 transition-all border border-primary-200"
+              className="block w-full text-center bg-brand-green text-white px-6 py-3 rounded-xl font-bold text-sm hover:brightness-110 transition-all shadow-lg shadow-brand-green/10"
             >
               REGISTRATI
             </Link>
             <Link
               to="/login"
               onClick={() => setMobileOpen(false)}
-              className="block w-full text-center bg-brand-green text-white px-6 py-3 rounded-xl font-bold text-sm hover:brightness-110 transition-all shadow-lg shadow-brand-green/10"
+              className="block w-full text-center text-brand-green bg-white px-6 py-3 rounded-xl font-bold text-sm hover:bg-gray-50 transition-all border border-brand-green/30"
             >
               ACCEDI
             </Link>
