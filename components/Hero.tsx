@@ -44,9 +44,12 @@ export const Hero: React.FC<HeroProps> = ({ counter, activeCityName }) => {
 
           {/* Left Side: Copy */}
           <div className="lg:w-[60%] text-center lg:text-left">
-            <p className="text-xs font-bold text-brand-green uppercase tracking-widest mb-6 border-l-2 border-action-green pl-3 text-left">
-              NOVITÀ: VIDEO PRESENTAZIONE INQUILINO
-            </p>
+            <div className="inline-flex items-center gap-2 border border-gray-200 rounded-xl px-3 py-2 bg-white mb-6">
+              <div className="w-1.5 h-1.5 rounded-full bg-action-green flex-shrink-0"></div>
+              <p className="text-[10px] font-bold text-brand-green">
+                Questa settimana, <span className="text-action-green">42 inquilini</span> hanno trovato casa a {activeCityName}
+              </p>
+            </div>
             <div className="mb-5">
               <h1 className="text-[2rem] md:text-5xl xl:text-[4rem] font-bold text-brand-green leading-[1.1] tracking-[-0.01em]">
                 Trova casa in affitto in <span className="underline-green text-action-green">2 Settimane</span>. <br />
@@ -128,12 +131,6 @@ export const Hero: React.FC<HeroProps> = ({ counter, activeCityName }) => {
               </button>
             </div>
 
-            <div className="mt-3 border border-gray-200 rounded-xl p-3 flex items-center gap-2 bg-white">
-              <div className="w-1.5 h-1.5 rounded-full bg-action-green flex-shrink-0"></div>
-              <p className="text-[10px] font-bold text-brand-green">
-                Questa settimana, <span className="text-action-green">42 inquilini</span> hanno trovato casa a {activeCityName}
-              </p>
-            </div>
           </div>
         </div>
 
