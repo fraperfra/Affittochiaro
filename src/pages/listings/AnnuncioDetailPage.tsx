@@ -273,7 +273,7 @@ export default function AnnuncioDetailPage() {
               <button
                 type="button"
                 onClick={handleApplyClick}
-                className="w-full text-center mb-3 flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-soft-green text-brand-green border border-action-green/40 font-bold hover:bg-action-green/20 transition-colors"
+                className="btn btn-primary w-full mb-3 justify-center"
               >
                 Candidati
                 <ArrowRight size={16} />
@@ -320,7 +320,7 @@ export default function AnnuncioDetailPage() {
                 <p className="text-xs text-text-secondary mb-3">
                   Accedi per richiedere informazioni all'agenzia tramite AffittoChiaro.
                 </p>
-                <Link to="/register" className="btn btn-primary w-full text-center text-sm">
+                <Link to="/register" className="w-full flex items-center justify-center py-3 px-4 rounded-xl bg-soft-green text-brand-green border border-action-green/40 font-bold text-sm hover:bg-action-green/20 transition-colors">
                   Cerca casa ora
                 </Link>
               </div>
