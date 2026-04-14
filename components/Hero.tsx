@@ -50,8 +50,7 @@ export const Hero: React.FC<HeroProps> = ({ counter, activeCityName }) => {
             <div className="mb-5">
               <h1 className="text-[2rem] md:text-5xl xl:text-[4rem] font-bold text-brand-green leading-[1.1] tracking-[-0.01em]">
                 Trova casa in <span className="underline-green text-action-green">2 Settimane</span>. <br />
-                Smetti di inviare <br />
-                <span className="text-error-red">email a vuoto</span>.
+                Smetti di inviare email a vuoto.
               </h1>
             </div>
             <p className="text-lg md:text-xl text-medium-gray max-w-[65ch] mx-auto lg:mx-0 mb-4 leading-[1.5]">
