@@ -17,28 +17,28 @@ const INQUILINO_STEPS: StepData[] = [
     title: 'Crea il tuo account',
     description: "Registrati in 2 minuti con email o Google. Basta nome, email e città di ricerca — nessuna carta di credito.",
     time: '2 min',
-    image: '/assets/come-funziona/register.png',
+    image: 'https://placehold.co/800x500/f4f9f6/004832?text=Registrazione',
   },
   {
     number: '02',
     title: 'Descrivi cosa cerchi',
     description: 'Indica città, budget, tipologia e data di ingresso. Queste preferenze guidano proprietari e agenzie verso di te.',
     time: '3 min',
-    image: '/assets/come-funziona/profile.png',
+    image: 'https://placehold.co/800x500/f4f9f6/004832?text=Preferenze',
   },
   {
     number: '03',
     title: 'Costruisci il tuo profilo',
     description: 'Aggiungi occupazione, reddito e una breve presentazione. Un profilo completo riceve tre volte più risposte.',
     time: '5 min',
-    image: '/assets/come-funziona/dashboard.png',
+    image: 'https://placehold.co/800x500/f4f9f6/004832?text=Profilo',
   },
   {
     number: '04',
     title: 'Aggiungi la video presentazione',
     description: '60 secondi in cui ti mostri al proprietario prima ancora di candidarti. I profili con video ricevono il 78% in più di risposte.',
     time: '1 min',
-    image: '/assets/come-funziona/profile.png',
+    image: 'https://placehold.co/800x500/f4f9f6/004832?text=Video',
     faq: {
       question: 'Devo per forza fare il video?',
       answer: "No, non è obbligatorio. Ma i profili con video ricevono molte più risposte — bastano 60 secondi con il telefono.",
@@ -48,7 +48,7 @@ const INQUILINO_STEPS: StepData[] = [
     number: '05',
     title: 'Ricevi proposte e candidati',
     description: 'Il tuo profilo è visibile a proprietari e agenzie: ti contattano direttamente. Puoi anche sfogliare gli annunci e candidarti con un click.',
-    image: '/assets/come-funziona/listings.png',
+    image: 'https://placehold.co/800x500/f4f9f6/004832?text=Annunci',
     faq: {
       question: 'Il proprietario vede tutti i miei dati subito?',
       answer: "No. Prima avvia una conversazione. Solo dopo che accetti, il profilo completo diventa visibile.",
@@ -62,19 +62,19 @@ const PROPRIETARIO_STEPS: StepData[] = [
     title: 'Registrazione e verifica',
     description: "Crei l'account e verifichi la tua identità in pochi minuti. Un passaggio che garantisce la sicurezza su tutta la piattaforma.",
     time: '5 min',
-    image: '/assets/come-funziona/register.png',
+    image: 'https://placehold.co/800x500/f4f9f6/004832?text=Registrazione',
   },
   {
     number: '02',
     title: 'Cerca tra i profili',
     description: 'Filtra per città, budget e tipologia di casa. Vedi solo gli inquilini verificati che corrispondono alle tue esigenze.',
-    image: '/assets/come-funziona/agency-search.png',
+    image: 'https://placehold.co/800x500/f4f9f6/004832?text=Ricerca+profili',
   },
   {
     number: '03',
     title: 'Valuta i profili verificati',
     description: "Ogni profilo include occupazione, reddito, referenze e video presentazione. Tutto in una schermata, senza dover chiedere nulla.",
-    image: '/assets/come-funziona/agency-search.png',
+    image: 'https://placehold.co/800x500/f4f9f6/004832?text=Valuta+profili',
     faq: {
       question: "Cosa include il profilo dell'inquilino?",
       answer: "Nome, foto, occupazione, tipo di contratto lavorativo, reddito mensile, referenze da precedenti proprietari e la video presentazione.",
@@ -84,7 +84,7 @@ const PROPRIETARIO_STEPS: StepData[] = [
     number: '04',
     title: 'Contatta e organizza la visita',
     description: "Scrivi direttamente all'inquilino. Organizzi la visita e proseguite come preferite — la piattaforma resta un punto di riferimento.",
-    image: '/assets/come-funziona/agency-search.png',
+    image: 'https://placehold.co/800x500/f4f9f6/004832?text=Contatta',
   },
 ];
 

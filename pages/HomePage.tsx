@@ -3,10 +3,11 @@ import { PartnersCarousel } from '../src/components/ui';
 import {
   Hero,
   Problems,
+  StatBanner,
   Benefits,
+  ComeFunziona,
   HowItWorks,
   CityMap,
-  Listings,
   Testimonials,
   FAQ,
   FinalCTA,
@@ -32,10 +33,11 @@ export const HomePage: React.FC<HomePageProps> = ({
       <Hero counter={counter} activeCityName={activeCityName} />
       <PartnersCarousel />
       <Problems />
+      <StatBanner />
       <Benefits />
+      <ComeFunziona />
       <HowItWorks />
       <CityMap activeCityName={activeCityName} onCityChange={onCityChange} />
-      <Listings activeCityName={activeCityName} activeFilter={activeFilter} onFilterChange={onFilterChange} />
       <Testimonials />
       <FinalCTA />
       <FAQ />
