@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { User, Home, Play, ArrowRight } from 'lucide-react';
+import { User, Home } from 'lucide-react';
 
 interface Step {
   number: string;
@@ -91,14 +90,6 @@ export const ComeFunziona: React.FC = () => {
               </button>
             </div>
 
-            <Link
-              to="/come-funziona#video-section"
-              className="inline-flex items-center gap-1.5 text-sm text-medium-gray hover:text-brand-green transition-colors"
-            >
-              <Play className="w-3 h-3 text-action-green fill-action-green" />
-              Preferisci guardare? Guarda il video in 2:30
-              <ArrowRight className="w-3 h-3" />
-            </Link>
           </div>
         </div>
 
@@ -135,17 +126,8 @@ export const ComeFunziona: React.FC = () => {
           })}
         </div>
 
-        {/* Link to full guide */}
-        <div className="mt-10 pt-8 border-t border-gray-100">
-          <Link
-            to="/come-funziona"
-            className="inline-flex items-center gap-2 text-sm font-semibold text-brand-green hover:text-action-green transition-colors"
-          >
-            Guida completa <ArrowRight className="w-3.5 h-3.5" />
-          </Link>
-        </div>
 
-      </div>
+</div>
     </section>
   );
 };

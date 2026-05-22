@@ -1,0 +1,140 @@
+- generic [ref=e4]:
+  - complementary [ref=e5]:
+    - generic [ref=e6]:
+      - generic [ref=e7]:
+        - img "Affittochiaro" [ref=e10]
+        - generic [ref=e12]:
+          - img [ref=e13]
+          - generic [ref=e16]: Area Inquilino
+      - generic [ref=e17]:
+        - generic [ref=e18]:
+          - generic [ref=e19]: MR
+          - generic [ref=e20]:
+            - paragraph [ref=e21]: Mario Rossi
+            - paragraph [ref=e22]: mario.rossi@example.com
+        - generic [ref=e24]:
+          - img [ref=e25]
+          - text: Verificato
+      - navigation [ref=e27]:
+        - list [ref=e28]:
+          - listitem [ref=e29]:
+            - link "Dashboard" [ref=e30] [cursor=pointer]:
+              - /url: /tenant
+              - img [ref=e31]
+              - generic [ref=e34]: Dashboard
+          - listitem [ref=e35]:
+            - link "Il Mio Profilo" [ref=e36] [cursor=pointer]:
+              - /url: /tenant/profile
+              - img [ref=e37]
+              - generic [ref=e40]: Il Mio Profilo
+          - listitem [ref=e41]:
+            - link "Cerca Annunci" [ref=e42] [cursor=pointer]:
+              - /url: /tenant/listings
+              - img [ref=e43]
+              - generic [ref=e46]: Cerca Annunci
+          - listitem [ref=e47]:
+            - link "Servizi" [ref=e48] [cursor=pointer]:
+              - /url: /tenant/services
+              - img [ref=e49]
+              - generic [ref=e51]: Servizi
+          - listitem [ref=e52]:
+            - link "Notifiche 3" [ref=e53] [cursor=pointer]:
+              - /url: /tenant/notifications
+              - img [ref=e54]
+              - generic [ref=e57]: Notifiche
+              - generic [ref=e58]: "3"
+          - listitem [ref=e59]:
+            - link "Impostazioni" [ref=e60] [cursor=pointer]:
+              - /url: /tenant/settings
+              - img [ref=e61]
+              - generic [ref=e64]: Impostazioni
+      - button "Esci" [ref=e66] [cursor=pointer]:
+        - img [ref=e67]
+        - generic [ref=e70]: Esci
+  - generic [ref=e71]:
+    - banner [ref=e72]:
+      - generic [ref=e73]:
+        - generic [ref=e75]:
+          - img [ref=e76]
+          - textbox "Cerca inquilini, annunci, agenzie..." [ref=e79]
+        - generic [ref=e80]:
+          - button [ref=e82] [cursor=pointer]:
+            - img [ref=e83]
+          - button "MR" [ref=e88] [cursor=pointer]:
+            - generic [ref=e89]: MR
+            - img [ref=e90]
+    - main [ref=e92]:
+      - generic [ref=e93]:
+        - generic [ref=e94]:
+          - heading "Impostazioni" [level=1] [ref=e95]
+          - paragraph [ref=e96]: Gestisci le tue preferenze e impostazioni account
+        - generic [ref=e97]:
+          - navigation [ref=e100]:
+            - button "Notifiche" [ref=e101] [cursor=pointer]:
+              - img [ref=e102]
+              - generic [ref=e105]: Notifiche
+            - button "Account" [active] [ref=e106] [cursor=pointer]:
+              - img [ref=e107]
+              - generic [ref=e110]: Account
+            - button "Sicurezza" [ref=e111] [cursor=pointer]:
+              - img [ref=e112]
+              - generic [ref=e114]: Sicurezza
+            - button "Feedback" [ref=e115] [cursor=pointer]:
+              - img [ref=e116]
+              - generic [ref=e118]: Feedback
+            - button "Assistenza" [ref=e119] [cursor=pointer]:
+              - img [ref=e120]
+              - generic [ref=e127]: Assistenza
+          - generic [ref=e190]:
+            - generic [ref=e192]:
+              - generic [ref=e193]:
+                - heading "Informazioni Account" [level=2] [ref=e194]
+                - paragraph [ref=e195]: I tuoi dati di accesso e informazioni base
+              - generic [ref=e196]:
+                - generic [ref=e197]:
+                  - paragraph [ref=e198]: Email
+                  - paragraph [ref=e199]: mario.rossi@example.com
+                - generic [ref=e200]:
+                  - paragraph [ref=e201]: Ruolo
+                  - paragraph [ref=e202]: Inquilino
+                - generic [ref=e203]:
+                  - paragraph [ref=e204]: Nome
+                  - paragraph [ref=e205]: Mario Rossi
+                - generic [ref=e206]:
+                  - paragraph [ref=e207]: Citta
+                  - paragraph [ref=e208]: Milano
+                - generic [ref=e209]:
+                  - paragraph [ref=e210]: Registrato il
+                  - paragraph [ref=e211]: 15/01/2024
+                - generic [ref=e212]:
+                  - paragraph [ref=e213]: Stato verifica email
+                  - paragraph [ref=e214]: Verificata
+            - generic [ref=e216]:
+              - heading "Preferenze" [level=2] [ref=e218]
+              - generic [ref=e219]:
+                - generic [ref=e220]:
+                  - img [ref=e221]
+                  - generic [ref=e224]:
+                    - paragraph [ref=e225]: Lingua
+                    - paragraph [ref=e226]: Lingua dell'interfaccia
+                - combobox [ref=e227]:
+                  - option "Italiano" [selected]
+                  - option "English"
+              - generic [ref=e228]:
+                - generic [ref=e229]:
+                  - img [ref=e230]
+                  - generic [ref=e232]:
+                    - paragraph [ref=e233]: Tema scuro
+                    - paragraph [ref=e234]: Prossimamente disponibile
+                - button [ref=e235] [cursor=pointer]
+            - generic [ref=e238]:
+              - generic [ref=e239]:
+                - heading "Gestione Account" [level=2] [ref=e240]
+                - paragraph [ref=e241]: Metti in pausa il tuo account temporaneamente
+              - generic [ref=e243]:
+                - generic [ref=e244]:
+                  - paragraph [ref=e245]: Metti in pausa l'account
+                  - paragraph [ref=e246]: Il tuo profilo non sarà visibile durante la pausa. Puoi riattivarlo in qualsiasi momento effettuando nuovamente il login.
+                - button "Pausa" [ref=e247] [cursor=pointer]:
+                  - img [ref=e248]
+                  - text: Pausa

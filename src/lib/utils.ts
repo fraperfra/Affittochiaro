@@ -37,3 +37,34 @@ export function formatDateIt(dateStr: string): string {
     year: 'numeric',
   });
 }
+
+const PRICE_RANGE_START = 200;
+const PRICE_RANGE_STEP = 50;
+const PRICE_RANGE_LIMIT = 2000;
+
+export const PRICE_RANGES = (() => {
+  const ranges: { value: string; label: string }[] = [];
+  for (let min = PRICE_RANGE_START; min < PRICE_RANGE_LIMIT; min += PRICE_RANGE_STEP) {
+    const max = min + PRICE_RANGE_STEP;
+    ranges.push({
+      value: `${min}-${max}`,
+      label: `€${min.toLocaleString('it-IT')} – €${max.toLocaleString('it-IT')}`,
+    });
+  }
+  ranges.push({
+    value: `${PRICE_RANGE_LIMIT}+`,
+    label: `Oltre €${PRICE_RANGE_LIMIT.toLocaleString('it-IT')}`,
+  });
+  return ranges;
+})();
+
+export function matchesPriceRange(amount: number, rangeValue: string): boolean {
+  if (!rangeValue) return true;
+  if (rangeValue.endsWith('+')) {
+    return amount >= parseInt(rangeValue, 10);
+  }
+  const [minStr, maxStr] = rangeValue.split('-');
+  const min = parseInt(minStr, 10);
+  const max = parseInt(maxStr, 10);
+  return amount >= min && amount < max;
+}

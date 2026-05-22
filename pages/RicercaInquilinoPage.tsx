@@ -23,29 +23,24 @@ import {
     Play,
 } from 'lucide-react';
 import { mockTenants } from '../src/utils/mockData';
-import { ITALIAN_CITIES, OCCUPATIONS } from '../src/utils/constants';
+import { OCCUPATIONS } from '../src/utils/constants';
+import { PRICE_RANGES, matchesPriceRange } from '../src/lib/utils';
 
 // ── Types ───────────────────────────────────────────────────────────────────
 
 interface TenantFilters {
-    city: string;
     occupation: string;
     verified: boolean | null;
     hasVideo: boolean | null;
-    budgetMin: number | '';
-    budgetMax: number | '';
+    budgetRange: string;
 }
 
 const EMPTY_FILTERS: TenantFilters = {
-    city: '',
     occupation: '',
     verified: null,
     hasVideo: null,
-    budgetMin: '',
-    budgetMax: '',
+    budgetRange: '',
 };
-
-const TOP_CITIES = ITALIAN_CITIES.slice(0, 10);
 
 export const RicercaInquilinoPage: React.FC = () => {
     const [searchText, setSearchText] = useState('');
@@ -69,9 +64,7 @@ export const RicercaInquilinoPage: React.FC = () => {
             const data = await res.json();
             const city = data.address?.city || data.address?.town || data.address?.village || '';
             if (city) {
-                const matched = ITALIAN_CITIES.find(c => c.toLowerCase() === city.toLowerCase());
-                setSearchText(matched || city);
-                setFilters(f => ({ ...f, city: matched || '' }));
+                setSearchText(city);
             }
         } catch (e) { console.warn('GPS error:', e); }
         finally { setGpsLoading(false); }
@@ -87,16 +80,16 @@ export const RicercaInquilinoPage: React.FC = () => {
                     const match =
                         t.firstName.toLowerCase().includes(q) ||
                         t.lastName.toLowerCase().includes(q) ||
-                        (t.currentCity || '').toLowerCase().includes(q) ||
                         (t.occupation || '').toLowerCase().includes(q);
                     if (!match) return false;
                 }
-                if (filters.city && t.currentCity !== filters.city) return false;
                 if (filters.occupation && t.occupation !== filters.occupation) return false;
                 if (filters.verified === true && !t.isVerified) return false;
                 if (filters.hasVideo === true && !t.hasVideo) return false;
-                if (filters.budgetMin !== '' && (t.preferences?.maxBudget || 0) < filters.budgetMin) return false;
-                if (filters.budgetMax !== '' && (t.preferences?.maxBudget || 9999) > filters.budgetMax) return false;
+                if (filters.budgetRange) {
+                    const budget = t.preferences?.maxBudget;
+                    if (budget == null || !matchesPriceRange(budget, filters.budgetRange)) return false;
+                }
                 return true;
             });
     }, [searchText, filters]);
@@ -104,12 +97,12 @@ export const RicercaInquilinoPage: React.FC = () => {
     const displayedTenants = filteredTenants.slice(0, 24);
 
     const activeFilterCount =
-        (filters.city ? 1 : 0) +
         (filters.occupation ? 1 : 0) +
         (filters.verified !== null ? 1 : 0) +
         (filters.hasVideo !== null ? 1 : 0) +
-        (filters.budgetMin !== '' ? 1 : 0) +
-        (filters.budgetMax !== '' ? 1 : 0);
+        (filters.budgetRange ? 1 : 0);
+
+    const activeBudgetRangeLabel = PRICE_RANGES.find(r => r.value === filters.budgetRange)?.label;
 
     const handleClearFilters = () => { setFilters(EMPTY_FILTERS); setSearchText(''); };
 
@@ -136,7 +129,7 @@ export const RicercaInquilinoPage: React.FC = () => {
                                 value={searchText}
                                 onChange={(e) => setSearchText(e.target.value)}
                                 className="w-full pl-12 pr-10 py-3.5 rounded-2xl text-gray-900 font-medium placeholder-gray-400 outline-none focus:ring-4 focus:ring-action-green/40 shadow-xl text-base"
-                                placeholder="Cerca per nome, città o professione..."
+                                placeholder="Cerca per nome o professione..."
                             />
                             {searchText && (
                                 <button onClick={() => setSearchText('')} className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-gray-400 hover:text-gray-600">
@@ -155,19 +148,6 @@ export const RicercaInquilinoPage: React.FC = () => {
                         </button>
                     </div>
 
-                    {/* City pills */}
-                    <div className="flex flex-wrap justify-center gap-2 mt-3 max-w-2xl mx-auto">
-                        {TOP_CITIES.map(city => (
-                            <button
-                                key={city}
-                                onClick={() => { setSearchText(city); setFilters(f => ({ ...f, city })); }}
-                                className={`px-3 py-1 rounded-full text-xs font-semibold transition-all ${filters.city === city
-                                    ? 'bg-action-green text-brand-green shadow' : 'bg-white/20 text-white hover:bg-white/30'}`}
-                            >
-                                {city}
-                            </button>
-                        ))}
-                    </div>
                 </div>
             </div>
 
@@ -199,10 +179,10 @@ export const RicercaInquilinoPage: React.FC = () => {
 
                         {/* Active chips */}
                         <div className="hidden md:flex items-center gap-2 overflow-x-auto flex-1 px-4">
-                            {filters.city && (
+                            {filters.budgetRange && activeBudgetRangeLabel && (
                                 <span className="flex items-center gap-1 shrink-0 px-3 py-1 bg-primary-50 text-primary-700 rounded-full text-xs font-semibold">
-                                    {filters.city}
-                                    <button onClick={() => setFilters(f => ({ ...f, city: '' }))}><X size={12} /></button>
+                                    {activeBudgetRangeLabel}
+                                    <button onClick={() => setFilters(f => ({ ...f, budgetRange: '' }))}><X size={12} /></button>
                                 </span>
                             )}
                             {filters.verified && (
@@ -227,18 +207,7 @@ export const RicercaInquilinoPage: React.FC = () => {
 
                     {/* Expandable Filters */}
                     {showFilters && (
-                        <div className="mt-3 pt-3 border-t border-gray-100 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                            <div>
-                                <label className="block text-xs font-bold text-gray-600 mb-1.5">Città</label>
-                                <select
-                                    className="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm bg-gray-50"
-                                    value={filters.city}
-                                    onChange={(e) => setFilters(f => ({ ...f, city: e.target.value }))}
-                                >
-                                    <option value="">Tutte le città</option>
-                                    {ITALIAN_CITIES.map(c => <option key={c} value={c}>{c}</option>)}
-                                </select>
-                            </div>
+                        <div className="mt-3 pt-3 border-t border-gray-100 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                             <div>
                                 <label className="block text-xs font-bold text-gray-600 mb-1.5">Professione</label>
                                 <select
@@ -251,13 +220,17 @@ export const RicercaInquilinoPage: React.FC = () => {
                                 </select>
                             </div>
                             <div>
-                                <label className="block text-xs font-bold text-gray-600 mb-1.5">Budget (€/mese)</label>
-                                <div className="flex gap-2">
-                                    <input type="number" placeholder="Min" className="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm bg-gray-50"
-                                        value={filters.budgetMin} onChange={(e) => setFilters(f => ({ ...f, budgetMin: e.target.value ? parseInt(e.target.value) : '' }))} />
-                                    <input type="number" placeholder="Max" className="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm bg-gray-50"
-                                        value={filters.budgetMax} onChange={(e) => setFilters(f => ({ ...f, budgetMax: e.target.value ? parseInt(e.target.value) : '' }))} />
-                                </div>
+                                <label className="block text-xs font-bold text-gray-600 mb-1.5">Fascia di budget (€/mese)</label>
+                                <select
+                                    className="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm bg-gray-50"
+                                    value={filters.budgetRange}
+                                    onChange={(e) => setFilters(f => ({ ...f, budgetRange: e.target.value }))}
+                                >
+                                    <option value="">Qualsiasi fascia</option>
+                                    {PRICE_RANGES.map(range => (
+                                        <option key={range.value} value={range.value}>{range.label}</option>
+                                    ))}
+                                </select>
                             </div>
                             <div>
                                 <label className="block text-xs font-bold text-gray-600 mb-1.5">Badge</label>
@@ -284,7 +257,7 @@ export const RicercaInquilinoPage: React.FC = () => {
             {/* ── 3. Tenant Grid ───────────────────────────────────────── */}
             <div className="max-w-screen-xl mx-auto px-4 py-8">
                 <h2 className="text-lg font-bold font-serif text-gray-900 mb-6">
-                    {displayedTenants.length} inquilini{filters.city ? ` a ${filters.city}` : ''} — registrati di recente
+                    {displayedTenants.length} inquilini — registrati di recente
                 </h2>
 
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">

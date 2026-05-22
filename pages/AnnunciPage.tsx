@@ -17,9 +17,8 @@ import {
 } from 'lucide-react';
 import { ListingsMap } from '../components';
 import { publicListings } from '../src/lib/mock-data';
-import { buildListingUrl, formatPrice } from '../src/lib/utils';
+import { buildListingUrl, formatPrice, PRICE_RANGES, matchesPriceRange } from '../src/lib/utils';
 
-const COMUNI = [...new Set(publicListings.map(l => l.comune))].sort();
 const TIPOLOGIE_LIST = ['appartamento', 'bilocale', 'trilocale', 'stanza', 'villa'];
 const TIPOLOGIE_LABELS: Record<string, string> = {
   appartamento: 'Appartamento',
@@ -40,17 +39,13 @@ const CITY_COORDINATES: Record<string, [number, number]> = {
 };
 
 interface ActiveFilters {
-  comune: string;
   tipologie: string[];
-  minPrice: number | '';
-  maxPrice: number | '';
+  priceRange: string;
 }
 
 const EMPTY_FILTERS: ActiveFilters = {
-  comune: '',
   tipologie: [],
-  minPrice: '',
-  maxPrice: '',
+  priceRange: '',
 };
 
 export const AnnunciPage: React.FC = () => {
@@ -59,10 +54,7 @@ export const AnnunciPage: React.FC = () => {
   const [showMap, setShowMap] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
   const [gpsLoading, setGpsLoading] = useState(false);
-  const [filters, setFilters] = useState<ActiveFilters>({
-    ...EMPTY_FILTERS,
-    comune: searchParams.get('city') || '',
-  });
+  const [filters, setFilters] = useState<ActiveFilters>(EMPTY_FILTERS);
 
   // ── GPS Location ──────────────────────────────────────────────────────────
   const handleGPS = useCallback(async () => {
@@ -79,17 +71,14 @@ export const AnnunciPage: React.FC = () => {
       const data = await res.json();
       const city: string = data.address?.city || data.address?.town || data.address?.village || data.address?.county || '';
       if (city) {
-        const matched = COMUNI.find(c => c.toLowerCase() === city.toLowerCase());
-        setSearchText(matched || city);
-        setFilters(f => ({ ...f, comune: matched || '' }));
-        if (matched) setSearchParams({ city: matched });
+        setSearchText(city);
       }
     } catch (e) {
       console.warn('GPS error:', e);
     } finally {
       setGpsLoading(false);
     }
-  }, [setSearchParams]);
+  }, []);
 
   // ── Filter logic ──────────────────────────────────────────────────────────
   const filteredListings = useMemo(() => {
@@ -98,33 +87,23 @@ export const AnnunciPage: React.FC = () => {
         const q = searchText.toLowerCase();
         const match =
           item.titolo.toLowerCase().includes(q) ||
-          item.comune.toLowerCase().includes(q) ||
+          item.zona.toLowerCase().includes(q) ||
           item.descrizione.toLowerCase().includes(q);
         if (!match) return false;
       }
-      if (filters.comune && item.comune !== filters.comune) return false;
       if (filters.tipologie.length > 0 && !filters.tipologie.includes(item.tipologiaSlug)) return false;
-      if (filters.minPrice !== '' && item.prezzo < filters.minPrice) return false;
-      if (filters.maxPrice !== '' && item.prezzo > filters.maxPrice) return false;
+      if (!matchesPriceRange(item.prezzo, filters.priceRange)) return false;
       return true;
     });
   }, [searchText, filters]);
 
   const activeFilterCount =
-    (filters.comune ? 1 : 0) + filters.tipologie.length +
-    (filters.minPrice !== '' ? 1 : 0) + (filters.maxPrice !== '' ? 1 : 0);
+    filters.tipologie.length + (filters.priceRange ? 1 : 0);
 
-  const handleComuneChange = useCallback((comune: string) => {
-    setSearchText(comune);
-    setFilters(f => ({ ...f, comune }));
-    setSearchParams(comune ? { city: comune } : {});
-  }, [setSearchParams]);
+  const activePriceRangeLabel = PRICE_RANGES.find(r => r.value === filters.priceRange)?.label;
 
   const handleSearchInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const val = e.target.value;
-    setSearchText(val);
-    const matched = COMUNI.find(c => c.toLowerCase() === val.toLowerCase());
-    setFilters(f => ({ ...f, comune: matched || '' }));
+    setSearchText(e.target.value);
   };
 
   const handleClearFilters = () => {
@@ -168,7 +147,7 @@ export const AnnunciPage: React.FC = () => {
                 value={searchText}
                 onChange={handleSearchInput}
                 className="w-full pl-12 pr-10 py-3.5 rounded-2xl text-gray-900 font-medium placeholder-gray-400 outline-none focus:ring-4 focus:ring-action-green/40 shadow-xl text-base"
-                placeholder="Cerca per città, zona o tipologia..."
+                placeholder="Cerca per zona o tipologia..."
               />
               {searchText && (
                 <button
@@ -195,21 +174,6 @@ export const AnnunciPage: React.FC = () => {
             </button>
           </div>
 
-          <div className="flex flex-wrap justify-center gap-2 mt-4 max-w-2xl mx-auto">
-            {COMUNI.map(comune => (
-              <button
-                key={comune}
-                onClick={() => handleComuneChange(comune)}
-                className={`px-4 py-1.5 rounded-full text-sm font-semibold transition-all ${
-                  filters.comune === comune
-                    ? 'bg-action-green text-brand-green shadow'
-                    : 'bg-white/20 text-white hover:bg-white/30'
-                }`}
-              >
-                {comune}
-              </button>
-            ))}
-          </div>
         </div>
       </div>
 
@@ -247,10 +211,10 @@ export const AnnunciPage: React.FC = () => {
                   <button onClick={() => toggleTipologia(t)}><X size={12} /></button>
                 </span>
               ))}
-              {(filters.minPrice !== '' || filters.maxPrice !== '') && (
+              {filters.priceRange && activePriceRangeLabel && (
                 <span className="flex items-center gap-1 shrink-0 px-3 py-1 bg-primary-50 text-primary-700 rounded-full text-xs font-semibold">
-                  €{filters.minPrice || '0'} – €{filters.maxPrice || '∞'}
-                  <button onClick={() => setFilters(f => ({ ...f, minPrice: '', maxPrice: '' }))}><X size={12} /></button>
+                  {activePriceRangeLabel}
+                  <button onClick={() => setFilters(f => ({ ...f, priceRange: '' }))}><X size={12} /></button>
                 </span>
               )}
               {activeFilterCount > 0 && (
@@ -277,40 +241,19 @@ export const AnnunciPage: React.FC = () => {
           </div>
 
           {showFilters && (
-            <div className="mt-3 pt-3 border-t border-gray-100 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="mt-3 pt-3 border-t border-gray-100 grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-bold text-gray-600 mb-1.5">Città</label>
+                <label className="block text-xs font-bold text-gray-600 mb-1.5">Fascia di prezzo (€/mese)</label>
                 <select
                   className="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm bg-gray-50"
-                  value={filters.comune}
-                  onChange={(e) => {
-                    setFilters(f => ({ ...f, comune: e.target.value }));
-                    setSearchText(e.target.value);
-                  }}
+                  value={filters.priceRange}
+                  onChange={(e) => setFilters(f => ({ ...f, priceRange: e.target.value }))}
                 >
-                  <option value="">Tutte le città</option>
-                  {COMUNI.map(c => <option key={c} value={c}>{c}</option>)}
+                  <option value="">Qualsiasi fascia</option>
+                  {PRICE_RANGES.map(range => (
+                    <option key={range.value} value={range.value}>{range.label}</option>
+                  ))}
                 </select>
-              </div>
-
-              <div>
-                <label className="block text-xs font-bold text-gray-600 mb-1.5">Prezzo (€/mese)</label>
-                <div className="flex gap-2">
-                  <input
-                    type="number"
-                    placeholder="Min"
-                    className="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm bg-gray-50"
-                    value={filters.minPrice}
-                    onChange={(e) => setFilters(f => ({ ...f, minPrice: e.target.value ? parseInt(e.target.value) : '' }))}
-                  />
-                  <input
-                    type="number"
-                    placeholder="Max"
-                    className="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm bg-gray-50"
-                    value={filters.maxPrice}
-                    onChange={(e) => setFilters(f => ({ ...f, maxPrice: e.target.value ? parseInt(e.target.value) : '' }))}
-                  />
-                </div>
               </div>
 
               <div>
@@ -340,8 +283,7 @@ export const AnnunciPage: React.FC = () => {
       <div className="flex-grow max-w-screen-xl mx-auto w-full px-4 py-8">
         {!showMap && (
           <h2 className="text-xl font-bold text-gray-900 mb-6">
-            {filteredListings.length} {filteredListings.length === 1 ? 'annuncio' : 'annunci'} in affitto
-            {filters.comune ? ` a ${filters.comune}` : ' in Italia'}
+            {filteredListings.length} {filteredListings.length === 1 ? 'annuncio' : 'annunci'} in affitto in Italia
           </h2>
         )}
 
@@ -430,10 +372,10 @@ export const AnnunciPage: React.FC = () => {
         {!showMap && (
           <div className="mt-16 pt-8 border-t border-gray-200">
             <h2 className="text-xl font-bold mb-3">
-              Affitti {filters.comune ? `a ${filters.comune}` : 'in Italia'} — AffittoChiaro
+              Affitti in Italia — AffittoChiaro
             </h2>
             <p className="text-sm text-gray-500 leading-relaxed max-w-4xl">
-              Scopri la più ampia selezione di case in affitto {filters.comune ? `a ${filters.comune}` : 'nelle principali città italiane'} su AffittoChiaro.
+              Scopri la più ampia selezione di case in affitto in Italia su AffittoChiaro.
               Aggiorniamo gli annunci ogni giorno per offrirti solo soluzioni verificate e disponibili.
               Usa i filtri per tipologia e prezzo per trovare la casa perfetta.
               Ogni inquilino può inviare la sua candidatura direttamente dall'annuncio con il Profilo Inquilino.

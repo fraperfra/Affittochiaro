@@ -1,0 +1,404 @@
+- generic [ref=e1]:
+  - generic [ref=e938]:
+    - complementary [ref=e939]:
+      - generic [ref=e940]:
+        - generic [ref=e941]:
+          - img "Affittochiaro" [ref=e944]
+          - generic [ref=e946]:
+            - img [ref=e947]
+            - generic [ref=e950]: Area Inquilino
+        - generic [ref=e951]:
+          - generic [ref=e952]:
+            - generic [ref=e953]: MR
+            - generic [ref=e954]:
+              - paragraph [ref=e955]: Mario Rossi
+              - paragraph [ref=e956]: mario.rossi@example.com
+          - generic [ref=e958]:
+            - img [ref=e959]
+            - text: Verificato
+        - navigation [ref=e961]:
+          - list [ref=e962]:
+            - listitem [ref=e963]:
+              - link "Dashboard" [ref=e964] [cursor=pointer]:
+                - /url: /tenant
+                - img [ref=e965]
+                - generic [ref=e968]: Dashboard
+            - listitem [ref=e969]:
+              - link "Il Mio Profilo" [active] [ref=e970] [cursor=pointer]:
+                - /url: /tenant/profile
+                - img [ref=e971]
+                - generic [ref=e974]: Il Mio Profilo
+            - listitem [ref=e975]:
+              - link "Cerca Annunci" [ref=e976] [cursor=pointer]:
+                - /url: /tenant/listings
+                - img [ref=e977]
+                - generic [ref=e980]: Cerca Annunci
+            - listitem [ref=e981]:
+              - link "Servizi" [ref=e982] [cursor=pointer]:
+                - /url: /tenant/services
+                - img [ref=e983]
+                - generic [ref=e985]: Servizi
+            - listitem [ref=e986]:
+              - link "Notifiche 3" [ref=e987] [cursor=pointer]:
+                - /url: /tenant/notifications
+                - img [ref=e988]
+                - generic [ref=e991]: Notifiche
+                - generic [ref=e992]: "3"
+            - listitem [ref=e993]:
+              - link "Impostazioni" [ref=e994] [cursor=pointer]:
+                - /url: /tenant/settings
+                - img [ref=e995]
+                - generic [ref=e998]: Impostazioni
+        - button "Esci" [ref=e1000] [cursor=pointer]:
+          - img [ref=e1001]
+          - generic [ref=e1004]: Esci
+    - generic [ref=e1005]:
+      - banner [ref=e1006]:
+        - generic [ref=e1007]:
+          - generic [ref=e1009]:
+            - img [ref=e1010]
+            - textbox "Cerca inquilini, annunci, agenzie..." [ref=e1013]
+          - generic [ref=e1014]:
+            - button [ref=e1016] [cursor=pointer]:
+              - img [ref=e1017]
+            - button "MR" [ref=e1022] [cursor=pointer]:
+              - generic [ref=e1023]: MR
+              - img [ref=e1024]
+      - main [ref=e1026]:
+        - generic [ref=e1206]:
+          - generic [ref=e1207]:
+            - heading "Il Mio Profilo" [level=1] [ref=e1208]
+            - button "Impostazioni" [ref=e1209] [cursor=pointer]:
+              - img [ref=e1210]
+              - text: Impostazioni
+          - generic [ref=e1213]:
+            - generic [ref=e1214]:
+              - generic [ref=e1215]:
+                - generic [ref=e1218]:
+                  - img [ref=e1219]
+                  - heading "Informazioni Obbligatorie" [level=3] [ref=e1222]
+                - generic [ref=e1223]:
+                  - generic [ref=e1224]:
+                    - generic [ref=e1225]:
+                      - paragraph [ref=e1226]: Le informazioni base
+                      - paragraph [ref=e1227]: Come ti chiamiamo e come ti contattano le agenzie
+                    - generic [ref=e1228]:
+                      - generic [ref=e1229]:
+                        - generic [ref=e1230]: Nome*
+                        - textbox "Francesco" [ref=e1231]: Mario
+                      - generic [ref=e1232]:
+                        - generic [ref=e1233]: Cognome*
+                        - textbox "Coppola" [ref=e1234]: Rossi
+                      - generic [ref=e1235]:
+                        - generic [ref=e1236]: N° di cellulare*
+                        - generic [ref=e1237]:
+                          - generic [ref=e1238]: "+39"
+                          - textbox "333 123 4567" [ref=e1239]: +39 333 1234567
+                      - generic [ref=e1240]:
+                        - generic [ref=e1241]: Età*
+                        - combobox [ref=e1242]:
+                          - option "Seleziona età" [selected]
+                          - option "18-25 anni"
+                          - option "26-30 anni"
+                          - option "31-35 anni"
+                          - option "36-40 anni"
+                          - option "41-45 anni"
+                          - option "46-50 anni"
+                          - option "51-55 anni"
+                          - option "56-60 anni"
+                          - option "61-65 anni"
+                          - option "66-70 anni"
+                          - option "70+ anni"
+                  - separator [ref=e1243]
+                  - generic [ref=e1244]:
+                    - generic [ref=e1245]:
+                      - paragraph [ref=e1246]: Dove vuoi vivere?
+                      - paragraph [ref=e1247]: Più sei preciso, più annunci pertinenti ricevi
+                    - generic [ref=e1248]:
+                      - generic [ref=e1249]:
+                        - generic [ref=e1250]: Dove stai cercando*
+                        - combobox [ref=e1251]:
+                          - option "Seleziona città..."
+                          - option "Milano" [selected]
+                          - option "Roma"
+                          - option "Napoli"
+                          - option "Torino"
+                          - option "Bologna"
+                          - option "Firenze"
+                          - option "Genova"
+                          - option "Venezia"
+                          - option "Verona"
+                          - option "Padova"
+                          - option "Trieste"
+                          - option "Brescia"
+                          - option "Parma"
+                          - option "Modena"
+                          - option "Reggio Emilia"
+                          - option "Ravenna"
+                          - option "Rimini"
+                          - option "Ferrara"
+                          - option "Piacenza"
+                          - option "Bergamo"
+                          - option "Monza"
+                          - option "Como"
+                          - option "Varese"
+                          - option "Pavia"
+                          - option "Cremona"
+                          - option "Mantova"
+                          - option "Lecco"
+                          - option "Lodi"
+                          - option "Bari"
+                          - option "Palermo"
+                          - option "Catania"
+                          - option "Messina"
+                          - option "Cagliari"
+                          - option "Sassari"
+                          - option "Perugia"
+                          - option "Ancona"
+                          - option "Pescara"
+                          - option "Trento"
+                          - option "Bolzano"
+                          - option "Udine"
+                          - option "Aosta"
+                      - generic [ref=e1252]:
+                        - generic [ref=e1253]: Tipologia immobile*
+                        - generic [ref=e1254]:
+                          - button "Stanza" [ref=e1255] [cursor=pointer]
+                          - button "Appartamento" [ref=e1256] [cursor=pointer]
+                          - button "Villa" [ref=e1257] [cursor=pointer]
+                          - button "Attico" [ref=e1258] [cursor=pointer]
+                          - button "Casa indipendente" [ref=e1259] [cursor=pointer]
+                          - button "Bifamiliare" [ref=e1260] [cursor=pointer]
+                      - generic [ref=e1261]:
+                        - generic [ref=e1262]:
+                          - generic [ref=e1263]: Budget massimo*
+                          - generic [ref=e1264]:
+                            - img [ref=e1265]
+                            - spinbutton [ref=e1267]
+                            - generic [ref=e1268]: /mese
+                        - generic [ref=e1269]:
+                          - generic [ref=e1270]: Numero di camere*
+                          - generic [ref=e1271]:
+                            - button "1" [ref=e1272] [cursor=pointer]
+                            - button "2" [ref=e1273] [cursor=pointer]
+                            - button "3" [ref=e1274] [cursor=pointer]
+                            - button "4+" [ref=e1275] [cursor=pointer]
+                      - generic [ref=e1276]:
+                        - generic [ref=e1277]: Arredato?*
+                        - generic [ref=e1278]:
+                          - button "Sì" [ref=e1279] [cursor=pointer]
+                          - button "No" [ref=e1280] [cursor=pointer]
+                          - button "Indifferente" [ref=e1281] [cursor=pointer]
+                  - separator [ref=e1282]
+                  - generic [ref=e1283]:
+                    - generic [ref=e1284]:
+                      - paragraph [ref=e1285]: Chi sei e come vivi
+                      - paragraph [ref=e1286]: Queste info aumentano la tua credibilità con i proprietari
+                    - generic [ref=e1287]:
+                      - generic [ref=e1288]:
+                        - generic [ref=e1289]: Occupazione*
+                        - combobox [ref=e1290]:
+                          - option "Seleziona..." [selected]
+                          - option "Impiegato/a"
+                          - option "Manager"
+                          - option "Libero Professionista"
+                          - option "Imprenditore"
+                          - option "Commerciante"
+                          - option "Artigiano"
+                          - option "Operaio/a"
+                          - option "Insegnante"
+                          - option "Medico"
+                          - option "Infermiere/a"
+                          - option "Avvocato"
+                          - option "Commercialista"
+                          - option "Ingegnere"
+                          - option "Architetto"
+                          - option "Designer"
+                          - option "Sviluppatore Software"
+                          - option "Marketing Specialist"
+                          - option "Consulente"
+                          - option "Ricercatore"
+                          - option "Studente"
+                          - option "Pensionato/a"
+                          - option "Altro"
+                      - generic [ref=e1291]:
+                        - generic [ref=e1292]: Nucleo familiare*
+                        - generic [ref=e1293]:
+                          - button "Solo" [ref=e1294] [cursor=pointer]
+                          - button "Coppia" [ref=e1295] [cursor=pointer]
+                          - button "Famiglia" [ref=e1296] [cursor=pointer]
+                          - button "Coinquilini" [ref=e1297] [cursor=pointer]
+                      - generic [ref=e1298]:
+                        - generic [ref=e1299]: Reddito
+                        - generic [ref=e1300]:
+                          - generic [ref=e1301]:
+                            - button "Mensile" [ref=e1302] [cursor=pointer]
+                            - button "Annuo Lordo" [ref=e1303] [cursor=pointer]
+                          - generic [ref=e1304]:
+                            - img [ref=e1305]
+                            - spinbutton [ref=e1307]
+                        - paragraph [ref=e1308]: Inserisci il tuo reddito per aumentare la fiducia dei proprietari
+                      - generic [ref=e1309]:
+                        - generic [ref=e1310]: Tipologia contratto preferita
+                        - generic [ref=e1311]:
+                          - button "4+4 (Canone libero)" [ref=e1312] [cursor=pointer]
+                          - button "3+2 (Canone concordato)" [ref=e1313] [cursor=pointer]
+                          - button "Transitorio" [ref=e1314] [cursor=pointer]
+                          - button "Studenti" [ref=e1315] [cursor=pointer]
+                          - button "Uso foresteria" [ref=e1316] [cursor=pointer]
+                          - button "Comodato d'uso" [ref=e1317] [cursor=pointer]
+                      - generic [ref=e1319]:
+                        - generic [ref=e1320]: Hai animali domestici?*
+                        - generic [ref=e1321]:
+                          - button "Sì" [ref=e1322] [cursor=pointer]
+                          - button "No" [ref=e1323] [cursor=pointer]
+                  - separator [ref=e1324]
+                  - generic [ref=e1325]:
+                    - generic [ref=e1326]:
+                      - paragraph [ref=e1327]: Presentati ai proprietari
+                      - paragraph [ref=e1328]: Una presentazione autentica può fare la differenza sul proprietario
+                    - generic [ref=e1329]:
+                      - paragraph [ref=e1330]: Questa descrizione sarà visibile ai proprietari e può fare la differenza.
+                      - button "Genera con AI" [ref=e1331] [cursor=pointer]:
+                        - img [ref=e1332]
+                        - text: Genera con AI
+                    - textbox "Ciao! Sono un professionista affidabile e ordinato, cerco un appartamento dove sentirmi a casa..." [ref=e1334]: Professionista serio e affidabile, cerco appartamento in zona centrale. Lavoro nel settore tech da oltre 5 anni e sono alla ricerca di un bilocale luminoso.
+                    - paragraph [ref=e1335]: Usati 156 / 500 caratteri
+                  - button "Salva modifiche" [ref=e1337] [cursor=pointer]
+              - generic [ref=e1338]:
+                - generic [ref=e1339]:
+                  - generic [ref=e1341]:
+                    - img [ref=e1342]
+                    - heading "I Tuoi Interessi" [level=3] [ref=e1346]
+                  - paragraph [ref=e1347]: Seleziona i tuoi hobby — aiuta i proprietari a conoscerti meglio.
+                - generic [ref=e1348]:
+                  - button "Musica" [ref=e1349] [cursor=pointer]:
+                    - img [ref=e1350]
+                    - text: Musica
+                  - button "Lettura" [ref=e1354] [cursor=pointer]:
+                    - img [ref=e1355]
+                    - text: Lettura
+                  - button "Cucina" [ref=e1357] [cursor=pointer]:
+                    - img [ref=e1358]
+                    - text: Cucina
+                  - button "Jogging" [ref=e1360] [cursor=pointer]:
+                    - img [ref=e1361]
+                    - text: Jogging
+                  - button "Ciclismo" [ref=e1363] [cursor=pointer]:
+                    - img [ref=e1364]
+                    - text: Ciclismo
+                  - button "Videogiochi" [ref=e1369] [cursor=pointer]:
+                    - img [ref=e1370]
+                    - text: Videogiochi
+                  - button "Arte" [ref=e1372] [cursor=pointer]:
+                    - img [ref=e1373]
+                    - text: Arte
+                  - button "Yoga" [ref=e1379] [cursor=pointer]:
+                    - img [ref=e1380]
+                    - text: Yoga
+                  - button "Viaggi" [ref=e1383] [cursor=pointer]:
+                    - img [ref=e1384]
+                    - text: Viaggi
+                  - button "Fotografia" [ref=e1386] [cursor=pointer]:
+                    - img [ref=e1387]
+                    - text: Fotografia
+                  - button "Giardinaggio" [ref=e1390] [cursor=pointer]:
+                    - img [ref=e1391]
+                    - text: Giardinaggio
+                  - button "Animali" [ref=e1394] [cursor=pointer]:
+                    - img [ref=e1395]
+                    - text: Animali
+                  - button "Cinema" [ref=e1400] [cursor=pointer]:
+                    - img [ref=e1401]
+                    - text: Cinema
+                  - button "Calcio" [ref=e1403] [cursor=pointer]:
+                    - img [ref=e1404]
+                    - text: Calcio
+                  - button "Tennis" [ref=e1406] [cursor=pointer]:
+                    - img [ref=e1407]
+                    - text: Tennis
+                  - button "Nuoto" [ref=e1409] [cursor=pointer]:
+                    - img [ref=e1410]
+                    - text: Nuoto
+                  - button "Teatro" [ref=e1414] [cursor=pointer]:
+                    - img [ref=e1415]
+                    - text: Teatro
+                  - button "Vino & Cibo" [ref=e1420] [cursor=pointer]:
+                    - img [ref=e1421]
+                    - text: Vino & Cibo
+                  - button "Arrampicata" [ref=e1423] [cursor=pointer]:
+                    - img [ref=e1424]
+                    - text: Arrampicata
+                  - button "Danza" [ref=e1426] [cursor=pointer]:
+                    - img [ref=e1427]
+                    - text: Danza
+                  - button "Scrittura" [ref=e1431] [cursor=pointer]:
+                    - img [ref=e1432]
+                    - text: Scrittura
+                  - button "Palestra" [ref=e1434] [cursor=pointer]:
+                    - img [ref=e1435]
+                    - text: Palestra
+                  - button "Escursionismo" [ref=e1441] [cursor=pointer]:
+                    - img [ref=e1442]
+                    - text: Escursionismo
+                  - button "Meditazione" [ref=e1444] [cursor=pointer]:
+                    - img [ref=e1445]
+                    - text: Meditazione
+                  - button "Cucito" [ref=e1455] [cursor=pointer]:
+                    - img [ref=e1456]
+                    - text: Cucito
+                  - button "Skateboard" [ref=e1462] [cursor=pointer]:
+                    - img [ref=e1463]
+                    - text: Skateboard
+                  - button "Sport Acquatici" [ref=e1465] [cursor=pointer]:
+                    - img [ref=e1466]
+                    - text: Sport Acquatici
+                  - button "Campeggio" [ref=e1470] [cursor=pointer]:
+                    - img [ref=e1471]
+                    - text: Campeggio
+                  - button "Karaoke" [ref=e1475] [cursor=pointer]:
+                    - img [ref=e1476]
+                    - text: Karaoke
+                  - button "Scacchi" [ref=e1479] [cursor=pointer]:
+                    - img [ref=e1480]
+                    - text: Scacchi
+                  - button "Podcast" [ref=e1484] [cursor=pointer]:
+                    - img [ref=e1485]
+                    - text: Podcast
+                  - button "Bricolage" [ref=e1489] [cursor=pointer]:
+                    - img [ref=e1490]
+                    - text: Bricolage
+                - button "Salva interessi" [ref=e1495] [cursor=pointer]
+            - generic [ref=e1496]:
+              - generic [ref=e1497]:
+                - generic [ref=e1499]:
+                  - img [ref=e1500]
+                  - heading "Video Presentazione" [level=3] [ref=e1503]
+                - generic [ref=e1504]:
+                  - img [ref=e1506]
+                  - heading "Nessun video di presentazione" [level=4] [ref=e1509]
+                  - paragraph [ref=e1510]: Un video aumenta la tua visibilità e le possibilità di essere contattato
+                  - generic [ref=e1511]:
+                    - button "Registra Video" [ref=e1512] [cursor=pointer]
+                    - button "Carica Video" [ref=e1513] [cursor=pointer]
+              - generic [ref=e1514]:
+                - generic [ref=e1516]:
+                  - img [ref=e1517]
+                  - heading "Riepilogo Ricerca" [level=3] [ref=e1520]
+                - generic [ref=e1521]:
+                  - generic [ref=e1522]:
+                    - generic [ref=e1523]:
+                      - img [ref=e1524]
+                      - text: Città
+                    - generic [ref=e1527]: Milano
+                  - generic [ref=e1528]:
+                    - generic [ref=e1529]:
+                      - img [ref=e1530]
+                      - text: Tipologia
+                    - generic [ref=e1533]: Appartamento
+                  - generic [ref=e1534]:
+                    - generic [ref=e1535]:
+                      - img [ref=e1536]
+                      - text: Animali
+                    - generic [ref=e1541]: "No"
+  - generic [ref=e809]: "0"

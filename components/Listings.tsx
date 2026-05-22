@@ -33,15 +33,14 @@ export const Listings: React.FC<ListingsProps> = ({
 
   return (
     <section id="annunci" className="py-16 bg-[#FAFAFA] px-4">
-      <div className="max-w-full lg:px-20 mx-auto text-center">
-        <div className="inline-block bg-trust-blue/10 text-trust-blue px-5 py-2 rounded-full font-bold text-[10px] mb-8 uppercase tracking-[0.2em]">ANNUNCI SELEZIONATI</div>
-        <h2 className="text-2xl md:text-[28px] xl:text-[32px] font-bold text-brand-green mb-6 leading-[1.2]">Scegli la Tua Prossima Casa</h2>
-        <p className="text-lg text-medium-gray mb-12 max-w-[65ch] mx-auto leading-[1.5]">
+      <div className="max-w-full lg:px-20 mx-auto">
+        <h2 className="text-2xl md:text-[28px] xl:text-[32px] font-bold text-brand-green mb-4 leading-[1.2]">Scegli la Tua Prossima Casa</h2>
+        <p className="text-lg text-medium-gray mb-10 leading-[1.5]">
           Sfoglia le migliori opportunità immobiliari aggiornate in tempo reale dai portali e dai social a{' '}
           <span className="font-bold text-brand-green">{activeCityName}</span> e dintorni.
         </p>
 
-        <div className="flex flex-wrap gap-3 justify-center mb-10">
+        <div className="flex flex-wrap gap-3 justify-start mb-10">
           {FILTERS.map((f) => (
             <button
               key={f}
@@ -58,7 +57,7 @@ export const Listings: React.FC<ListingsProps> = ({
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 text-left">
-          {filteredListings.slice(0, 6).map((listing) => {
+          {filteredListings.slice(0, 3).map((listing) => {
             const url = buildListingUrl(listing.regioneSlug, listing.comuneSlug, listing.tipologiaSlug, listing.slug);
             return (
               <div key={listing.id} className="card group overflow-hidden hover:shadow-card-hover transition-shadow p-0 flex flex-col">
@@ -102,7 +101,7 @@ export const Listings: React.FC<ListingsProps> = ({
             onClick={() => navigate('/case-e-stanze-in-affitto')}
             className="inline-flex items-center gap-3 text-brand-green font-bold text-lg hover:text-action-green transition-all"
           >
-            <span>Vedi tutti gli annunci disponibili a {activeCityName}</span>
+            <span>Vedi tutti gli annunci disponibili</span>
             <div className="w-10 h-10 bg-brand-green/5 rounded-full flex items-center justify-center group-hover:bg-action-green group-hover:text-white transition-all">
               <svg className="w-5 h-5 translate-x-0 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/>

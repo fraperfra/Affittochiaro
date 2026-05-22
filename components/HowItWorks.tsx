@@ -24,9 +24,8 @@ export const HowItWorks: React.FC = () => {
       <section id="come-funziona" className="py-16 bg-gray-50 px-4 border-b border-gray-100">
         <div className="max-w-full lg:px-20 mx-auto">
           <div className="mb-12">
-            <p className="text-xs font-bold text-brand-green uppercase tracking-widest mb-3 border-l-2 border-action-green pl-3">PROCESSO SEMPLIFICATO</p>
             <h2 className="text-2xl md:text-[28px] xl:text-[32px] font-bold text-brand-green mb-4 leading-[1.2]">Candidati in 3 Semplici Passaggi</h2>
-            <p className="text-lg md:text-xl text-medium-gray max-w-[65ch] leading-[1.5]">Dalla registrazione alla tua nuova casa, senza intoppi e con la massima professionalità.</p>
+            <p className="text-lg md:text-xl text-medium-gray leading-[1.5]">Dalla registrazione al tuo nuovo appartamento in affitto, senza intoppi e con la massima professionalità.</p>
           </div>
 
           <div className="flex flex-col lg:flex-row lg:space-y-0 space-y-16 lg:gap-12 gap-8 lg:items-stretch">
@@ -89,7 +88,7 @@ export const HowItWorks: React.FC = () => {
                 <div className="w-10 h-10 bg-brand-green text-white rounded-full flex items-center justify-center font-bold text-base shrink-0">2</div>
                 <h3 className="text-xl md:text-[22px] xl:text-2xl font-bold text-brand-green leading-[1.3]">Sfoglia Tutti gli Annunci d'Italia</h3>
               </div>
-              <p className="text-base text-medium-gray mb-8 w-full lg:min-h-[56px] leading-[1.6]">Aggreghiamo TUTTI gli annunci del web in un unico posto.</p>
+              <p className="text-base text-medium-gray mb-8 w-full lg:min-h-[56px] leading-[1.6]">Aggreghiamo tutti gli annunci di case in affitto del web in un unico posto.</p>
               <div className="w-full mx-auto bg-gray-50 rounded-xl p-10 border border-gray-200 relative flex flex-col items-center justify-center flex-1">
                 <div className="w-full max-w-[280px] bg-white rounded-xl shadow-card p-4 border border-gray-100">
                   <div className="aspect-square bg-gray-100 rounded-lg mb-3 overflow-hidden">

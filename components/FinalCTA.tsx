@@ -16,16 +16,15 @@ export const FinalCTA: React.FC = () => {
 
   return (
     <section className="py-16 px-4 bg-brand-green border-t-2 border-action-green/20">
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-full lg:px-20 mx-auto">
         {!isSubmitted ? (
           <>
             <div className="mb-10">
-              <p className="text-xs font-bold text-action-green uppercase tracking-widest mb-3">INIZIA ORA</p>
               <h2 className="text-2xl md:text-[28px] xl:text-[32px] font-bold text-white mb-4 leading-[1.2]">
                 La tua prossima casa <br />
                 <span className="text-action-green">ti sta cercando</span>
               </h2>
-              <p className="text-white/70 text-lg max-w-[65ch] leading-[1.5]">
+              <p className="text-white/70 text-lg leading-[1.5]">
                 Lascia i tuoi dati e ricevi proposte personalizzate direttamente nella tua email.
                 Niente spam, solo annunci che fanno per te.
               </p>
@@ -89,7 +88,7 @@ export const FinalCTA: React.FC = () => {
                 type="submit"
                 className="w-full bg-action-green text-white py-4 min-h-[44px] rounded-lg font-bold text-base hover:brightness-110 transition-all flex items-center justify-center gap-3"
               >
-                Voglio ricevere proposte
+                Inizia la ricerca
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
                 </svg>
@@ -121,9 +120,9 @@ export const FinalCTA: React.FC = () => {
               <CheckCircle className="w-8 h-8 text-action-green" />
             </div>
             <h3 className="text-2xl md:text-[28px] font-bold text-white mb-4 leading-[1.2]">
-              Perfetto, {formData.nome}!
+              {formData.nome ? `Perfetto, ${formData.nome}!` : 'Perfetto!'}
             </h3>
-            <p className="text-white/70 text-lg max-w-[60ch] mx-auto mb-6 leading-[1.5]">
+            <p className="text-white/70 text-lg mb-6 leading-[1.5]">
               Inizierai a ricevere proposte personalizzate a <span className="text-action-green font-semibold">{formData.email}</span>
             </p>
             <p className="text-white/50 text-sm">Controlla la tua email per confermare</p>

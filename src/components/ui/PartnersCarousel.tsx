@@ -2,13 +2,8 @@ import React from 'react';
 
 const partners = [
     { img: '/assets/678f7ff916334f650a7a969e_Domeo-Servizi-Locazioni-Residenziali-logo-orizzontale (1).png', alt: 'Domeo' },
-    { img: '/assets/Logo_Metacasa_V12_Black_09f15d5796.png', alt: 'Metacasa' },
-    { img: '/assets/Sky_TV_Logo.png', alt: 'Sky' },
     { img: '/assets/Holidu_Logo_370b2379fe.png', alt: 'Holidu' },
     { img: '/assets/Switcho-Logotype-Green.png', alt: 'Switcho' },
-    { img: '/assets/Now_logo.svg.png', alt: 'Now' },
-    { img: '/assets/images.png', alt: 'Partner' },
-    { img: '/assets/Image_from_iOS_4.png', alt: 'Partner' },
 ];
 
 export const PartnersCarousel: React.FC = () => {

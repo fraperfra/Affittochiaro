@@ -17,7 +17,6 @@ import { AddToHomeScreenModal } from './components/ui';
 import {
   HomePage,
   AnnunciPage,
-  ComeFunzionaPage,
   FAQPage,
   NotFoundPage,
   RicercaInquilinoPage,
@@ -338,14 +337,6 @@ function App() {
             element={
               <LandingWrapper>
                 <AnnuncioDetailPage />
-              </LandingWrapper>
-            }
-          />
-          <Route
-            path="/come-funziona"
-            element={
-              <LandingWrapper>
-                <ComeFunzionaPage />
               </LandingWrapper>
             }
           />

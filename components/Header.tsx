@@ -4,7 +4,6 @@ import { useAuthStore } from '../src/store';
 import { ArrowLeft, LayoutDashboard, Menu, X } from 'lucide-react';
 
 const NAV_LINKS = [
-  { to: '/come-funziona', label: 'Come Funziona' },
   { to: '/case-e-stanze-in-affitto', label: 'Annunci' },
   { to: '/cerca-inquilino', label: 'Cerca Inquilino' },
   { to: '/servizi', label: 'Servizi' },
@@ -57,7 +56,7 @@ export const Header: React.FC = () => {
               to="/register"
               className="bg-brand-green text-white px-6 py-2.5 rounded-xl font-bold text-sm hover:brightness-110 transition-all shadow-lg shadow-brand-green/10"
             >
-              REGISTRATI
+              TROVA CASA
             </Link>
             <Link
               to="/login"
@@ -118,7 +117,7 @@ export const Header: React.FC = () => {
               onClick={() => setMobileOpen(false)}
               className="block w-full text-center bg-brand-green text-white px-6 py-3 rounded-xl font-bold text-sm hover:brightness-110 transition-all shadow-lg shadow-brand-green/10"
             >
-              REGISTRATI
+              TROVA CASA
             </Link>
             <Link
               to="/login"

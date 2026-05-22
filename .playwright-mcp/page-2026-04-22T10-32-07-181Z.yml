@@ -1,0 +1,193 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - generic [ref=e938]:
+      - complementary [ref=e939]:
+        - generic [ref=e940]:
+          - generic [ref=e941]:
+            - img "Affittochiaro" [ref=e944]
+            - generic [ref=e946]:
+              - img [ref=e947]
+              - generic [ref=e950]: Area Inquilino
+          - generic [ref=e951]:
+            - generic [ref=e952]:
+              - generic [ref=e953]: MR
+              - generic [ref=e954]:
+                - paragraph [ref=e955]: Mario Rossi
+                - paragraph [ref=e956]: mario.rossi@example.com
+            - generic [ref=e958]:
+              - img [ref=e959]
+              - text: Verificato
+          - navigation [ref=e961]:
+            - list [ref=e962]:
+              - listitem [ref=e963]:
+                - link "Dashboard" [ref=e964] [cursor=pointer]:
+                  - /url: /tenant
+                  - img [ref=e965]
+                  - generic [ref=e968]: Dashboard
+              - listitem [ref=e969]:
+                - link "Il Mio Profilo" [ref=e970] [cursor=pointer]:
+                  - /url: /tenant/profile
+                  - img [ref=e971]
+                  - generic [ref=e974]: Il Mio Profilo
+              - listitem [ref=e975]:
+                - link "Cerca Annunci" [ref=e976] [cursor=pointer]:
+                  - /url: /tenant/listings
+                  - img [ref=e977]
+                  - generic [ref=e980]: Cerca Annunci
+              - listitem [ref=e981]:
+                - link "Servizi" [ref=e982] [cursor=pointer]:
+                  - /url: /tenant/services
+                  - img [ref=e983]
+                  - generic [ref=e985]: Servizi
+              - listitem [ref=e986]:
+                - link "Notifiche 3" [ref=e987] [cursor=pointer]:
+                  - /url: /tenant/notifications
+                  - img [ref=e988]
+                  - generic [ref=e991]: Notifiche
+                  - generic [ref=e992]: "3"
+              - listitem [ref=e993]:
+                - link "Impostazioni" [ref=e994] [cursor=pointer]:
+                  - /url: /tenant/settings
+                  - img [ref=e995]
+                  - generic [ref=e998]: Impostazioni
+          - button "Esci" [ref=e1000] [cursor=pointer]:
+            - img [ref=e1001]
+            - generic [ref=e1004]: Esci
+      - generic [ref=e1005]:
+        - banner [ref=e1006]:
+          - generic [ref=e1007]:
+            - generic [ref=e1009]:
+              - img [ref=e1010]
+              - textbox "Cerca inquilini, annunci, agenzie..." [ref=e1013]
+            - generic [ref=e1014]:
+              - button [ref=e1016] [cursor=pointer]:
+                - img [ref=e1017]
+              - button "MR" [ref=e1022] [cursor=pointer]:
+                - generic [ref=e1023]: MR
+                - img [ref=e1024]
+        - main [ref=e1026]:
+          - generic [ref=e1027]:
+            - generic [ref=e1031]:
+              - link "MR Aggiungi foto" [ref=e1032] [cursor=pointer]:
+                - /url: /tenant/profile
+                - generic [ref=e1034]: MR
+                - img [ref=e1036]
+                - paragraph [ref=e1039]: Aggiungi foto
+              - generic [ref=e1040]:
+                - generic [ref=e1041]:
+                  - generic [ref=e1042]:
+                    - heading "Mario Rossi" [level=2] [ref=e1043]
+                    - paragraph [ref=e1044]: Benvenuto! come va oggi?
+                  - generic [ref=e1045]: 62% completo
+                - generic [ref=e1046]:
+                  - generic [ref=e1047]:
+                    - img [ref=e1048]
+                    - text: Software Developer
+                  - generic [ref=e1051]:
+                    - img [ref=e1052]
+                    - text: Tempo Indeterminato
+                  - generic [ref=e1055]:
+                    - img [ref=e1056]
+                    - text: 33 anni
+                  - generic [ref=e1058]:
+                    - img [ref=e1059]
+                    - text: Milano
+                - generic [ref=e1063]:
+                  - img [ref=e1064]
+                  - text: Verificato
+            - generic [ref=e1067]:
+              - link "Cerca Casa 15.243 annunci" [ref=e1068] [cursor=pointer]:
+                - /url: /tenant/listings
+                - img [ref=e1070]
+                - generic [ref=e1073]:
+                  - paragraph [ref=e1074]: Cerca Casa
+                  - paragraph [ref=e1075]: 15.243 annunci
+              - button "Candidature 8 inviate" [ref=e1076] [cursor=pointer]:
+                - img [ref=e1078]
+                - generic [ref=e1081]:
+                  - paragraph [ref=e1082]: Candidature
+                  - paragraph [ref=e1083]: 8 inviate
+                - img [ref=e1084]
+              - generic [ref=e1086]:
+                - img [ref=e1088]
+                - generic [ref=e1091]:
+                  - paragraph [ref=e1092]: Visualizzazioni
+                  - paragraph [ref=e1093]: 127 questo mese
+              - link "Extra Visibilità Potenzia il profilo" [ref=e1094] [cursor=pointer]:
+                - /url: /tenant/services
+                - img [ref=e1096]
+                - generic [ref=e1098]:
+                  - paragraph [ref=e1099]: Extra Visibilità
+                  - paragraph [ref=e1100]: Potenzia il profilo
+            - generic [ref=e1101]:
+              - generic [ref=e1102]:
+                - generic [ref=e1104]:
+                  - heading "Attivita Recenti" [level=3] [ref=e1105]
+                  - link "Vedi tutte" [ref=e1106] [cursor=pointer]:
+                    - /url: /tenant/notifications
+                - generic [ref=e1107]:
+                  - generic [ref=e1108]:
+                    - img [ref=e1110]
+                    - generic [ref=e1113]:
+                      - paragraph [ref=e1114]: Immobiliare Centrale ha visualizzato il tuo profilo
+                      - paragraph [ref=e1115]:
+                        - img [ref=e1116]
+                        - text: circa 2 ore fa
+                  - generic [ref=e1119]:
+                    - img [ref=e1121]
+                    - generic [ref=e1123]:
+                      - paragraph [ref=e1124]: Hai un nuovo match con Casa Milano
+                      - paragraph [ref=e1125]:
+                        - img [ref=e1126]
+                        - text: circa 5 ore fa
+                  - generic [ref=e1129]:
+                    - img [ref=e1131]
+                    - generic [ref=e1134]:
+                      - paragraph [ref=e1135]: La tua candidatura e stata inviata
+                      - paragraph [ref=e1136]:
+                        - img [ref=e1137]
+                        - text: un giorno fa
+                  - generic [ref=e1140]:
+                    - img [ref=e1142]
+                    - generic [ref=e1145]:
+                      - paragraph [ref=e1146]: Documento verificato con successo
+                      - paragraph [ref=e1147]:
+                        - img [ref=e1148]
+                        - text: 2 giorni fa
+              - generic [ref=e1151]:
+                - generic [ref=e1152]:
+                  - generic [ref=e1153]:
+                    - img [ref=e1154]
+                    - heading "Completamento Profilo" [level=3] [ref=e1156]
+                  - generic [ref=e1157]:
+                    - img [ref=e1158]
+                    - generic [ref=e1161]: 62%
+                - paragraph [ref=e1164]: Buon inizio! Completa il profilo per più visibilità.
+                - link "Completa il profilo" [ref=e1165] [cursor=pointer]:
+                  - /url: /tenant/profile
+            - generic [ref=e1167] [cursor=pointer]:
+              - generic [ref=e1168]:
+                - img [ref=e1170]
+                - generic [ref=e1172]:
+                  - heading "Budget Ingresso Casa" [level=3] [ref=e1173]
+                  - paragraph [ref=e1174]: "Stima totale: 4000 €"
+              - img [ref=e1176]
+            - generic [ref=e1178]:
+              - heading "I tuoi Badge" [level=3] [ref=e1180]
+              - generic [ref=e1181]:
+                - generic [ref=e1182]:
+                  - img [ref=e1183]
+                  - text: Profilo Verificato
+                - generic [ref=e1185]:
+                  - img [ref=e1186]
+                  - text: In Costruzione
+            - generic [ref=e1189]:
+              - img [ref=e1191]
+              - generic [ref=e1194]:
+                - heading "Vuoi piu visibilita?" [level=3] [ref=e1195]
+                - paragraph [ref=e1196]: I profili completi ricevono in media 3 volte piu visualizzazioni e 5 volte piu risposte dalle agenzie.
+                - generic [ref=e1197]:
+                  - generic [ref=e1198]: + Carica video
+                  - generic [ref=e1199]: + Aggiungi foto
+    - status [ref=e1205]: Accesso come tenant riuscito!
+  - generic [ref=e809]: "0"

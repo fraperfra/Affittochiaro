@@ -1,0 +1,613 @@
+- generic [ref=e3]:
+  - banner [ref=e5]:
+    - link "Affittochiaro" [ref=e6] [cursor=pointer]:
+      - /url: /
+      - img "Affittochiaro" [ref=e7]
+    - navigation [ref=e8]:
+      - link "Come Funziona" [ref=e9] [cursor=pointer]:
+        - /url: /come-funziona
+      - link "Annunci" [ref=e10] [cursor=pointer]:
+        - /url: /case-e-stanze-in-affitto
+      - link "Cerca Inquilino" [ref=e11] [cursor=pointer]:
+        - /url: /cerca-inquilino
+      - link "Servizi" [ref=e12] [cursor=pointer]:
+        - /url: /servizi
+      - link "Agenzie" [ref=e13] [cursor=pointer]:
+        - /url: /agenzie
+      - link "News" [ref=e14] [cursor=pointer]:
+        - /url: /guide-affitto
+      - generic [ref=e15]:
+        - link "REGISTRATI" [ref=e16] [cursor=pointer]:
+          - /url: /register
+        - link "ACCEDI" [ref=e17] [cursor=pointer]:
+          - /url: /login
+  - main [ref=e18]:
+    - generic [ref=e20]:
+      - generic [ref=e21]:
+        - paragraph [ref=e24]: Questa settimana 127 inquilini verificati hanno trovato casa tramite AffittoChiaro
+        - heading "Trova casa in affitto in 2 Settimane . Smetti di inviare email a vuoto." [level=1] [ref=e26]:
+          - text: Trova casa in affitto in
+          - generic [ref=e27]: 2 Settimane
+          - text: .
+          - text: Smetti di inviare email a vuoto.
+        - paragraph [ref=e28]: Crea il tuo profilo e ricevi proposte dai proprietari in meno di 48 ore.
+        - generic [ref=e29]:
+          - generic [ref=e33]:
+            - heading "Cosa stai cercando?" [level=2] [ref=e34]
+            - paragraph [ref=e35]: Seleziona la tipologia e la città. Ti mostriamo subito gli annunci disponibili.
+          - generic [ref=e36]:
+            - generic [ref=e38]:
+              - generic [ref=e40]:
+                - button "Rileva la mia posizione" [ref=e41] [cursor=pointer]:
+                  - img [ref=e42]
+                - combobox "Città" [ref=e45]
+              - generic [ref=e46]:
+                - img
+                - combobox "Tipologia immobile" [ref=e47] [cursor=pointer]:
+                  - option "Qualsiasi tipologia" [selected]
+                  - option "Appartamento"
+                  - option "Bilocale"
+                  - option "Trilocale"
+                  - option "Stanza singola"
+                  - option "Villa / Casa indipendente"
+              - button "Cerca" [ref=e48] [cursor=pointer]:
+                - img [ref=e49]
+                - text: Cerca
+            - paragraph [ref=e52]: Annunci verificati in 40+ città · Candidatura gratuita · Nessuna commissione
+      - generic [ref=e54]:
+        - generic [ref=e57]: IN TEMPO REALE
+        - heading "La più grande community di inquilini in Italia" [level=2] [ref=e58]
+        - paragraph [ref=e59]: Ogni 5 minuti un nuovo inquilino completa il suo profilo.
+        - generic [ref=e60]:
+          - generic [ref=e61]: "31.295"
+          - generic [ref=e62]: Inquilini Registrati e Verificati
+        - button "UNISCITI A LORO →" [ref=e63] [cursor=pointer]
+        - generic [ref=e64]:
+          - generic [ref=e65]:
+            - img "User" [ref=e66]
+            - img "User" [ref=e67]
+            - img "User" [ref=e68]
+            - img "User" [ref=e69]
+          - generic [ref=e70]:
+            - paragraph [ref=e71]: Unisciti a 30.000+ inquilini felici
+            - generic [ref=e72]:
+              - img [ref=e73]
+              - img [ref=e75]
+              - img [ref=e77]
+              - img [ref=e79]
+              - img [ref=e81]
+              - generic [ref=e83]: 4.9/5 su Trustpilot
+    - generic [ref=e84]:
+      - paragraph [ref=e86]: I nostri partner
+      - generic [ref=e88]:
+        - generic [ref=e89]:
+          - img "Domeo"
+        - generic [ref=e90]:
+          - img "Metacasa"
+        - generic [ref=e91]:
+          - img "Sky"
+        - generic [ref=e92]:
+          - img "Holidu"
+        - generic [ref=e93]:
+          - img "Switcho"
+        - generic [ref=e94]:
+          - img "Now"
+        - generic [ref=e95]:
+          - img "Partner"
+        - generic [ref=e96]:
+          - img "Partner"
+        - generic [ref=e97]:
+          - img "Domeo"
+        - generic [ref=e98]:
+          - img "Metacasa"
+        - generic [ref=e99]:
+          - img "Sky"
+        - generic [ref=e100]:
+          - img "Holidu"
+        - generic [ref=e101]:
+          - img "Switcho"
+        - generic [ref=e102]:
+          - img "Now"
+        - generic [ref=e103]:
+          - img "Partner"
+        - generic [ref=e104]:
+          - img "Partner"
+    - generic [ref=e106]:
+      - heading "Cercare Casa in Affitto è un Incubo?" [level=2] [ref=e107]
+      - paragraph [ref=e108]: Sappiamo cosa provi. Il mercato degli affitti oggi è frammentato, lento e spesso frustrante.
+      - generic [ref=e109]:
+        - generic [ref=e110]:
+          - generic [ref=e111]: 📱
+          - paragraph [ref=e112]: Annunci su Facebook e Subito già affittati prima che tu risponda
+        - generic [ref=e113]:
+          - generic [ref=e114]: 📧
+          - paragraph [ref=e115]: "Email nel vuoto: il proprietario non sa chi sei e non ti risponde"
+        - generic [ref=e116]:
+          - generic [ref=e117]: 😤
+          - paragraph [ref=e118]: Senza un profilo verificato, per il proprietario sei solo uno sconosciuto
+        - generic [ref=e119]:
+          - generic [ref=e120]: ⏰
+          - paragraph [ref=e121]: Ogni settimana persa è un mese di affitto in più sul mercato
+      - generic [ref=e123]:
+        - generic [ref=e124]: ⚡
+        - generic [ref=e125]:
+          - paragraph [ref=e126]: Il 73% degli inquilini cerca casa da oltre 2 mesi. Con AffittoChiaro bastano 2 settimane.
+          - generic [ref=e130]: Statistica di settore
+    - generic [ref=e132]:
+      - paragraph [ref=e133]: I VANTAGGI
+      - heading "Presenta Te Stesso Come il Candidato Ideale" [level=2] [ref=e134]
+      - paragraph [ref=e135]: "Su AffittoChiaro non cerchi casa: la casa trova te. Bastano pochi minuti per costruire il tuo profilo inquilino."
+      - generic [ref=e136]:
+        - generic [ref=e137]:
+          - generic [ref=e138]: 📋
+          - generic [ref=e139]:
+            - heading "Dati Verificati" [level=3] [ref=e140]
+            - paragraph [ref=e141]: Certifica la tua identità e solvibilità per rassicurare ogni proprietario fin dal primo contatto.
+        - generic [ref=e142]:
+          - generic [ref=e143]: 🎥
+          - generic [ref=e144]:
+            - heading "Video Presentazione" [level=3] [ref=e145]
+            - paragraph [ref=e146]: Raccontati in 60 secondi. Il 78% dei proprietari preferisce profili con video.
+        - generic [ref=e147]:
+          - generic [ref=e148]: 💼
+          - generic [ref=e149]:
+            - heading "Lavoro Trasparente" [level=3] [ref=e150]
+            - paragraph [ref=e151]: Mostra la tua stabilità con certificazioni sul contratto e settore professionale.
+        - generic [ref=e152]:
+          - generic [ref=e153]: ⭐
+          - generic [ref=e154]:
+            - heading "Colleziona testimonianze" [level=3] [ref=e155]
+            - paragraph [ref=e156]: Colleziona testimonianze dai tuoi precedenti proprietari per massimizzare la fiducia.
+        - generic [ref=e157]:
+          - generic [ref=e158]: 📸
+          - generic [ref=e159]:
+            - heading "Galleria Personale" [level=3] [ref=e160]
+            - paragraph [ref=e161]: Mostra il tuo stile di vita e i tuoi hobby con una gallery che parla di te.
+        - generic [ref=e162]:
+          - generic [ref=e163]: ✍️
+          - generic [ref=e164]:
+            - heading "La Tua Storia" [level=3] [ref=e165]
+            - paragraph [ref=e166]: Una biografia curata per spiegare perché sei l'inquilino perfetto.
+    - generic [ref=e168]:
+      - generic [ref=e169]:
+        - paragraph [ref=e170]: PROCESSO SEMPLIFICATO
+        - heading "Candidati in 3 Semplici Passaggi" [level=2] [ref=e171]
+        - paragraph [ref=e172]: Dalla registrazione alla tua nuova casa, senza intoppi e con la massima professionalità.
+      - generic [ref=e173]:
+        - generic [ref=e174]:
+          - generic [ref=e175]:
+            - generic [ref=e176]: "1"
+            - heading "Crea il Tuo Profilo da Inquilino" [level=3] [ref=e177]
+          - paragraph [ref=e178]: Registrati gratuitamente e compila il tuo profilo completo.
+          - generic [ref=e180]:
+            - generic [ref=e181]:
+              - generic [ref=e182]:
+                - generic [ref=e183]: A
+                - generic [ref=e184]: Affittochiaro
+              - generic [ref=e187]: In Corso
+            - generic [ref=e188]:
+              - generic [ref=e189]: LM
+              - generic [ref=e190]:
+                - heading "Luca Martini" [level=4] [ref=e191]
+                - generic [ref=e192]:
+                  - img [ref=e193]
+                  - generic [ref=e195]: Profilo verificato
+            - generic [ref=e196]:
+              - generic [ref=e197]:
+                - generic [ref=e198]: Budget
+                - generic [ref=e199]: € 1.000 / mese
+              - generic [ref=e200]:
+                - generic [ref=e201]: Reddito
+                - generic [ref=e202]: € 2.500 / mese
+            - button "Crea il tuo Profilo" [ref=e203] [cursor=pointer]
+        - generic [ref=e204]:
+          - generic [ref=e205]:
+            - generic [ref=e206]: "2"
+            - heading "Sfoglia Tutti gli Annunci d'Italia" [level=3] [ref=e207]
+          - paragraph [ref=e208]: Aggreghiamo TUTTI gli annunci del web in un unico posto.
+          - generic [ref=e210]:
+            - img "Casa" [ref=e212]
+            - generic [ref=e213]:
+              - heading "Appartamento Milano" [level=4] [ref=e214]
+              - generic [ref=e215]: € 1.200/mese
+        - generic [ref=e216]:
+          - generic [ref=e217]:
+            - generic [ref=e218]: "3"
+            - heading "Candidati con Un Click" [level=3] [ref=e219]
+          - paragraph [ref=e220]: Il proprietario riceve subito il tuo profilo d'eccellenza.
+          - img "Candidati ora GIF" [ref=e222]
+    - generic [ref=e224]:
+      - generic [ref=e226]:
+        - img "Mappa Italia" [ref=e228]
+        - generic [ref=e230]:
+          - paragraph [ref=e231]: LIVE @ ROMA
+          - generic [ref=e232]:
+            - paragraph [ref=e233]: 980 Annunci
+            - paragraph [ref=e234]: +85 nuovi oggi
+          - paragraph [ref=e236]: "Inquilini verificati: 9.8k"
+      - generic [ref=e238]:
+        - generic [ref=e239]: PRESENZA CAPILLARE
+        - heading "Affittochiaro è Vicino a Te" [level=2] [ref=e240]:
+          - text: Affittochiaro è
+          - text: Vicino a Te
+        - paragraph [ref=e241]: Siamo attivi in tutte le principali città italiane — da Milano a Palermo. Ogni giorno aggiungiamo nuovi annunci verificati, così trovi sempre l'opportunità giusta nella tua zona.
+        - generic [ref=e243]:
+          - paragraph [ref=e244]: "\"Grazie alla capillarità di Affittochiaro, abbiamo trovato l'inquilino ideale per il nostro immobile a Roma in soli 4 giorni.\""
+          - generic [ref=e245]:
+            - generic [ref=e246]: AR
+            - paragraph [ref=e247]: — AGENZIA REALE, ROMA
+        - button "CERCA LA TUA CASA" [ref=e248] [cursor=pointer]
+    - generic [ref=e250]:
+      - generic [ref=e251]: ANNUNCI SELEZIONATI
+      - heading "Scegli la Tua Prossima Casa" [level=2] [ref=e252]
+      - paragraph [ref=e253]: Sfoglia le migliori opportunità immobiliari aggiornate in tempo reale dai portali e dai social a Roma e dintorni.
+      - generic [ref=e254]:
+        - button "Tutti" [ref=e255] [cursor=pointer]
+        - button "Appartamento" [ref=e256] [cursor=pointer]
+        - button "Bilocale" [ref=e257] [cursor=pointer]
+        - button "Trilocale" [ref=e258] [cursor=pointer]
+        - button "Stanza" [ref=e259] [cursor=pointer]
+        - button "Villa" [ref=e260] [cursor=pointer]
+      - generic [ref=e261]:
+        - generic [ref=e262]:
+          - link "Bilocale luminoso in centro storico Esclusiva" [ref=e263] [cursor=pointer]:
+            - /url: /case-e-stanze-in-affitto/emilia-romagna/bologna/bilocale/bilocale-luminoso-bologna-centro
+            - img "Bilocale luminoso in centro storico" [ref=e264]
+            - generic [ref=e265]:
+              - img [ref=e266]
+              - text: Esclusiva
+          - generic [ref=e268]:
+            - generic [ref=e269]:
+              - img [ref=e270]
+              - generic [ref=e273]: Centro Storico
+            - heading "Bilocale luminoso in centro storico" [level=3] [ref=e274]
+            - generic [ref=e275]:
+              - generic [ref=e276]:
+                - img [ref=e277]
+                - text: 55 m²
+              - generic [ref=e282]:
+                - img [ref=e283]
+                - text: 1 cam.
+              - generic [ref=e286]:
+                - img [ref=e287]
+                - text: 1 bagni
+            - generic [ref=e290]:
+              - generic [ref=e291]: € 950/mese
+              - generic [ref=e292]: bilocale
+            - link "Candidati" [ref=e293] [cursor=pointer]:
+              - /url: /case-e-stanze-in-affitto/emilia-romagna/bologna/bilocale/bilocale-luminoso-bologna-centro
+        - generic [ref=e294]:
+          - link "Trilocale con balcone - Quartiere Navile" [ref=e295] [cursor=pointer]:
+            - /url: /case-e-stanze-in-affitto/emilia-romagna/bologna/trilocale/trilocale-con-balcone-bologna-navile
+            - img "Trilocale con balcone - Quartiere Navile" [ref=e296]
+          - generic [ref=e297]:
+            - generic [ref=e298]:
+              - img [ref=e299]
+              - generic [ref=e302]: Navile
+            - heading "Trilocale con balcone - Quartiere Navile" [level=3] [ref=e303]
+            - generic [ref=e304]:
+              - generic [ref=e305]:
+                - img [ref=e306]
+                - text: 85 m²
+              - generic [ref=e311]:
+                - img [ref=e312]
+                - text: 2 cam.
+              - generic [ref=e315]:
+                - img [ref=e316]
+                - text: 1 bagni
+            - generic [ref=e319]:
+              - generic [ref=e320]: € 1100/mese
+              - generic [ref=e321]: trilocale
+            - link "Candidati" [ref=e322] [cursor=pointer]:
+              - /url: /case-e-stanze-in-affitto/emilia-romagna/bologna/trilocale/trilocale-con-balcone-bologna-navile
+        - generic [ref=e323]:
+          - link "Stanza singola zona universitaria" [ref=e324] [cursor=pointer]:
+            - /url: /case-e-stanze-in-affitto/emilia-romagna/bologna/stanza/stanza-singola-bologna-universitaria
+            - img "Stanza singola zona universitaria" [ref=e325]
+          - generic [ref=e326]:
+            - generic [ref=e327]:
+              - img [ref=e328]
+              - generic [ref=e331]: Zona Universitaria
+            - heading "Stanza singola zona universitaria" [level=3] [ref=e332]
+            - generic [ref=e333]:
+              - generic [ref=e334]:
+                - img [ref=e335]
+                - text: 18 m²
+              - generic [ref=e340]:
+                - img [ref=e341]
+                - text: 1 cam.
+              - generic [ref=e344]:
+                - img [ref=e345]
+                - text: 1 bagni
+            - generic [ref=e348]:
+              - generic [ref=e349]: € 420/mese
+              - generic [ref=e350]: stanza
+            - link "Candidati" [ref=e351] [cursor=pointer]:
+              - /url: /case-e-stanze-in-affitto/emilia-romagna/bologna/stanza/stanza-singola-bologna-universitaria
+        - generic [ref=e352]:
+          - link "Appartamento moderno ai Navigli Esclusiva" [ref=e353] [cursor=pointer]:
+            - /url: /case-e-stanze-in-affitto/lombardia/milano/appartamento/appartamento-moderno-milano-navigli
+            - img "Appartamento moderno ai Navigli" [ref=e354]
+            - generic [ref=e355]:
+              - img [ref=e356]
+              - text: Esclusiva
+          - generic [ref=e358]:
+            - generic [ref=e359]:
+              - img [ref=e360]
+              - generic [ref=e363]: Navigli
+            - heading "Appartamento moderno ai Navigli" [level=3] [ref=e364]
+            - generic [ref=e365]:
+              - generic [ref=e366]:
+                - img [ref=e367]
+                - text: 65 m²
+              - generic [ref=e372]:
+                - img [ref=e373]
+                - text: 1 cam.
+              - generic [ref=e376]:
+                - img [ref=e377]
+                - text: 1 bagni
+            - generic [ref=e380]:
+              - generic [ref=e381]: € 1600/mese
+              - generic [ref=e382]: appartamento
+            - link "Candidati" [ref=e383] [cursor=pointer]:
+              - /url: /case-e-stanze-in-affitto/lombardia/milano/appartamento/appartamento-moderno-milano-navigli
+        - generic [ref=e384]:
+          - link "Bilocale in Porta Venezia" [ref=e385] [cursor=pointer]:
+            - /url: /case-e-stanze-in-affitto/lombardia/milano/bilocale/bilocale-porta-venezia-milano
+            - img "Bilocale in Porta Venezia" [ref=e386]
+          - generic [ref=e387]:
+            - generic [ref=e388]:
+              - img [ref=e389]
+              - generic [ref=e392]: Porta Venezia
+            - heading "Bilocale in Porta Venezia" [level=3] [ref=e393]
+            - generic [ref=e394]:
+              - generic [ref=e395]:
+                - img [ref=e396]
+                - text: 58 m²
+              - generic [ref=e401]:
+                - img [ref=e402]
+                - text: 1 cam.
+              - generic [ref=e405]:
+                - img [ref=e406]
+                - text: 2 bagni
+            - generic [ref=e409]:
+              - generic [ref=e410]: € 1350/mese
+              - generic [ref=e411]: bilocale
+            - link "Candidati" [ref=e412] [cursor=pointer]:
+              - /url: /case-e-stanze-in-affitto/lombardia/milano/bilocale/bilocale-porta-venezia-milano
+        - generic [ref=e413]:
+          - link "Trilocale nel quartiere Prati Esclusiva" [ref=e414] [cursor=pointer]:
+            - /url: /case-e-stanze-in-affitto/lazio/roma/trilocale/trilocale-prati-roma
+            - img "Trilocale nel quartiere Prati" [ref=e415]
+            - generic [ref=e416]:
+              - img [ref=e417]
+              - text: Esclusiva
+          - generic [ref=e419]:
+            - generic [ref=e420]:
+              - img [ref=e421]
+              - generic [ref=e424]: Prati
+            - heading "Trilocale nel quartiere Prati" [level=3] [ref=e425]
+            - generic [ref=e426]:
+              - generic [ref=e427]:
+                - img [ref=e428]
+                - text: 90 m²
+              - generic [ref=e433]:
+                - img [ref=e434]
+                - text: 2 cam.
+              - generic [ref=e437]:
+                - img [ref=e438]
+                - text: 1 bagni
+            - generic [ref=e441]:
+              - generic [ref=e442]: € 1800/mese
+              - generic [ref=e443]: trilocale
+            - link "Candidati" [ref=e444] [cursor=pointer]:
+              - /url: /case-e-stanze-in-affitto/lazio/roma/trilocale/trilocale-prati-roma
+      - button "Vedi tutti gli annunci disponibili a Roma" [ref=e446] [cursor=pointer]:
+        - generic [ref=e447]: Vedi tutti gli annunci disponibili a Roma
+        - img [ref=e449]
+    - generic [ref=e451]:
+      - generic [ref=e453]:
+        - generic [ref=e454]:
+          - paragraph [ref=e455]: TESTIMONIANZE
+          - heading "Cosa dicono i nostri inquilini" [level=2] [ref=e456]
+        - generic [ref=e457]:
+          - generic [ref=e458]:
+            - img [ref=e459]
+            - img [ref=e461]
+            - img [ref=e463]
+            - img [ref=e465]
+            - img [ref=e467]
+          - paragraph [ref=e469]: 4.9/5 su Trustpilot
+      - generic [ref=e470]:
+        - generic [ref=e471]:
+          - generic [ref=e472]:
+            - generic [ref=e473]:
+              - img [ref=e474]
+              - img [ref=e476]
+              - img [ref=e478]
+              - img [ref=e480]
+              - img [ref=e482]
+            - paragraph [ref=e484]: "\"Grazie ad Affittochiaro ho trovato casa in 2 settimane. Semplice: ho inserito i miei dati e sono stato contattato direttamente dal proprietario. Lo consiglio!\""
+          - generic [ref=e485]:
+            - img "Luigi" [ref=e486]
+            - generic [ref=e487]:
+              - paragraph [ref=e488]: Luigi
+              - paragraph [ref=e489]: Reggio Emilia
+        - generic [ref=e490]:
+          - generic [ref=e491]:
+            - generic [ref=e492]:
+              - img [ref=e493]
+              - img [ref=e495]
+              - img [ref=e497]
+              - img [ref=e499]
+              - img [ref=e501]
+            - paragraph [ref=e503]: "\"Ottima opportunità! Ho trovato l’inquilino ideale con facilità e autonomia, senza perdere tempo.\""
+          - generic [ref=e504]:
+            - img "Massimo" [ref=e505]
+            - generic [ref=e506]:
+              - paragraph [ref=e507]: Massimo
+              - paragraph [ref=e508]: Milano
+        - generic [ref=e509]:
+          - generic [ref=e510]:
+            - generic [ref=e511]:
+              - img [ref=e512]
+              - img [ref=e514]
+              - img [ref=e516]
+              - img [ref=e518]
+              - img [ref=e520]
+            - paragraph [ref=e522]: "\"Cercavo casa da mesi su Facebook. Con Affittochiaro è cambiato tutto: profilo completo, video, e in pochi giorni avevo 3 proprietari interessati!\""
+          - generic [ref=e523]:
+            - img "Sara" [ref=e524]
+            - generic [ref=e525]:
+              - paragraph [ref=e526]: Sara
+              - paragraph [ref=e527]: Bologna
+    - generic [ref=e529]:
+      - generic [ref=e530]:
+        - paragraph [ref=e531]: INIZIA ORA
+        - heading "La tua prossima casa ti sta cercando" [level=2] [ref=e532]:
+          - text: La tua prossima casa
+          - text: ti sta cercando
+        - paragraph [ref=e533]: Lascia i tuoi dati e ricevi proposte personalizzate direttamente nella tua email. Niente spam, solo annunci che fanno per te.
+      - generic [ref=e534]:
+        - generic [ref=e535]:
+          - generic [ref=e536]:
+            - generic [ref=e537]: Il tuo nome
+            - textbox "Il tuo nome" [ref=e538]:
+              - /placeholder: Mario
+          - generic [ref=e539]:
+            - generic [ref=e540]: La tua email
+            - textbox "La tua email" [ref=e541]:
+              - /placeholder: mario@email.com
+          - generic [ref=e542]:
+            - generic [ref=e543]: Cosa cerchi?
+            - combobox "Cosa cerchi?" [ref=e544] [cursor=pointer]:
+              - option "Seleziona..." [disabled] [selected]
+              - option "Monolocale"
+              - option "Bilocale"
+              - option "Trilocale"
+              - option "Quadrilocale+"
+              - option "Stanza singola"
+              - option "Stanza in condivisione"
+        - button "Voglio ricevere proposte" [ref=e545] [cursor=pointer]:
+          - text: Voglio ricevere proposte
+          - img [ref=e546]
+        - paragraph [ref=e548]: Unisciti a oltre 30.000 inquilini che hanno già trovato casa
+      - generic [ref=e549]:
+        - generic [ref=e550]:
+          - img [ref=e551]
+          - generic [ref=e553]: Dati protetti
+        - generic [ref=e554]:
+          - img [ref=e555]
+          - generic [ref=e558]: Zero spam
+        - generic [ref=e559]:
+          - img [ref=e560]
+          - generic [ref=e562]: Risposte in 24h
+    - generic [ref=e564]:
+      - generic [ref=e565]:
+        - generic [ref=e566]: Domande Frequenti
+        - heading "Hai qualche dubbio?" [level=2] [ref=e567]
+        - paragraph [ref=e568]: Trova le risposte alle domande più comuni sul nostro servizio
+      - generic [ref=e569]:
+        - generic [ref=e570]:
+          - button "Come funziona Affittochiaro?" [ref=e571] [cursor=pointer]:
+            - generic [ref=e572]: Come funziona Affittochiaro?
+            - img [ref=e574]
+          - paragraph [ref=e577]: "Affittochiaro ti permette di creare un profilo inquilino verificato con tutte le informazioni che i proprietari cercano: documenti, referenze, video presentazione e storico affitti. Quando ti candidi per un annuncio, il proprietario riceve il tuo profilo completo e può risponderti in meno di 24 ore."
+        - generic [ref=e578]:
+          - button "Quanto costa creare un profilo?" [ref=e579] [cursor=pointer]:
+            - generic [ref=e580]: Quanto costa creare un profilo?
+            - img [ref=e582]
+          - paragraph [ref=e584]: Creare il tuo profilo inquilino è completamente gratuito. Puoi aggiungere tutte le informazioni, caricare documenti e candidarti agli annunci senza alcun costo. Offriamo anche piani premium per chi vuole maggiore visibilità e funzionalità avanzate.
+        - generic [ref=e585]:
+          - button "Come viene verificato il mio profilo?" [ref=e586] [cursor=pointer]:
+            - generic [ref=e587]: Come viene verificato il mio profilo?
+            - img [ref=e589]
+          - paragraph [ref=e591]: Verifichiamo la tua identità tramite documento, il tuo reddito attraverso documentazione ufficiale (busta paga, CUD, dichiarazione dei redditi) e le referenze dai precedenti proprietari. Un profilo verificato aumenta le tue possibilità di essere contattato del 300%.
+        - generic [ref=e592]:
+          - button "Posso candidarmi a più annunci contemporaneamente?" [ref=e593] [cursor=pointer]:
+            - generic [ref=e594]: Posso candidarmi a più annunci contemporaneamente?
+            - img [ref=e596]
+          - paragraph [ref=e598]: Certamente! Con Affittochiaro puoi candidarti a tutti gli annunci che desideri. Il tuo profilo viene inviato automaticamente ai proprietari, risparmiandoti ore di email e telefonate.
+        - generic [ref=e599]:
+          - button "Quanto tempo ci vuole per trovare casa?" [ref=e600] [cursor=pointer]:
+            - generic [ref=e601]: Quanto tempo ci vuole per trovare casa?
+            - img [ref=e603]
+          - paragraph [ref=e605]: In media, i nostri utenti trovano casa in meno di 2 settimane. Grazie al profilo verificato e completo, i proprietari rispondono più velocemente e con maggiore fiducia. Il 78% degli utenti riceve almeno una risposta entro 48 ore.
+        - generic [ref=e606]:
+          - button "Cos'è la video presentazione?" [ref=e607] [cursor=pointer]:
+            - generic [ref=e608]: Cos'è la video presentazione?
+            - img [ref=e610]
+          - paragraph [ref=e612]: La video presentazione è un breve video (30-60 secondi) in cui ti presenti ai proprietari. È un modo efficace per distinguerti dagli altri candidati e mostrare la tua affidabilità. I profili con video ricevono il 40% di risposte in più.
+        - generic [ref=e613]:
+          - button "I miei dati sono al sicuro?" [ref=e614] [cursor=pointer]:
+            - generic [ref=e615]: I miei dati sono al sicuro?
+            - img [ref=e617]
+          - paragraph [ref=e619]: Assolutamente sì. Utilizziamo crittografia di livello bancario per proteggere tutti i tuoi dati. Le informazioni sensibili vengono condivise solo con i proprietari degli annunci a cui ti candidi e solo dopo il tuo consenso esplicito.
+        - generic [ref=e620]:
+          - button "Posso usare Affittochiaro in tutta Italia?" [ref=e621] [cursor=pointer]:
+            - generic [ref=e622]: Posso usare Affittochiaro in tutta Italia?
+            - img [ref=e624]
+          - paragraph [ref=e626]: "Sì! Affittochiaro è attivo in tutte le principali città italiane: Milano, Roma, Torino, Bologna, Firenze, Napoli e molte altre. La nostra community cresce ogni giorno con nuovi annunci e inquilini verificati."
+        - generic [ref=e627]:
+          - button "Come posso contattare l'assistenza?" [ref=e628] [cursor=pointer]:
+            - generic [ref=e629]: Come posso contattare l'assistenza?
+            - img [ref=e631]
+          - paragraph [ref=e633]: Il nostro team di supporto è disponibile 7 giorni su 7. Puoi contattarci tramite la chat in basso a destra, via email a supporto@affittochiaro.it o chiamando il numero verde. Rispondiamo sempre entro 2 ore lavorative.
+      - generic [ref=e634]:
+        - paragraph [ref=e635]: Non hai trovato la risposta che cercavi?
+        - button "Contattaci" [ref=e636] [cursor=pointer]:
+          - text: Contattaci
+          - img [ref=e637]
+  - contentinfo [ref=e639]:
+    - generic [ref=e640]:
+      - generic [ref=e641]:
+        - heading "Esplora" [level=4] [ref=e642]
+        - list [ref=e643]:
+          - listitem [ref=e644]:
+            - link "Come funziona" [ref=e645] [cursor=pointer]:
+              - /url: /come-funziona
+          - listitem [ref=e646]:
+            - link "Trova casa" [ref=e647] [cursor=pointer]:
+              - /url: /case-e-stanze-in-affitto
+          - listitem [ref=e648]:
+            - link "Cerca Inquilino" [ref=e649] [cursor=pointer]:
+              - /url: /cerca-inquilino
+          - listitem [ref=e650]:
+            - link "Servizi" [ref=e651] [cursor=pointer]:
+              - /url: /servizi
+          - listitem [ref=e652]:
+            - link "Agenzie" [ref=e653] [cursor=pointer]:
+              - /url: /agenzie
+          - listitem [ref=e654]:
+            - link "Domande frequenti" [ref=e655] [cursor=pointer]:
+              - /url: /faq
+      - generic [ref=e656]:
+        - heading "Risorse" [level=4] [ref=e657]
+        - list [ref=e658]:
+          - listitem [ref=e659]:
+            - link "Chi Siamo" [ref=e660] [cursor=pointer]:
+              - /url: /chi-siamo
+          - listitem [ref=e661]:
+            - link "Guide Affitto" [ref=e662] [cursor=pointer]:
+              - /url: /guide-affitto
+          - listitem [ref=e663]:
+            - link "Guida per inquilini" [ref=e664] [cursor=pointer]:
+              - /url: /come-funziona/per-chi-cerca-casa
+          - listitem [ref=e665]:
+            - link "Supporto & FAQ" [ref=e666] [cursor=pointer]:
+              - /url: /faq
+      - generic [ref=e667]:
+        - img "Affittochiaro" [ref=e669]
+        - paragraph [ref=e670]: La tua prossima casa ti sta aspettando. Niente più ore perse tra annunci sparsi, niente più candidature ignorate. Un profilo, mille opportunità.
+        - generic [ref=e673]: Oltre 1.200 inquilini già registrati
+    - generic [ref=e674]:
+      - generic [ref=e675]: © 2025 Affittochiaro. Tutti i diritti riservati.
+      - generic [ref=e676]:
+        - link "Privacy Policy" [ref=e677] [cursor=pointer]:
+          - /url: /privacy-policy
+        - link "Termini di Servizio" [ref=e678] [cursor=pointer]:
+          - /url: /termini-di-servizio
+        - link "Cookie" [ref=e679] [cursor=pointer]:
+          - /url: /cookie-policy
+        - link "System" [ref=e680] [cursor=pointer]:
+          - /url: /design-system

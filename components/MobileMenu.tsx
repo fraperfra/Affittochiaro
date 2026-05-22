@@ -21,15 +21,6 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
       />
       <div className="fixed bottom-[104px] left-4 right-4 z-[260] bg-white rounded-3xl shadow-2xl border border-gray-100 p-6 animate-slide-up flex flex-col gap-1 overflow-hidden">
         <Link
-          to="/come-funziona"
-          onClick={onClose}
-          className={`text-lg font-bold py-4 border-b border-gray-50 flex justify-between items-center ${
-            isActive('/come-funziona') ? 'text-action-green' : 'text-brand-green'
-          }`}
-        >
-          Come Funziona
-        </Link>
-        <Link
           to="/case-e-stanze-in-affitto"
           onClick={onClose}
           className={`text-lg font-bold py-4 border-b border-gray-50 flex justify-between items-center ${

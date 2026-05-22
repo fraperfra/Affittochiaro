@@ -52,12 +52,11 @@ export const Hero: React.FC<HeroProps> = ({ counter, activeCityName }) => {
             </div>
             <div className="mb-5">
               <h1 className="text-[2rem] md:text-[2.75rem] xl:text-5xl font-bold text-brand-green leading-[1.1] tracking-[-0.01em]">
-                Trova casa in affitto in <span className="underline-green text-action-green">2 Settimane</span>. <br />
-                Smetti di inviare email a vuoto.
+                Trova casa in affitto in <span className="underline-green text-action-green">2 Settimane</span>.
               </h1>
             </div>
-            <p className="text-lg md:text-xl text-medium-gray max-w-[65ch] mx-auto lg:mx-0 mb-5 leading-[1.5]">
-              Crea il tuo <span className="font-bold text-brand-green">profilo</span> e ricevi proposte dai proprietari in <span className="font-bold text-brand-green">meno di 48 ore</span>.
+            <p className="text-lg md:text-xl text-medium-gray mb-5 leading-[1.5]">
+              È cambiato il modo di cercare casa. Crea il tuo <span className="font-bold text-brand-green">profilo</span> e ricevi proposte da privati e agenzie in <span className="font-bold text-brand-green">meno di 48 ore</span>.
             </p>
 
             <div className="rounded-2xl border border-gray-200 bg-white p-4 md:p-0 md:border-0 md:bg-transparent">

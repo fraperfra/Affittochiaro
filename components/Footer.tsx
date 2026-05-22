@@ -9,8 +9,7 @@ export const Footer: React.FC = () => {
         <div>
           <h4 className="font-bold mb-6 text-white/60 uppercase tracking-wider text-xs">Esplora</h4>
           <ul className="space-y-4 text-white/40">
-            <li><Link to="/come-funziona" className="hover:text-white transition-colors">Come funziona</Link></li>
-            <li><Link to="/case-e-stanze-in-affitto" className="hover:text-white transition-colors">Trova casa</Link></li>
+<li><Link to="/case-e-stanze-in-affitto" className="hover:text-white transition-colors">Trova casa</Link></li>
             <li><Link to="/cerca-inquilino" className="hover:text-white transition-colors">Cerca Inquilino</Link></li>
             <li><Link to="/servizi" className="hover:text-white transition-colors">Servizi</Link></li>
             <li><Link to="/agenzie" className="hover:text-white transition-colors">Agenzie</Link></li>
@@ -24,8 +23,7 @@ export const Footer: React.FC = () => {
           <ul className="space-y-4 text-white/40">
             <li><Link to="/chi-siamo" className="hover:text-white transition-colors">Chi Siamo</Link></li>
             <li><Link to="/guide-affitto" className="hover:text-white transition-colors">Guide Affitto</Link></li>
-            <li><Link to="/come-funziona/per-chi-cerca-casa" className="hover:text-white transition-colors">Guida per inquilini</Link></li>
-            <li><Link to="/faq" className="hover:text-white transition-colors">Supporto & FAQ</Link></li>
+<li><Link to="/faq" className="hover:text-white transition-colors">Supporto & FAQ</Link></li>
           </ul>
         </div>
 
