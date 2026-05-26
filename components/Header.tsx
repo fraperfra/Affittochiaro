@@ -3,9 +3,9 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../src/store';
 import {
   ArrowLeft, LayoutDashboard, Menu, X,
-  Megaphone, Search as SearchIcon,
   MessageCircle, Send, Sparkles,
 } from 'lucide-react';
+import BottomTabNav from '../src/components/layout/BottomTabNav';
 
 const NAV_LINKS = [
   { to: '/case-e-stanze-in-affitto', label: 'Annunci' },
@@ -163,74 +163,57 @@ export const Header: React.FC = () => {
           {showChat ? <X size={19} /> : <MessageCircle size={19} />}
         </button>
 
-        {/* Bottom Nav Bar */}
-        <nav
-          className="fixed left-0 right-0 z-[100]"
-          style={{ bottom: 'calc(env(safe-area-inset-bottom, 0px) + 6px)' }}
-          aria-label="Navigazione mobile"
-        >
-          <div
-            className="mx-3 flex items-center bg-white border border-gray-100 rounded-2xl"
-            style={{
-              height: '64px',
-              boxShadow: '0 4px 20px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.04)',
-            }}
+        {/* ── Authenticated: dashboard BottomTabNav ── */}
+        {isAuthenticated && user ? (
+          <BottomTabNav userRole={user.role as 'tenant' | 'agency' | 'landlord' | 'admin'} />
+        ) : (
+          /* ── Guest: 3-item public nav (Trova Casa · Accedi · Menu) ── */
+          <nav
+            className="fixed left-0 right-0 z-[100]"
+            style={{ bottom: 'calc(env(safe-area-inset-bottom, 0px) + 6px)' }}
+            aria-label="Navigazione mobile"
           >
-            {/* Annunci */}
-            <Link
-              to="/case-e-stanze-in-affitto"
-              className={`flex flex-col items-center justify-center flex-1 h-full rounded-l-2xl transition-colors active:scale-95 ${isActive('/case-e-stanze-in-affitto') ? 'text-teal-500' : 'text-gray-400'}`}
+            <div
+              className="mx-3 flex items-center bg-white border border-gray-100 rounded-2xl"
+              style={{
+                height: '64px',
+                boxShadow: '0 4px 20px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.04)',
+              }}
             >
-              <Megaphone size={20} />
-              <span className={`mt-0.5 text-[10px] leading-tight font-medium ${isActive('/case-e-stanze-in-affitto') ? 'text-teal-500 font-semibold' : 'text-gray-500'}`}>
-                Annunci
-              </span>
-            </Link>
+              {/* Trova Casa */}
+              <Link
+                to="/register"
+                className="flex items-center justify-center flex-1 h-full px-2 active:scale-95 transition-transform"
+              >
+                <span className="bg-brand-green text-white text-[11px] font-bold px-4 py-2 rounded-xl whitespace-nowrap leading-tight">
+                  Trova Casa
+                </span>
+              </Link>
 
-            {/* Cerca */}
-            <Link
-              to="/cerca-inquilino"
-              className={`flex flex-col items-center justify-center flex-1 h-full transition-colors active:scale-95 ${isActive('/cerca-inquilino') ? 'text-teal-500' : 'text-gray-400'}`}
-            >
-              <SearchIcon size={20} />
-              <span className={`mt-0.5 text-[10px] leading-tight font-medium ${isActive('/cerca-inquilino') ? 'text-teal-500 font-semibold' : 'text-gray-500'}`}>
-                Cerca
-              </span>
-            </Link>
+              {/* Accedi */}
+              <Link
+                to="/login"
+                className="flex items-center justify-center flex-1 h-full px-2 active:scale-95 transition-transform"
+              >
+                <span className="border border-brand-green/50 text-brand-green text-[11px] font-bold px-4 py-2 rounded-xl whitespace-nowrap leading-tight">
+                  Accedi
+                </span>
+              </Link>
 
-            {/* Trova Casa */}
-            <Link
-              to="/register"
-              className="flex items-center justify-center flex-1 h-full px-1 active:scale-95 transition-transform"
-            >
-              <span className="bg-brand-green text-white text-[10px] font-bold px-2.5 py-1.5 rounded-lg whitespace-nowrap leading-tight">
-                Trova Casa
-              </span>
-            </Link>
-
-            {/* Accedi */}
-            <Link
-              to="/login"
-              className="flex items-center justify-center flex-1 h-full px-1 active:scale-95 transition-transform"
-            >
-              <span className="border border-brand-green/50 text-brand-green text-[10px] font-bold px-2.5 py-1.5 rounded-lg whitespace-nowrap leading-tight">
-                Accedi
-              </span>
-            </Link>
-
-            {/* Menu / Hamburger */}
-            <button
-              onClick={() => setMobileOpen(v => !v)}
-              className={`flex flex-col items-center justify-center flex-1 h-full rounded-r-2xl transition-colors active:scale-95 ${mobileOpen ? 'text-teal-500' : 'text-gray-400'}`}
-              aria-label={mobileOpen ? 'Chiudi menu' : 'Apri menu'}
-            >
-              {mobileOpen ? <X size={20} /> : <Menu size={20} />}
-              <span className={`mt-0.5 text-[10px] leading-tight font-medium ${mobileOpen ? 'text-teal-500 font-semibold' : 'text-gray-500'}`}>
-                Menu
-              </span>
-            </button>
-          </div>
-        </nav>
+              {/* Menu / Hamburger */}
+              <button
+                onClick={() => setMobileOpen(v => !v)}
+                className={`flex flex-col items-center justify-center flex-1 h-full rounded-r-2xl transition-colors active:scale-95 ${mobileOpen ? 'text-teal-500' : 'text-gray-400'}`}
+                aria-label={mobileOpen ? 'Chiudi menu' : 'Apri menu'}
+              >
+                {mobileOpen ? <X size={20} /> : <Menu size={20} />}
+                <span className={`mt-0.5 text-[10px] leading-tight font-medium ${mobileOpen ? 'text-teal-500 font-semibold' : 'text-gray-500'}`}>
+                  Menu
+                </span>
+              </button>
+            </div>
+          </nav>
+        )}
       </div>
 
       {/* ── Chat Widget ─────────────────────────────────────────────────── */}
