@@ -364,10 +364,12 @@
 /* PWA safe area — ensures content is never hidden behind iPhone notch / Dynamic Island / home indicator */
 .pt-safe-header {
   padding-top: calc(5rem + env(safe-area-inset-top, 0px)); /* mobile: h-20 (80px) + notch */
+  padding-bottom: calc(76px + env(safe-area-inset-bottom, 0px)); /* mobile: bottom nav height */
 }
 @media (min-width: 768px) {
   .pt-safe-header {
     padding-top: 5rem; /* desktop: h-20 (80px), no notch */
+    padding-bottom: 0;
   }
 }
 
