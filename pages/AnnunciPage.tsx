@@ -300,7 +300,7 @@ export const AnnunciPage: React.FC = () => {
       </div>
 
       {/* ── 2. Filters Bar ───────────────────────────────────────────────── */}
-      <div className="bg-white border-b border-gray-200 sticky top-16 md:top-20 z-40 shadow-sm">
+      <div className="bg-white border-b border-gray-200 sticky top-20 z-40 shadow-sm">
         <div className="max-w-screen-xl mx-auto px-4 py-3">
 
           {/* Bar row */}

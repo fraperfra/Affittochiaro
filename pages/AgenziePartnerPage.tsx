@@ -150,7 +150,7 @@ export const AgenziePartnerPage: React.FC = () => {
       </section>
 
       {/* ── FILTRO ZONA ───────────────────────────────────────── */}
-      <div className="sticky top-16 md:top-20 z-10 bg-white/95 backdrop-blur border-b border-gray-100 px-4 py-3">
+      <div className="sticky top-20 z-10 bg-white/95 backdrop-blur border-b border-gray-100 px-4 py-3">
         <div className="max-w-5xl mx-auto flex items-center gap-2 flex-wrap">
           {visibleCities.map(city => (
             <button

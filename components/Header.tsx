@@ -35,9 +35,9 @@ export const Header: React.FC = () => {
       className="fixed top-0 left-0 right-0 z-50 flex flex-col shadow-sm bg-white"
       style={{ paddingTop: 'env(safe-area-inset-top, 0px)' }}
     >
-      <header className="relative bg-white/95 backdrop-blur-md px-4 md:px-8 h-16 md:h-20 flex items-center justify-center md:justify-between border-b border-gray-100">
-        <Link to="/" className="flex items-center md:static md:translate-x-0 absolute left-1/2 -translate-x-1/2">
-          <img src="/assets/logoaffittochiaro_pic.webp" alt="Affittochiaro" className="h-9 md:h-10 w-auto" />
+      <header className="relative bg-white/95 backdrop-blur-md px-4 md:px-8 h-20 flex items-center justify-center md:justify-between border-b border-gray-100">
+        <Link to="/" className="flex items-center md:static md:translate-x-0 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+          <img src="/assets/logoaffittochiaro_pic.webp" alt="Affittochiaro" className="h-[75px] md:h-[72px] md:mt-[3px] w-auto" />
         </Link>
 
         {/* Desktop nav */}
@@ -83,14 +83,14 @@ export const Header: React.FC = () => {
         className={`fixed inset-0 bg-black/40 z-40 md:hidden transition-opacity duration-300 ${mobileOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
           }`}
         onClick={() => setMobileOpen(false)}
-        style={{ top: 'calc(4rem + env(safe-area-inset-top, 0px))' }}
+        style={{ top: 'calc(5rem + env(safe-area-inset-top, 0px))' }}
       />
 
       {/* Slide panel */}
       <div
         className={`fixed right-0 bottom-0 w-[280px] bg-white z-50 md:hidden transform transition-transform duration-300 ease-out shadow-2xl ${mobileOpen ? 'translate-x-0' : 'translate-x-full'
           }`}
-        style={{ top: 'calc(4rem + env(safe-area-inset-top, 0px))' }}
+        style={{ top: 'calc(5rem + env(safe-area-inset-top, 0px))' }}
       >
         <nav className="flex flex-col h-full">
           {/* Navigation links */}
