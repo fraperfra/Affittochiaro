@@ -120,30 +120,32 @@ export const Header: React.FC = () => {
         style={{ top: 'calc(5rem + env(safe-area-inset-top, 0px))' }}
       />
 
-      {/* Slide panel */}
+      {/* Slide panel — slides up from bottom */}
       <div
-        className={`fixed right-0 w-[280px] bg-white z-[120] md:hidden transform transition-transform duration-300 ease-out shadow-2xl ${mobileOpen ? 'translate-x-0' : 'translate-x-full'}`}
+        className={`fixed left-0 right-0 bg-white z-[120] md:hidden transform transition-transform duration-300 ease-out shadow-2xl rounded-t-2xl ${mobileOpen ? 'translate-y-0' : 'translate-y-full'}`}
         style={{
-          top: 'calc(5rem + env(safe-area-inset-top, 0px))',
           bottom: 'calc(env(safe-area-inset-bottom, 0px) + 74px)',
+          maxHeight: '55vh',
         }}
       >
-        <nav className="flex flex-col h-full">
-          <div className="flex-1 overflow-y-auto py-4">
-            {NAV_LINKS.map(link => (
-              <Link
-                key={link.to}
-                to={link.to}
-                onClick={() => setMobileOpen(false)}
-                className={`flex items-center px-6 py-3.5 text-sm font-bold uppercase tracking-wider transition-colors ${isActive(link.to)
-                    ? 'text-action-green bg-primary-50 border-r-4 border-action-green'
-                    : 'text-gray-700 hover:bg-gray-50 hover:text-brand-green'
-                  }`}
-              >
-                {link.label}
-              </Link>
-            ))}
-          </div>
+        {/* drag handle */}
+        <div className="flex justify-center pt-3 pb-1">
+          <div className="w-10 h-1 rounded-full bg-gray-200" />
+        </div>
+        <nav className="overflow-y-auto" style={{ maxHeight: 'calc(55vh - 24px)' }}>
+          {NAV_LINKS.map(link => (
+            <Link
+              key={link.to}
+              to={link.to}
+              onClick={() => setMobileOpen(false)}
+              className={`flex items-center px-6 py-4 text-sm font-bold uppercase tracking-wider transition-colors ${isActive(link.to)
+                  ? 'text-action-green bg-primary-50 border-l-4 border-action-green'
+                  : 'text-gray-700 hover:bg-gray-50 hover:text-brand-green'
+                }`}
+            >
+              {link.label}
+            </Link>
+          ))}
         </nav>
       </div>
 
@@ -185,7 +187,7 @@ export const Header: React.FC = () => {
                 to="/register"
                 className="flex items-center justify-center flex-1 h-full px-2 active:scale-95 transition-transform"
               >
-                <span className="bg-brand-green text-white text-[11px] font-bold px-4 py-2 rounded-xl whitespace-nowrap leading-tight">
+                <span className="bg-brand-green text-white text-xs font-bold px-5 py-2.5 rounded-xl whitespace-nowrap leading-tight">
                   Trova Casa
                 </span>
               </Link>
@@ -195,7 +197,7 @@ export const Header: React.FC = () => {
                 to="/login"
                 className="flex items-center justify-center flex-1 h-full px-2 active:scale-95 transition-transform"
               >
-                <span className="border border-brand-green/50 text-brand-green text-[11px] font-bold px-4 py-2 rounded-xl whitespace-nowrap leading-tight">
+                <span className="border border-brand-green/50 text-brand-green text-xs font-bold px-5 py-2.5 rounded-xl whitespace-nowrap leading-tight">
                   Accedi
                 </span>
               </Link>
