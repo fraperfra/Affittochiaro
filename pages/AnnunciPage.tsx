@@ -8,7 +8,6 @@ import {
   X,
   SlidersHorizontal,
   Navigation,
-  ChevronDown,
   Loader2,
   Maximize2,
   BedDouble,
@@ -302,17 +301,15 @@ export const AnnunciPage: React.FC = () => {
       {/* ── 2. Filters Bar ───────────────────────────────────────────────── */}
       <div className="bg-white border-b border-gray-200 sticky top-20 z-40 shadow-sm">
         <div className="max-w-screen-xl mx-auto px-4 py-3">
-
-          {/* Bar row */}
           <div className="flex items-center justify-between gap-3">
             <div className="flex items-center gap-3">
               <span className="text-sm text-gray-600 shrink-0">
                 <span className="font-bold text-gray-900">{filteredListings.length}</span> annunci
               </span>
               <button
-                onClick={() => setShowFilters(!showFilters)}
+                onClick={() => setShowFilters(true)}
                 className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all border ${
-                  showFilters || activeFilterCount > 0
+                  activeFilterCount > 0
                     ? 'bg-primary-50 text-primary-700 border-primary-200'
                     : 'bg-gray-50 text-gray-600 border-gray-200 hover:bg-gray-100'
                 }`}
@@ -324,7 +321,6 @@ export const AnnunciPage: React.FC = () => {
                     {activeFilterCount}
                   </span>
                 )}
-                <ChevronDown size={14} className={`transition-transform ${showFilters ? 'rotate-180' : ''}`} />
               </button>
             </div>
 
@@ -388,148 +384,6 @@ export const AnnunciPage: React.FC = () => {
               </button>
             </div>
           </div>
-
-          {/* ── Filter panel ─────────────────────────────────────────────── */}
-          {showFilters && (
-            <div className="mt-4 pt-4 border-t border-gray-100 space-y-5">
-
-              {/* Row 1: Price + MQ sliders */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                <div>
-                  <label className="block text-xs font-bold text-gray-600 mb-3">Fascia di prezzo (€/mese)</label>
-                  <RangeSlider
-                    min={PRICE_MIN} max={PRICE_MAX} step={50}
-                    minVal={filters.priceMin} maxVal={filters.priceMax}
-                    onChange={(min, max) => setFilters(f => ({ ...f, priceMin: min, priceMax: max }))}
-                    formatMin={fmtPriceMin}
-                    formatMax={fmtPriceMax}
-                  />
-                </div>
-                <div>
-                  <label className="block text-xs font-bold text-gray-600 mb-3">Metratura (mq)</label>
-                  <RangeSlider
-                    min={MQ_MIN} max={MQ_MAX} step={5}
-                    minVal={filters.mqMin} maxVal={filters.mqMax}
-                    onChange={(min, max) => setFilters(f => ({ ...f, mqMin: min, mqMax: max }))}
-                    formatMin={fmtMqMin}
-                    formatMax={fmtMqMax}
-                  />
-                </div>
-              </div>
-
-              {/* Row 2: Tipologia */}
-              <div>
-                <label className="block text-xs font-bold text-gray-600 mb-2">Tipologia</label>
-                <div className="flex flex-wrap gap-2">
-                  {TIPOLOGIE_LIST.map(tipo => (
-                    <button
-                      key={tipo}
-                      onClick={() => toggleTipologia(tipo)}
-                      className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all border ${
-                        filters.tipologie.includes(tipo)
-                          ? 'bg-primary-50 text-primary-700 border-primary-200'
-                          : 'bg-white text-gray-600 border-gray-200 hover:bg-gray-50'
-                      }`}
-                    >
-                      {TIPOLOGIE_LABELS[tipo]}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Row 3: Camere + Bagni */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-xs font-bold text-gray-600 mb-2">Numero di camere</label>
-                  <div className="flex flex-wrap gap-2">
-                    <button
-                      onClick={() => setFilters(f => ({ ...f, camere: null }))}
-                      className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all border ${
-                        filters.camere === null
-                          ? 'bg-primary-50 text-primary-700 border-primary-200'
-                          : 'bg-white text-gray-600 border-gray-200 hover:bg-gray-50'
-                      }`}
-                    >
-                      Qualsiasi
-                    </button>
-                    {CAMERE_OPTIONS.map(n => (
-                      <button
-                        key={n}
-                        onClick={() => setFilters(f => ({ ...f, camere: f.camere === n ? null : n }))}
-                        className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all border ${
-                          filters.camere === n
-                            ? 'bg-primary-50 text-primary-700 border-primary-200'
-                            : 'bg-white text-gray-600 border-gray-200 hover:bg-gray-50'
-                        }`}
-                      >
-                        {n === 4 ? '4+' : n}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-                <div>
-                  <label className="block text-xs font-bold text-gray-600 mb-2">Numero di bagni</label>
-                  <div className="flex flex-wrap gap-2">
-                    <button
-                      onClick={() => setFilters(f => ({ ...f, bagni: null }))}
-                      className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all border ${
-                        filters.bagni === null
-                          ? 'bg-primary-50 text-primary-700 border-primary-200'
-                          : 'bg-white text-gray-600 border-gray-200 hover:bg-gray-50'
-                      }`}
-                    >
-                      Qualsiasi
-                    </button>
-                    {BAGNI_OPTIONS.map(n => (
-                      <button
-                        key={n}
-                        onClick={() => setFilters(f => ({ ...f, bagni: f.bagni === n ? null : n }))}
-                        className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all border ${
-                          filters.bagni === n
-                            ? 'bg-primary-50 text-primary-700 border-primary-200'
-                            : 'bg-white text-gray-600 border-gray-200 hover:bg-gray-50'
-                        }`}
-                      >
-                        {n === 3 ? '3+' : n}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              {/* Row 4: Caratteristiche */}
-              <div>
-                <label className="block text-xs font-bold text-gray-600 mb-2">Caratteristiche</label>
-                <div className="flex flex-wrap gap-2">
-                  {CARATTERISTICHE_LIST.map(c => (
-                    <button
-                      key={c}
-                      onClick={() => toggleCaratteristica(c)}
-                      className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all border ${
-                        filters.caratteristiche.includes(c)
-                          ? 'bg-primary-50 text-primary-700 border-primary-200'
-                          : 'bg-white text-gray-600 border-gray-200 hover:bg-gray-50'
-                      }`}
-                    >
-                      {CARATTERISTICHE_LABELS[c]}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Reset */}
-              {activeFilterCount > 0 && (
-                <div className="pt-1">
-                  <button
-                    onClick={handleClearFilters}
-                    className="text-xs text-gray-500 hover:text-gray-800 underline"
-                  >
-                    Rimuovi tutti i filtri
-                  </button>
-                </div>
-              )}
-            </div>
-          )}
         </div>
       </div>
 
@@ -637,6 +491,174 @@ export const AnnunciPage: React.FC = () => {
           </div>
         )}
       </div>
+
+      {/* ── Filter Modal ─────────────────────────────────────────────────── */}
+      {showFilters && (
+        <>
+          <div
+            className="fixed inset-0 bg-black/40 z-[200]"
+            onClick={() => setShowFilters(false)}
+          />
+          <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[201] bg-white rounded-2xl shadow-2xl w-[calc(100%-2rem)] max-w-xl max-h-[85vh] flex flex-col">
+            {/* Header */}
+            <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100 shrink-0">
+              <h2 className="font-bold text-gray-900 text-base">Filtri avanzati</h2>
+              <button
+                onClick={() => setShowFilters(false)}
+                className="p-2 rounded-xl hover:bg-gray-100 text-gray-500 transition-colors"
+              >
+                <X size={20} />
+              </button>
+            </div>
+
+            {/* Body */}
+            <div className="overflow-y-auto flex-1 px-6 py-5 space-y-6">
+
+              {/* Price + MQ */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div>
+                  <label className="block text-xs font-bold text-gray-600 mb-3">Fascia di prezzo (€/mese)</label>
+                  <RangeSlider
+                    min={PRICE_MIN} max={PRICE_MAX} step={50}
+                    minVal={filters.priceMin} maxVal={filters.priceMax}
+                    onChange={(min, max) => setFilters(f => ({ ...f, priceMin: min, priceMax: max }))}
+                    formatMin={fmtPriceMin}
+                    formatMax={fmtPriceMax}
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-gray-600 mb-3">Metratura (mq)</label>
+                  <RangeSlider
+                    min={MQ_MIN} max={MQ_MAX} step={5}
+                    minVal={filters.mqMin} maxVal={filters.mqMax}
+                    onChange={(min, max) => setFilters(f => ({ ...f, mqMin: min, mqMax: max }))}
+                    formatMin={fmtMqMin}
+                    formatMax={fmtMqMax}
+                  />
+                </div>
+              </div>
+
+              {/* Tipologia */}
+              <div>
+                <label className="block text-xs font-bold text-gray-600 mb-2">Tipologia</label>
+                <div className="flex flex-wrap gap-2">
+                  {TIPOLOGIE_LIST.map(tipo => (
+                    <button
+                      key={tipo}
+                      onClick={() => toggleTipologia(tipo)}
+                      className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all border ${
+                        filters.tipologie.includes(tipo)
+                          ? 'bg-primary-50 text-primary-700 border-primary-200'
+                          : 'bg-white text-gray-600 border-gray-200 hover:bg-gray-50'
+                      }`}
+                    >
+                      {TIPOLOGIE_LABELS[tipo]}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Camere + Bagni */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs font-bold text-gray-600 mb-2">Numero di camere</label>
+                  <div className="flex flex-wrap gap-2">
+                    <button
+                      onClick={() => setFilters(f => ({ ...f, camere: null }))}
+                      className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all border ${
+                        filters.camere === null
+                          ? 'bg-primary-50 text-primary-700 border-primary-200'
+                          : 'bg-white text-gray-600 border-gray-200 hover:bg-gray-50'
+                      }`}
+                    >
+                      Qualsiasi
+                    </button>
+                    {CAMERE_OPTIONS.map(n => (
+                      <button
+                        key={n}
+                        onClick={() => setFilters(f => ({ ...f, camere: f.camere === n ? null : n }))}
+                        className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all border ${
+                          filters.camere === n
+                            ? 'bg-primary-50 text-primary-700 border-primary-200'
+                            : 'bg-white text-gray-600 border-gray-200 hover:bg-gray-50'
+                        }`}
+                      >
+                        {n === 4 ? '4+' : n}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-gray-600 mb-2">Numero di bagni</label>
+                  <div className="flex flex-wrap gap-2">
+                    <button
+                      onClick={() => setFilters(f => ({ ...f, bagni: null }))}
+                      className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all border ${
+                        filters.bagni === null
+                          ? 'bg-primary-50 text-primary-700 border-primary-200'
+                          : 'bg-white text-gray-600 border-gray-200 hover:bg-gray-50'
+                      }`}
+                    >
+                      Qualsiasi
+                    </button>
+                    {BAGNI_OPTIONS.map(n => (
+                      <button
+                        key={n}
+                        onClick={() => setFilters(f => ({ ...f, bagni: f.bagni === n ? null : n }))}
+                        className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all border ${
+                          filters.bagni === n
+                            ? 'bg-primary-50 text-primary-700 border-primary-200'
+                            : 'bg-white text-gray-600 border-gray-200 hover:bg-gray-50'
+                        }`}
+                      >
+                        {n === 3 ? '3+' : n}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Caratteristiche */}
+              <div>
+                <label className="block text-xs font-bold text-gray-600 mb-2">Caratteristiche</label>
+                <div className="flex flex-wrap gap-2">
+                  {CARATTERISTICHE_LIST.map(c => (
+                    <button
+                      key={c}
+                      onClick={() => toggleCaratteristica(c)}
+                      className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all border ${
+                        filters.caratteristiche.includes(c)
+                          ? 'bg-primary-50 text-primary-700 border-primary-200'
+                          : 'bg-white text-gray-600 border-gray-200 hover:bg-gray-50'
+                      }`}
+                    >
+                      {CARATTERISTICHE_LABELS[c]}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Footer */}
+            <div className="shrink-0 border-t border-gray-100 px-6 py-4 flex items-center justify-between bg-gray-50 rounded-b-2xl">
+              {activeFilterCount > 0 ? (
+                <button
+                  onClick={handleClearFilters}
+                  className="text-sm text-gray-500 hover:text-gray-800 underline"
+                >
+                  Rimuovi tutti
+                </button>
+              ) : <div />}
+              <button
+                onClick={() => setShowFilters(false)}
+                className="px-6 py-2.5 bg-primary-600 text-white rounded-xl font-bold text-sm hover:bg-primary-700 transition-colors"
+              >
+                Mostra {filteredListings.length} annunci
+              </button>
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 };

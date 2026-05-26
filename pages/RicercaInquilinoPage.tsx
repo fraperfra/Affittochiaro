@@ -4,7 +4,6 @@ import {
     Search,
     X,
     SlidersHorizontal,
-    ChevronDown,
     ChevronRight,
     Navigation,
     Loader2,
@@ -182,7 +181,6 @@ export const RicercaInquilinoPage: React.FC = () => {
     return mockTenants
       .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
       .filter((t) => {
-        // Text search
         if (searchText) {
           const q = searchText.toLowerCase();
           const match =
@@ -193,14 +191,10 @@ export const RicercaInquilinoPage: React.FC = () => {
           if (!match) return false;
         }
 
-        // Occupation
         if (filters.occupation && t.occupation !== filters.occupation) return false;
-
-        // Badges
         if (filters.verified === true && !t.isVerified) return false;
         if (filters.hasVideo === true && !t.hasVideo) return false;
 
-        // Raggio: when searchText is a city, strict match at low radius
         if (searchText && filters.raggiKm <= 15) {
           const q = searchText.toLowerCase();
           const inCity = (t.currentCity || '').toLowerCase().includes(q);
@@ -208,29 +202,22 @@ export const RicercaInquilinoPage: React.FC = () => {
           if (!inCity && !wantsCity) return false;
         }
 
-        // Budget
         const budget = t.preferences?.maxBudget;
         if (budget != null && (budget < filters.budgetMin || budget > filters.budgetMax)) return false;
 
-        // Età
         const age = t.age;
         if (age != null && (age < filters.etaMin || age > filters.etaMax)) return false;
 
-        // Contratto
         if (filters.contratto && t.preferences?.preferredContractType !== filters.contratto) return false;
 
-        // Animali
         if (filters.animali === 'con' && !t.preferences?.hasPets) return false;
         if (filters.animali === 'senza' && t.preferences?.hasPets) return false;
 
-        // Stato Immobile (furnished preference)
         if (filters.statoImmobile === 'arredato' && t.preferences?.furnished !== 'yes') return false;
         if (filters.statoImmobile === 'non_arredato' && t.preferences?.furnished !== 'no') return false;
 
-        // Nucleo familiare
         if (filters.nucleoFamiliare.length > 0 && (!t.familyUnit || !filters.nucleoFamiliare.includes(t.familyUnit))) return false;
 
-        // Tipo di immobile (via minRooms as proxy)
         if (filters.tipoImmobile) {
           const minR = t.preferences?.minRooms ?? 0;
           const maxR = t.preferences?.maxRooms ?? 5;
@@ -331,17 +318,15 @@ export const RicercaInquilinoPage: React.FC = () => {
       {/* ── 2. Filter Bar ────────────────────────────────────────── */}
       <div className="bg-white border-b border-gray-200 sticky top-20 z-40 shadow-sm">
         <div className="max-w-screen-xl mx-auto px-4 py-3">
-
-          {/* Bar row */}
           <div className="flex items-center justify-between gap-3">
             <div className="flex items-center gap-3">
               <span className="text-sm text-gray-600">
                 <span className="font-bold text-gray-900">{filteredTenants.length}</span> inquilini
               </span>
               <button
-                onClick={() => setShowFilters(!showFilters)}
+                onClick={() => setShowFilters(true)}
                 className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all border ${
-                  showFilters || activeFilterCount > 0
+                  activeFilterCount > 0
                     ? 'bg-primary-50 text-primary-700 border-primary-200'
                     : 'bg-gray-50 text-gray-600 border-gray-200 hover:bg-gray-100'
                 }`}
@@ -353,7 +338,6 @@ export const RicercaInquilinoPage: React.FC = () => {
                     {activeFilterCount}
                   </span>
                 )}
-                <ChevronDown size={14} className={`transition-transform ${showFilters ? 'rotate-180' : ''}`} />
               </button>
             </div>
 
@@ -394,169 +378,6 @@ export const RicercaInquilinoPage: React.FC = () => {
               )}
             </div>
           </div>
-
-          {/* ── Filter panel ─────────────────────────────────────────────── */}
-          {showFilters && (
-            <div className="mt-4 pt-4 border-t border-gray-100 space-y-5">
-
-              {/* Row 1: Raggio + Budget */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                <div>
-                  <label className="block text-xs font-bold text-gray-600 mb-3">Raggio di ricerca</label>
-                  <SingleSlider
-                    min={5} max={100} step={5}
-                    value={filters.raggiKm}
-                    onChange={v => setFilters(f => ({ ...f, raggiKm: v }))}
-                    formatValue={fmtRaggio}
-                  />
-                </div>
-                <div>
-                  <label className="block text-xs font-bold text-gray-600 mb-3">Budget (€/mese)</label>
-                  <RangeSlider
-                    min={BUDGET_MIN} max={BUDGET_MAX} step={50}
-                    minVal={filters.budgetMin} maxVal={filters.budgetMax}
-                    onChange={(min, max) => setFilters(f => ({ ...f, budgetMin: min, budgetMax: max }))}
-                    formatMin={fmtBudgetMin}
-                    formatMax={fmtBudgetMax}
-                  />
-                </div>
-              </div>
-
-              {/* Row 2: Età + Contratto */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                <div>
-                  <label className="block text-xs font-bold text-gray-600 mb-3">Età</label>
-                  <RangeSlider
-                    min={ETA_MIN} max={ETA_MAX} step={1}
-                    minVal={filters.etaMin} maxVal={filters.etaMax}
-                    onChange={(min, max) => setFilters(f => ({ ...f, etaMin: min, etaMax: max }))}
-                    formatMin={fmtEta}
-                    formatMax={fmtEta}
-                  />
-                </div>
-                <div>
-                  <label className="block text-xs font-bold text-gray-600 mb-2">Contratto</label>
-                  <div className="flex flex-wrap gap-2">
-                    <button onClick={() => setFilters(f => ({ ...f, contratto: '' }))} className={pillCls(!filters.contratto)}>
-                      Qualsiasi
-                    </button>
-                    {CONTRACT_TYPES.map(c => (
-                      <button
-                        key={c.value}
-                        onClick={() => setFilters(f => ({ ...f, contratto: f.contratto === c.value ? '' : c.value }))}
-                        className={pillCls(filters.contratto === c.value)}
-                      >
-                        {c.value}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              {/* Row 3: Animali + Stato Immobile */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-xs font-bold text-gray-600 mb-2">Animali domestici</label>
-                  <div className="flex flex-wrap gap-2">
-                    {(['indifferente', 'con', 'senza'] as const).map(v => (
-                      <button
-                        key={v}
-                        onClick={() => setFilters(f => ({ ...f, animali: v }))}
-                        className={pillCls(filters.animali === v)}
-                      >
-                        {v === 'indifferente' ? 'Indifferente' : v === 'con' ? 'Con animali' : 'Senza animali'}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-                <div>
-                  <label className="block text-xs font-bold text-gray-600 mb-2">Stato Immobile</label>
-                  <div className="flex flex-wrap gap-2">
-                    {(['indifferente', 'arredato', 'non_arredato'] as const).map(v => (
-                      <button
-                        key={v}
-                        onClick={() => setFilters(f => ({ ...f, statoImmobile: v }))}
-                        className={pillCls(filters.statoImmobile === v)}
-                      >
-                        {v === 'indifferente' ? 'Indifferente' : v === 'arredato' ? 'Arredato' : 'Non arredato'}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              {/* Row 4: Nucleo familiare */}
-              <div>
-                <label className="block text-xs font-bold text-gray-600 mb-2">Nucleo familiare</label>
-                <div className="flex flex-wrap gap-2">
-                  {NUCLEO_OPTIONS.map(o => (
-                    <button
-                      key={o.value}
-                      onClick={() => toggleNucleo(o.value)}
-                      className={pillCls(filters.nucleoFamiliare.includes(o.value))}
-                    >
-                      {o.label}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Row 5: Badge + Professione */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-xs font-bold text-gray-600 mb-2">Badge</label>
-                  <div className="flex flex-wrap gap-2">
-                    <button
-                      onClick={() => setFilters(f => ({ ...f, verified: f.verified ? null : true }))}
-                      className={`${pillCls(!!filters.verified)} flex items-center gap-1`}
-                    >
-                      <BadgeCheck size={13} /> Verificato
-                    </button>
-                    <button
-                      onClick={() => setFilters(f => ({ ...f, hasVideo: f.hasVideo ? null : true }))}
-                      className={`${pillCls(!!filters.hasVideo)} flex items-center gap-1`}
-                    >
-                      <Video size={13} /> Con Video
-                    </button>
-                  </div>
-                </div>
-                <div>
-                  <label className="block text-xs font-bold text-gray-600 mb-1.5">Professione</label>
-                  <select
-                    className="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-xs bg-gray-50 font-semibold text-gray-700"
-                    value={filters.occupation}
-                    onChange={(e) => setFilters(f => ({ ...f, occupation: e.target.value }))}
-                  >
-                    <option value="">Tutte</option>
-                    {OCCUPATIONS.map(o => <option key={o} value={o}>{o}</option>)}
-                  </select>
-                </div>
-              </div>
-
-              {/* Row 6: In cerca di / Tipo di immobile */}
-              <div>
-                <label className="block text-xs font-bold text-gray-600 mb-1.5">In cerca di: tipo di immobile</label>
-                <select
-                  className="w-full sm:w-64 px-3 py-2.5 border border-gray-200 rounded-xl text-xs bg-gray-50 font-semibold text-gray-700"
-                  value={filters.tipoImmobile}
-                  onChange={(e) => setFilters(f => ({ ...f, tipoImmobile: e.target.value }))}
-                >
-                  {TIPO_IMMOBILE_OPTIONS.map(o => (
-                    <option key={o.value} value={o.value}>{o.label}</option>
-                  ))}
-                </select>
-              </div>
-
-              {/* Reset */}
-              {activeFilterCount > 0 && (
-                <div className="pt-1">
-                  <button onClick={handleClearFilters} className="text-xs text-gray-500 hover:text-gray-800 underline">
-                    Rimuovi tutti i filtri
-                  </button>
-                </div>
-              )}
-            </div>
-          )}
         </div>
       </div>
 
@@ -569,7 +390,6 @@ export const RicercaInquilinoPage: React.FC = () => {
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
           {displayedTenants.map((tenant) => (
             <div key={tenant.id} className="group bg-white rounded-3xl border border-gray-100 shadow-sm hover:shadow-xl hover:border-primary-200 transition-all duration-300 overflow-hidden relative">
-              {/* Avatar */}
               <div className="relative h-44 md:h-48 bg-gradient-to-br from-primary-50 to-teal-50 flex items-center justify-center overflow-hidden">
                 {tenant.avatar ? (
                   <img
@@ -604,7 +424,6 @@ export const RicercaInquilinoPage: React.FC = () => {
                 )}
               </div>
 
-              {/* Info */}
               <div className="p-4 space-y-2">
                 <h3 className="font-bold text-gray-900 text-base truncate">
                   {tenant.firstName} {tenant.lastName.charAt(0)}.
@@ -626,7 +445,6 @@ export const RicercaInquilinoPage: React.FC = () => {
                 )}
               </div>
 
-              {/* Lock overlay */}
               <div className="border-t border-gray-100 px-4 py-3">
                 <Link
                   to="/register"
@@ -640,7 +458,6 @@ export const RicercaInquilinoPage: React.FC = () => {
           ))}
         </div>
 
-        {/* Load more CTA */}
         <div className="text-center mt-12">
           <Link to="/register" className="btn bg-primary-600 text-white px-8 py-4 rounded-2xl text-lg font-bold shadow-xl shadow-primary-600/20 hover:bg-primary-700 transition-all inline-flex items-center gap-2">
             Vedi i candidati disponibili
@@ -764,6 +581,198 @@ export const RicercaInquilinoPage: React.FC = () => {
           </div>
         </div>
       </section>
+
+      {/* ── Filter Modal ─────────────────────────────────────────────────── */}
+      {showFilters && (
+        <>
+          <div
+            className="fixed inset-0 bg-black/40 z-[200]"
+            onClick={() => setShowFilters(false)}
+          />
+          <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[201] bg-white rounded-2xl shadow-2xl w-[calc(100%-2rem)] max-w-xl max-h-[85vh] flex flex-col">
+            {/* Header */}
+            <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100 shrink-0">
+              <h2 className="font-bold text-gray-900 text-base">Filtra profili</h2>
+              <button
+                onClick={() => setShowFilters(false)}
+                className="p-2 rounded-xl hover:bg-gray-100 text-gray-500 transition-colors"
+              >
+                <X size={20} />
+              </button>
+            </div>
+
+            {/* Body */}
+            <div className="overflow-y-auto flex-1 px-6 py-5 space-y-6">
+
+              {/* Raggio + Budget */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div>
+                  <label className="block text-xs font-bold text-gray-600 mb-3">Raggio di ricerca</label>
+                  <SingleSlider
+                    min={5} max={100} step={5}
+                    value={filters.raggiKm}
+                    onChange={v => setFilters(f => ({ ...f, raggiKm: v }))}
+                    formatValue={fmtRaggio}
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-gray-600 mb-3">Budget (€/mese)</label>
+                  <RangeSlider
+                    min={BUDGET_MIN} max={BUDGET_MAX} step={50}
+                    minVal={filters.budgetMin} maxVal={filters.budgetMax}
+                    onChange={(min, max) => setFilters(f => ({ ...f, budgetMin: min, budgetMax: max }))}
+                    formatMin={fmtBudgetMin}
+                    formatMax={fmtBudgetMax}
+                  />
+                </div>
+              </div>
+
+              {/* Età + Contratto */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div>
+                  <label className="block text-xs font-bold text-gray-600 mb-3">Età</label>
+                  <RangeSlider
+                    min={ETA_MIN} max={ETA_MAX} step={1}
+                    minVal={filters.etaMin} maxVal={filters.etaMax}
+                    onChange={(min, max) => setFilters(f => ({ ...f, etaMin: min, etaMax: max }))}
+                    formatMin={fmtEta}
+                    formatMax={fmtEta}
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-gray-600 mb-2">Contratto</label>
+                  <div className="flex flex-wrap gap-2">
+                    <button onClick={() => setFilters(f => ({ ...f, contratto: '' }))} className={pillCls(!filters.contratto)}>
+                      Qualsiasi
+                    </button>
+                    {CONTRACT_TYPES.map(c => (
+                      <button
+                        key={c.value}
+                        onClick={() => setFilters(f => ({ ...f, contratto: f.contratto === c.value ? '' : c.value }))}
+                        className={pillCls(filters.contratto === c.value)}
+                      >
+                        {c.value}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Animali + Stato Immobile */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs font-bold text-gray-600 mb-2">Animali domestici</label>
+                  <div className="flex flex-wrap gap-2">
+                    {(['indifferente', 'con', 'senza'] as const).map(v => (
+                      <button
+                        key={v}
+                        onClick={() => setFilters(f => ({ ...f, animali: v }))}
+                        className={pillCls(filters.animali === v)}
+                      >
+                        {v === 'indifferente' ? 'Indifferente' : v === 'con' ? 'Con animali' : 'Senza animali'}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-gray-600 mb-2">Stato Immobile</label>
+                  <div className="flex flex-wrap gap-2">
+                    {(['indifferente', 'arredato', 'non_arredato'] as const).map(v => (
+                      <button
+                        key={v}
+                        onClick={() => setFilters(f => ({ ...f, statoImmobile: v }))}
+                        className={pillCls(filters.statoImmobile === v)}
+                      >
+                        {v === 'indifferente' ? 'Indifferente' : v === 'arredato' ? 'Arredato' : 'Non arredato'}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Nucleo familiare */}
+              <div>
+                <label className="block text-xs font-bold text-gray-600 mb-2">Nucleo familiare</label>
+                <div className="flex flex-wrap gap-2">
+                  {NUCLEO_OPTIONS.map(o => (
+                    <button
+                      key={o.value}
+                      onClick={() => toggleNucleo(o.value)}
+                      className={pillCls(filters.nucleoFamiliare.includes(o.value))}
+                    >
+                      {o.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Badge + Professione */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs font-bold text-gray-600 mb-2">Badge</label>
+                  <div className="flex flex-wrap gap-2">
+                    <button
+                      onClick={() => setFilters(f => ({ ...f, verified: f.verified ? null : true }))}
+                      className={`${pillCls(!!filters.verified)} flex items-center gap-1`}
+                    >
+                      <BadgeCheck size={13} /> Verificato
+                    </button>
+                    <button
+                      onClick={() => setFilters(f => ({ ...f, hasVideo: f.hasVideo ? null : true }))}
+                      className={`${pillCls(!!filters.hasVideo)} flex items-center gap-1`}
+                    >
+                      <Video size={13} /> Con Video
+                    </button>
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-gray-600 mb-1.5">Professione</label>
+                  <select
+                    className="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-xs bg-gray-50 font-semibold text-gray-700"
+                    value={filters.occupation}
+                    onChange={(e) => setFilters(f => ({ ...f, occupation: e.target.value }))}
+                  >
+                    <option value="">Tutte</option>
+                    {OCCUPATIONS.map(o => <option key={o} value={o}>{o}</option>)}
+                  </select>
+                </div>
+              </div>
+
+              {/* Tipo di immobile */}
+              <div>
+                <label className="block text-xs font-bold text-gray-600 mb-1.5">In cerca di: tipo di immobile</label>
+                <select
+                  className="w-full sm:w-64 px-3 py-2.5 border border-gray-200 rounded-xl text-xs bg-gray-50 font-semibold text-gray-700"
+                  value={filters.tipoImmobile}
+                  onChange={(e) => setFilters(f => ({ ...f, tipoImmobile: e.target.value }))}
+                >
+                  {TIPO_IMMOBILE_OPTIONS.map(o => (
+                    <option key={o.value} value={o.value}>{o.label}</option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            {/* Footer */}
+            <div className="shrink-0 border-t border-gray-100 px-6 py-4 flex items-center justify-between bg-gray-50 rounded-b-2xl">
+              {activeFilterCount > 0 ? (
+                <button
+                  onClick={handleClearFilters}
+                  className="text-sm text-gray-500 hover:text-gray-800 underline"
+                >
+                  Rimuovi tutti
+                </button>
+              ) : <div />}
+              <button
+                onClick={() => setShowFilters(false)}
+                className="px-6 py-2.5 bg-primary-600 text-white rounded-xl font-bold text-sm hover:bg-primary-700 transition-colors"
+              >
+                Mostra {filteredTenants.length} profili
+              </button>
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 };
