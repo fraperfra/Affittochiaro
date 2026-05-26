@@ -17,7 +17,9 @@ import {
 } from 'lucide-react';
 import { ListingsMap } from '../components';
 import { publicListings } from '../src/lib/mock-data';
-import { buildListingUrl, formatPrice, PRICE_RANGES, matchesPriceRange } from '../src/lib/utils';
+import { buildListingUrl, formatPrice } from '../src/lib/utils';
+
+// ── Constants ──────────────────────────────────────────────────────────────────
 
 const TIPOLOGIE_LIST = ['appartamento', 'bilocale', 'trilocale', 'stanza', 'villa'];
 const TIPOLOGIE_LABELS: Record<string, string> = {
@@ -38,15 +40,112 @@ const CITY_COORDINATES: Record<string, [number, number]> = {
   Italia: [41.8719, 12.5674],
 };
 
+const PRICE_MIN = 200;
+const PRICE_MAX = 3000;
+const MQ_MIN = 25;
+const MQ_MAX = 300;
+
+const CAMERE_OPTIONS = [1, 2, 3, 4] as const;
+const BAGNI_OPTIONS = [1, 2, 3] as const;
+
+const CARATTERISTICHE_LIST = ['arredato', 'balcone', 'cantina', 'giardino', 'garage', 'parcheggio', 'ascensore'] as const;
+
+const CARATTERISTICHE_LABELS: Record<string, string> = {
+  arredato: 'Arredato',
+  balcone: 'Balcone',
+  cantina: 'Cantina',
+  giardino: 'Giardino',
+  garage: 'Garage',
+  parcheggio: 'Parcheggio',
+  ascensore: 'Ascensore',
+};
+
+const CARATTERISTICHE_KEYWORDS: Record<string, string[]> = {
+  arredato: ['arredato', 'arredata', 'ammobiliato', 'ammobiliata', 'cucina attrezzata'],
+  balcone: ['balcone', 'terrazzo'],
+  cantina: ['cantina'],
+  giardino: ['giardino'],
+  garage: ['garage', 'box'],
+  parcheggio: ['posto auto', 'parcheggio'],
+  ascensore: ['ascensore'],
+};
+
+// ── RangeSlider ────────────────────────────────────────────────────────────────
+
+interface RangeSliderProps {
+  min: number;
+  max: number;
+  step: number;
+  minVal: number;
+  maxVal: number;
+  onChange: (min: number, max: number) => void;
+  formatMin: (v: number) => string;
+  formatMax: (v: number) => string;
+}
+
+const RangeSlider: React.FC<RangeSliderProps> = ({ min, max, step, minVal, maxVal, onChange, formatMin, formatMax }) => {
+  const pct = (v: number) => Math.round(((v - min) / (max - min)) * 100);
+  const minPct = pct(minVal);
+  const maxPct = pct(maxVal);
+
+  return (
+    <div className="px-1">
+      <div className="flex justify-between text-xs font-bold text-primary-700 mb-3">
+        <span>{formatMin(minVal)}</span>
+        <span>{formatMax(maxVal)}</span>
+      </div>
+      <div className="relative h-5 flex items-center select-none">
+        <div className="absolute w-full h-1.5 bg-gray-200 rounded-full pointer-events-none" />
+        <div
+          className="absolute h-1.5 bg-primary-500 rounded-full pointer-events-none"
+          style={{ left: `${minPct}%`, right: `${100 - maxPct}%` }}
+        />
+        <input
+          type="range"
+          min={min} max={max} step={step}
+          value={minVal}
+          onChange={e => onChange(Math.min(Number(e.target.value), maxVal - step), maxVal)}
+          className="range-thumb"
+          style={{ zIndex: minPct > 90 ? 5 : 3 }}
+        />
+        <input
+          type="range"
+          min={min} max={max} step={step}
+          value={maxVal}
+          onChange={e => onChange(minVal, Math.max(Number(e.target.value), minVal + step))}
+          className="range-thumb"
+          style={{ zIndex: 4 }}
+        />
+      </div>
+    </div>
+  );
+};
+
+// ── Types ──────────────────────────────────────────────────────────────────────
+
 interface ActiveFilters {
   tipologie: string[];
-  priceRange: string;
+  priceMin: number;
+  priceMax: number;
+  mqMin: number;
+  mqMax: number;
+  camere: number | null;
+  bagni: number | null;
+  caratteristiche: string[];
 }
 
 const EMPTY_FILTERS: ActiveFilters = {
   tipologie: [],
-  priceRange: '',
+  priceMin: PRICE_MIN,
+  priceMax: PRICE_MAX,
+  mqMin: MQ_MIN,
+  mqMax: MQ_MAX,
+  camere: null,
+  bagni: null,
+  caratteristiche: [],
 };
+
+// ── Page ───────────────────────────────────────────────────────────────────────
 
 export const AnnunciPage: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -56,7 +155,7 @@ export const AnnunciPage: React.FC = () => {
   const [gpsLoading, setGpsLoading] = useState(false);
   const [filters, setFilters] = useState<ActiveFilters>(EMPTY_FILTERS);
 
-  // ── GPS Location ──────────────────────────────────────────────────────────
+  // ── GPS ──────────────────────────────────────────────────────────────────────
   const handleGPS = useCallback(async () => {
     if (!navigator.geolocation) return;
     setGpsLoading(true);
@@ -70,9 +169,7 @@ export const AnnunciPage: React.FC = () => {
       );
       const data = await res.json();
       const city: string = data.address?.city || data.address?.town || data.address?.village || data.address?.county || '';
-      if (city) {
-        setSearchText(city);
-      }
+      if (city) setSearchText(city);
     } catch (e) {
       console.warn('GPS error:', e);
     } finally {
@@ -80,31 +177,48 @@ export const AnnunciPage: React.FC = () => {
     }
   }, []);
 
-  // ── Filter logic ──────────────────────────────────────────────────────────
+  // ── Filter logic ─────────────────────────────────────────────────────────────
   const filteredListings = useMemo(() => {
     return publicListings.filter((item) => {
       if (searchText) {
         const q = searchText.toLowerCase();
-        const match =
-          item.titolo.toLowerCase().includes(q) ||
-          item.zona.toLowerCase().includes(q) ||
-          item.descrizione.toLowerCase().includes(q);
-        if (!match) return false;
+        if (
+          !item.titolo.toLowerCase().includes(q) &&
+          !item.zona.toLowerCase().includes(q) &&
+          !item.descrizione.toLowerCase().includes(q)
+        ) return false;
       }
       if (filters.tipologie.length > 0 && !filters.tipologie.includes(item.tipologiaSlug)) return false;
-      if (!matchesPriceRange(item.prezzo, filters.priceRange)) return false;
+      if (item.prezzo < filters.priceMin || item.prezzo > filters.priceMax) return false;
+      if (item.mq < filters.mqMin || item.mq > filters.mqMax) return false;
+      if (filters.camere !== null) {
+        if (filters.camere === 4 ? item.camere < 4 : item.camere !== filters.camere) return false;
+      }
+      if (filters.bagni !== null) {
+        if (filters.bagni === 3 ? item.bagni < 3 : item.bagni !== filters.bagni) return false;
+      }
+      if (filters.caratteristiche.length > 0) {
+        const desc = item.descrizione.toLowerCase();
+        if (!filters.caratteristiche.every(c =>
+          (CARATTERISTICHE_KEYWORDS[c] || []).some(kw => desc.includes(kw))
+        )) return false;
+      }
       return true;
     });
   }, [searchText, filters]);
 
+  // ── Active filter count ──────────────────────────────────────────────────────
+  const priceChanged = filters.priceMin !== PRICE_MIN || filters.priceMax !== PRICE_MAX;
+  const mqChanged = filters.mqMin !== MQ_MIN || filters.mqMax !== MQ_MAX;
   const activeFilterCount =
-    filters.tipologie.length + (filters.priceRange ? 1 : 0);
+    filters.tipologie.length +
+    (priceChanged ? 1 : 0) +
+    (mqChanged ? 1 : 0) +
+    (filters.camere !== null ? 1 : 0) +
+    (filters.bagni !== null ? 1 : 0) +
+    filters.caratteristiche.length;
 
-  const activePriceRangeLabel = PRICE_RANGES.find(r => r.value === filters.priceRange)?.label;
-
-  const handleSearchInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchText(e.target.value);
-  };
+  const handleSearchInput = (e: React.ChangeEvent<HTMLInputElement>) => setSearchText(e.target.value);
 
   const handleClearFilters = () => {
     setFilters(EMPTY_FILTERS);
@@ -121,6 +235,15 @@ export const AnnunciPage: React.FC = () => {
     }));
   };
 
+  const toggleCaratteristica = (c: string) => {
+    setFilters(f => ({
+      ...f,
+      caratteristiche: f.caratteristiche.includes(c)
+        ? f.caratteristiche.filter(x => x !== c)
+        : [...f.caratteristiche, c],
+    }));
+  };
+
   const activeCityCoordinates = useMemo((): [number, number] => {
     const key = Object.keys(CITY_COORDINATES).find(c =>
       searchText.toLowerCase().includes(c.toLowerCase())
@@ -128,7 +251,13 @@ export const AnnunciPage: React.FC = () => {
     return CITY_COORDINATES[key];
   }, [searchText]);
 
-  // ── Render ────────────────────────────────────────────────────────────────
+  // ── Format helpers ────────────────────────────────────────────────────────────
+  const fmtPriceMin = (v: number) => `€${v.toLocaleString('it-IT')}`;
+  const fmtPriceMax = (v: number) => v >= PRICE_MAX ? `€${v.toLocaleString('it-IT')}+` : `€${v.toLocaleString('it-IT')}`;
+  const fmtMqMin = (v: number) => `${v} mq`;
+  const fmtMqMax = (v: number) => v >= MQ_MAX ? `${v} mq+` : `${v} mq`;
+
+  // ── Render ────────────────────────────────────────────────────────────────────
   return (
     <div className="bg-[#FAFAFA] min-h-screen flex flex-col">
 
@@ -138,7 +267,6 @@ export const AnnunciPage: React.FC = () => {
           <h1 className="text-2xl md:text-3xl font-bold mb-4 text-center">
             Annunci Affitto Verificati in Italia
           </h1>
-
           <div className="relative max-w-2xl mx-auto flex gap-2">
             <div className="relative flex-1">
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
@@ -158,28 +286,24 @@ export const AnnunciPage: React.FC = () => {
                 </button>
               )}
             </div>
-
             <button
               onClick={handleGPS}
               disabled={gpsLoading}
               className="flex items-center gap-2 bg-white/20 hover:bg-white/30 backdrop-blur px-4 py-3 rounded-2xl text-white font-semibold text-sm transition-all shrink-0 border border-white/20"
               title="Usa la tua posizione"
             >
-              {gpsLoading ? (
-                <Loader2 size={18} className="animate-spin" />
-              ) : (
-                <Navigation size={18} />
-              )}
+              {gpsLoading ? <Loader2 size={18} className="animate-spin" /> : <Navigation size={18} />}
               <span className="hidden sm:inline">Posizione</span>
             </button>
           </div>
-
         </div>
       </div>
 
       {/* ── 2. Filters Bar ───────────────────────────────────────────────── */}
       <div className="bg-white border-b border-gray-200 sticky top-16 md:top-20 z-40 shadow-sm">
         <div className="max-w-screen-xl mx-auto px-4 py-3">
+
+          {/* Bar row */}
           <div className="flex items-center justify-between gap-3">
             <div className="flex items-center gap-3">
               <span className="text-sm text-gray-600 shrink-0">
@@ -194,7 +318,7 @@ export const AnnunciPage: React.FC = () => {
                 }`}
               >
                 <SlidersHorizontal size={14} />
-                Filtri
+                Filtri avanzati
                 {activeFilterCount > 0 && (
                   <span className="bg-primary-600 text-white text-[10px] w-5 h-5 rounded-full flex items-center justify-center font-bold">
                     {activeFilterCount}
@@ -204,6 +328,7 @@ export const AnnunciPage: React.FC = () => {
               </button>
             </div>
 
+            {/* Active filter chips */}
             <div className="hidden md:flex items-center gap-2 overflow-x-auto scrollbar-hide flex-1 px-4">
               {filters.tipologie.map(t => (
                 <span key={t} className="flex items-center gap-1 shrink-0 px-3 py-1 bg-primary-50 text-primary-700 rounded-full text-xs font-semibold capitalize">
@@ -211,12 +336,36 @@ export const AnnunciPage: React.FC = () => {
                   <button onClick={() => toggleTipologia(t)}><X size={12} /></button>
                 </span>
               ))}
-              {filters.priceRange && activePriceRangeLabel && (
+              {priceChanged && (
                 <span className="flex items-center gap-1 shrink-0 px-3 py-1 bg-primary-50 text-primary-700 rounded-full text-xs font-semibold">
-                  {activePriceRangeLabel}
-                  <button onClick={() => setFilters(f => ({ ...f, priceRange: '' }))}><X size={12} /></button>
+                  {fmtPriceMin(filters.priceMin)} – {fmtPriceMax(filters.priceMax)}
+                  <button onClick={() => setFilters(f => ({ ...f, priceMin: PRICE_MIN, priceMax: PRICE_MAX }))}><X size={12} /></button>
                 </span>
               )}
+              {mqChanged && (
+                <span className="flex items-center gap-1 shrink-0 px-3 py-1 bg-primary-50 text-primary-700 rounded-full text-xs font-semibold">
+                  {fmtMqMin(filters.mqMin)} – {fmtMqMax(filters.mqMax)}
+                  <button onClick={() => setFilters(f => ({ ...f, mqMin: MQ_MIN, mqMax: MQ_MAX }))}><X size={12} /></button>
+                </span>
+              )}
+              {filters.camere !== null && (
+                <span className="flex items-center gap-1 shrink-0 px-3 py-1 bg-primary-50 text-primary-700 rounded-full text-xs font-semibold">
+                  {filters.camere === 4 ? '4+ camere' : `${filters.camere} ${filters.camere === 1 ? 'camera' : 'camere'}`}
+                  <button onClick={() => setFilters(f => ({ ...f, camere: null }))}><X size={12} /></button>
+                </span>
+              )}
+              {filters.bagni !== null && (
+                <span className="flex items-center gap-1 shrink-0 px-3 py-1 bg-primary-50 text-primary-700 rounded-full text-xs font-semibold">
+                  {filters.bagni === 3 ? '3+ bagni' : `${filters.bagni} ${filters.bagni === 1 ? 'bagno' : 'bagni'}`}
+                  <button onClick={() => setFilters(f => ({ ...f, bagni: null }))}><X size={12} /></button>
+                </span>
+              )}
+              {filters.caratteristiche.map(c => (
+                <span key={c} className="flex items-center gap-1 shrink-0 px-3 py-1 bg-primary-50 text-primary-700 rounded-full text-xs font-semibold">
+                  {CARATTERISTICHE_LABELS[c]}
+                  <button onClick={() => toggleCaratteristica(c)}><X size={12} /></button>
+                </span>
+              ))}
               {activeFilterCount > 0 && (
                 <button onClick={handleClearFilters} className="shrink-0 text-xs text-gray-500 hover:text-gray-800 underline">
                   Rimuovi tutti
@@ -240,25 +389,38 @@ export const AnnunciPage: React.FC = () => {
             </div>
           </div>
 
+          {/* ── Filter panel ─────────────────────────────────────────────── */}
           {showFilters && (
-            <div className="mt-3 pt-3 border-t border-gray-100 grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-xs font-bold text-gray-600 mb-1.5">Fascia di prezzo (€/mese)</label>
-                <select
-                  className="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm bg-gray-50"
-                  value={filters.priceRange}
-                  onChange={(e) => setFilters(f => ({ ...f, priceRange: e.target.value }))}
-                >
-                  <option value="">Qualsiasi fascia</option>
-                  {PRICE_RANGES.map(range => (
-                    <option key={range.value} value={range.value}>{range.label}</option>
-                  ))}
-                </select>
+            <div className="mt-4 pt-4 border-t border-gray-100 space-y-5">
+
+              {/* Row 1: Price + MQ sliders */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div>
+                  <label className="block text-xs font-bold text-gray-600 mb-3">Fascia di prezzo (€/mese)</label>
+                  <RangeSlider
+                    min={PRICE_MIN} max={PRICE_MAX} step={50}
+                    minVal={filters.priceMin} maxVal={filters.priceMax}
+                    onChange={(min, max) => setFilters(f => ({ ...f, priceMin: min, priceMax: max }))}
+                    formatMin={fmtPriceMin}
+                    formatMax={fmtPriceMax}
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-gray-600 mb-3">Metratura (mq)</label>
+                  <RangeSlider
+                    min={MQ_MIN} max={MQ_MAX} step={5}
+                    minVal={filters.mqMin} maxVal={filters.mqMax}
+                    onChange={(min, max) => setFilters(f => ({ ...f, mqMin: min, mqMax: max }))}
+                    formatMin={fmtMqMin}
+                    formatMax={fmtMqMax}
+                  />
+                </div>
               </div>
 
+              {/* Row 2: Tipologia */}
               <div>
-                <label className="block text-xs font-bold text-gray-600 mb-1.5">Tipologia</label>
-                <div className="flex flex-wrap gap-1.5">
+                <label className="block text-xs font-bold text-gray-600 mb-2">Tipologia</label>
+                <div className="flex flex-wrap gap-2">
                   {TIPOLOGIE_LIST.map(tipo => (
                     <button
                       key={tipo}
@@ -274,6 +436,98 @@ export const AnnunciPage: React.FC = () => {
                   ))}
                 </div>
               </div>
+
+              {/* Row 3: Camere + Bagni */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs font-bold text-gray-600 mb-2">Numero di camere</label>
+                  <div className="flex flex-wrap gap-2">
+                    <button
+                      onClick={() => setFilters(f => ({ ...f, camere: null }))}
+                      className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all border ${
+                        filters.camere === null
+                          ? 'bg-primary-50 text-primary-700 border-primary-200'
+                          : 'bg-white text-gray-600 border-gray-200 hover:bg-gray-50'
+                      }`}
+                    >
+                      Qualsiasi
+                    </button>
+                    {CAMERE_OPTIONS.map(n => (
+                      <button
+                        key={n}
+                        onClick={() => setFilters(f => ({ ...f, camere: f.camere === n ? null : n }))}
+                        className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all border ${
+                          filters.camere === n
+                            ? 'bg-primary-50 text-primary-700 border-primary-200'
+                            : 'bg-white text-gray-600 border-gray-200 hover:bg-gray-50'
+                        }`}
+                      >
+                        {n === 4 ? '4+' : n}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-gray-600 mb-2">Numero di bagni</label>
+                  <div className="flex flex-wrap gap-2">
+                    <button
+                      onClick={() => setFilters(f => ({ ...f, bagni: null }))}
+                      className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all border ${
+                        filters.bagni === null
+                          ? 'bg-primary-50 text-primary-700 border-primary-200'
+                          : 'bg-white text-gray-600 border-gray-200 hover:bg-gray-50'
+                      }`}
+                    >
+                      Qualsiasi
+                    </button>
+                    {BAGNI_OPTIONS.map(n => (
+                      <button
+                        key={n}
+                        onClick={() => setFilters(f => ({ ...f, bagni: f.bagni === n ? null : n }))}
+                        className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all border ${
+                          filters.bagni === n
+                            ? 'bg-primary-50 text-primary-700 border-primary-200'
+                            : 'bg-white text-gray-600 border-gray-200 hover:bg-gray-50'
+                        }`}
+                      >
+                        {n === 3 ? '3+' : n}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Row 4: Caratteristiche */}
+              <div>
+                <label className="block text-xs font-bold text-gray-600 mb-2">Caratteristiche</label>
+                <div className="flex flex-wrap gap-2">
+                  {CARATTERISTICHE_LIST.map(c => (
+                    <button
+                      key={c}
+                      onClick={() => toggleCaratteristica(c)}
+                      className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all border ${
+                        filters.caratteristiche.includes(c)
+                          ? 'bg-primary-50 text-primary-700 border-primary-200'
+                          : 'bg-white text-gray-600 border-gray-200 hover:bg-gray-50'
+                      }`}
+                    >
+                      {CARATTERISTICHE_LABELS[c]}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Reset */}
+              {activeFilterCount > 0 && (
+                <div className="pt-1">
+                  <button
+                    onClick={handleClearFilters}
+                    className="text-xs text-gray-500 hover:text-gray-800 underline"
+                  >
+                    Rimuovi tutti i filtri
+                  </button>
+                </div>
+              )}
             </div>
           )}
         </div>
@@ -377,7 +631,7 @@ export const AnnunciPage: React.FC = () => {
             <p className="text-sm text-gray-500 leading-relaxed max-w-4xl">
               Scopri la più ampia selezione di case in affitto in Italia su AffittoChiaro.
               Aggiorniamo gli annunci ogni giorno per offrirti solo soluzioni verificate e disponibili.
-              Usa i filtri per tipologia e prezzo per trovare la casa perfetta.
+              Usa i filtri per tipologia, prezzo, metratura e caratteristiche per trovare la casa perfetta.
               Ogni inquilino può inviare la sua candidatura direttamente dall'annuncio con il Profilo Inquilino.
             </p>
           </div>
