@@ -62,7 +62,7 @@ export const Header: React.FC = () => {
       >
         <header className="relative bg-white/95 backdrop-blur-md px-4 md:px-8 h-20 flex items-center justify-center md:justify-between border-b border-gray-100">
           <Link to="/" className="flex items-center md:static md:translate-x-0 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-            <img src="/assets/logoaffittochiaro_pic.webp" alt="Affittochiaro" className="h-[75px] md:h-[72px] md:mt-[3px] w-auto" />
+            <img src="/assets/logoaffittochiaro_pic.webp" alt="Affittochiaro" className="h-[52px] md:h-[72px] md:mt-[3px] w-auto" />
           </Link>
 
           {/* Desktop nav */}
