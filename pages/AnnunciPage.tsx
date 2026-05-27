@@ -155,6 +155,7 @@ export const AnnunciPage: React.FC = () => {
   const [showFilters, setShowFilters] = useState(false);
   const [gpsLoading, setGpsLoading] = useState(false);
   const [filters, setFilters] = useState<ActiveFilters>(EMPTY_FILTERS);
+  const [selectedListingId, setSelectedListingId] = useState<string | null>(null);
 
   // ── GPS ──────────────────────────────────────────────────────────────────────
   const handleGPS = useCallback(async () => {
@@ -207,6 +208,10 @@ export const AnnunciPage: React.FC = () => {
       return true;
     });
   }, [searchText, filters]);
+
+  const selectedListing = selectedListingId
+    ? filteredListings.find(l => l.id === selectedListingId) ?? null
+    : null;
 
   // ── Active filter count ──────────────────────────────────────────────────────
   const priceChanged = filters.priceMin !== PRICE_MIN || filters.priceMax !== PRICE_MAX;
@@ -266,6 +271,10 @@ export const AnnunciPage: React.FC = () => {
       document.body.removeAttribute('data-map-mode');
     };
   }, [showMap, sheetPosition]);
+
+  useEffect(() => {
+    if (!showMap) setSelectedListingId(null);
+  }, [showMap]);
 
   // ── Format helpers ────────────────────────────────────────────────────────────
   const fmtPriceMin = (v: number) => `€${v.toLocaleString('it-IT')}`;
@@ -456,13 +465,19 @@ export const AnnunciPage: React.FC = () => {
 
           {/* Map — fills space above sheet */}
           <div className="flex-1 bg-gray-100 overflow-hidden">
-            <ListingsMap listings={filteredListings} center={activeCityCoordinates} />
+            <ListingsMap
+              listings={filteredListings}
+              center={activeCityCoordinates}
+              selectedId={selectedListingId}
+              onMarkerClick={listing => setSelectedListingId(listing.id)}
+              onMapClick={() => setSelectedListingId(null)}
+            />
           </div>
 
-          {/* Bottom sheet — snap: collapsed 76px | half 52vh */}
+          {/* Bottom sheet — snap: collapsed 76px | card preview 280px | half 52vh */}
           <div
             className="bg-white rounded-t-2xl shrink-0 overflow-hidden transition-[height] duration-300 ease-out shadow-[0_-4px_20px_rgba(0,0,0,0.12)]"
-            style={{ height: sheetPosition === 'half' ? '52vh' : '76px' }}
+            style={{ height: sheetPosition === 'half' ? '52vh' : selectedListingId ? '280px' : '76px' }}
           >
             {/* Drag handle + header row — touch target for swipe */}
             <div
@@ -476,6 +491,7 @@ export const AnnunciPage: React.FC = () => {
                   else setShowMap(false);
                 } else if (delta < -40) {
                   if (sheetPosition === 'half') setSheetPosition('collapsed');
+                  else if (selectedListingId) setSelectedListingId(null);
                 }
                 setSheetTouchStartY(null);
               }}
@@ -486,8 +502,16 @@ export const AnnunciPage: React.FC = () => {
               <div className="flex justify-center pt-3 pb-1">
                 <div className="w-10 h-1 rounded-full bg-gray-200" />
               </div>
-              <div className="flex items-center justify-between px-4 py-2">
+              <div className={`flex items-center px-4 py-2 ${sheetPosition === 'collapsed' && !selectedListingId ? 'justify-center' : 'justify-between'}`}>
                 <p className="font-bold text-gray-900 text-sm">{filteredListings.length} risultati</p>
+                {sheetPosition === 'collapsed' && selectedListingId && (
+                  <button
+                    onClick={e => { e.stopPropagation(); setSelectedListingId(null); }}
+                    className="p-1 text-gray-400 hover:text-gray-600"
+                  >
+                    <X size={14} />
+                  </button>
+                )}
                 {sheetPosition === 'half' && (
                   <button
                     onClick={e => { e.stopPropagation(); setShowMap(false); }}
@@ -498,6 +522,49 @@ export const AnnunciPage: React.FC = () => {
                 )}
               </div>
             </div>
+
+            {/* Horizontal card carousel — collapsed + listing selected */}
+            {sheetPosition === 'collapsed' && selectedListing && (
+              <div className="flex gap-3 overflow-x-auto px-4 pb-3 scrollbar-hide snap-x snap-mandatory">
+                {[selectedListing, ...filteredListings.filter(l => l.id !== selectedListingId)].map(listing => {
+                  const url = buildListingUrl(listing.regioneSlug, listing.comuneSlug, listing.tipologiaSlug, listing.slug);
+                  return (
+                    <div
+                      key={listing.id}
+                      className="snap-start shrink-0 bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-md"
+                      style={{ width: 'calc(82vw)', maxWidth: '300px' }}
+                    >
+                      <Link to={url} className="relative block overflow-hidden" style={{ height: '112px' }}>
+                        <img
+                          src={listing.immagini[0]}
+                          alt={listing.titolo}
+                          loading="lazy"
+                          className="w-full h-full object-cover"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/55 to-transparent" />
+                        <div className="absolute bottom-2 left-3">
+                          <span className="text-white font-bold text-base drop-shadow">{formatPrice(listing.prezzo)}</span>
+                        </div>
+                        {listing.isExclusive && (
+                          <div className="absolute top-2 left-2 flex items-center gap-1 bg-primary-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
+                            <Star size={8} className="fill-white" /> Esclusiva
+                          </div>
+                        )}
+                      </Link>
+                      <div className="px-3 py-2">
+                        <p className="text-[11px] text-gray-400 capitalize mb-0.5">{listing.tipologia} · {listing.zona}</p>
+                        <p className="font-semibold text-sm text-gray-900 line-clamp-1">{listing.titolo}</p>
+                        <div className="flex items-center gap-2.5 mt-1 text-xs text-gray-500">
+                          <span className="flex items-center gap-0.5"><Maximize2 size={10} />{listing.mq}m²</span>
+                          <span className="flex items-center gap-0.5"><BedDouble size={10} />{listing.camere} cam.</span>
+                          <span className="flex items-center gap-0.5"><Bath size={10} />{listing.bagni} bagni</span>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
 
             {/* Scrollable cards — only in half position */}
             {sheetPosition === 'half' && (

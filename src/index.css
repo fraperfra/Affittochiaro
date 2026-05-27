@@ -428,10 +428,17 @@
   cursor: pointer;
 }
 
-/* Map mode — hide mobile nav + chat FAB when sheet is collapsed (step 1) */
+/* Map mode — mobile nav + chat FAB fade out when collapsed, fade in when half */
+.mobile-nav-bar,
+.chat-fab {
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
 [data-map-mode="collapsed"] .mobile-nav-bar,
 [data-map-mode="collapsed"] .chat-fab {
-  display: none !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  transform: translateY(16px);
 }
 
 /* Mobile drawer — slide up from nav bar */
