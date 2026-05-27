@@ -12,6 +12,7 @@ const NAV_LINKS = [
   { to: '/cerca-inquilino', label: 'Cerca Inquilino' },
   { to: '/servizi', label: 'Servizi' },
   { to: '/agenzie', label: 'Agenzie' },
+  { to: '/chi-siamo', label: 'Chi Siamo' },
   { to: '/guide-affitto', label: 'News' },
 ];
 
