@@ -12,6 +12,7 @@ import {
   Settings,
   User,
   Inbox,
+  Newspaper,
 } from 'lucide-react';
 import { ROUTES } from '../../utils/constants';
 
@@ -48,11 +49,11 @@ const landlordTabs: TabItem[] = [
 ];
 
 const adminTabs: TabItem[] = [
-  { icon: LayoutDashboard, label: 'Dashboard', href: ROUTES.ADMIN_DASHBOARD },
-  { icon: Users, label: 'Inquilini', href: ROUTES.ADMIN_TENANTS },
-  { icon: Building2, label: 'Agenzie', href: ROUTES.ADMIN_AGENCIES },
-  { icon: Megaphone, label: 'Annunci', href: ROUTES.ADMIN_LISTINGS },
-  { icon: Settings, label: 'Sistema', href: ROUTES.ADMIN_SYSTEM },
+  { icon: Home, label: 'Home', href: '/' },
+  { icon: Megaphone, label: 'Annunci', href: '/case-e-stanze-in-affitto' },
+  { icon: SearchIcon, label: 'Inquilini', href: '/cerca-inquilino' },
+  { icon: Newspaper, label: 'News', href: '/guide-affitto' },
+  { icon: Settings, label: 'Admin', href: ROUTES.ADMIN_SYSTEM },
 ];
 
 const tabConfig: Record<string, TabItem[]> = {
