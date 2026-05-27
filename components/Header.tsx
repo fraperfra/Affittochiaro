@@ -117,7 +117,7 @@ export const Header: React.FC = () => {
 
         {/* Blur backdrop — covers page below header when menu is open */}
         <div
-          className={`fixed left-0 right-0 bottom-0 z-[95] transition-opacity duration-300 ${
+          className={`fixed left-0 right-0 bottom-0 z-[95] ${
             mobileOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
           }`}
           style={{
@@ -125,6 +125,7 @@ export const Header: React.FC = () => {
             backgroundColor: 'rgba(0, 0, 0, 0.18)',
             backdropFilter: 'blur(8px)',
             WebkitBackdropFilter: 'blur(8px)',
+            transition: 'opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
           }}
           onClick={() => setMobileOpen(false)}
         />
@@ -163,11 +164,12 @@ export const Header: React.FC = () => {
               {/* Nav links + legal — expands upward above the button row */}
               <div
                 style={{
-                  maxHeight: mobileOpen ? '580px' : '0px',
-                  overflow: 'hidden',
-                  transition: 'max-height 0.32s cubic-bezier(0.4, 0, 0.2, 1)',
+                  display: 'grid',
+                  gridTemplateRows: mobileOpen ? '1fr' : '0fr',
+                  transition: 'grid-template-rows 0.38s cubic-bezier(0.16, 1, 0.3, 1)',
                 }}
               >
+              <div style={{ overflow: 'hidden', minHeight: 0 }}>
                 {/* Logo header inside the drawer */}
                 <div className="flex items-center justify-center px-6 pt-5 pb-3">
                   <Link to="/" onClick={() => setMobileOpen(false)}>
@@ -196,9 +198,16 @@ export const Header: React.FC = () => {
                   <Link to="/cookie-policy" onClick={() => setMobileOpen(false)} className="text-xs text-gray-400 hover:text-brand-green transition-colors">Cookie Policy</Link>
                 </div>
               </div>
+              </div>
 
-              {/* Separator — only when expanded */}
-              {mobileOpen && <div className="border-t border-gray-100 mx-0" />}
+              {/* Separator */}
+              <div
+                className="border-t border-gray-100 mx-0"
+                style={{
+                  opacity: mobileOpen ? 1 : 0,
+                  transition: 'opacity 0.2s ease',
+                }}
+              />
 
               {/* Always visible: Trova Casa · Accedi · Menu */}
               <div className="flex items-center" style={{ height: '64px' }}>
