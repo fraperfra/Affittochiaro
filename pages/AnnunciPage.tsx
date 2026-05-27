@@ -303,9 +303,6 @@ export const AnnunciPage: React.FC = () => {
         <div className="max-w-screen-xl mx-auto px-4 py-3">
           <div className="flex items-center justify-between gap-3">
             <div className="flex items-center gap-3">
-              <span className="text-sm text-gray-600 shrink-0">
-                <span className="font-bold text-gray-900">{filteredListings.length}</span> annunci
-              </span>
               <button
                 onClick={() => setShowFilters(true)}
                 className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all border ${
