@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useCallback, useEffect } from 'react';
+import React, { useState, useMemo, useCallback, useEffect, useRef } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import {
   MapPin,
@@ -151,7 +151,9 @@ export const AnnunciPage: React.FC = () => {
   const [searchText, setSearchText] = useState(searchParams.get('city') || '');
   const [showMap, setShowMap] = useState(false);
   const [sheetPosition, setSheetPosition] = useState<'collapsed' | 'half'>('collapsed');
-  const [sheetTouchStartY, setSheetTouchStartY] = useState<number | null>(null);
+  const sheetRef = useRef<HTMLDivElement>(null);
+  const sheetDragStartY = useRef<number | null>(null);
+  const sheetDragStartH = useRef<number | null>(null);
   const [showFilters, setShowFilters] = useState(false);
   const [gpsLoading, setGpsLoading] = useState(false);
   const [filters, setFilters] = useState<ActiveFilters>(EMPTY_FILTERS);
@@ -485,24 +487,49 @@ export const AnnunciPage: React.FC = () => {
 
           {/* Bottom sheet — snap: collapsed 76px | card preview 280px | half 52vh */}
           <div
+            ref={sheetRef}
             className="bg-white rounded-t-2xl shrink-0 overflow-hidden transition-[height] duration-300 ease-out shadow-[0_-4px_20px_rgba(0,0,0,0.12)]"
             style={{ height: sheetPosition === 'half' ? '52vh' : selectedListingId ? '280px' : '76px' }}
           >
-            {/* Drag handle + header row — touch target for swipe */}
+            {/* Drag handle + header row — real-time drag via ref, snap on release */}
             <div
               className="select-none cursor-grab"
-              onTouchStart={e => setSheetTouchStartY(e.touches[0].clientY)}
+              onTouchStart={e => {
+                sheetDragStartY.current = e.touches[0].clientY;
+                sheetDragStartH.current = sheetRef.current?.offsetHeight ?? null;
+                // Disable CSS transition so height tracks the finger without lag
+                if (sheetRef.current) sheetRef.current.style.transition = 'none';
+              }}
+              onTouchMove={e => {
+                if (sheetDragStartY.current === null || sheetDragStartH.current === null || !sheetRef.current) return;
+                const delta = sheetDragStartY.current - e.touches[0].clientY;
+                const halfPx = window.innerHeight * 0.52;
+                const newH = Math.max(60, Math.min(halfPx + 80, sheetDragStartH.current + delta));
+                sheetRef.current.style.height = `${newH}px`;
+              }}
               onTouchEnd={e => {
-                if (sheetTouchStartY === null) return;
-                const delta = sheetTouchStartY - e.changedTouches[0].clientY;
+                if (sheetDragStartY.current === null) return;
+                const delta = sheetDragStartY.current - e.changedTouches[0].clientY;
+
+                // Re-enable Tailwind transition for snap animation
+                if (sheetRef.current) sheetRef.current.style.transition = '';
+
                 if (delta > 40) {
                   if (sheetPosition === 'collapsed') setSheetPosition('half');
                   else setShowMap(false);
                 } else if (delta < -40) {
                   if (sheetPosition === 'half') setSheetPosition('collapsed');
                   else if (selectedListingId) setSelectedListingId(null);
+                } else {
+                  // Small delta — animate back to current snap position
+                  const snapH = sheetPosition === 'half'
+                    ? `${window.innerHeight * 0.52}px`
+                    : selectedListingId ? '280px' : '76px';
+                  if (sheetRef.current) sheetRef.current.style.height = snapH;
                 }
-                setSheetTouchStartY(null);
+
+                sheetDragStartY.current = null;
+                sheetDragStartH.current = null;
               }}
               onClick={() => {
                 if (sheetPosition === 'collapsed') setSheetPosition('half');
