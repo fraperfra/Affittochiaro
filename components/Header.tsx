@@ -120,12 +120,14 @@ export const Header: React.FC = () => {
         style={{ top: 'calc(5rem + env(safe-area-inset-top, 0px))' }}
       />
 
-      {/* Slide panel — slides up from bottom */}
+      {/* Slide panel — anchored to nav bar, slides up on open */}
       <div
-        className={`fixed left-0 right-0 bg-white z-[120] md:hidden transform transition-transform duration-300 ease-out shadow-2xl rounded-t-2xl ${mobileOpen ? 'translate-y-0' : 'translate-y-full'}`}
+        className="fixed left-0 right-0 bg-white z-[120] md:hidden shadow-2xl rounded-t-2xl"
         style={{
           bottom: 'calc(env(safe-area-inset-bottom, 0px) + 74px)',
           maxHeight: '55vh',
+          transform: mobileOpen ? 'translateY(0)' : 'translateY(110%)',
+          transition: 'transform 0.3s ease-out',
         }}
       >
         {/* drag handle */}
