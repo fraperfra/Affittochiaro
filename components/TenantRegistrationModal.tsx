@@ -578,77 +578,76 @@ export const TenantRegistrationModal: React.FC<TenantRegistrationModalProps> = (
   };
 
   return (
-    <div className="fixed inset-0 z-[9999] flex items-center justify-center">
+    <div className="fixed inset-0 z-[9999] flex items-end sm:items-center justify-center">
       {/* Backdrop */}
       <div
         className="absolute inset-0 bg-black/60 backdrop-blur-sm animate-fadeIn"
         onClick={handleClose}
       />
 
-      {/* Modal */}
-      <div className="relative w-full max-w-2xl max-h-[90vh] mx-4 bg-white rounded-[2rem] shadow-2xl overflow-hidden animate-slideUp">
-        {/* Close Button */}
-        <button
-          onClick={handleClose}
-          disabled={isSubmitting}
-          className="absolute top-4 right-4 z-10 w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 transition-colors disabled:opacity-50"
-        >
-          <X size={20} className="text-gray-600" />
-        </button>
-
-        {/* Header */}
-        <div className="bg-gradient-to-r from-brand-green via-teal-600 to-action-green p-6 pb-12 text-white">
-          <div className="flex items-center gap-3">
-            <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
-              <FileText size={24} />
+      {/* Modal — flex column so form area fills remaining space */}
+      <div
+        className="relative w-full sm:max-w-2xl sm:mx-4 bg-white sm:rounded-[2rem] rounded-t-[2rem] shadow-2xl flex flex-col animate-slideUp"
+        style={{ maxHeight: 'min(92vh, 780px)' }}
+      >
+        {/* Header — X button inline to avoid overlap */}
+        <div className="bg-gradient-to-r from-brand-green via-teal-600 to-action-green px-5 pt-5 pb-10 text-white shrink-0">
+          <div className="flex items-start gap-3">
+            <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center shrink-0 mt-0.5">
+              <FileText size={20} />
             </div>
-            <div>
-              <h2 className="text-xl font-bold">Crea il tuo Profilo Inquilino</h2>
-              <p className="text-white/80 text-sm">Il tuo passaporto per trovare casa</p>
+            <div className="flex-1 min-w-0">
+              <h2 className="text-lg font-bold leading-tight">Crea il tuo Profilo Inquilino</h2>
+              <p className="text-white/80 text-sm mt-0.5">Il tuo passaporto per trovare casa</p>
             </div>
+            <button
+              onClick={handleClose}
+              disabled={isSubmitting}
+              className="w-9 h-9 flex items-center justify-center rounded-full bg-white/20 hover:bg-white/30 transition-colors disabled:opacity-50 shrink-0"
+            >
+              <X size={18} className="text-white" />
+            </button>
           </div>
 
           {/* Profile Completion Indicator */}
           <div className="mt-4 flex items-center gap-3">
-            <div className="flex-1 h-2 bg-white/20 rounded-full overflow-hidden">
+            <div className="flex-1 h-1.5 bg-white/20 rounded-full overflow-hidden">
               <div
                 className={`h-full ${getCompletionBg()} rounded-full transition-all duration-500`}
                 style={{ width: `${completion}%` }}
               />
             </div>
-            <span className={`text-sm font-bold ${completion >= 50 ? 'text-white' : 'text-white/80'}`}>
-              {completion}%
-            </span>
+            <span className="text-sm font-bold text-white shrink-0">{completion}%</span>
           </div>
           <p className="text-xs text-white/60 mt-1">
             {completion < 50 && "Completa almeno il 50% per essere visibile alle agenzie"}
             {completion >= 50 && completion < 80 && "Ottimo! Aggiungi altri dettagli per aumentare le tue chance"}
-            {completion >= 80 && "Eccellente! Il tuo profilo e molto completo"}
+            {completion >= 80 && "Eccellente! Il tuo profilo è molto completo"}
           </p>
         </div>
 
-        {/* Progress Section */}
-        <div className="relative -mt-6 mx-6 bg-white rounded-2xl shadow-lg p-4 border border-gray-100">
-          {/* Step Indicators */}
-          <div className="flex justify-between items-center mb-3 overflow-x-auto pb-2">
+        {/* Progress Section — overlaps header */}
+        <div className="relative -mt-5 mx-4 bg-white rounded-2xl shadow-md border border-gray-100 p-3 shrink-0">
+          {/* Step Indicators — labels hidden on small screens */}
+          <div className="flex items-start gap-1">
             {STEPS.map((step) => {
               const Icon = step.icon;
               const isActive = currentStep === step.id;
               const isCompleted = currentStep > step.id;
 
               return (
-                <div key={step.id} className="flex flex-col items-center min-w-[3rem]">
+                <div key={step.id} className="flex flex-col items-center flex-1">
                   <div
                     className={`
-                      w-9 h-9 rounded-full flex items-center justify-center transition-all duration-500
-                      ${isCompleted ? 'bg-green-500 text-white scale-90' : ''}
-                      ${isActive ? `bg-gradient-to-r ${step.color} text-white scale-110 shadow-lg` : ''}
+                      w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300
+                      ${isCompleted ? 'bg-green-500 text-white' : ''}
+                      ${isActive ? `bg-gradient-to-r ${step.color} text-white scale-110 shadow-md` : ''}
                       ${!isActive && !isCompleted ? 'bg-gray-100 text-gray-400' : ''}
                     `}
                   >
-                    {isCompleted ? <CheckCircle size={18} /> : <Icon size={16} />}
+                    {isCompleted ? <CheckCircle size={15} /> : <Icon size={14} />}
                   </div>
-                  <span className={`text-[9px] mt-1 font-medium transition-colors whitespace-nowrap ${
+                  <span className={`hidden sm:block text-[9px] mt-0.5 font-medium text-center w-full truncate transition-colors ${
                     isActive ? 'text-brand-green' : 'text-gray-400'
                   }`}>
                     {step.title}
@@ -659,7 +658,7 @@ export const TenantRegistrationModal: React.FC<TenantRegistrationModalProps> = (
           </div>
 
           {/* Progress Bar */}
-          <div className="h-1.5 bg-gray-100 rounded-full overflow-hidden">
+          <div className="mt-2.5 h-1 bg-gray-100 rounded-full overflow-hidden">
             <div
               className="h-full bg-gradient-to-r from-brand-green to-action-green rounded-full transition-all duration-500 ease-out"
               style={{ width: `${progress}%` }}
@@ -667,13 +666,13 @@ export const TenantRegistrationModal: React.FC<TenantRegistrationModalProps> = (
           </div>
 
           {/* Motivational Message */}
-          <div className="mt-3 p-3 bg-gradient-to-r from-amber-50 to-orange-50 rounded-xl">
-            <div className="flex items-center gap-2 text-sm">
-              <span className="text-xl">{currentMotivation?.emoji}</span>
-              <div>
-                <p className="font-medium text-gray-800">{currentMotivation?.message}</p>
-                <p className="text-xs text-amber-600 flex items-center gap-1 mt-0.5">
-                  <Sparkles size={10} />
+          <div className="mt-2.5 p-2.5 bg-gradient-to-r from-amber-50 to-orange-50 rounded-xl">
+            <div className="flex items-center gap-2">
+              <span className="text-lg shrink-0">{currentMotivation?.emoji}</span>
+              <div className="min-w-0">
+                <p className="font-medium text-gray-800 text-xs leading-snug">{currentMotivation?.message}</p>
+                <p className="text-[11px] text-amber-600 flex items-center gap-1 mt-0.5">
+                  <Sparkles size={9} />
                   {currentMotivation?.tip}
                 </p>
               </div>
@@ -681,8 +680,8 @@ export const TenantRegistrationModal: React.FC<TenantRegistrationModalProps> = (
           </div>
         </div>
 
-        {/* Form Content */}
-        <div className="p-6 overflow-y-auto max-h-[40vh]">
+        {/* Form Content — fills remaining space and scrolls */}
+        <div className="flex-1 min-h-0 overflow-y-auto px-4 py-4">
           <div className={`transition-all duration-300 ${
             direction === 'next' ? 'animate-slideLeft' : 'animate-slideRight'
           }`}>
@@ -1201,7 +1200,7 @@ export const TenantRegistrationModal: React.FC<TenantRegistrationModalProps> = (
         </div>
 
         {/* Footer with Navigation */}
-        <div className="p-6 pt-0 flex gap-3 border-t border-gray-100">
+        <div className="shrink-0 px-4 py-4 flex gap-3 border-t border-gray-100 bg-white">
           {currentStep > 1 && (
             <button
               onClick={handleBack}
