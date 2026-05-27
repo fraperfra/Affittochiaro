@@ -42,7 +42,7 @@ export const Footer: React.FC = () => {
           </p>
           <div className="flex items-center gap-2 text-white/30 text-xs">
             <span className="w-2 h-2 bg-action-green rounded-full"></span>
-            <span>Oltre 1.200 inquilini già registrati</span>
+            <span>Oltre 30.000 inquilini già registrati</span>
           </div>
         </div>
       </div>

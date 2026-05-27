@@ -24,7 +24,7 @@ export const HowItWorks: React.FC = () => {
       <section id="come-funziona" className="py-16 bg-gray-50 px-4 border-b border-gray-100">
         <div className="max-w-full lg:px-20 mx-auto">
           <div className="mb-12">
-            <h2 className="text-2xl md:text-[28px] xl:text-[32px] font-bold text-brand-green mb-4 leading-[1.2]">Candidati in 3 Semplici Passaggi</h2>
+            <h2 className="text-[24px] font-bold text-brand-green mb-4 leading-[1.2]">Candidati in 3 Semplici Passaggi</h2>
             <p className="text-lg md:text-xl text-medium-gray leading-[1.5]">Dalla registrazione al tuo nuovo appartamento in affitto, senza intoppi e con la massima professionalità.</p>
           </div>
 

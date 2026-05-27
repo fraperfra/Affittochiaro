@@ -44,33 +44,27 @@ export const Hero: React.FC<HeroProps> = ({ counter, activeCityName }) => {
 
           {/* Left Side: Copy */}
           <div className="lg:w-[60%] text-center lg:text-left">
-            <div className="inline-flex items-center gap-2 border border-gray-200 rounded-xl px-3 py-2 bg-white mb-6">
-              <div className="w-1.5 h-1.5 rounded-full bg-action-green flex-shrink-0"></div>
-              <p className="text-[10px] font-bold text-brand-green">
-                Questa settimana <span className="text-action-green">127 inquilini verificati</span> hanno trovato casa tramite AffittoChiaro
-              </p>
-            </div>
             <div className="mb-5">
               <h1 className="text-[2rem] md:text-[2.75rem] xl:text-5xl font-bold text-brand-green leading-[1.1] tracking-[-0.01em]">
                 Trova casa in affitto in <span className="underline-green text-action-green">2 Settimane</span>.
               </h1>
             </div>
             <p className="text-lg md:text-xl text-medium-gray mb-5 leading-[1.5]">
-              È cambiato il modo di cercare casa. Crea il tuo <span className="font-bold text-brand-green">profilo</span> e ricevi proposte da privati e agenzie in <span className="font-bold text-brand-green">meno di 48 ore</span>.
+              Crea il tuo <span className="font-bold text-brand-green">profilo</span> e ricevi proposte da privati e agenzie in <span className="font-bold text-brand-green">meno di 48 ore</span>.
             </p>
 
             <div className="rounded-2xl border border-gray-200 bg-white p-4 md:p-0 md:border-0 md:bg-transparent">
-              <div className="mb-6 border-t border-gray-100 pt-6">
+              <div className="mb-4">
                 <SearchByType onTypeSelect={handleTypeSelect} variant="hero" />
               </div>
 
-              <div ref={searchRef} className="mb-8">
+              <div ref={searchRef} className="mb-4">
                 <QuickSearchBox
                   size="large"
                   prefilledTipologia={selectedTipologia}
                   onTipologiaFilled={() => setSelectedTipologia(null)}
                 />
-                <p className="mt-3 text-center lg:text-left text-xs text-medium-gray">
+                <p className="mt-1.5 text-center lg:text-left text-xs text-medium-gray">
                   Annunci verificati in 40+ città · Candidatura gratuita · Nessuna commissione
                 </p>
               </div>

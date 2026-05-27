@@ -8,7 +8,7 @@ interface FAQItem {
 const faqData: FAQItem[] = [
   {
     question: "Come funziona AffittoChiaro?",
-    answer: "Crei un profilo inquilino verificato con documenti, referenze e una video presentazione. Quando ti candidi per un annuncio, il proprietario riceve il tuo profilo completo e può risponderti in meno di 24 ore — senza attese infinite."
+    answer: "Crei un profilo inquilino verificato con documenti, referenze e una video presentazione. Quando ti candidi per un annuncio, il proprietario riceve il tuo profilo completo e può risponderti in meno di 24 ore: senza attese infinite."
   },
   {
     question: "Quanto costa creare un profilo?",
@@ -40,7 +40,7 @@ export const FAQ: React.FC = () => {
       <div className="max-w-full lg:px-20 mx-auto">
 
         <div className="mb-10 text-left lg:text-center">
-          <h2 className="text-2xl md:text-[28px] xl:text-[32px] font-bold text-brand-green mb-4 leading-[1.2]">
+          <h2 className="text-[24px] font-bold text-brand-green mb-4 leading-[1.2]">
             Hai qualche dubbio?
           </h2>
           <p className="text-lg text-medium-gray leading-[1.5]">

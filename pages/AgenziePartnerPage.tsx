@@ -199,7 +199,7 @@ export const AgenziePartnerPage: React.FC = () => {
                         Perché scegliere un'agenzia partner?
                       </p>
                       <p className="text-sm text-medium-gray leading-[1.6]">
-                        Le agenzie verificate su Affittochiaro ricevono solo candidature con profilo completo — meno tempo perso in telefonate, più visite qualificate.
+                        Le agenzie verificate su Affittochiaro ricevono solo candidature con profilo completo: meno tempo perso in telefonate, più visite qualificate.
                       </p>
                     </div>
                   )}

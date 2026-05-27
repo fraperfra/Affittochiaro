@@ -124,7 +124,7 @@ export const Header: React.FC = () => {
             mobileOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
           }`}
           style={{
-            top: 'calc(5rem + env(safe-area-inset-top, 0px))',
+            top: 0,
             backgroundColor: 'rgba(0, 0, 0, 0.18)',
             backdropFilter: 'blur(8px)',
             WebkitBackdropFilter: 'blur(8px)',

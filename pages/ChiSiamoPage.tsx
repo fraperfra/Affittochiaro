@@ -15,7 +15,7 @@ export const ChiSiamoPage: React.FC = () => {
               <span className="border-l-2 border-action-green pl-3 text-sm font-semibold text-brand-green uppercase tracking-widest">
                 La nostra storia
               </span>
-              <h1 className="mt-4 text-2xl md:text-[28px] xl:text-[32px] font-bold text-brand-green leading-[1.2]">
+              <h1 className="mt-4 text-[24px] font-bold text-brand-green leading-[1.2]">
                 Siamo Angelo e Angela
               </h1>
               <p className="mt-4 text-lg md:text-xl text-medium-gray leading-[1.5]">
@@ -63,7 +63,7 @@ export const ChiSiamoPage: React.FC = () => {
               <span className="border-l-2 border-action-green pl-3 text-sm font-semibold text-brand-green uppercase tracking-widest">
                 Come è nato
               </span>
-              <h2 className="mt-4 text-2xl md:text-[28px] xl:text-[32px] font-bold text-brand-green leading-[1.2]">
+              <h2 className="mt-4 text-[24px] font-bold text-brand-green leading-[1.2]">
                 Così è nato AffittoChiaro
               </h2>
               <div className="mt-6 space-y-4 text-base text-gray-600 leading-[1.7]">
@@ -91,7 +91,7 @@ export const ChiSiamoPage: React.FC = () => {
       <section className="py-16 bg-white px-4 border-b border-gray-100">
         <div className="max-w-full lg:px-20 mx-auto">
 
-          <h2 className="text-2xl md:text-[28px] xl:text-[32px] font-bold text-brand-green mb-4 leading-[1.2]">
+          <h2 className="text-[24px] font-bold text-brand-green mb-4 leading-[1.2]">
             Una piattaforma, due lati
           </h2>
           <p className="text-lg md:text-xl text-medium-gray mb-10 leading-[1.5]">
@@ -132,7 +132,7 @@ export const ChiSiamoPage: React.FC = () => {
       {/* ── CTA ────────────────────────────────────────────────────────── */}
       <section className="py-16 bg-gray-50 px-4">
         <div className="max-w-full lg:px-20 mx-auto">
-          <h2 className="text-2xl md:text-[28px] font-bold text-brand-green mb-3 leading-[1.2]">
+          <h2 className="text-[24px] font-bold text-brand-green mb-3 leading-[1.2]">
             Pronto a iniziare?
           </h2>
           <p className="text-lg text-medium-gray mb-8 leading-[1.5]">

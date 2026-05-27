@@ -14,7 +14,7 @@ const WHAT_THEY_MANAGE = [
 
 const WHY_PARTNER_BULLETS = [
   'Riceve solo profili inquilini verificati prima di ogni visita',
-  'Gestisce documenti in digitale — nessun cartaceo via email',
+  'Gestisce documenti in digitale: nessun cartaceo via email',
   'Garantisce risposta alle candidature entro 24 ore',
 ];
 
@@ -170,7 +170,7 @@ export const AgenziaDetailPage: React.FC = () => {
                   "Con Affittochiaro le visite a vuoto sono diminuite drasticamente. I profili che riceviamo sono già verificati e i documenti sono sempre in ordine."
                 </p>
                 <footer className="mt-2 text-xs font-semibold text-medium-gray">
-                  — Titolare, {agency.name}
+                  Titolare, {agency.name}
                 </footer>
               </blockquote>
             </div>

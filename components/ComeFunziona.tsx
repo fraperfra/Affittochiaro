@@ -61,7 +61,7 @@ export const ComeFunziona: React.FC = () => {
 
         {/* Header */}
         <div className="mb-10">
-          <h2 className="text-2xl md:text-[28px] xl:text-[32px] font-bold text-brand-green mb-3 leading-[1.2]">
+          <h2 className="text-[24px] font-bold text-brand-green mb-3 leading-[1.2]">
             Come funziona AffittoChiaro
           </h2>
           <p className="text-lg md:text-xl text-medium-gray mb-6 leading-[1.5]">

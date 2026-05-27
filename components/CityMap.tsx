@@ -32,23 +32,23 @@ export const CityMap: React.FC<CityMapProps & { compact?: boolean }> = ({ active
         {/* Content Column - Hidden in compact mode */}
         {!compact && (
           <div className="lg:w-1/2">
-            <h2 className="text-2xl md:text-[28px] xl:text-[32px] font-bold text-brand-green mb-4 leading-[1.2]">
+            <h2 className="text-[24px] font-bold text-brand-green mb-4 leading-[1.2]">
               AffittoChiaro è <span className="text-action-green">vicino a te</span>
             </h2>
             <p className="text-lg text-medium-gray mb-12 leading-[1.5]">
-              Siamo attivi in tutte le principali città italiane — da Milano a Palermo. Ogni giorno aggiungiamo nuovi annunci verificati, così trovi sempre l'opportunità giusta nella tua zona.
+              Siamo attivi in tutte le principali città italiane: da Milano a Palermo. Ogni giorno aggiungiamo nuovi annunci verificati, così trovi sempre l'opportunità giusta nella tua zona.
             </p>
 
             {/* Agency Quote Block */}
-            <div className="mb-12 relative overflow-hidden p-8 rounded-3xl bg-soft-green/50 border border-gray-100">
+            <div className="mb-8 relative overflow-hidden p-5 rounded-2xl bg-soft-green/50 border border-gray-100">
               <div className="relative z-10">
-                <p className="text-lg italic text-brand-green font-medium leading-[1.6] mb-4">
+                <p className="text-xs italic text-brand-green font-medium leading-[1.6] mb-3">
                   "Grazie ad AffittoChiaro abbiamo trovato l'inquilino ideale per il nostro immobile in soli 3 giorni."
                 </p>
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full bg-brand-green flex items-center justify-center text-white text-[10px] font-bold">AR</div>
-                  <p className="text-sm font-bold text-brand-green uppercase tracking-[0.15em]">
-                    — AGENZIA PARTNER VERIFICATA
+                <div className="flex items-center gap-2">
+                  <div className="w-6 h-6 rounded-full bg-brand-green flex items-center justify-center text-white text-[9px] font-bold shrink-0">AR</div>
+                  <p className="text-[10px] font-bold text-brand-green uppercase tracking-[0.15em]">
+                    AGENZIA PARTNER VERIFICATA
                   </p>
                 </div>
               </div>
@@ -56,7 +56,7 @@ export const CityMap: React.FC<CityMapProps & { compact?: boolean }> = ({ active
 
             <button
               onClick={() => navigate(`/tenant/listings?city=${encodeURIComponent(activeCityName)}&view=map`)}
-              className="w-full md:w-auto bg-brand-green text-white px-12 py-6 rounded-3xl font-bold uppercase tracking-widest text-xs shadow-2xl shadow-brand-green/20 hover:bg-black transition-all active:scale-95"
+              className="w-full md:w-auto bg-brand-green text-white px-8 py-4 rounded-2xl font-bold uppercase tracking-widest text-xs shadow-2xl shadow-brand-green/20 hover:bg-black transition-all active:scale-95"
             >
               CERCA LA TUA CASA
             </button>

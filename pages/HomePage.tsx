@@ -37,8 +37,8 @@ export const HomePage: React.FC<HomePageProps> = ({
       <ComeFunziona />
       <CityMap activeCityName={activeCityName} onCityChange={onCityChange} />
       <Testimonials />
-      <FinalCTA />
       <FAQ />
+      <FinalCTA />
     </>
   );
 };

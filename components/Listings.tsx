@@ -34,7 +34,7 @@ export const Listings: React.FC<ListingsProps> = ({
   return (
     <section id="annunci" className="py-16 bg-[#FAFAFA] px-4">
       <div className="max-w-full lg:px-20 mx-auto">
-        <h2 className="text-2xl md:text-[28px] xl:text-[32px] font-bold text-brand-green mb-4 leading-[1.2]">Scegli la Tua Prossima Casa</h2>
+        <h2 className="text-[24px] font-bold text-brand-green mb-4 leading-[1.2]">Scegli la Tua Prossima Casa</h2>
         <p className="text-lg text-medium-gray mb-10 leading-[1.5]">
           Sfoglia le migliori opportunità immobiliari aggiornate in tempo reale dai portali e dai social a{' '}
           <span className="font-bold text-brand-green">{activeCityName}</span> e dintorni.

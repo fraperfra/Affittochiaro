@@ -1,36 +1,38 @@
 import React from 'react';
-import { EyeOff, FileX, Clock, LucideIcon } from 'lucide-react';
 import { problems } from '../data';
 
-const ICON_MAP: Record<string, LucideIcon> = { EyeOff, FileX, Clock };
+const PROBLEM_IMAGES = [
+  '/assets/affittini-1.svg',
+  '/assets/affittini-2.svg',
+  '/assets/affittini-3.svg',
+];
 
 export const Problems: React.FC = () => {
   return (
     <section className="py-16 bg-gray-50 px-4 border-b border-gray-100">
       <div className="max-w-full lg:px-20 mx-auto">
 
-        <h2 className="text-2xl md:text-[28px] xl:text-[32px] font-bold text-brand-green mb-4 leading-[1.2]">
+        <h2 className="text-[24px] font-bold text-brand-green mb-4 leading-[1.2]">
           Cercare Casa in Affitto è un Incubo?
         </h2>
         <p className="text-lg md:text-xl text-medium-gray mb-10 leading-[1.5]">
           Trovare un appartamento in affitto oggi è più difficile che mai. Il mercato premia solo chi sa presentarsi nel modo giusto.
         </p>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 text-left">
-          {problems.map((item, idx) => {
-            const Icon = ICON_MAP[item.icon];
-            return (
-              <div key={idx} className="bg-white rounded-xl p-6 border border-gray-200 flex items-start gap-4 hover:border-gray-300 transition-colors">
-                <div className="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center shrink-0">
-                  {Icon && <Icon size={20} className="text-gray-500" />}
-                </div>
-                <div>
-                  <h3 className="text-base md:text-lg font-bold text-brand-green mb-2">{item.title}</h3>
-                  <p className="text-medium-gray text-base leading-[1.6]">{item.description}</p>
-                </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+          {problems.map((item, idx) => (
+            <div key={idx} className="bg-white rounded-xl border border-gray-200 overflow-hidden hover:border-gray-300 transition-colors flex flex-col">
+              <img
+                src={PROBLEM_IMAGES[idx]}
+                alt={item.title}
+                className="w-full h-[240px] object-contain pt-2 px-4 pb-0 md:p-4"
+              />
+              <div className="px-4 pt-1 pb-4 md:px-6 md:pb-6 flex flex-col flex-1 text-center">
+                <h3 className="text-[24px] font-bold text-brand-green mb-2 leading-tight">{item.title}</h3>
+                <p className="text-medium-gray text-[16px] leading-[1.6]">{item.description}</p>
               </div>
-            );
-          })}
+            </div>
+          ))}
         </div>
 
       </div>

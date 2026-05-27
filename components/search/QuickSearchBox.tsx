@@ -185,7 +185,7 @@ export const QuickSearchBox: React.FC<Props> = ({
               onChange={handleInputChange}
               onFocus={() => query.length >= 2 && setShowDropdown(true)}
               onKeyDown={handleKeyDown}
-              placeholder="In quale città cerchi casa?"
+              placeholder="Dove ti piacerebbe vivere?"
               aria-label="Città"
               role="combobox"
               aria-expanded={showDropdown && filtered.length > 0}
@@ -282,7 +282,7 @@ export const QuickSearchBox: React.FC<Props> = ({
           }`}
         >
           <Search size={15} />
-          Cerca
+          Cerca Casa
         </button>
       </div>
 

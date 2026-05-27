@@ -4,9 +4,9 @@ export const StatBanner: React.FC = () => {
   return (
     <section className="bg-brand-green px-4 py-10">
       <div className="max-w-full lg:px-20 mx-auto">
-        <div className="flex flex-col md:flex-row items-start md:items-center gap-6 md:gap-10">
+        <div className="flex flex-col md:flex-row items-center md:items-center gap-6 md:gap-10">
 
-          <div className="shrink-0">
+          <div className="shrink-0 text-center md:text-left">
             <span className="text-[3.25rem] md:text-[3.75rem] font-bold text-white leading-none tracking-tight">
               73%
             </span>
@@ -20,7 +20,7 @@ export const StatBanner: React.FC = () => {
               <span className="text-action-green">2 settimane</span>.
             </p>
             <p className="mt-2 text-sm text-white/55 leading-relaxed">
-              Perché si presenta con un profilo completo, credibile e verificato — e i proprietari lo contattano per primi.
+              Perché si presenta con un profilo completo, credibile e verificato: i proprietari lo contattano per primi.
             </p>
           </div>
 

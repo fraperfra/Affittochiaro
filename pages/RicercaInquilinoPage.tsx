@@ -384,7 +384,7 @@ export const RicercaInquilinoPage: React.FC = () => {
       {/* ── 3. Tenant Grid ───────────────────────────────────────── */}
       <div className="max-w-screen-xl mx-auto px-4 py-8">
         <h2 className="text-lg font-bold text-gray-900 mb-6">
-          {displayedTenants.length} inquilini — registrati di recente
+          {displayedTenants.length} inquilini: registrati di recente
         </h2>
 
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">

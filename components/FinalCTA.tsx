@@ -20,7 +20,7 @@ export const FinalCTA: React.FC = () => {
         {!isSubmitted ? (
           <>
             <div className="mb-10">
-              <h2 className="text-2xl md:text-[28px] xl:text-[32px] font-bold text-white mb-4 leading-[1.2]">
+              <h2 className="text-[24px] font-bold text-white mb-4 leading-[1.2]">
                 La tua prossima casa <br />
                 <span className="text-action-green">ti sta cercando</span>
               </h2>
@@ -99,18 +99,18 @@ export const FinalCTA: React.FC = () => {
               </p>
             </form>
 
-            <div className="flex flex-wrap items-center justify-center gap-8 mt-8 pt-8 border-t border-white/10">
-              <div className="flex items-center gap-2 text-white/60">
-                <Shield className="w-4 h-4 text-action-green" />
-                <span className="text-sm">Dati protetti</span>
+            <div className="flex items-center justify-center gap-4 mt-8 pt-8 border-t border-white/10">
+              <div className="flex items-center gap-1.5 text-white/60">
+                <Shield className="w-3 h-3 text-action-green shrink-0" />
+                <span className="text-xs">Dati protetti</span>
               </div>
-              <div className="flex items-center gap-2 text-white/60">
-                <CheckCircle className="w-4 h-4 text-action-green" />
-                <span className="text-sm">Zero spam</span>
+              <div className="flex items-center gap-1.5 text-white/60">
+                <CheckCircle className="w-3 h-3 text-action-green shrink-0" />
+                <span className="text-xs">Zero spam</span>
               </div>
-              <div className="flex items-center gap-2 text-white/60">
-                <Zap className="w-4 h-4 text-action-green" />
-                <span className="text-sm">Risposte in 24h</span>
+              <div className="flex items-center gap-1.5 text-white/60">
+                <Zap className="w-3 h-3 text-action-green shrink-0" />
+                <span className="text-xs">Risposte in 48h</span>
               </div>
             </div>
           </>
@@ -119,7 +119,7 @@ export const FinalCTA: React.FC = () => {
             <div className="w-16 h-16 bg-action-green/20 rounded-full flex items-center justify-center mx-auto mb-6 border border-action-green/30">
               <CheckCircle className="w-8 h-8 text-action-green" />
             </div>
-            <h3 className="text-2xl md:text-[28px] font-bold text-white mb-4 leading-[1.2]">
+            <h3 className="text-[24px] font-bold text-white mb-4 leading-[1.2]">
               {formData.nome ? `Perfetto, ${formData.nome}!` : 'Perfetto!'}
             </h3>
             <p className="text-white/70 text-lg mb-6 leading-[1.5]">
