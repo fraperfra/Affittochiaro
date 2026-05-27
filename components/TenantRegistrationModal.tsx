@@ -123,24 +123,38 @@ const EMPLOYMENT_TYPES = [
   'Altro',
 ];
 
-const INCOME_RANGES = [
-  'Meno di €1.000',
-  '€1.000 - €1.500',
-  '€1.500 - €2.000',
-  '€2.000 - €2.500',
-  '€2.500 - €3.000',
-  '€3.000 - €4.000',
-  '€4.000 - €5.000',
-  'Oltre €5.000',
-];
-
 const BUDGET_RANGES = [
-  'Fino a €500',
-  '€500 - €700',
-  '€700 - €900',
-  '€900 - €1.200',
-  '€1.200 - €1.500',
-  '€1.500 - €2.000',
+  'Fino a €250',
+  '€250 - €300',
+  '€300 - €350',
+  '€350 - €400',
+  '€400 - €450',
+  '€450 - €500',
+  '€500 - €550',
+  '€550 - €600',
+  '€600 - €650',
+  '€650 - €700',
+  '€700 - €750',
+  '€750 - €800',
+  '€800 - €850',
+  '€850 - €900',
+  '€900 - €950',
+  '€950 - €1.000',
+  '€1.000 - €1.050',
+  '€1.050 - €1.100',
+  '€1.100 - €1.150',
+  '€1.150 - €1.200',
+  '€1.200 - €1.250',
+  '€1.250 - €1.300',
+  '€1.300 - €1.350',
+  '€1.350 - €1.400',
+  '€1.400 - €1.450',
+  '€1.450 - €1.500',
+  '€1.500 - €1.600',
+  '€1.600 - €1.700',
+  '€1.700 - €1.800',
+  '€1.800 - €1.900',
+  '€1.900 - €2.000',
   'Oltre €2.000',
 ];
 
@@ -455,7 +469,6 @@ export const TenantRegistrationModal: React.FC<TenantRegistrationModalProps> = (
     if (step === 3) {
       if (!formData.occupation) newErrors.occupation = 'Seleziona occupazione';
       if (!formData.employmentType) newErrors.employmentType = 'Seleziona tipo contratto';
-      if (!formData.monthlyIncome) newErrors.monthlyIncome = 'Seleziona fascia reddito';
     }
 
     if (step === 4) {
@@ -833,18 +846,19 @@ export const TenantRegistrationModal: React.FC<TenantRegistrationModalProps> = (
 
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1.5">Reddito Mensile Netto *</label>
-                    <select
-                      value={formData.monthlyIncome}
-                      onChange={(e) => updateFormData('monthlyIncome', e.target.value)}
-                      className={`w-full px-4 py-3 rounded-xl border ${errors.monthlyIncome ? 'border-red-400 bg-red-50' : 'border-gray-200'} focus:border-brand-green focus:ring-2 focus:ring-brand-green/20 outline-none transition-all bg-white`}
-                    >
-                      <option value="">Seleziona...</option>
-                      {INCOME_RANGES.map(range => (
-                        <option key={range} value={range}>{range}</option>
-                      ))}
-                    </select>
-                    {errors.monthlyIncome && <p className="text-red-500 text-xs mt-1">{errors.monthlyIncome}</p>}
+                    <label className="block text-sm font-medium text-gray-700 mb-1.5">Reddito Mensile Netto</label>
+                    <div className="relative">
+                      <Euro className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+                      <input
+                        type="number"
+                        min="0"
+                        step="50"
+                        value={formData.monthlyIncome}
+                        onChange={(e) => updateFormData('monthlyIncome', e.target.value)}
+                        placeholder="Es: 1800"
+                        className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:border-brand-green focus:ring-2 focus:ring-brand-green/20 outline-none transition-all"
+                      />
+                    </div>
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1.5">Anni di Esperienza</label>
@@ -1034,19 +1048,6 @@ export const TenantRegistrationModal: React.FC<TenantRegistrationModalProps> = (
                 <label className="flex items-center gap-3 p-4 rounded-xl border border-gray-200 cursor-pointer hover:bg-gray-50 transition-colors">
                   <input
                     type="checkbox"
-                    checked={formData.isSmoker}
-                    onChange={(e) => updateFormData('isSmoker', e.target.checked)}
-                    className="w-5 h-5 rounded border-gray-300 text-brand-green focus:ring-brand-green"
-                  />
-                  <div className="flex-1">
-                    <span className="font-medium">Sono fumatore</span>
-                  </div>
-                  <span className="text-xl">🚬</span>
-                </label>
-
-                <label className="flex items-center gap-3 p-4 rounded-xl border border-gray-200 cursor-pointer hover:bg-gray-50 transition-colors">
-                  <input
-                    type="checkbox"
                     checked={formData.hasChildren}
                     onChange={(e) => updateFormData('hasChildren', e.target.checked)}
                     className="w-5 h-5 rounded border-gray-300 text-brand-green focus:ring-brand-green"
@@ -1068,16 +1069,6 @@ export const TenantRegistrationModal: React.FC<TenantRegistrationModalProps> = (
                   />
                 )}
 
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1.5">Hobby e Interessi</label>
-                  <input
-                    type="text"
-                    value={formData.hobbies}
-                    onChange={(e) => updateFormData('hobbies', e.target.value)}
-                    placeholder="Es: lettura, cinema, sport, musica..."
-                    className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-brand-green focus:ring-2 focus:ring-brand-green/20 outline-none transition-all"
-                  />
-                </div>
               </div>
             )}
 
