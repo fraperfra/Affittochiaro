@@ -428,6 +428,15 @@
   cursor: pointer;
 }
 
+/* Mobile drawer — slide up from nav bar */
+@keyframes slideUpFromNav {
+  from { transform: translateY(100%); }
+  to   { transform: translateY(0); }
+}
+.drawer-slide-up {
+  animation: slideUpFromNav 0.28s ease-out forwards;
+}
+
 /* Print styles */
 @media print {
   .no-print {

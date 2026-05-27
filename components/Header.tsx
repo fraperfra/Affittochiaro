@@ -120,36 +120,36 @@ export const Header: React.FC = () => {
         style={{ top: 'calc(5rem + env(safe-area-inset-top, 0px))' }}
       />
 
-      {/* Slide panel — anchored to nav bar, slides up on open */}
-      <div
-        className="fixed left-0 right-0 bg-white z-[120] md:hidden shadow-2xl rounded-t-2xl"
-        style={{
-          bottom: 'calc(env(safe-area-inset-bottom, 0px) + 74px)',
-          maxHeight: '55vh',
-          transform: mobileOpen ? 'translateY(0)' : 'translateY(110%)',
-          transition: 'transform 0.3s ease-out',
-        }}
-      >
-        {/* drag handle */}
-        <div className="flex justify-center pt-3 pb-1">
-          <div className="w-10 h-1 rounded-full bg-gray-200" />
+      {/* Slide panel — only in DOM when open, animates up from nav bar */}
+      {mobileOpen && (
+        <div
+          className="drawer-slide-up fixed left-0 right-0 bg-white z-[120] md:hidden shadow-2xl rounded-t-2xl"
+          style={{
+            bottom: 'calc(env(safe-area-inset-bottom, 0px) + 74px)',
+            maxHeight: '55vh',
+          }}
+        >
+          {/* drag handle */}
+          <div className="flex justify-center pt-3 pb-1">
+            <div className="w-10 h-1 rounded-full bg-gray-200" />
+          </div>
+          <nav className="overflow-y-auto" style={{ maxHeight: 'calc(55vh - 24px)' }}>
+            {NAV_LINKS.map(link => (
+              <Link
+                key={link.to}
+                to={link.to}
+                onClick={() => setMobileOpen(false)}
+                className={`flex items-center px-6 py-4 text-sm font-bold uppercase tracking-wider transition-colors ${isActive(link.to)
+                    ? 'text-action-green bg-primary-50 border-l-4 border-action-green'
+                    : 'text-gray-700 hover:bg-gray-50 hover:text-brand-green'
+                  }`}
+              >
+                {link.label}
+              </Link>
+            ))}
+          </nav>
         </div>
-        <nav className="overflow-y-auto" style={{ maxHeight: 'calc(55vh - 24px)' }}>
-          {NAV_LINKS.map(link => (
-            <Link
-              key={link.to}
-              to={link.to}
-              onClick={() => setMobileOpen(false)}
-              className={`flex items-center px-6 py-4 text-sm font-bold uppercase tracking-wider transition-colors ${isActive(link.to)
-                  ? 'text-action-green bg-primary-50 border-l-4 border-action-green'
-                  : 'text-gray-700 hover:bg-gray-50 hover:text-brand-green'
-                }`}
-            >
-              {link.label}
-            </Link>
-          ))}
-        </nav>
-      </div>
+      )}
 
       {/* ── Mobile Bottom Nav + Chat (hidden on md+) ────────────────────── */}
       <div className="md:hidden">
