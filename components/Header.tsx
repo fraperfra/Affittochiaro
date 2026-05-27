@@ -187,23 +187,27 @@ export const Header: React.FC = () => {
               {/* Trova Casa */}
               <Link
                 to="/register"
-                className="flex items-center justify-center flex-1 my-2.5 ml-2.5 mr-1.5 bg-brand-green text-white text-sm font-bold rounded-xl active:scale-95 transition-transform whitespace-nowrap"
+                className="flex items-center justify-center flex-1 h-full px-2 active:scale-95 transition-transform"
               >
-                Trova Casa
+                <span className="bg-brand-green text-white text-sm font-bold px-5 py-3 rounded-xl whitespace-nowrap shadow-sm shadow-brand-green/20">
+                  Trova Casa
+                </span>
               </Link>
 
               {/* Accedi */}
               <Link
                 to="/login"
-                className="flex items-center justify-center flex-1 my-2.5 ml-1.5 mr-2.5 border-2 border-brand-green/50 text-brand-green text-sm font-bold rounded-xl active:scale-95 transition-transform whitespace-nowrap"
+                className="flex items-center justify-center flex-1 h-full px-2 active:scale-95 transition-transform"
               >
-                Accedi
+                <span className="border border-brand-green/40 text-brand-green text-sm font-bold px-5 py-3 rounded-xl whitespace-nowrap">
+                  Accedi
+                </span>
               </Link>
 
               {/* Menu / Hamburger */}
               <button
                 onClick={() => setMobileOpen(v => !v)}
-                className={`flex flex-col items-center justify-center w-16 h-full rounded-r-2xl transition-colors active:scale-95 ${mobileOpen ? 'text-teal-500' : 'text-gray-400'}`}
+                className={`flex flex-col items-center justify-center flex-1 h-full rounded-r-2xl transition-colors active:scale-95 ${mobileOpen ? 'text-teal-500' : 'text-gray-400'}`}
                 aria-label={mobileOpen ? 'Chiudi menu' : 'Apri menu'}
               >
                 {mobileOpen ? <X size={20} /> : <Menu size={20} />}
