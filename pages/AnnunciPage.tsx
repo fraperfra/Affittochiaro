@@ -384,101 +384,133 @@ export const AnnunciPage: React.FC = () => {
         </div>
       </div>
 
-      {/* ── 3. Main Content ──────────────────────────────────────────────── */}
-      <div className="flex-grow max-w-screen-xl mx-auto w-full px-4 py-8">
-        {!showMap && (
+      {/* ── 3a. Map view ─────────────────────────────────────────────────── */}
+      {showMap && (
+        <>
+          {/* Map — full width, fixed height */}
+          <div className="w-full bg-gray-100" style={{ height: '45vh', minHeight: '260px' }}>
+            <ListingsMap listings={filteredListings} center={activeCityCoordinates} />
+          </div>
+
+          {/* Bottom sheet */}
+          <div className="relative z-10 bg-white rounded-t-2xl -mt-5 shadow-[0_-4px_20px_rgba(0,0,0,0.10)]">
+            {/* drag handle */}
+            <div className="flex justify-center pt-3 pb-1">
+              <div className="w-10 h-1 rounded-full bg-gray-200" />
+            </div>
+            <div className="max-w-screen-xl mx-auto px-4 pb-10">
+              <p className="font-bold text-gray-900 text-center text-sm py-3 border-b border-gray-100 mb-6">
+                {filteredListings.length} risultati
+              </p>
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                {filteredListings.map((listing) => {
+                  const url = buildListingUrl(listing.regioneSlug, listing.comuneSlug, listing.tipologiaSlug, listing.slug);
+                  return (
+                    <div key={listing.id} className="card group overflow-hidden hover:shadow-card-hover transition-shadow p-0 flex flex-col">
+                      <Link to={url} className="relative h-44 overflow-hidden block">
+                        <img
+                          src={listing.immagini[0]}
+                          alt={`${listing.titolo} – affitto ${listing.comune}`}
+                          loading="lazy"
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        />
+                        {listing.isExclusive && (
+                          <div className="absolute top-3 left-3 flex items-center gap-1 bg-primary-500 text-white text-xs font-bold px-2.5 py-1 rounded-full">
+                            <Star size={10} className="fill-white" /> Esclusiva
+                          </div>
+                        )}
+                      </Link>
+                      <div className="p-4 flex flex-col flex-1">
+                        <div className="flex items-center gap-1 text-text-muted text-xs mb-1">
+                          <MapPin size={11} /><span>{listing.zona}</span>
+                        </div>
+                        <h3 className="font-semibold text-text-primary text-sm line-clamp-2 mb-2">{listing.titolo}</h3>
+                        <div className="flex items-center gap-3 text-text-secondary text-xs mb-3">
+                          <span className="flex items-center gap-1"><Maximize2 size={11} />{listing.mq} m²</span>
+                          <span className="flex items-center gap-1"><BedDouble size={11} />{listing.camere} cam.</span>
+                          <span className="flex items-center gap-1"><Bath size={11} />{listing.bagni} bagni</span>
+                        </div>
+                        <div className="flex items-center justify-between mb-4">
+                          <span className="font-bold text-primary-600">{formatPrice(listing.prezzo)}</span>
+                          <span className="text-xs text-text-muted capitalize">{listing.tipologia}</span>
+                        </div>
+                        <Link to={url} className="btn btn-primary w-full justify-center text-sm mt-auto">
+                          Candidati
+                        </Link>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        </>
+      )}
+
+      {/* ── 3b. List view ────────────────────────────────────────────────── */}
+      {!showMap && (
+        <div className="flex-grow max-w-screen-xl mx-auto w-full px-4 py-8">
           <h2 className="text-xl font-bold text-gray-900 mb-6">
             {filteredListings.length} {filteredListings.length === 1 ? 'annuncio' : 'annunci'} in affitto in Italia
           </h2>
-        )}
 
-        {showMap ? (
-          <div className="flex w-full h-[calc(100vh-260px)] gap-4 overflow-hidden rounded-2xl border border-gray-200 bg-white">
-            <div className="w-1/2 h-full overflow-y-auto p-4 space-y-4 bg-gray-50/50 scrollbar-thin">
-              <p className="font-bold text-sm text-gray-500 px-2">{filteredListings.length} annunci</p>
-              {filteredListings.map(item => (
-                <Link
-                  key={item.id}
-                  to={buildListingUrl(item.regioneSlug, item.comuneSlug, item.tipologiaSlug, item.slug)}
-                  className="bg-white rounded-2xl p-3 shadow-sm border border-gray-100 hover:shadow-md transition-all flex gap-3 group"
-                >
-                  <img src={item.immagini[0]} className="w-24 h-24 rounded-xl object-cover" alt={item.titolo} />
-                  <div className="flex-grow flex flex-col justify-between py-1">
-                    <h4 className="font-bold text-sm line-clamp-2 leading-tight group-hover:text-primary-600">{item.titolo}</h4>
-                    <div>
-                      <p className="font-black text-primary-600 text-lg">{formatPrice(item.prezzo)}</p>
-                      <span className="text-[10px] font-bold uppercase tracking-wider bg-primary-50 text-primary-700 px-2 py-1 rounded-md mt-1 inline-block capitalize">
-                        {item.tipologia}
-                      </span>
-                    </div>
-                  </div>
-                </Link>
-              ))}
-            </div>
-            <div className="w-1/2 h-full bg-gray-100 relative">
-              <ListingsMap listings={filteredListings} center={activeCityCoordinates} />
-            </div>
-          </div>
-        ) : filteredListings.length > 0 ? (
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {filteredListings.map((listing) => {
-              const url = buildListingUrl(listing.regioneSlug, listing.comuneSlug, listing.tipologiaSlug, listing.slug);
-              return (
-                <div key={listing.id} className="card group overflow-hidden hover:shadow-card-hover transition-shadow p-0 flex flex-col">
-                  <Link to={url} className="relative h-44 overflow-hidden block">
-                    <img
-                      src={listing.immagini[0]}
-                      alt={`${listing.titolo} – affitto ${listing.comune}`}
-                      loading="lazy"
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                    />
-                    {listing.isExclusive && (
-                      <div className="absolute top-3 left-3 flex items-center gap-1 bg-primary-500 text-white text-xs font-bold px-2.5 py-1 rounded-full">
-                        <Star size={10} className="fill-white" /> Esclusiva
-                      </div>
-                    )}
-                  </Link>
-                  <div className="p-4 flex flex-col flex-1">
-                    <div className="flex items-center gap-1 text-text-muted text-xs mb-1">
-                      <MapPin size={11} /><span>{listing.zona}</span>
-                    </div>
-                    <h3 className="font-semibold text-text-primary text-sm line-clamp-2 mb-2">{listing.titolo}</h3>
-                    <div className="flex items-center gap-3 text-text-secondary text-xs mb-3">
-                      <span className="flex items-center gap-1"><Maximize2 size={11} />{listing.mq} m²</span>
-                      <span className="flex items-center gap-1"><BedDouble size={11} />{listing.camere} cam.</span>
-                      <span className="flex items-center gap-1"><Bath size={11} />{listing.bagni} bagni</span>
-                    </div>
-                    <div className="flex items-center justify-between mb-4">
-                      <span className="font-bold text-primary-600">{formatPrice(listing.prezzo)}</span>
-                      <span className="text-xs text-text-muted capitalize">{listing.tipologia}</span>
-                    </div>
-                    <Link to={url} className="btn btn-primary w-full justify-center text-sm mt-auto">
-                      Candidati
+          {filteredListings.length > 0 ? (
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {filteredListings.map((listing) => {
+                const url = buildListingUrl(listing.regioneSlug, listing.comuneSlug, listing.tipologiaSlug, listing.slug);
+                return (
+                  <div key={listing.id} className="card group overflow-hidden hover:shadow-card-hover transition-shadow p-0 flex flex-col">
+                    <Link to={url} className="relative h-44 overflow-hidden block">
+                      <img
+                        src={listing.immagini[0]}
+                        alt={`${listing.titolo} – affitto ${listing.comune}`}
+                        loading="lazy"
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      />
+                      {listing.isExclusive && (
+                        <div className="absolute top-3 left-3 flex items-center gap-1 bg-primary-500 text-white text-xs font-bold px-2.5 py-1 rounded-full">
+                          <Star size={10} className="fill-white" /> Esclusiva
+                        </div>
+                      )}
                     </Link>
+                    <div className="p-4 flex flex-col flex-1">
+                      <div className="flex items-center gap-1 text-text-muted text-xs mb-1">
+                        <MapPin size={11} /><span>{listing.zona}</span>
+                      </div>
+                      <h3 className="font-semibold text-text-primary text-sm line-clamp-2 mb-2">{listing.titolo}</h3>
+                      <div className="flex items-center gap-3 text-text-secondary text-xs mb-3">
+                        <span className="flex items-center gap-1"><Maximize2 size={11} />{listing.mq} m²</span>
+                        <span className="flex items-center gap-1"><BedDouble size={11} />{listing.camere} cam.</span>
+                        <span className="flex items-center gap-1"><Bath size={11} />{listing.bagni} bagni</span>
+                      </div>
+                      <div className="flex items-center justify-between mb-4">
+                        <span className="font-bold text-primary-600">{formatPrice(listing.prezzo)}</span>
+                        <span className="text-xs text-text-muted capitalize">{listing.tipologia}</span>
+                      </div>
+                      <Link to={url} className="btn btn-primary w-full justify-center text-sm mt-auto">
+                        Candidati
+                      </Link>
+                    </div>
                   </div>
-                </div>
-              );
-            })}
-          </div>
-        ) : (
-          <div className="text-center py-20">
-            <MapPin size={40} className="mx-auto mb-4 text-gray-300" />
-            <h3 className="text-xl font-bold text-gray-800 mb-2">Nessun annuncio trovato</h3>
-            <p className="text-gray-500 mb-6">Prova a modificare i filtri di ricerca</p>
-            <button
-              onClick={handleClearFilters}
-              className="px-6 py-2.5 bg-primary-600 text-white rounded-xl font-semibold hover:bg-primary-700 transition-colors"
-            >
-              Rimuovi filtri
-            </button>
-          </div>
-        )}
+                );
+              })}
+            </div>
+          ) : (
+            <div className="text-center py-20">
+              <MapPin size={40} className="mx-auto mb-4 text-gray-300" />
+              <h3 className="text-xl font-bold text-gray-800 mb-2">Nessun annuncio trovato</h3>
+              <p className="text-gray-500 mb-6">Prova a modificare i filtri di ricerca</p>
+              <button
+                onClick={handleClearFilters}
+                className="px-6 py-2.5 bg-primary-600 text-white rounded-xl font-semibold hover:bg-primary-700 transition-colors"
+              >
+                Rimuovi filtri
+              </button>
+            </div>
+          )}
 
-        {!showMap && (
           <div className="mt-16 pt-8 border-t border-gray-200">
-            <h2 className="text-xl font-bold mb-3">
-              Affitti in Italia — AffittoChiaro
-            </h2>
+            <h2 className="text-xl font-bold mb-3">Affitti in Italia — AffittoChiaro</h2>
             <p className="text-sm text-gray-500 leading-relaxed max-w-4xl">
               Scopri la più ampia selezione di case in affitto in Italia su AffittoChiaro.
               Aggiorniamo gli annunci ogni giorno per offrirti solo soluzioni verificate e disponibili.
@@ -486,8 +518,8 @@ export const AnnunciPage: React.FC = () => {
               Ogni inquilino può inviare la sua candidatura direttamente dall'annuncio con il Profilo Inquilino.
             </p>
           </div>
-        )}
-      </div>
+        </div>
+      )}
 
       {/* ── Filter Modal ─────────────────────────────────────────────────── */}
       {showFilters && (
