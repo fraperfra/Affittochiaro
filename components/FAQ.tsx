@@ -39,7 +39,7 @@ export const FAQ: React.FC = () => {
     <section className="py-16 px-4 bg-gray-50 border-b border-gray-100">
       <div className="max-w-full lg:px-20 mx-auto">
 
-        <div className="mb-10">
+        <div className="mb-10 text-left lg:text-center">
           <h2 className="text-2xl md:text-[28px] xl:text-[32px] font-bold text-brand-green mb-4 leading-[1.2]">
             Hai qualche dubbio?
           </h2>
@@ -48,7 +48,7 @@ export const FAQ: React.FC = () => {
           </p>
         </div>
 
-        <div className="space-y-3 max-w-3xl">
+        <div className="space-y-3 max-w-3xl mx-auto">
           {faqData.map((faq, index) => (
             <div
               key={index}

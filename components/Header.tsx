@@ -60,7 +60,7 @@ export const Header: React.FC = () => {
         className="fixed top-0 left-0 right-0 z-50 flex flex-col shadow-sm bg-white"
         style={{ paddingTop: 'env(safe-area-inset-top, 0px)' }}
       >
-        <header className="relative bg-white/95 backdrop-blur-md px-4 md:px-8 h-20 flex items-center justify-between border-b border-gray-100">
+        <header className="relative bg-white/95 backdrop-blur-md px-4 md:px-8 h-20 flex items-center justify-center md:justify-between border-b border-gray-100">
 
           {/* Logo — sinistra su tutti gli schermi */}
           <Link to="/" className="flex items-center shrink-0">
@@ -237,11 +237,11 @@ export const Header: React.FC = () => {
                 {/* Menu */}
                 <button
                   onClick={() => setMobileOpen(v => !v)}
-                  className={`flex flex-col items-center justify-center w-16 h-full rounded-r-2xl transition-colors active:scale-95 ${mobileOpen ? 'text-teal-500' : 'text-gray-400'}`}
+                  className={`flex flex-col items-center justify-center flex-1 h-full rounded-r-2xl transition-colors active:scale-95 ${mobileOpen ? 'text-teal-500' : 'text-gray-400'}`}
                   aria-label={mobileOpen ? 'Chiudi menu' : 'Apri menu'}
                 >
-                  {mobileOpen ? <X size={20} /> : <Menu size={20} />}
-                  <span className={`mt-0.5 text-[10px] leading-tight font-medium ${mobileOpen ? 'text-teal-500 font-semibold' : 'text-gray-500'}`}>
+                  {mobileOpen ? <X size={22} /> : <Menu size={22} />}
+                  <span className={`mt-0.5 text-[11px] leading-tight font-medium ${mobileOpen ? 'text-teal-500 font-semibold' : 'text-gray-500'}`}>
                     Menu
                   </span>
                 </button>
