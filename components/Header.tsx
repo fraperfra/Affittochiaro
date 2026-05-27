@@ -34,9 +34,8 @@ export const Header: React.FC = () => {
   useEffect(() => { setMobileOpen(false); }, [location.pathname]);
 
   useEffect(() => {
-    document.body.style.overflow = mobileOpen ? 'hidden' : '';
     return () => { document.body.style.overflow = ''; };
-  }, [mobileOpen]);
+  }, []);
 
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -112,49 +111,6 @@ export const Header: React.FC = () => {
         )}
       </div>
 
-      {/* ── Mobile Drawer ──────────────────────────────────────────────── */}
-      {/* Backdrop */}
-      <div
-        className={`fixed inset-0 bg-black/40 z-[110] md:hidden transition-opacity duration-300 ${mobileOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
-        onClick={() => setMobileOpen(false)}
-        style={{ top: 'calc(5rem + env(safe-area-inset-top, 0px))' }}
-      />
-
-      {/* Slide panel — only in DOM when open, animates up from nav bar */}
-      {mobileOpen && (
-        <div
-          className="drawer-slide-up fixed left-0 right-0 bg-white z-[120] md:hidden shadow-2xl rounded-t-2xl"
-          style={{
-            bottom: 'calc(env(safe-area-inset-bottom, 0px) + 74px)',
-            maxHeight: '55vh',
-          }}
-        >
-          {/* drag handle */}
-          <div className="flex justify-center pt-3 pb-1">
-            <div className="w-10 h-1 rounded-full bg-gray-200" />
-          </div>
-          <nav className="overflow-y-auto" style={{ maxHeight: 'calc(55vh - 24px)' }}>
-            {NAV_LINKS.map(link => (
-              <Link
-                key={link.to}
-                to={link.to}
-                onClick={() => setMobileOpen(false)}
-                className={`flex items-center px-6 py-4 text-sm font-bold uppercase tracking-wider transition-colors ${isActive(link.to)
-                    ? 'text-action-green bg-primary-50 border-l-4 border-action-green'
-                    : 'text-gray-700 hover:bg-gray-50 hover:text-brand-green'
-                  }`}
-              >
-                {link.label}
-              </Link>
-            ))}
-            <div className="border-t border-gray-100 mx-6 mt-1 pt-3 pb-4 flex flex-wrap gap-x-5 gap-y-2">
-              <Link to="/privacy-policy" onClick={() => setMobileOpen(false)} className="text-xs text-gray-400 hover:text-brand-green transition-colors">Privacy Policy</Link>
-              <Link to="/termini-di-servizio" onClick={() => setMobileOpen(false)} className="text-xs text-gray-400 hover:text-brand-green transition-colors">Termini e Condizioni</Link>
-              <Link to="/cookie-policy" onClick={() => setMobileOpen(false)} className="text-xs text-gray-400 hover:text-brand-green transition-colors">Cookie Policy</Link>
-            </div>
-          </nav>
-        </div>
-      )}
 
       {/* ── Mobile Bottom Nav + Chat (hidden on md+) ────────────────────── */}
       <div className="md:hidden">
@@ -178,50 +134,84 @@ export const Header: React.FC = () => {
             <BottomTabNav userRole={user.role as 'tenant' | 'agency' | 'landlord' | 'admin'} />
           </div>
         ) : (
-          /* ── Guest: 3-item public nav (Trova Casa · Accedi · Menu) ── */
+          /* ── Guest: expandable pill nav — grows upward from the button row ── */
           <nav
             className="mobile-nav-bar fixed left-0 right-0 z-[100]"
             style={{ bottom: 'calc(env(safe-area-inset-bottom, 0px) + 6px)' }}
             aria-label="Navigazione mobile"
           >
             <div
-              className="mx-3 flex items-center bg-white border border-gray-100 rounded-2xl"
+              className="mx-3 bg-white border border-gray-100 rounded-2xl overflow-hidden"
               style={{
-                height: '64px',
                 boxShadow: '0 4px 20px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.04)',
               }}
             >
-              {/* Trova Casa */}
-              <Link
-                to="/register"
-                className="flex items-center justify-center flex-1 h-full px-3 active:scale-95 transition-transform"
+              {/* Nav links + legal — expands upward above the button row */}
+              <div
+                style={{
+                  maxHeight: mobileOpen ? '520px' : '0px',
+                  overflow: 'hidden',
+                  transition: 'max-height 0.32s cubic-bezier(0.4, 0, 0.2, 1)',
+                }}
               >
-                <span className="bg-brand-green text-white text-sm font-bold px-5 py-3 rounded-xl whitespace-nowrap shadow-sm shadow-brand-green/20">
-                  Trova Casa
-                </span>
-              </Link>
+                {NAV_LINKS.map(link => (
+                  <Link
+                    key={link.to}
+                    to={link.to}
+                    onClick={() => setMobileOpen(false)}
+                    className={`flex items-center px-6 py-4 text-sm font-bold uppercase tracking-wider transition-colors ${
+                      isActive(link.to)
+                        ? 'text-action-green bg-primary-50 border-l-4 border-action-green'
+                        : 'text-gray-700 hover:bg-gray-50 hover:text-brand-green'
+                    }`}
+                  >
+                    {link.label}
+                  </Link>
+                ))}
+                <div className="border-t border-gray-100 px-6 py-3 flex flex-wrap gap-x-5 gap-y-2">
+                  <Link to="/privacy-policy" onClick={() => setMobileOpen(false)} className="text-xs text-gray-400 hover:text-brand-green transition-colors">Privacy Policy</Link>
+                  <Link to="/termini-di-servizio" onClick={() => setMobileOpen(false)} className="text-xs text-gray-400 hover:text-brand-green transition-colors">Termini e Condizioni</Link>
+                  <Link to="/cookie-policy" onClick={() => setMobileOpen(false)} className="text-xs text-gray-400 hover:text-brand-green transition-colors">Cookie Policy</Link>
+                </div>
+              </div>
 
-              {/* Accedi */}
-              <Link
-                to="/login"
-                className="flex items-center justify-center flex-1 h-full px-3 active:scale-95 transition-transform"
-              >
-                <span className="border border-brand-green/40 text-brand-green text-sm font-bold px-5 py-3 rounded-xl whitespace-nowrap">
-                  Accedi
-                </span>
-              </Link>
+              {/* Separator — only when expanded */}
+              {mobileOpen && <div className="border-t border-gray-100 mx-0" />}
 
-              {/* Menu / Hamburger — larghezza fissa per bilanciare i margini */}
-              <button
-                onClick={() => setMobileOpen(v => !v)}
-                className={`flex flex-col items-center justify-center w-16 h-full rounded-r-2xl transition-colors active:scale-95 ${mobileOpen ? 'text-teal-500' : 'text-gray-400'}`}
-                aria-label={mobileOpen ? 'Chiudi menu' : 'Apri menu'}
-              >
-                {mobileOpen ? <X size={20} /> : <Menu size={20} />}
-                <span className={`mt-0.5 text-[10px] leading-tight font-medium ${mobileOpen ? 'text-teal-500 font-semibold' : 'text-gray-500'}`}>
-                  Menu
-                </span>
-              </button>
+              {/* Always visible: Trova Casa · Accedi · Menu */}
+              <div className="flex items-center" style={{ height: '64px' }}>
+                {/* Trova Casa */}
+                <Link
+                  to="/register"
+                  className="flex items-center justify-center flex-1 h-full px-3 active:scale-95 transition-transform"
+                >
+                  <span className="bg-brand-green text-white text-sm font-bold px-5 py-3 rounded-xl whitespace-nowrap shadow-sm shadow-brand-green/20">
+                    Trova Casa
+                  </span>
+                </Link>
+
+                {/* Accedi */}
+                <Link
+                  to="/login"
+                  className="flex items-center justify-center flex-1 h-full px-3 active:scale-95 transition-transform"
+                >
+                  <span className="border border-brand-green/40 text-brand-green text-sm font-bold px-5 py-3 rounded-xl whitespace-nowrap">
+                    Accedi
+                  </span>
+                </Link>
+
+                {/* Menu */}
+                <button
+                  onClick={() => setMobileOpen(v => !v)}
+                  className={`flex flex-col items-center justify-center w-16 h-full rounded-r-2xl transition-colors active:scale-95 ${mobileOpen ? 'text-teal-500' : 'text-gray-400'}`}
+                  aria-label={mobileOpen ? 'Chiudi menu' : 'Apri menu'}
+                >
+                  {mobileOpen ? <X size={20} /> : <Menu size={20} />}
+                  <span className={`mt-0.5 text-[10px] leading-tight font-medium ${mobileOpen ? 'text-teal-500 font-semibold' : 'text-gray-500'}`}>
+                    Menu
+                  </span>
+                </button>
+              </div>
             </div>
           </nav>
         )}

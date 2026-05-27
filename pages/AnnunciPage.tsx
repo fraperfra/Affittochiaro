@@ -407,6 +407,53 @@ export const AnnunciPage: React.FC = () => {
           className="fixed left-0 right-0 bottom-0 z-[45] flex flex-col"
           style={{ top: 'calc(5rem + env(safe-area-inset-top, 0px))' }}
         >
+          {/* Compact filter toolbar — mobile only */}
+          <div className="md:hidden bg-white border-b border-gray-200 shadow-sm shrink-0">
+            <div className="flex items-center gap-2 px-3 py-2">
+              {/* Zone search — tap to go back to list */}
+              <button
+                onClick={() => setShowMap(false)}
+                className="flex-1 flex items-center gap-2 bg-gray-50 border border-gray-200 rounded-xl px-3 py-2 text-left min-w-0"
+              >
+                <Navigation size={14} className="text-brand-green shrink-0" />
+                <span className="text-sm text-gray-700 truncate font-medium">
+                  {searchText || 'Cerca per zona...'}
+                </span>
+              </button>
+
+              {/* Filtri avanzati */}
+              <button
+                onClick={() => setShowFilters(true)}
+                className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold border shrink-0 transition-all ${
+                  activeFilterCount > 0
+                    ? 'bg-primary-50 text-primary-700 border-primary-200'
+                    : 'bg-gray-50 text-gray-600 border-gray-200 hover:bg-gray-100'
+                }`}
+              >
+                <SlidersHorizontal size={13} />
+                Filtri
+                {activeFilterCount > 0 && (
+                  <span className="bg-primary-600 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">
+                    {activeFilterCount}
+                  </span>
+                )}
+              </button>
+
+              {/* Elenco / Mappa toggle */}
+              <div className="flex items-center bg-gray-100 p-0.5 rounded-lg border border-gray-200 shrink-0">
+                <button
+                  onClick={() => setShowMap(false)}
+                  className="flex items-center px-2 py-1.5 rounded-md text-xs font-bold text-gray-500 active:scale-95"
+                >
+                  <List className="w-3.5 h-3.5" />
+                </button>
+                <button className="flex items-center px-2 py-1.5 rounded-md text-xs font-bold bg-white text-primary-600 shadow-sm">
+                  <MapIcon className="w-3.5 h-3.5" />
+                </button>
+              </div>
+            </div>
+          </div>
+
           {/* Map — fills space above sheet */}
           <div className="flex-1 bg-gray-100 overflow-hidden">
             <ListingsMap listings={filteredListings} center={activeCityCoordinates} />
