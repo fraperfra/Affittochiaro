@@ -115,6 +115,20 @@ export const Header: React.FC = () => {
       {/* ── Mobile Bottom Nav + Chat (hidden on md+) ────────────────────── */}
       <div className="md:hidden">
 
+        {/* Blur backdrop — covers page below header when menu is open */}
+        <div
+          className={`fixed left-0 right-0 bottom-0 z-[95] transition-opacity duration-300 ${
+            mobileOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+          }`}
+          style={{
+            top: 'calc(5rem + env(safe-area-inset-top, 0px))',
+            backgroundColor: 'rgba(0, 0, 0, 0.18)',
+            backdropFilter: 'blur(8px)',
+            WebkitBackdropFilter: 'blur(8px)',
+          }}
+          onClick={() => setMobileOpen(false)}
+        />
+
         {/* Chat FAB — positioned above the nav bar, right side */}
         <button
           onClick={() => setShowChat(v => !v)}
@@ -149,11 +163,19 @@ export const Header: React.FC = () => {
               {/* Nav links + legal — expands upward above the button row */}
               <div
                 style={{
-                  maxHeight: mobileOpen ? '520px' : '0px',
+                  maxHeight: mobileOpen ? '580px' : '0px',
                   overflow: 'hidden',
                   transition: 'max-height 0.32s cubic-bezier(0.4, 0, 0.2, 1)',
                 }}
               >
+                {/* Logo header inside the drawer */}
+                <div className="flex items-center justify-center px-6 pt-5 pb-3">
+                  <Link to="/" onClick={() => setMobileOpen(false)}>
+                    <img src="/assets/logoaffittochiaro_pic.webp" alt="Affittochiaro" className="h-10 w-auto" />
+                  </Link>
+                </div>
+                <div className="border-t border-gray-100" />
+
                 {NAV_LINKS.map(link => (
                   <Link
                     key={link.to}
