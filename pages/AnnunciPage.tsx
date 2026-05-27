@@ -292,7 +292,7 @@ export const AnnunciPage: React.FC = () => {
       <div className="bg-brand-green text-white py-6 px-4">
         <div className="max-w-screen-xl mx-auto">
           <h1 className="text-2xl md:text-3xl font-bold mb-4 text-center">
-            Annunci Affitto Verificati in Italia
+            Annunci Affitto Verificati
           </h1>
           <div className="relative max-w-2xl mx-auto flex gap-2">
             <div className="relative flex-1">
