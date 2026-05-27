@@ -1,130 +1,161 @@
 import React from 'react';
-import { Eye, ShieldCheck, Zap } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { UserCheck, Building2, ArrowRight } from 'lucide-react';
 
 export const ChiSiamoPage: React.FC = () => {
-    return (
-        <div className="pt-8">
-            {/* Vision Hero */}
-            <section className="py-20 bg-gray-900 text-white relative overflow-hidden">
-                <div className="max-w-7xl mx-auto px-4 text-center relative z-10">
-                    <h1 className="text-4xl md:text-6xl font-bold font-serif mb-6 leading-tight">
-                        Rendiamo l'affitto <br /> <span className="text-primary-500">Semplice e Trasparente</span>
-                    </h1>
-                    <p className="text-xl text-gray-400 max-w-3xl mx-auto mb-12">
-                        Siamo nati con una missione: eliminare stress, costi nascosti e complicazioni burocratiche dal
-                        mercato immobiliare italiano, grazie alla tecnologia.
-                    </p>
-                    <img src="https://placehold.co/1200x500/1e293b/00C48C?text=Team+AffittoChiaro" alt="Team Photo"
-                        className="rounded-2xl shadow-2xl mx-auto border border-gray-700" />
-                </div>
-                {/* Background elements */}
-                <div className="absolute top-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
-            </section>
+  return (
+    <div>
 
-            {/* Values Grid */}
-            <section className="py-20">
-                <div className="max-w-7xl mx-auto px-4">
-                    <div className="grid md:grid-cols-3 gap-12 text-center md:text-left">
-                        <div className="space-y-4">
-                            <div className="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center text-primary-600 text-2xl mx-auto md:mx-0">
-                                <Eye className="w-8 h-8" />
-                            </div>
-                            <h3 className="text-2xl font-bold font-serif">Trasparenza</h3>
-                            <p className="text-gray-600 leading-relaxed">
-                                Niente costi occulti. Inquilini e proprietari hanno accesso a tutte le informazioni, sempre.
-                                Le recensioni sono reali e verificate.
-                            </p>
-                        </div>
-                        <div className="space-y-4">
-                            <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 text-2xl mx-auto md:mx-0">
-                                <ShieldCheck className="w-8 h-8" />
-                            </div>
-                            <h3 className="text-2xl font-bold font-serif">Sicurezza</h3>
-                            <p className="text-gray-600 leading-relaxed">
-                                Ogni annuncio, ogni profilo e ogni contratto passa attraverso rigorosi controlli di qualità
-                                per proteggere la tua esperienza.
-                            </p>
-                        </div>
-                        <div className="space-y-4">
-                            <div className="w-16 h-16 bg-accent-100 rounded-full flex items-center justify-center text-accent-500 text-2xl mx-auto md:mx-0">
-                                <Zap className="w-8 h-8" />
-                            </div>
-                            <h3 className="text-2xl font-bold font-serif">Velocità</h3>
-                            <p className="text-gray-600 leading-relaxed">
-                                Dimentica le perdite di tempo. Dal tour virtuale alla firma digitale del contratto, tutto
-                                avviene in clic, non in settimane.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </section>
+      {/* ── Hero ───────────────────────────────────────────────────────── */}
+      <section className="py-16 bg-white px-4 border-b border-gray-100">
+        <div className="max-w-full lg:px-20 mx-auto">
+          <div className="lg:grid lg:grid-cols-2 lg:gap-16 lg:items-center">
 
-            {/* Stats */}
-            <section className="py-20 bg-primary-600 text-white">
-                <div className="max-w-7xl mx-auto px-4 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-                    <div>
-                        <div className="text-5xl font-bold mb-2">35k</div>
-                        <p className="text-primary-100 uppercase tracking-widest text-sm font-semibold">Utenti Attivi</p>
-                    </div>
-                    <div>
-                        <div className="text-5xl font-bold mb-2">12k</div>
-                        <p className="text-primary-100 uppercase tracking-widest text-sm font-semibold">Annunci Pubblicati</p>
-                    </div>
-                    <div>
-                        <div className="text-5xl font-bold mb-2">98%</div>
-                        <p className="text-primary-100 uppercase tracking-widest text-sm font-semibold">Clienti Soddisfatti</p>
-                    </div>
-                    <div>
-                        <div className="text-5xl font-bold mb-2">15</div>
-                        <p className="text-primary-100 uppercase tracking-widest text-sm font-semibold">Città Coperte</p>
-                    </div>
-                </div>
-            </section>
+            <div>
+              <span className="border-l-2 border-action-green pl-3 text-sm font-semibold text-brand-green uppercase tracking-widest">
+                La nostra storia
+              </span>
+              <h1 className="mt-4 text-2xl md:text-[28px] xl:text-[32px] font-bold text-brand-green leading-[1.2]">
+                Siamo Angelo e Angela
+              </h1>
+              <p className="mt-4 text-lg md:text-xl text-medium-gray leading-[1.5]">
+                Facciamo gli agenti immobiliari da oltre 16 anni, e in tutto questo tempo ne abbiamo viste di ogni tipo.
+              </p>
+              <div className="mt-6 space-y-4 text-base text-gray-600 leading-[1.7]">
+                <p>
+                  Proprietari che aspettavano mesi senza trovare qualcuno di fiducia. Inquilini ottimi che venivano
+                  scartati perché non sapevano come presentarsi. Trattative che si incagliavano per mancanza di
+                  informazioni semplici.
+                </p>
+                <p>
+                  Dopo anni passati ad ascoltare queste storie, ci siamo resi conto che il vero problema non era mai
+                  la casa. Era la fiducia tra persone che non si conoscono, e la difficoltà di costruirla in fretta.
+                </p>
+              </div>
+            </div>
 
-            {/* Team */}
-            <section className="py-20 bg-gray-50">
-                <div className="max-w-7xl mx-auto px-4">
-                    <h2 className="text-4xl font-bold font-serif text-center mb-16">Il Nostro Team</h2>
-                    <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-                        {/* Member 1 */}
-                        <div className="text-center group">
-                            <div className="relative overflow-hidden rounded-xl mb-4 shadow-lg">
-                                <img src="https://placehold.co/400x400/333/fff?text=CEO" alt="Member"
-                                    className="w-full transition-transform duration-500 group-hover:scale-110" />
-                            </div>
-                            <h3 className="font-bold text-xl">Marco Rossi</h3>
-                            <p className="text-primary-600 font-medium">CEO & Founder</p>
-                        </div>
-                        {/* Member 2 */}
-                        <div className="text-center group">
-                            <div className="relative overflow-hidden rounded-xl mb-4 shadow-lg">
-                                <img src="https://placehold.co/400x400/333/fff?text=CTO" alt="Member"
-                                    className="w-full transition-transform duration-500 group-hover:scale-110" />
-                            </div>
-                            <h3 className="font-bold text-xl">Laura Bianchi</h3>
-                            <p className="text-primary-600 font-medium">CTO</p>
-                        </div>
-                        {/* Member 3 */}
-                        <div className="text-center group">
-                            <div className="relative overflow-hidden rounded-xl mb-4 shadow-lg">
-                                <img src="https://placehold.co/400x400/333/fff?text=Product" alt="Member"
-                                    className="w-full transition-transform duration-500 group-hover:scale-110" />
-                            </div>
-                            <h3 className="font-bold text-xl">Luca Verdi</h3>
-                            <p className="text-primary-600 font-medium">Head of Product</p>
-                        </div>
-                        {/* Member 4 */}
-                        <div className="text-center group">
-                            <div className="relative overflow-hidden rounded-xl mb-4 shadow-lg">
-                                <img src="https://placehold.co/400x400/333/fff?text=Marketing" alt="Member"
-                                    className="w-full transition-transform duration-500 group-hover:scale-110" />
-                            </div>
-                            <h3 className="font-bold text-xl">Giulia Neri</h3>
-                            <p className="text-primary-600 font-medium">Marketing Manager</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
+            <div className="mt-10 lg:mt-0">
+              <img
+                src="https://placehold.co/640x480/f4f9f6/004832?text=Angelo+%26+Angela"
+                alt="Angelo e Angela"
+                className="w-full rounded-2xl border border-gray-100"
+              />
+            </div>
+
+          </div>
         </div>
-    );
+      </section>
+
+      {/* ── Origine ────────────────────────────────────────────────────── */}
+      <section className="py-16 bg-gray-50 px-4 border-b border-gray-100">
+        <div className="max-w-full lg:px-20 mx-auto">
+          <div className="lg:grid lg:grid-cols-2 lg:gap-16 lg:items-center">
+
+            <div className="order-2 lg:order-1 mt-10 lg:mt-0">
+              <img
+                src="https://placehold.co/640x480/004832/f4f9f6?text=AffittoChiaro"
+                alt="La piattaforma AffittoChiaro"
+                className="w-full rounded-2xl"
+              />
+            </div>
+
+            <div className="order-1 lg:order-2">
+              <span className="border-l-2 border-action-green pl-3 text-sm font-semibold text-brand-green uppercase tracking-widest">
+                Come è nato
+              </span>
+              <h2 className="mt-4 text-2xl md:text-[28px] xl:text-[32px] font-bold text-brand-green leading-[1.2]">
+                Così è nato AffittoChiaro
+              </h2>
+              <div className="mt-6 space-y-4 text-base text-gray-600 leading-[1.7]">
+                <p>
+                  Volevamo dare a ogni persona la possibilità di presentarsi come merita. Un posto dove chi cerca
+                  casa non è solo un nome su un documento, ma una persona reale con la sua storia, il suo lavoro,
+                  la sua vita.
+                </p>
+                <p>
+                  E dove chi affitta può scegliere con più serenità, sapendo già con chi ha a che fare prima ancora
+                  di aprire la porta.
+                </p>
+                <p>
+                  Gli inquilini creano un profilo completo. Proprietari e agenzie lo consultano e contattano chi li
+                  convince di più. Semplice, chiaro, umano.
+                </p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      {/* ── Due lati ───────────────────────────────────────────────────── */}
+      <section className="py-16 bg-white px-4 border-b border-gray-100">
+        <div className="max-w-full lg:px-20 mx-auto">
+
+          <h2 className="text-2xl md:text-[28px] xl:text-[32px] font-bold text-brand-green mb-4 leading-[1.2]">
+            Una piattaforma, due lati
+          </h2>
+          <p className="text-lg md:text-xl text-medium-gray mb-10 leading-[1.5]">
+            AffittoChiaro connette chi cerca casa con chi la offre, in modo diretto e trasparente.
+          </p>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <div className="bg-white rounded-xl p-6 border border-gray-200 flex items-start gap-4 hover:border-gray-300 transition-colors">
+              <div className="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center shrink-0">
+                <UserCheck size={20} className="text-gray-500" />
+              </div>
+              <div>
+                <h3 className="text-base md:text-lg font-bold text-brand-green mb-2">Sei un inquilino?</h3>
+                <p className="text-medium-gray text-base leading-[1.6]">
+                  Crea il tuo profilo completo e lascia che siano i proprietari a trovarti. Puoi anche candidarti
+                  agli annunci con un click.
+                </p>
+              </div>
+            </div>
+
+            <div className="bg-white rounded-xl p-6 border border-gray-200 flex items-start gap-4 hover:border-gray-300 transition-colors">
+              <div className="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center shrink-0">
+                <Building2 size={20} className="text-gray-500" />
+              </div>
+              <div>
+                <h3 className="text-base md:text-lg font-bold text-brand-green mb-2">Sei un proprietario o un'agenzia?</h3>
+                <p className="text-medium-gray text-base leading-[1.6]">
+                  Sfoglia profili verificati, filtra per città e budget, e contatta direttamente chi ti convince
+                  di più.
+                </p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      {/* ── CTA ────────────────────────────────────────────────────────── */}
+      <section className="py-16 bg-gray-50 px-4">
+        <div className="max-w-full lg:px-20 mx-auto">
+          <h2 className="text-2xl md:text-[28px] font-bold text-brand-green mb-3 leading-[1.2]">
+            Pronto a iniziare?
+          </h2>
+          <p className="text-lg text-medium-gray mb-8 leading-[1.5]">
+            Unisciti a migliaia di persone che hanno già trovato la soluzione giusta su AffittoChiaro.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-3">
+            <Link
+              to="/register"
+              className="inline-flex items-center justify-center gap-2 bg-brand-green text-white px-8 py-3.5 rounded-xl font-bold text-sm hover:brightness-110 transition-all"
+            >
+              Crea il tuo profilo gratis
+              <ArrowRight size={16} />
+            </Link>
+            <Link
+              to="/case-e-stanze-in-affitto"
+              className="inline-flex items-center justify-center gap-2 border border-brand-green/30 text-brand-green px-8 py-3.5 rounded-xl font-bold text-sm hover:bg-white transition-all"
+            >
+              Esplora gli annunci
+            </Link>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  );
 };
