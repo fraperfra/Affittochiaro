@@ -460,7 +460,7 @@ export default function DashboardLayout({ userRole }: DashboardLayoutProps) {
                 <img
                   src="/assets/logoaffittochiaro_pic.webp"
                   alt="Affittochiaro"
-                  className="h-10 w-auto"
+                  className="h-[72px] w-auto"
                 />
               </div>
               <button
@@ -566,11 +566,11 @@ export default function DashboardLayout({ userRole }: DashboardLayoutProps) {
       <div className="md:pl-72">
         {/* Top Bar */}
         <header className="sticky top-0 z-30 bg-white border-b border-border backdrop-blur-sm" style={{ paddingTop: 'env(safe-area-inset-top, 0px)' }}>
-          <div className="flex items-center justify-between h-14 px-4 lg:px-6">
+          <div className="flex items-center justify-between h-20 px-4 lg:px-6">
             {/* Mobile: centered logo only */}
             <div className="flex md:hidden absolute inset-x-0 justify-center pointer-events-none" style={{ top: 'calc(env(safe-area-inset-top, 0px))' }}>
-              <div className="h-14 flex items-center">
-                <img src="/assets/logoaffittochiaro_pic.webp" alt="Affittochiaro" className="h-8 w-auto" />
+              <div className="h-20 flex items-center">
+                <img src="/assets/logoaffittochiaro_pic.webp" alt="Affittochiaro" className="h-[52px] w-auto" />
               </div>
             </div>
 
