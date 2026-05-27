@@ -187,7 +187,7 @@ export const Header: React.FC = () => {
               {/* Trova Casa */}
               <Link
                 to="/register"
-                className="flex items-center justify-center flex-1 h-full px-2 active:scale-95 transition-transform"
+                className="flex items-center justify-center flex-1 h-full px-3 active:scale-95 transition-transform"
               >
                 <span className="bg-brand-green text-white text-sm font-bold px-5 py-3 rounded-xl whitespace-nowrap shadow-sm shadow-brand-green/20">
                   Trova Casa
@@ -197,17 +197,17 @@ export const Header: React.FC = () => {
               {/* Accedi */}
               <Link
                 to="/login"
-                className="flex items-center justify-center flex-1 h-full px-2 active:scale-95 transition-transform"
+                className="flex items-center justify-center flex-1 h-full px-3 active:scale-95 transition-transform"
               >
                 <span className="border border-brand-green/40 text-brand-green text-sm font-bold px-5 py-3 rounded-xl whitespace-nowrap">
                   Accedi
                 </span>
               </Link>
 
-              {/* Menu / Hamburger */}
+              {/* Menu / Hamburger — larghezza fissa per bilanciare i margini */}
               <button
                 onClick={() => setMobileOpen(v => !v)}
-                className={`flex flex-col items-center justify-center flex-1 h-full rounded-r-2xl transition-colors active:scale-95 ${mobileOpen ? 'text-teal-500' : 'text-gray-400'}`}
+                className={`flex flex-col items-center justify-center w-16 h-full rounded-r-2xl transition-colors active:scale-95 ${mobileOpen ? 'text-teal-500' : 'text-gray-400'}`}
                 aria-label={mobileOpen ? 'Chiudi menu' : 'Apri menu'}
               >
                 {mobileOpen ? <X size={20} /> : <Menu size={20} />}
