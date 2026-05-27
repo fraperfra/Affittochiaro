@@ -94,26 +94,36 @@ export default function RegisterPage() {
 
   return (
     <div className="min-h-screen bg-white flex flex-col font-sans lg:pt-20">
-      <Link
-        to="/"
-        className="lg:hidden fixed top-4 left-4 z-50 flex items-center justify-center w-10 h-10 rounded-full bg-white border border-gray-200 shadow-sm hover:bg-gray-50 transition-colors"
-        aria-label="Torna al sito"
-      >
-        <ArrowLeft size={20} className="text-gray-700" />
-      </Link>
 
+      {/* Header sito — solo desktop */}
       <div className="hidden lg:block">
         <LandingHeader />
       </div>
 
-      <main className="flex-1 flex items-center justify-center px-4 py-16">
-        <div className="w-full max-w-[480px]">
-          <Link to="/" className="lg:hidden flex items-center gap-2 mb-8">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-teal-700 to-primary-500 flex items-center justify-center">
-              <span className="text-white font-black text-sm">A</span>
-            </div>
-            <span className="font-bold text-lg text-gray-900">Affittochiaro</span>
+      {/* Header mobile — logo centrato + freccia back */}
+      <div
+        className="lg:hidden fixed top-0 left-0 right-0 z-40 bg-white border-b border-gray-100 shadow-sm"
+        style={{ paddingTop: 'env(safe-area-inset-top, 0px)' }}
+      >
+        <div className="relative flex items-center justify-center h-16 px-4">
+          <Link
+            to="/"
+            className="absolute left-4 flex items-center justify-center w-9 h-9 rounded-full border border-gray-200 bg-white shadow-sm hover:bg-gray-50 transition-colors"
+            aria-label="Torna al sito"
+          >
+            <ArrowLeft size={20} className="text-gray-700" />
           </Link>
+          <Link to="/">
+            <img src="/assets/logoaffittochiaro_pic.webp" alt="Affittochiaro" className="h-10 w-auto" />
+          </Link>
+        </div>
+      </div>
+
+      {/* Spacer per header mobile fisso */}
+      <div className="lg:hidden" style={{ height: 'calc(4rem + env(safe-area-inset-top, 0px))' }} />
+
+      <main className="flex-1 flex items-center justify-center px-4 py-8 lg:py-16">
+        <div className="w-full max-w-[480px]">
 
           <div className="mb-6">
             <h1 className="font-bold text-gray-900 mb-1">Crea il tuo Account</h1>

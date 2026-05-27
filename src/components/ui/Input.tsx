@@ -28,8 +28,8 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
             ref={ref}
             className={`
               input
-              ${leftIcon ? 'pl-10' : ''}
-              ${rightIcon ? 'pr-10' : ''}
+              ${leftIcon ? '!pl-10' : ''}
+              ${rightIcon ? '!pr-10' : ''}
               ${error ? 'input-error' : ''}
               ${className}
             `}
