@@ -147,6 +147,11 @@ export const Header: React.FC = () => {
                 {link.label}
               </Link>
             ))}
+            <div className="border-t border-gray-100 mx-6 mt-1 pt-3 pb-4 flex flex-wrap gap-x-5 gap-y-2">
+              <Link to="/privacy-policy" onClick={() => setMobileOpen(false)} className="text-xs text-gray-400 hover:text-brand-green transition-colors">Privacy Policy</Link>
+              <Link to="/termini-di-servizio" onClick={() => setMobileOpen(false)} className="text-xs text-gray-400 hover:text-brand-green transition-colors">Termini e Condizioni</Link>
+              <Link to="/cookie-policy" onClick={() => setMobileOpen(false)} className="text-xs text-gray-400 hover:text-brand-green transition-colors">Cookie Policy</Link>
+            </div>
           </nav>
         </div>
       )}
