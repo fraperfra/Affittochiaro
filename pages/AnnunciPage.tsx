@@ -419,16 +419,25 @@ export const AnnunciPage: React.FC = () => {
           {/* Compact filter toolbar — mobile only */}
           <div className="md:hidden bg-white border-b border-gray-200 shadow-sm shrink-0">
             <div className="flex items-center gap-2 px-3 py-2">
-              {/* Zone search — tap to go back to list */}
-              <button
-                onClick={() => setShowMap(false)}
-                className="flex-1 flex items-center gap-2 bg-gray-50 border border-gray-200 rounded-xl px-3 py-2 text-left min-w-0"
-              >
+              {/* Zone search — inline input, remains in map mode */}
+              <div className="flex-1 flex items-center gap-2 bg-gray-50 border border-gray-200 rounded-xl px-3 py-2 min-w-0 focus-within:border-brand-green/50 focus-within:ring-2 focus-within:ring-brand-green/20 transition-all">
                 <Navigation size={14} className="text-brand-green shrink-0" />
-                <span className="text-sm text-gray-700 truncate font-medium">
-                  {searchText || 'Cerca per zona...'}
-                </span>
-              </button>
+                <input
+                  type="text"
+                  value={searchText}
+                  onChange={handleSearchInput}
+                  placeholder="Cerca per zona..."
+                  className="flex-1 bg-transparent text-sm text-gray-700 font-medium placeholder-gray-400 outline-none min-w-0"
+                />
+                {searchText && (
+                  <button
+                    onClick={() => { setSearchText(''); setSearchParams({}); }}
+                    className="text-gray-400 hover:text-gray-600 shrink-0 active:scale-95"
+                  >
+                    <X size={13} />
+                  </button>
+                )}
+              </div>
 
               {/* Filtri avanzati */}
               <button
