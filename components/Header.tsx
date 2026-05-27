@@ -60,38 +60,25 @@ export const Header: React.FC = () => {
         className="fixed top-0 left-0 right-0 z-50 flex flex-col shadow-sm bg-white"
         style={{ paddingTop: 'env(safe-area-inset-top, 0px)' }}
       >
-        <header className="relative bg-white/95 backdrop-blur-md px-4 md:px-8 h-20 flex items-center border-b border-gray-100">
+        <header className="relative bg-white/95 backdrop-blur-md px-4 md:px-8 h-20 flex items-center justify-between border-b border-gray-100">
 
-          {/* Mobile: logo centrato (absolute) */}
-          <Link to="/" className="md:hidden absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center">
-            <img src="/assets/logoaffittochiaro_pic.webp" alt="Affittochiaro" className="h-[52px] w-auto" />
+          {/* Logo — sinistra su tutti gli schermi */}
+          <Link to="/" className="flex items-center shrink-0">
+            <img src="/assets/logoaffittochiaro_pic.webp" alt="Affittochiaro" className="h-[52px] md:h-[72px] md:mt-[3px] w-auto" />
           </Link>
 
-          {/* Desktop: 3 colonne — nav | logo | bottoni */}
-          <div className="hidden md:grid md:grid-cols-3 md:items-center w-full">
-
-            {/* Sinistra: link nav */}
-            <nav className="flex items-center gap-4 xl:gap-6">
-              {NAV_LINKS.map(link => (
-                <Link
-                  key={link.to}
-                  to={link.to}
-                  className={`text-sm font-bold hover:text-action-green transition-colors uppercase tracking-wider ${isActive(link.to) ? 'text-action-green' : 'text-brand-green'}`}
-                >
-                  {link.label}
-                </Link>
-              ))}
-            </nav>
-
-            {/* Centro: logo */}
-            <div className="flex justify-center">
-              <Link to="/" className="flex items-center">
-                <img src="/assets/logoaffittochiaro_pic.webp" alt="Affittochiaro" className="h-[72px] mt-[3px] w-auto" />
+          {/* Desktop: nav + bottoni a destra */}
+          <nav className="hidden md:flex items-center gap-4 xl:gap-6">
+            {NAV_LINKS.map(link => (
+              <Link
+                key={link.to}
+                to={link.to}
+                className={`text-sm font-bold hover:text-action-green transition-colors uppercase tracking-wider ${isActive(link.to) ? 'text-action-green' : 'text-brand-green'}`}
+              >
+                {link.label}
               </Link>
-            </div>
-
-            {/* Destra: bottoni */}
-            <div className="flex items-center gap-2 justify-end">
+            ))}
+            <div className="flex items-center gap-2">
               <Link
                 to="/register"
                 className="bg-brand-green text-white px-6 py-2.5 rounded-xl font-bold text-sm hover:brightness-110 transition-all shadow-lg shadow-brand-green/10"
@@ -105,8 +92,7 @@ export const Header: React.FC = () => {
                 ACCEDI
               </Link>
             </div>
-
-          </div>
+          </nav>
         </header>
 
         {/* ── Banner Torna alla dashboard ──────────────── */}
