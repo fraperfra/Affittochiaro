@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useCallback } from 'react';
+import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import {
   MapPin,
@@ -150,6 +150,8 @@ export const AnnunciPage: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [searchText, setSearchText] = useState(searchParams.get('city') || '');
   const [showMap, setShowMap] = useState(false);
+  const [sheetPosition, setSheetPosition] = useState<'collapsed' | 'half'>('collapsed');
+  const [sheetTouchStartY, setSheetTouchStartY] = useState<number | null>(null);
   const [showFilters, setShowFilters] = useState(false);
   const [gpsLoading, setGpsLoading] = useState(false);
   const [filters, setFilters] = useState<ActiveFilters>(EMPTY_FILTERS);
@@ -249,6 +251,21 @@ export const AnnunciPage: React.FC = () => {
     ) || 'Italia';
     return CITY_COORDINATES[key];
   }, [searchText]);
+
+  // ── Map body state (overlay locks scroll, hides mobile nav in collapsed) ──────
+  useEffect(() => {
+    if (showMap) {
+      document.body.style.overflow = 'hidden';
+      document.body.setAttribute('data-map-mode', sheetPosition);
+    } else {
+      document.body.style.overflow = '';
+      document.body.removeAttribute('data-map-mode');
+    }
+    return () => {
+      document.body.style.overflow = '';
+      document.body.removeAttribute('data-map-mode');
+    };
+  }, [showMap, sheetPosition]);
 
   // ── Format helpers ────────────────────────────────────────────────────────────
   const fmtPriceMin = (v: number) => `€${v.toLocaleString('it-IT')}`;
@@ -374,7 +391,7 @@ export const AnnunciPage: React.FC = () => {
                 <List className="w-4 h-4" /> Elenco
               </button>
               <button
-                onClick={() => setShowMap(true)}
+                onClick={() => { setShowMap(true); setSheetPosition('collapsed'); }}
                 className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-xs font-bold transition-all ${showMap ? 'bg-white text-primary-600 shadow-sm' : 'text-gray-500'}`}
               >
                 <MapIcon className="w-4 h-4" /> Mappa
@@ -384,67 +401,107 @@ export const AnnunciPage: React.FC = () => {
         </div>
       </div>
 
-      {/* ── 3a. Map view ─────────────────────────────────────────────────── */}
+      {/* ── 3a. Map overlay — fixed full-screen below header ────────────── */}
       {showMap && (
-        <>
-          {/* Map — full width, fixed height */}
-          <div className="w-full bg-gray-100" style={{ height: '45vh', minHeight: '260px' }}>
+        <div
+          className="fixed left-0 right-0 bottom-0 z-[45] flex flex-col"
+          style={{ top: 'calc(5rem + env(safe-area-inset-top, 0px))' }}
+        >
+          {/* Map — fills space above sheet */}
+          <div className="flex-1 bg-gray-100 overflow-hidden">
             <ListingsMap listings={filteredListings} center={activeCityCoordinates} />
           </div>
 
-          {/* Bottom sheet */}
-          <div className="relative z-10 bg-white rounded-t-2xl -mt-5 shadow-[0_-4px_20px_rgba(0,0,0,0.10)]">
-            {/* drag handle */}
-            <div className="flex justify-center pt-3 pb-1">
-              <div className="w-10 h-1 rounded-full bg-gray-200" />
-            </div>
-            <div className="max-w-screen-xl mx-auto px-4 pb-10">
-              <p className="font-bold text-gray-900 text-center text-sm py-3 border-b border-gray-100 mb-6">
-                {filteredListings.length} risultati
-              </p>
-              <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                {filteredListings.map((listing) => {
-                  const url = buildListingUrl(listing.regioneSlug, listing.comuneSlug, listing.tipologiaSlug, listing.slug);
-                  return (
-                    <div key={listing.id} className="card group overflow-hidden hover:shadow-card-hover transition-shadow p-0 flex flex-col">
-                      <Link to={url} className="relative h-44 overflow-hidden block">
-                        <img
-                          src={listing.immagini[0]}
-                          alt={`${listing.titolo} – affitto ${listing.comune}`}
-                          loading="lazy"
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                        />
-                        {listing.isExclusive && (
-                          <div className="absolute top-3 left-3 flex items-center gap-1 bg-primary-500 text-white text-xs font-bold px-2.5 py-1 rounded-full">
-                            <Star size={10} className="fill-white" /> Esclusiva
-                          </div>
-                        )}
-                      </Link>
-                      <div className="p-4 flex flex-col flex-1">
-                        <div className="flex items-center gap-1 text-text-muted text-xs mb-1">
-                          <MapPin size={11} /><span>{listing.zona}</span>
-                        </div>
-                        <h3 className="font-semibold text-text-primary text-sm line-clamp-2 mb-2">{listing.titolo}</h3>
-                        <div className="flex items-center gap-3 text-text-secondary text-xs mb-3">
-                          <span className="flex items-center gap-1"><Maximize2 size={11} />{listing.mq} m²</span>
-                          <span className="flex items-center gap-1"><BedDouble size={11} />{listing.camere} cam.</span>
-                          <span className="flex items-center gap-1"><Bath size={11} />{listing.bagni} bagni</span>
-                        </div>
-                        <div className="flex items-center justify-between mb-4">
-                          <span className="font-bold text-primary-600">{formatPrice(listing.prezzo)}</span>
-                          <span className="text-xs text-text-muted capitalize">{listing.tipologia}</span>
-                        </div>
-                        <Link to={url} className="btn btn-primary w-full justify-center text-sm mt-auto">
-                          Candidati
-                        </Link>
-                      </div>
-                    </div>
-                  );
-                })}
+          {/* Bottom sheet — snap: collapsed 76px | half 52vh */}
+          <div
+            className="bg-white rounded-t-2xl shrink-0 overflow-hidden transition-[height] duration-300 ease-out shadow-[0_-4px_20px_rgba(0,0,0,0.12)]"
+            style={{ height: sheetPosition === 'half' ? '52vh' : '76px' }}
+          >
+            {/* Drag handle + header row — touch target for swipe */}
+            <div
+              className="select-none cursor-grab"
+              onTouchStart={e => setSheetTouchStartY(e.touches[0].clientY)}
+              onTouchEnd={e => {
+                if (sheetTouchStartY === null) return;
+                const delta = sheetTouchStartY - e.changedTouches[0].clientY;
+                if (delta > 40) {
+                  if (sheetPosition === 'collapsed') setSheetPosition('half');
+                  else setShowMap(false);
+                } else if (delta < -40) {
+                  if (sheetPosition === 'half') setSheetPosition('collapsed');
+                }
+                setSheetTouchStartY(null);
+              }}
+              onClick={() => {
+                if (sheetPosition === 'collapsed') setSheetPosition('half');
+              }}
+            >
+              <div className="flex justify-center pt-3 pb-1">
+                <div className="w-10 h-1 rounded-full bg-gray-200" />
+              </div>
+              <div className="flex items-center justify-between px-4 py-2">
+                <p className="font-bold text-gray-900 text-sm">{filteredListings.length} risultati</p>
+                {sheetPosition === 'half' && (
+                  <button
+                    onClick={e => { e.stopPropagation(); setShowMap(false); }}
+                    className="flex items-center gap-1.5 text-xs font-bold text-primary-600 px-2 py-1"
+                  >
+                    <List size={13} /> Elenco
+                  </button>
+                )}
               </div>
             </div>
+
+            {/* Scrollable cards — only in half position */}
+            {sheetPosition === 'half' && (
+              <div
+                className="overflow-y-auto px-4"
+                style={{ height: 'calc(52vh - 76px)', paddingBottom: 'calc(84px + env(safe-area-inset-bottom, 0px))' }}
+              >
+                <div className="grid sm:grid-cols-2 gap-4 pt-1 pb-2">
+                  {filteredListings.map((listing) => {
+                    const url = buildListingUrl(listing.regioneSlug, listing.comuneSlug, listing.tipologiaSlug, listing.slug);
+                    return (
+                      <div key={listing.id} className="card group overflow-hidden hover:shadow-card-hover transition-shadow p-0 flex flex-col">
+                        <Link to={url} className="relative h-44 overflow-hidden block">
+                          <img
+                            src={listing.immagini[0]}
+                            alt={`${listing.titolo} – affitto ${listing.comune}`}
+                            loading="lazy"
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                          />
+                          {listing.isExclusive && (
+                            <div className="absolute top-3 left-3 flex items-center gap-1 bg-primary-500 text-white text-xs font-bold px-2.5 py-1 rounded-full">
+                              <Star size={10} className="fill-white" /> Esclusiva
+                            </div>
+                          )}
+                        </Link>
+                        <div className="p-4 flex flex-col flex-1">
+                          <div className="flex items-center gap-1 text-text-muted text-xs mb-1">
+                            <MapPin size={11} /><span>{listing.zona}</span>
+                          </div>
+                          <h3 className="font-semibold text-text-primary text-sm line-clamp-2 mb-2">{listing.titolo}</h3>
+                          <div className="flex items-center gap-3 text-text-secondary text-xs mb-3">
+                            <span className="flex items-center gap-1"><Maximize2 size={11} />{listing.mq} m²</span>
+                            <span className="flex items-center gap-1"><BedDouble size={11} />{listing.camere} cam.</span>
+                            <span className="flex items-center gap-1"><Bath size={11} />{listing.bagni} bagni</span>
+                          </div>
+                          <div className="flex items-center justify-between mb-4">
+                            <span className="font-bold text-primary-600">{formatPrice(listing.prezzo)}</span>
+                            <span className="text-xs text-text-muted capitalize">{listing.tipologia}</span>
+                          </div>
+                          <Link to={url} className="btn btn-primary w-full justify-center text-sm mt-auto">
+                            Candidati
+                          </Link>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
           </div>
-        </>
+        </div>
       )}
 
       {/* ── 3b. List view ────────────────────────────────────────────────── */}

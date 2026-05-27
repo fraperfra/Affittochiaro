@@ -162,7 +162,7 @@ export const Header: React.FC = () => {
         {/* Chat FAB — positioned above the nav bar, right side */}
         <button
           onClick={() => setShowChat(v => !v)}
-          className="fixed z-[130] w-11 h-11 rounded-full bg-brand-green text-white flex items-center justify-center shadow-lg shadow-brand-green/30 active:scale-95 transition-transform"
+          className="chat-fab fixed z-[130] w-11 h-11 rounded-full bg-brand-green text-white flex items-center justify-center shadow-lg shadow-brand-green/30 active:scale-95 transition-transform"
           style={{
             right: '18px',
             bottom: 'calc(env(safe-area-inset-bottom, 0px) + 74px + 12px)',
@@ -174,11 +174,13 @@ export const Header: React.FC = () => {
 
         {/* ── Authenticated: dashboard BottomTabNav ── */}
         {isAuthenticated && user ? (
-          <BottomTabNav userRole={user.role as 'tenant' | 'agency' | 'landlord' | 'admin'} />
+          <div className="mobile-nav-bar">
+            <BottomTabNav userRole={user.role as 'tenant' | 'agency' | 'landlord' | 'admin'} />
+          </div>
         ) : (
           /* ── Guest: 3-item public nav (Trova Casa · Accedi · Menu) ── */
           <nav
-            className="fixed left-0 right-0 z-[100]"
+            className="mobile-nav-bar fixed left-0 right-0 z-[100]"
             style={{ bottom: 'calc(env(safe-area-inset-bottom, 0px) + 6px)' }}
             aria-label="Navigazione mobile"
           >

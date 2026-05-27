@@ -428,6 +428,12 @@
   cursor: pointer;
 }
 
+/* Map mode — hide mobile nav + chat FAB when sheet is collapsed (step 1) */
+[data-map-mode="collapsed"] .mobile-nav-bar,
+[data-map-mode="collapsed"] .chat-fab {
+  display: none !important;
+}
+
 /* Mobile drawer — slide up from nav bar */
 @keyframes slideUpFromNav {
   from { transform: translateY(100%); }
