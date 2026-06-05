@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
   MapPin, BadgeCheck, Home, Star, ArrowRight,
-  FileCheck, Clock, ShieldCheck, FileText,
+  Clock, ShieldCheck, FileText,
   Users, Check, Shield, Zap, Crown, ClipboardList,
 } from 'lucide-react';
 import { mockAgencies } from '../src/utils/mockData';
@@ -104,15 +104,9 @@ export const AgenziePartnerPage: React.FC = () => {
 
       {/* ── HERO ──────────────────────────────────────────────── */}
       <section className="relative pt-12 pb-20 lg:pt-20 lg:pb-28 overflow-hidden bg-gradient-to-b from-soft-green/40 to-white">
-        <div className="max-w-7xl mx-auto px-4 grid lg:grid-cols-2 gap-12 items-center">
+        <div className="max-w-5xl mx-auto px-4">
 
-          <div className="space-y-8 relative z-10">
-            <div className="flex items-center gap-2 text-sm text-brand-green font-bold tracking-wide uppercase">
-              <span className="bg-soft-green px-3 py-1 rounded-full">Rete Partner</span>
-              <span>•</span>
-              <span>AffittoChiaro</span>
-            </div>
-
+          <div className="space-y-8 relative z-10 max-w-2xl">
             <h1 className="text-4xl lg:text-5xl font-bold text-brand-green leading-tight">
               Agenzie Partner{' '}
               <span className="text-action-green">Selezionate</span>
@@ -138,38 +132,6 @@ export const AgenziePartnerPage: React.FC = () => {
             </div>
           </div>
 
-          <div className="relative lg:h-[520px] flex items-center justify-center">
-            <div className="absolute inset-0 bg-gradient-to-tr from-soft-green to-white rounded-full blur-3xl opacity-40 transform rotate-12" />
-            <img
-              src="https://placehold.co/700x480/f4f9f6/004832?text=Agenzie+Partner"
-              alt="Agenzia immobiliare partner"
-              className="relative z-10 w-full h-auto max-w-md rounded-2xl shadow-xl border border-gray-100"
-            />
-
-            <div className="absolute top-20 -left-10 bg-white p-4 rounded-xl shadow-xl z-20 hidden md:block border border-gray-100">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-soft-green rounded-full flex items-center justify-center text-brand-green flex-shrink-0">
-                  <BadgeCheck className="w-6 h-6" />
-                </div>
-                <div>
-                  <p className="font-bold text-brand-green leading-tight">Agenzia Verificata</p>
-                  <p className="text-xs text-gray-500 mt-0.5">Documenti controllati</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="absolute bottom-40 -right-4 bg-white p-4 rounded-xl shadow-xl z-20 hidden md:block border border-gray-100">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-soft-green rounded-full flex items-center justify-center text-brand-green flex-shrink-0">
-                  <FileCheck className="w-6 h-6" />
-                </div>
-                <div>
-                  <p className="font-bold text-brand-green leading-tight">30.000+</p>
-                  <p className="text-xs text-gray-500 mt-0.5">inquilini attivi</p>
-                </div>
-              </div>
-            </div>
-          </div>
 
         </div>
       </section>

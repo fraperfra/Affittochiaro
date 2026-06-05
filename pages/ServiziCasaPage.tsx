@@ -71,9 +71,6 @@ export const ServiziCasaPage: React.FC = () => {
             {/* Hero */}
             <section className="py-16 bg-white px-4 border-b border-gray-100">
                 <div className="max-w-full lg:px-20 mx-auto">
-                    <span className="border-l-2 border-action-green pl-3 text-sm font-semibold text-brand-green uppercase tracking-widest">
-                        Concierge Digitale
-                    </span>
                     <h1 className="mt-4 text-[24px] font-bold text-brand-green leading-[1.2]">
                         La tua casa, senza pensieri.
                     </h1>
