@@ -26,6 +26,7 @@ import {
   AffittoNewsPage,
   ChiSiamoPage,
   ArticlePresentarsiProprietario,
+  ComeFunzionaPage,
   ComponentLibraryPage,
 } from '../pages';
 
@@ -316,6 +317,14 @@ function App() {
             element={
               <LandingWrapper>
                 <ServizioDetailPage />
+              </LandingWrapper>
+            }
+          />
+          <Route
+            path="/come-funziona"
+            element={
+              <LandingWrapper>
+                <ComeFunzionaPage />
               </LandingWrapper>
             }
           />

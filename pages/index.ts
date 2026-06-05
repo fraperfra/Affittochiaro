@@ -9,4 +9,5 @@ export * from './AgenziaDetailPage';
 export * from './AffittoNewsPage';
 export * from './ChiSiamoPage';
 export * from './ArticlePresentarsiProprietario';
+export * from './ComeFunzionaPage';
 export * from './ComponentLibraryPage';
