@@ -10,6 +10,7 @@ import BottomTabNav from '../src/components/layout/BottomTabNav';
 const NAV_LINKS = [
   { to: '/case-e-stanze-in-affitto', label: 'Annunci' },
   { to: '/cerca-inquilino', label: 'Cerca Inquilino' },
+  { to: '/come-funziona', label: 'Come Funziona' },
   { to: '/servizi', label: 'Servizi' },
   { to: '/agenzie', label: 'Agenzie' },
   { to: '/chi-siamo', label: 'Chi Siamo' },
