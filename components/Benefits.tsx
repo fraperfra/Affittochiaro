@@ -16,7 +16,7 @@ export const Benefits: React.FC = () => {
           Presenta Te Stesso Come il Candidato Ideale
         </h2>
         <p className="text-lg md:text-xl text-medium-gray mb-10 leading-[1.5]">
-          Su AffittoChiaro trovare casa in affitto diventa semplice: la casa trova te. Bastano pochi minuti per costruire il profilo che fa la differenza.
+          Su AffittoChiaro trovare casa diventa semplice: bastano pochi minuti per creare il profilo che fa la differenza.
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
