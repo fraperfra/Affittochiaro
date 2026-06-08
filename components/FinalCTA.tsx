@@ -21,7 +21,7 @@ export const FinalCTA: React.FC = () => {
           <>
             <div className="mb-10">
               <h2 className="text-[24px] font-bold text-white mb-4 leading-[1.2]">
-                La tua prossima casa <br />
+                La tua prossima casa{' '}
                 <span className="text-action-green">ti sta cercando</span>
               </h2>
               <p className="text-white/70 text-lg leading-[1.5]">
