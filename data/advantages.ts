@@ -40,7 +40,7 @@ export const advantages: Advantage[] = [
 
 export const benefits: Advantage[] = [
   { icon: "ShieldCheck", title: "Dati Verificati", description: "Certifica la tua identità e solvibilità per rassicurare ogni proprietario fin dal primo contatto." },
-  { icon: "Video", title: "Video Presentazione", description: "Raccontati in <b>60 secondi</b>. Il <b>78% dei proprietari</b> preferisce profili con video.", highlight: true },
+  { icon: "Video", title: "Video Presentazione", description: "Raccontati in <b>60 secondi</b>: i proprietari preferiscono profili con video e foto.", highlight: true },
   { icon: "Briefcase", title: "Lavoro Trasparente", description: "Mostra la tua stabilità con certificazioni sul <b>contratto</b> e settore professionale." },
   { icon: "PenLine", title: "La Tua Storia", description: "Una biografia curata per spiegare <b>perché sei l'inquilino perfetto</b>." },
 ];
