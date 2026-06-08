@@ -17,10 +17,10 @@ export const StatBanner: React.FC = () => {
           <div>
             <p className="text-base md:text-lg font-bold text-white leading-snug">
               di chi cerca casa da oltre 2 mesi, con AffittoChiaro la trova in{' '}
-              <span className="text-action-green">2 settimane</span>.
+              <span className="text-action-green">poche settimane</span>.
             </p>
             <p className="mt-2 text-sm text-white/55 leading-relaxed">
-              Perché si presenta con un profilo completo, credibile e verificato: i proprietari lo contattano per primi.
+              Perché si presenta con un profilo completo, credibile e verificato.
             </p>
           </div>
 
