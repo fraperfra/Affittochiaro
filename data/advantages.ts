@@ -55,16 +55,16 @@ export const problems: Problem[] = [
   {
     icon: "EyeOff",
     title: "Il proprietario non sa chi sei",
-    description: "Ogni giorno riceve decine di messaggi. Il tuo viene ignorato perché non ha modo di distinguerti dagli altri candidati.",
+    description: "Ogni giorno riceve decine di messaggi e il tuo viene ignorato perché non ha modo di distinguerti dagli altri candidati.",
   },
   {
     icon: "FileX",
     title: "Non hai strumenti per mostrarti",
-    description: "Un nome e un numero di telefono non bastano. Senza una storia credibile, resti uno dei tanti candidati anonimi.",
+    description: "Un nome e un numero di telefono non bastano, senza una storia credibile, resti uno dei tanti candidati anonimi.",
   },
   {
     icon: "Clock",
     title: "Mesi di ricerca, zero risultati",
-    description: "Senza il profilo giusto la ricerca si allunga per mesi. Ogni settimana persa è stress e costi che si accumulano.",
+    description: "Senza il profilo giusto la ricerca si allunga per mesi: ogni settimana persa è stress che si accumula.",
   },
 ];
