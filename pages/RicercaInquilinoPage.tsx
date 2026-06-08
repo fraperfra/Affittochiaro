@@ -1,10 +1,11 @@
-import React, { useState, useMemo, useCallback } from 'react';
+import React, { useState, useMemo, useCallback, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import {
     Search,
     X,
     SlidersHorizontal,
     ChevronRight,
+    ChevronDown,
     Navigation,
     Loader2,
     BadgeCheck,
@@ -114,6 +115,45 @@ const SingleSlider: React.FC<SingleSliderProps> = ({ min, max, step, value, onCh
   );
 };
 
+// ── FilterDropdown (desktop filter bar) ──────────────────────────────────────────
+
+interface FilterDropdownProps {
+  label: string;
+  active?: boolean;
+  open: boolean;
+  onToggle: () => void;
+  width?: string;
+  children: React.ReactNode;
+}
+
+const FilterDropdown: React.FC<FilterDropdownProps> = ({ label, active, open, onToggle, width = 'w-72', children }) => (
+  <div className="relative shrink-0">
+    <button
+      onClick={onToggle}
+      className={`flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-sm font-semibold border transition-all whitespace-nowrap ${
+        active
+          ? 'bg-primary-50 text-primary-700 border-primary-300'
+          : 'bg-white text-gray-700 border-gray-300 hover:border-gray-400'
+      }`}
+    >
+      {label}
+      <ChevronDown size={15} className={`transition-transform ${open ? 'rotate-180' : ''}`} />
+    </button>
+    {open && (
+      <div className={`absolute top-full left-0 mt-2 bg-white rounded-xl shadow-2xl border border-gray-100 p-4 z-[60] ${width}`}>
+        {children}
+      </div>
+    )}
+  </div>
+);
+
+const SORT_OPTIONS: { value: 'recenti' | 'budget-desc' | 'budget-asc' | 'eta-asc'; label: string }[] = [
+  { value: 'recenti', label: 'Più recenti' },
+  { value: 'budget-desc', label: 'Budget più alto' },
+  { value: 'budget-asc', label: 'Budget più basso' },
+  { value: 'eta-asc', label: 'Più giovani' },
+];
+
 // ── Types ──────────────────────────────────────────────────────────────────────
 
 interface TenantFilters {
@@ -156,6 +196,20 @@ export const RicercaInquilinoPage: React.FC = () => {
   const [gpsLoading, setGpsLoading] = useState(false);
   const [filters, setFilters] = useState<TenantFilters>(EMPTY_FILTERS);
   const [faqOpen, setFaqOpen] = useState<number | null>(0);
+  const [sortBy, setSortBy] = useState<'recenti' | 'budget-desc' | 'budget-asc' | 'eta-asc'>('recenti');
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  const filterBarRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!openDropdown) return;
+    const handler = (e: MouseEvent) => {
+      if (filterBarRef.current && !filterBarRef.current.contains(e.target as Node)) {
+        setOpenDropdown(null);
+      }
+    };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, [openDropdown]);
 
   // ── GPS ─────────────────────────────────────────────────────────────────────
   const handleGPS = useCallback(async () => {
@@ -231,7 +285,17 @@ export const RicercaInquilinoPage: React.FC = () => {
       });
   }, [searchText, filters]);
 
-  const displayedTenants = filteredTenants.slice(0, 24);
+  const sortedTenants = useMemo(() => {
+    const arr = [...filteredTenants];
+    switch (sortBy) {
+      case 'budget-desc': return arr.sort((a, b) => (b.preferences?.maxBudget ?? 0) - (a.preferences?.maxBudget ?? 0));
+      case 'budget-asc': return arr.sort((a, b) => (a.preferences?.maxBudget ?? 0) - (b.preferences?.maxBudget ?? 0));
+      case 'eta-asc': return arr.sort((a, b) => (a.age ?? 999) - (b.age ?? 999));
+      default: return arr;
+    }
+  }, [filteredTenants, sortBy]);
+
+  const displayedTenants = sortedTenants.slice(0, 24);
 
   // ── Active filter count ──────────────────────────────────────────────────────
   const budgetChanged = filters.budgetMin !== BUDGET_MIN || filters.budgetMax !== BUDGET_MAX;
@@ -277,8 +341,8 @@ export const RicercaInquilinoPage: React.FC = () => {
   return (
     <div className="bg-gray-50 min-h-screen">
 
-      {/* ── 1. Search Header ─────────────────────────────────────── */}
-      <div className="bg-brand-green text-white py-6 px-4">
+      {/* ── 1. Search Header (mobile/tablet) ─────────────────────── */}
+      <div className="bg-brand-green text-white py-6 px-4 lg:hidden">
         <div className="max-w-screen-xl mx-auto">
           <h1 className="text-2xl md:text-3xl font-bold mb-1 text-center">
             Cerca Inquilino Verificato
@@ -315,8 +379,8 @@ export const RicercaInquilinoPage: React.FC = () => {
         </div>
       </div>
 
-      {/* ── 2. Filter Bar ────────────────────────────────────────── */}
-      <div className="bg-white border-b border-gray-200 sticky top-20 z-40 shadow-sm">
+      {/* ── 2. Filter Bar (mobile/tablet) ────────────────────────── */}
+      <div className="bg-white border-b border-gray-200 sticky top-20 z-40 shadow-sm lg:hidden">
         <div className="max-w-screen-xl mx-auto px-4 py-3">
           <div className="flex items-center justify-between gap-3">
             <div className="flex items-center gap-3">
@@ -377,6 +441,180 @@ export const RicercaInquilinoPage: React.FC = () => {
                 </button>
               )}
             </div>
+          </div>
+        </div>
+      </div>
+
+      {/* ── 2b. Filter Bar (desktop, immobiliare style) ──────────── */}
+      <div className="hidden lg:block bg-white border-b border-gray-200 sticky top-20 z-40 shadow-sm">
+        <div ref={filterBarRef} className="max-w-screen-xl mx-auto px-4 py-3 flex items-center gap-2">
+
+          {/* Search */}
+          <div className="relative w-64 shrink-0">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4" />
+            <input
+              type="text"
+              value={searchText}
+              onChange={(e) => setSearchText(e.target.value)}
+              placeholder="Città, nome o professione..."
+              className="w-full pl-9 pr-8 py-2 rounded-lg border border-gray-300 text-sm font-medium text-gray-700 placeholder-gray-400 outline-none focus:border-primary-400 focus:ring-2 focus:ring-primary-100 transition-all"
+            />
+            {searchText && (
+              <button
+                onClick={() => setSearchText('')}
+                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+              >
+                <X size={15} />
+              </button>
+            )}
+          </div>
+
+          {/* Budget */}
+          <FilterDropdown
+            label="Budget"
+            active={budgetChanged}
+            open={openDropdown === 'budget'}
+            onToggle={() => setOpenDropdown(openDropdown === 'budget' ? null : 'budget')}
+            width="w-80"
+          >
+            <label className="block text-xs font-bold text-gray-600 mb-3">Budget (€/mese)</label>
+            <RangeSlider
+              min={BUDGET_MIN} max={BUDGET_MAX} step={50}
+              minVal={filters.budgetMin} maxVal={filters.budgetMax}
+              onChange={(min, max) => setFilters(f => ({ ...f, budgetMin: min, budgetMax: max }))}
+              formatMin={fmtBudgetMin}
+              formatMax={fmtBudgetMax}
+            />
+          </FilterDropdown>
+
+          {/* Età */}
+          <FilterDropdown
+            label="Età"
+            active={etaChanged}
+            open={openDropdown === 'eta'}
+            onToggle={() => setOpenDropdown(openDropdown === 'eta' ? null : 'eta')}
+            width="w-80"
+          >
+            <label className="block text-xs font-bold text-gray-600 mb-3">Età</label>
+            <RangeSlider
+              min={ETA_MIN} max={ETA_MAX} step={1}
+              minVal={filters.etaMin} maxVal={filters.etaMax}
+              onChange={(min, max) => setFilters(f => ({ ...f, etaMin: min, etaMax: max }))}
+              formatMin={fmtEta}
+              formatMax={fmtEta}
+            />
+          </FilterDropdown>
+
+          {/* Contratto */}
+          <FilterDropdown
+            label="Contratto"
+            active={!!filters.contratto}
+            open={openDropdown === 'contratto'}
+            onToggle={() => setOpenDropdown(openDropdown === 'contratto' ? null : 'contratto')}
+            width="w-72"
+          >
+            <label className="block text-xs font-bold text-gray-600 mb-2">Tipo di contratto</label>
+            <div className="flex flex-wrap gap-2">
+              <button onClick={() => setFilters(f => ({ ...f, contratto: '' }))} className={pillCls(!filters.contratto)}>
+                Qualsiasi
+              </button>
+              {CONTRACT_TYPES.map(c => (
+                <button
+                  key={c.value}
+                  onClick={() => setFilters(f => ({ ...f, contratto: f.contratto === c.value ? '' : c.value }))}
+                  className={pillCls(filters.contratto === c.value)}
+                >
+                  {c.value}
+                </button>
+              ))}
+            </div>
+          </FilterDropdown>
+
+          {/* Nucleo familiare */}
+          <FilterDropdown
+            label="Nucleo familiare"
+            active={filters.nucleoFamiliare.length > 0}
+            open={openDropdown === 'nucleo'}
+            onToggle={() => setOpenDropdown(openDropdown === 'nucleo' ? null : 'nucleo')}
+            width="w-72"
+          >
+            <label className="block text-xs font-bold text-gray-600 mb-2">Nucleo familiare</label>
+            <div className="flex flex-wrap gap-2">
+              {NUCLEO_OPTIONS.map(o => (
+                <button key={o.value} onClick={() => toggleNucleo(o.value)} className={pillCls(filters.nucleoFamiliare.includes(o.value))}>
+                  {o.label}
+                </button>
+              ))}
+            </div>
+          </FilterDropdown>
+
+          {/* Badge */}
+          <FilterDropdown
+            label="Badge"
+            active={filters.verified !== null || filters.hasVideo !== null}
+            open={openDropdown === 'badge'}
+            onToggle={() => setOpenDropdown(openDropdown === 'badge' ? null : 'badge')}
+            width="w-64"
+          >
+            <label className="block text-xs font-bold text-gray-600 mb-2">Badge</label>
+            <div className="flex flex-wrap gap-2">
+              <button
+                onClick={() => setFilters(f => ({ ...f, verified: f.verified ? null : true }))}
+                className={`${pillCls(!!filters.verified)} flex items-center gap-1`}
+              >
+                <BadgeCheck size={13} /> Verificato
+              </button>
+              <button
+                onClick={() => setFilters(f => ({ ...f, hasVideo: f.hasVideo ? null : true }))}
+                className={`${pillCls(!!filters.hasVideo)} flex items-center gap-1`}
+              >
+                <Video size={13} /> Con Video
+              </button>
+            </div>
+          </FilterDropdown>
+
+          {/* Tutti i filtri */}
+          <button
+            onClick={() => setShowFilters(true)}
+            className="flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-sm font-semibold border border-gray-300 bg-white text-gray-700 hover:border-gray-400 transition-all shrink-0 whitespace-nowrap"
+          >
+            <SlidersHorizontal size={15} />
+            Tutti i filtri
+            {activeFilterCount > 0 && (
+              <span className="bg-primary-600 text-white text-[10px] w-5 h-5 rounded-full flex items-center justify-center font-bold">
+                {activeFilterCount}
+              </span>
+            )}
+          </button>
+
+          {activeFilterCount > 0 && (
+            <button onClick={handleClearFilters} className="text-xs text-gray-500 hover:text-gray-800 underline shrink-0 whitespace-nowrap">
+              Azzera
+            </button>
+          )}
+
+          {/* Sort */}
+          <div className="ml-auto shrink-0">
+            <FilterDropdown
+              label={`Ordina: ${SORT_OPTIONS.find(o => o.value === sortBy)?.label ?? ''}`}
+              open={openDropdown === 'sort'}
+              onToggle={() => setOpenDropdown(openDropdown === 'sort' ? null : 'sort')}
+              width="w-56"
+            >
+              <div className="flex flex-col">
+                {SORT_OPTIONS.map(o => (
+                  <button
+                    key={o.value}
+                    onClick={() => { setSortBy(o.value); setOpenDropdown(null); }}
+                    className={`text-left px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                      sortBy === o.value ? 'bg-primary-50 text-primary-700' : 'text-gray-700 hover:bg-gray-50'
+                    }`}
+                  >
+                    {o.label}
+                  </button>
+                ))}
+              </div>
+            </FilterDropdown>
           </div>
         </div>
       </div>
