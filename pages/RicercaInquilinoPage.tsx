@@ -21,7 +21,7 @@ import {
     Umbrella,
 } from 'lucide-react';
 import { mockTenants } from '../src/utils/mockData';
-import { OCCUPATIONS, CONTRACT_TYPES } from '../src/utils/constants';
+import { OCCUPATIONS } from '../src/utils/constants';
 
 // ── Constants ──────────────────────────────────────────────────────────────────
 
@@ -44,6 +44,16 @@ const TIPO_IMMOBILE_OPTIONS = [
   { value: 'bilocale', label: 'Bilocale' },
   { value: 'trilocale', label: 'Trilocale o più' },
   { value: 'villa', label: 'Villa / Casa indipendente' },
+];
+
+const CONTRATTO_OPTIONS: { value: string; label: string }[] = [
+  { value: 'permanent', label: 'Tempo indeterminato' },
+  { value: 'fixed_term', label: 'Tempo determinato' },
+  { value: 'statale', label: 'Statale' },
+  { value: 'part-time', label: 'Part-time' },
+  { value: 'freelance', label: 'Autonomo' },
+  { value: 'student', label: 'Studente' },
+  { value: 'retired', label: 'Pensionato' },
 ];
 
 // ── Sliders ────────────────────────────────────────────────────────────────────
@@ -262,7 +272,7 @@ export const RicercaInquilinoPage: React.FC = () => {
         const age = t.age;
         if (age != null && (age < filters.etaMin || age > filters.etaMax)) return false;
 
-        if (filters.contratto && t.preferences?.preferredContractType !== filters.contratto) return false;
+        if (filters.contratto && t.employmentType !== filters.contratto) return false;
 
         if (filters.animali === 'con' && !t.preferences?.hasPets) return false;
         if (filters.animali === 'senza' && t.preferences?.hasPets) return false;
@@ -425,7 +435,7 @@ export const RicercaInquilinoPage: React.FC = () => {
               )}
               {filters.contratto && (
                 <span className="flex items-center gap-1 shrink-0 px-3 py-1 bg-primary-50 text-primary-700 rounded-full text-xs font-semibold">
-                  {CONTRACT_TYPES.find(c => c.value === filters.contratto)?.label ?? filters.contratto}
+                  {CONTRATTO_OPTIONS.find(c => c.value === filters.contratto)?.label ?? filters.contratto}
                   <button onClick={() => setFilters(f => ({ ...f, contratto: '' }))}><X size={12} /></button>
                 </span>
               )}
@@ -518,13 +528,13 @@ export const RicercaInquilinoPage: React.FC = () => {
               <button onClick={() => setFilters(f => ({ ...f, contratto: '' }))} className={pillCls(!filters.contratto)}>
                 Qualsiasi
               </button>
-              {CONTRACT_TYPES.map(c => (
+              {CONTRATTO_OPTIONS.map(c => (
                 <button
                   key={c.value}
                   onClick={() => setFilters(f => ({ ...f, contratto: f.contratto === c.value ? '' : c.value }))}
                   className={pillCls(filters.contratto === c.value)}
                 >
-                  {c.value}
+                  {c.label}
                 </button>
               ))}
             </div>
@@ -880,13 +890,13 @@ export const RicercaInquilinoPage: React.FC = () => {
                     <button onClick={() => setFilters(f => ({ ...f, contratto: '' }))} className={pillCls(!filters.contratto)}>
                       Qualsiasi
                     </button>
-                    {CONTRACT_TYPES.map(c => (
+                    {CONTRATTO_OPTIONS.map(c => (
                       <button
                         key={c.value}
                         onClick={() => setFilters(f => ({ ...f, contratto: f.contratto === c.value ? '' : c.value }))}
                         className={pillCls(filters.contratto === c.value)}
                       >
-                        {c.value}
+                        {c.label}
                       </button>
                     ))}
                   </div>
