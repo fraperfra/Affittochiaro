@@ -75,7 +75,7 @@ export const ServiziCasaPage: React.FC = () => {
                         La tua casa, senza pensieri.
                     </h1>
                     <p className="mt-4 text-lg md:text-xl text-medium-gray leading-[1.5] max-w-2xl">
-                        Dai traslochi alle utenze, dalle pulizie alle assicurazioni. Gestiamo tutta la burocrazia per lasciarti solo il piacere di abitare.
+                        Affittochiaro non è solo una piattaforma che permette l'incontro tra proprietari e inquilini, ma anche un fornitore di servizi esclusivi per la casa e per l'affitto. Che tu abbia bisogno di supporto per le utenze domestiche, per la gestione burocratica della locazione o per proteggere la tua rendita mensile, Affittochiaro è il partner ideale per soddisfare ogni tua necessità! Scopri subito tutti i nostri servizi in collaborazione con partner rinomati e affidabili:
                     </p>
                 </div>
             </section>
