@@ -13,6 +13,12 @@ import {
   BedDouble,
   Bath,
   Star,
+  ChevronDown,
+  Heart,
+  Bookmark,
+  Camera,
+  Layers,
+  BadgeCheck,
 } from 'lucide-react';
 import { ListingsMap } from '../components';
 import { publicListings } from '../src/lib/mock-data';
@@ -120,6 +126,45 @@ const RangeSlider: React.FC<RangeSliderProps> = ({ min, max, step, minVal, maxVa
   );
 };
 
+// ── FilterDropdown (desktop filter bar) ──────────────────────────────────────────
+
+interface FilterDropdownProps {
+  label: string;
+  active?: boolean;
+  open: boolean;
+  onToggle: () => void;
+  width?: string;
+  children: React.ReactNode;
+}
+
+const FilterDropdown: React.FC<FilterDropdownProps> = ({ label, active, open, onToggle, width = 'w-72', children }) => (
+  <div className="relative shrink-0">
+    <button
+      onClick={onToggle}
+      className={`flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-sm font-semibold border transition-all whitespace-nowrap ${
+        active
+          ? 'bg-primary-50 text-primary-700 border-primary-300'
+          : 'bg-white text-gray-700 border-gray-300 hover:border-gray-400'
+      }`}
+    >
+      {label}
+      <ChevronDown size={15} className={`transition-transform ${open ? 'rotate-180' : ''}`} />
+    </button>
+    {open && (
+      <div className={`absolute top-full left-0 mt-2 bg-white rounded-xl shadow-2xl border border-gray-100 p-4 z-[60] ${width}`}>
+        {children}
+      </div>
+    )}
+  </div>
+);
+
+const SORT_OPTIONS: { value: 'rilevanti' | 'price-asc' | 'price-desc' | 'mq-desc'; label: string }[] = [
+  { value: 'rilevanti', label: 'Più rilevanti' },
+  { value: 'price-asc', label: 'Prezzo più basso' },
+  { value: 'price-desc', label: 'Prezzo più alto' },
+  { value: 'mq-desc', label: 'Superficie maggiore' },
+];
+
 // ── Types ──────────────────────────────────────────────────────────────────────
 
 interface ActiveFilters {
@@ -158,6 +203,9 @@ export const AnnunciPage: React.FC = () => {
   const [gpsLoading, setGpsLoading] = useState(false);
   const [filters, setFilters] = useState<ActiveFilters>(EMPTY_FILTERS);
   const [selectedListingId, setSelectedListingId] = useState<string | null>(null);
+  const [sortBy, setSortBy] = useState<'rilevanti' | 'price-asc' | 'price-desc' | 'mq-desc'>('rilevanti');
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  const filterBarRef = useRef<HTMLDivElement>(null);
 
   // ── GPS ──────────────────────────────────────────────────────────────────────
   const handleGPS = useCallback(async () => {
@@ -214,6 +262,16 @@ export const AnnunciPage: React.FC = () => {
   const selectedListing = selectedListingId
     ? filteredListings.find(l => l.id === selectedListingId) ?? null
     : null;
+
+  const sortedListings = useMemo(() => {
+    const arr = [...filteredListings];
+    switch (sortBy) {
+      case 'price-asc': return arr.sort((a, b) => a.prezzo - b.prezzo);
+      case 'price-desc': return arr.sort((a, b) => b.prezzo - a.prezzo);
+      case 'mq-desc': return arr.sort((a, b) => b.mq - a.mq);
+      default: return arr;
+    }
+  }, [filteredListings, sortBy]);
 
   // ── Active filter count ──────────────────────────────────────────────────────
   const priceChanged = filters.priceMin !== PRICE_MIN || filters.priceMax !== PRICE_MAX;
@@ -278,6 +336,17 @@ export const AnnunciPage: React.FC = () => {
     if (!showMap) setSelectedListingId(null);
   }, [showMap]);
 
+  useEffect(() => {
+    if (!openDropdown) return;
+    const handler = (e: MouseEvent) => {
+      if (filterBarRef.current && !filterBarRef.current.contains(e.target as Node)) {
+        setOpenDropdown(null);
+      }
+    };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, [openDropdown]);
+
   // ── Format helpers ────────────────────────────────────────────────────────────
   const fmtPriceMin = (v: number) => `€${v.toLocaleString('it-IT')}`;
   const fmtPriceMax = (v: number) => v >= PRICE_MAX ? `€${v.toLocaleString('it-IT')}+` : `€${v.toLocaleString('it-IT')}`;
@@ -288,8 +357,8 @@ export const AnnunciPage: React.FC = () => {
   return (
     <div className="bg-[#FAFAFA] min-h-screen flex flex-col">
 
-      {/* ── 1. Search Header ─────────────────────────────────────────────── */}
-      <div className="bg-brand-green text-white py-6 px-4">
+      {/* ── 1. Search Header (mobile/tablet) ─────────────────────────────── */}
+      <div className="bg-brand-green text-white py-6 px-4 lg:hidden">
         <div className="max-w-screen-xl mx-auto">
           <h1 className="text-2xl md:text-3xl font-bold mb-4 text-center">
             Annunci Affitto Verificati
@@ -326,8 +395,8 @@ export const AnnunciPage: React.FC = () => {
         </div>
       </div>
 
-      {/* ── 2. Filters Bar ───────────────────────────────────────────────── */}
-      <div className="bg-white border-b border-gray-200 sticky top-20 z-40 shadow-sm">
+      {/* ── 2. Filters Bar (mobile/tablet) ───────────────────────────────── */}
+      <div className="bg-white border-b border-gray-200 sticky top-20 z-40 shadow-sm lg:hidden">
         <div className="max-w-screen-xl mx-auto px-4 py-3">
           <div className="flex items-center justify-between gap-3">
             <div className="flex items-center gap-3">
@@ -654,9 +723,9 @@ export const AnnunciPage: React.FC = () => {
         </div>
       )}
 
-      {/* ── 3b. List view ────────────────────────────────────────────────── */}
+      {/* ── 3b. List view (mobile/tablet) ────────────────────────────────── */}
       {!showMap && (
-        <div className="flex-grow max-w-screen-xl mx-auto w-full px-4 py-8">
+        <div className="flex-grow max-w-screen-xl mx-auto w-full px-4 py-8 lg:hidden">
           <h2 className="text-xl font-bold text-gray-900 mb-6">
             {filteredListings.length} {filteredListings.length === 1 ? 'annuncio' : 'annunci'} in affitto in Italia
           </h2>
@@ -727,6 +796,350 @@ export const AnnunciPage: React.FC = () => {
           </div>
         </div>
       )}
+
+      {/* ── 3c. Desktop split view (immobiliare.it style) ────────────────── */}
+      <div className="hidden lg:flex lg:flex-col" style={{ height: 'calc(100vh - 5rem)' }}>
+
+        {/* Filter bar */}
+        <div ref={filterBarRef} className="bg-white border-b border-gray-200 shrink-0 z-40">
+          <div className="px-6 py-3 flex items-center gap-2">
+
+            {/* Zone search */}
+            <div className="relative w-64 shrink-0">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4" />
+              <input
+                type="text"
+                value={searchText}
+                onChange={handleSearchInput}
+                placeholder="Cerca per zona, città..."
+                className="w-full pl-9 pr-8 py-2 rounded-lg border border-gray-300 text-sm font-medium text-gray-700 placeholder-gray-400 outline-none focus:border-primary-400 focus:ring-2 focus:ring-primary-100 transition-all"
+              />
+              {searchText && (
+                <button
+                  onClick={() => { setSearchText(''); setSearchParams({}); }}
+                  className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                >
+                  <X size={15} />
+                </button>
+              )}
+            </div>
+
+            {/* Prezzo */}
+            <FilterDropdown
+              label="Prezzo"
+              active={priceChanged}
+              open={openDropdown === 'prezzo'}
+              onToggle={() => setOpenDropdown(openDropdown === 'prezzo' ? null : 'prezzo')}
+              width="w-80"
+            >
+              <label className="block text-xs font-bold text-gray-600 mb-3">Fascia di prezzo (€/mese)</label>
+              <RangeSlider
+                min={PRICE_MIN} max={PRICE_MAX} step={50}
+                minVal={filters.priceMin} maxVal={filters.priceMax}
+                onChange={(min, max) => setFilters(f => ({ ...f, priceMin: min, priceMax: max }))}
+                formatMin={fmtPriceMin}
+                formatMax={fmtPriceMax}
+              />
+            </FilterDropdown>
+
+            {/* Superficie */}
+            <FilterDropdown
+              label="Superficie"
+              active={mqChanged}
+              open={openDropdown === 'mq'}
+              onToggle={() => setOpenDropdown(openDropdown === 'mq' ? null : 'mq')}
+              width="w-80"
+            >
+              <label className="block text-xs font-bold text-gray-600 mb-3">Metratura (mq)</label>
+              <RangeSlider
+                min={MQ_MIN} max={MQ_MAX} step={5}
+                minVal={filters.mqMin} maxVal={filters.mqMax}
+                onChange={(min, max) => setFilters(f => ({ ...f, mqMin: min, mqMax: max }))}
+                formatMin={fmtMqMin}
+                formatMax={fmtMqMax}
+              />
+            </FilterDropdown>
+
+            {/* Locali (camere) */}
+            <FilterDropdown
+              label="Locali"
+              active={filters.camere !== null}
+              open={openDropdown === 'camere'}
+              onToggle={() => setOpenDropdown(openDropdown === 'camere' ? null : 'camere')}
+              width="w-64"
+            >
+              <label className="block text-xs font-bold text-gray-600 mb-2">Numero di camere</label>
+              <div className="flex flex-wrap gap-2">
+                <button
+                  onClick={() => setFilters(f => ({ ...f, camere: null }))}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all border ${
+                    filters.camere === null
+                      ? 'bg-primary-50 text-primary-700 border-primary-200'
+                      : 'bg-white text-gray-600 border-gray-200 hover:bg-gray-50'
+                  }`}
+                >
+                  Qualsiasi
+                </button>
+                {CAMERE_OPTIONS.map(n => (
+                  <button
+                    key={n}
+                    onClick={() => setFilters(f => ({ ...f, camere: f.camere === n ? null : n }))}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all border ${
+                      filters.camere === n
+                        ? 'bg-primary-50 text-primary-700 border-primary-200'
+                        : 'bg-white text-gray-600 border-gray-200 hover:bg-gray-50'
+                    }`}
+                  >
+                    {n === 4 ? '4+' : n}
+                  </button>
+                ))}
+              </div>
+            </FilterDropdown>
+
+            {/* Bagni */}
+            <FilterDropdown
+              label="Bagni"
+              active={filters.bagni !== null}
+              open={openDropdown === 'bagni'}
+              onToggle={() => setOpenDropdown(openDropdown === 'bagni' ? null : 'bagni')}
+              width="w-64"
+            >
+              <label className="block text-xs font-bold text-gray-600 mb-2">Numero di bagni</label>
+              <div className="flex flex-wrap gap-2">
+                <button
+                  onClick={() => setFilters(f => ({ ...f, bagni: null }))}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all border ${
+                    filters.bagni === null
+                      ? 'bg-primary-50 text-primary-700 border-primary-200'
+                      : 'bg-white text-gray-600 border-gray-200 hover:bg-gray-50'
+                  }`}
+                >
+                  Qualsiasi
+                </button>
+                {BAGNI_OPTIONS.map(n => (
+                  <button
+                    key={n}
+                    onClick={() => setFilters(f => ({ ...f, bagni: f.bagni === n ? null : n }))}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all border ${
+                      filters.bagni === n
+                        ? 'bg-primary-50 text-primary-700 border-primary-200'
+                        : 'bg-white text-gray-600 border-gray-200 hover:bg-gray-50'
+                    }`}
+                  >
+                    {n === 3 ? '3+' : n}
+                  </button>
+                ))}
+              </div>
+            </FilterDropdown>
+
+            {/* Tipologia */}
+            <FilterDropdown
+              label="Tipologia"
+              active={filters.tipologie.length > 0}
+              open={openDropdown === 'tipologia'}
+              onToggle={() => setOpenDropdown(openDropdown === 'tipologia' ? null : 'tipologia')}
+              width="w-72"
+            >
+              <label className="block text-xs font-bold text-gray-600 mb-2">Tipologia immobile</label>
+              <div className="flex flex-wrap gap-2">
+                {TIPOLOGIE_LIST.map(tipo => (
+                  <button
+                    key={tipo}
+                    onClick={() => toggleTipologia(tipo)}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all border ${
+                      filters.tipologie.includes(tipo)
+                        ? 'bg-primary-50 text-primary-700 border-primary-200'
+                        : 'bg-white text-gray-600 border-gray-200 hover:bg-gray-50'
+                    }`}
+                  >
+                    {TIPOLOGIE_LABELS[tipo]}
+                  </button>
+                ))}
+              </div>
+            </FilterDropdown>
+
+            {/* Altre caratteristiche */}
+            <FilterDropdown
+              label="Altre caratteristiche"
+              active={filters.caratteristiche.length > 0}
+              open={openDropdown === 'caratteristiche'}
+              onToggle={() => setOpenDropdown(openDropdown === 'caratteristiche' ? null : 'caratteristiche')}
+              width="w-80"
+            >
+              <label className="block text-xs font-bold text-gray-600 mb-2">Caratteristiche</label>
+              <div className="flex flex-wrap gap-2">
+                {CARATTERISTICHE_LIST.map(c => (
+                  <button
+                    key={c}
+                    onClick={() => toggleCaratteristica(c)}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all border ${
+                      filters.caratteristiche.includes(c)
+                        ? 'bg-primary-50 text-primary-700 border-primary-200'
+                        : 'bg-white text-gray-600 border-gray-200 hover:bg-gray-50'
+                    }`}
+                  >
+                    {CARATTERISTICHE_LABELS[c]}
+                  </button>
+                ))}
+              </div>
+            </FilterDropdown>
+
+            {/* Tutti i filtri */}
+            <button
+              onClick={() => setShowFilters(true)}
+              className="flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-sm font-semibold border border-gray-300 bg-white text-gray-700 hover:border-gray-400 transition-all shrink-0 whitespace-nowrap"
+            >
+              <SlidersHorizontal size={15} />
+              Tutti i filtri
+              {activeFilterCount > 0 && (
+                <span className="bg-primary-600 text-white text-[10px] w-5 h-5 rounded-full flex items-center justify-center font-bold">
+                  {activeFilterCount}
+                </span>
+              )}
+            </button>
+
+            {activeFilterCount > 0 && (
+              <button
+                onClick={handleClearFilters}
+                className="text-xs text-gray-500 hover:text-gray-800 underline shrink-0 whitespace-nowrap"
+              >
+                Azzera
+              </button>
+            )}
+
+            {/* Right: sort + salva ricerca */}
+            <div className="ml-auto flex items-center gap-2 shrink-0">
+              <FilterDropdown
+                label={`Ordina: ${SORT_OPTIONS.find(o => o.value === sortBy)?.label ?? ''}`}
+                open={openDropdown === 'sort'}
+                onToggle={() => setOpenDropdown(openDropdown === 'sort' ? null : 'sort')}
+                width="w-56"
+              >
+                <div className="flex flex-col">
+                  {SORT_OPTIONS.map(o => (
+                    <button
+                      key={o.value}
+                      onClick={() => { setSortBy(o.value); setOpenDropdown(null); }}
+                      className={`text-left px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                        sortBy === o.value
+                          ? 'bg-primary-50 text-primary-700'
+                          : 'text-gray-700 hover:bg-gray-50'
+                      }`}
+                    >
+                      {o.label}
+                    </button>
+                  ))}
+                </div>
+              </FilterDropdown>
+
+              <button className="flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-sm font-semibold bg-primary-600 text-white hover:bg-primary-700 transition-all whitespace-nowrap">
+                <Bookmark size={15} />
+                Salva ricerca
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Split: list (left) + map (right) */}
+        <div className="flex flex-1 overflow-hidden">
+
+          {/* Left: scrollable list */}
+          <div className="w-[56%] xl:w-[55%] overflow-y-auto bg-[#FAFAFA] px-6 py-5">
+            <div className="flex items-center justify-between mb-4">
+              <h1 className="text-lg font-bold text-gray-900">
+                {sortedListings.length} {sortedListings.length === 1 ? 'casa in affitto' : 'case in affitto'} in Italia
+              </h1>
+            </div>
+
+            {sortedListings.length > 0 ? (
+              <div className="space-y-4">
+                {sortedListings.map((listing) => {
+                  const url = buildListingUrl(listing.regioneSlug, listing.comuneSlug, listing.tipologiaSlug, listing.slug);
+                  const isSelected = selectedListingId === listing.id;
+                  return (
+                    <div
+                      key={listing.id}
+                      onMouseEnter={() => setSelectedListingId(listing.id)}
+                      className={`group flex bg-white rounded-xl overflow-hidden border transition-all ${
+                        isSelected ? 'border-primary-400 shadow-md' : 'border-gray-200 hover:border-gray-300 hover:shadow-sm'
+                      }`}
+                    >
+                      <Link to={url} className="relative w-72 shrink-0 overflow-hidden block">
+                        <img
+                          src={listing.immagini[0]}
+                          alt={`${listing.titolo} – affitto ${listing.comune}`}
+                          loading="lazy"
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        />
+                        {listing.isExclusive && (
+                          <div className="absolute top-3 left-3 flex items-center gap-1 bg-primary-500 text-white text-xs font-bold px-2.5 py-1 rounded-full">
+                            <Star size={10} className="fill-white" /> Esclusiva
+                          </div>
+                        )}
+                        <div className="absolute bottom-2 right-2 flex items-center gap-1 bg-black/60 text-white text-[11px] font-semibold px-2 py-0.5 rounded-md">
+                          <Camera size={11} /> {listing.immagini.length}
+                        </div>
+                      </Link>
+
+                      <div className="flex-1 p-4 flex flex-col min-w-0">
+                        <div className="flex items-start justify-between gap-2">
+                          <span className="text-xl font-bold text-gray-900">{formatPrice(listing.prezzo)}</span>
+                          <button className="text-gray-300 hover:text-primary-500 transition-colors shrink-0">
+                            <Heart size={20} />
+                          </button>
+                        </div>
+                        <h3 className="font-semibold text-gray-800 text-sm mt-1 line-clamp-1">{listing.titolo}</h3>
+                        <div className="flex items-center gap-1 text-text-muted text-xs mt-1">
+                          <MapPin size={12} /><span className="truncate">{listing.zona}, {listing.comune}</span>
+                        </div>
+                        <div className="flex items-center gap-4 text-text-secondary text-xs mt-3">
+                          <span className="flex items-center gap-1"><Maximize2 size={13} />{listing.mq} m²</span>
+                          <span className="flex items-center gap-1"><BedDouble size={13} />{listing.camere} loc.</span>
+                          <span className="flex items-center gap-1"><Bath size={13} />{listing.bagni} bagni</span>
+                          {listing.piano && (
+                            <span className="flex items-center gap-1"><Layers size={13} />{listing.piano}</span>
+                          )}
+                        </div>
+                        <div className="mt-auto pt-3 flex items-center justify-between">
+                          <span className="flex items-center gap-1 text-xs text-text-muted capitalize">
+                            <BadgeCheck size={13} className="text-primary-500" /> {listing.tipologia}
+                          </span>
+                          <Link to={url} className="text-sm font-bold text-primary-600 hover:text-primary-700">
+                            Candidati →
+                          </Link>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            ) : (
+              <div className="text-center py-20">
+                <MapPin size={40} className="mx-auto mb-4 text-gray-300" />
+                <h3 className="text-xl font-bold text-gray-800 mb-2">Nessun annuncio trovato</h3>
+                <p className="text-gray-500 mb-6">Prova a modificare i filtri di ricerca</p>
+                <button
+                  onClick={handleClearFilters}
+                  className="px-6 py-2.5 bg-primary-600 text-white rounded-xl font-semibold hover:bg-primary-700 transition-colors"
+                >
+                  Rimuovi filtri
+                </button>
+              </div>
+            )}
+          </div>
+
+          {/* Right: sticky map */}
+          <div className="w-[44%] xl:w-[45%] shrink-0 bg-gray-100">
+            <ListingsMap
+              listings={sortedListings}
+              center={activeCityCoordinates}
+              selectedId={selectedListingId}
+              onMarkerClick={listing => setSelectedListingId(listing.id)}
+              onMapClick={() => setSelectedListingId(null)}
+            />
+          </div>
+        </div>
+      </div>
 
       {/* ── Filter Modal ─────────────────────────────────────────────────── */}
       {showFilters && (
