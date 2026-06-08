@@ -548,28 +548,25 @@ export const RicercaInquilinoPage: React.FC = () => {
             </div>
           </FilterDropdown>
 
-          {/* Badge */}
+          {/* In cerca di: tipo di immobile */}
           <FilterDropdown
-            label="Badge"
-            active={filters.verified !== null || filters.hasVideo !== null}
-            open={openDropdown === 'badge'}
-            onToggle={() => setOpenDropdown(openDropdown === 'badge' ? null : 'badge')}
-            width="w-64"
+            label="In cerca di"
+            active={!!filters.tipoImmobile}
+            open={openDropdown === 'tipoImmobile'}
+            onToggle={() => setOpenDropdown(openDropdown === 'tipoImmobile' ? null : 'tipoImmobile')}
+            width="w-72"
           >
-            <label className="block text-xs font-bold text-gray-600 mb-2">Badge</label>
+            <label className="block text-xs font-bold text-gray-600 mb-2">In cerca di: tipo di immobile</label>
             <div className="flex flex-wrap gap-2">
-              <button
-                onClick={() => setFilters(f => ({ ...f, verified: f.verified ? null : true }))}
-                className={`${pillCls(!!filters.verified)} flex items-center gap-1`}
-              >
-                <BadgeCheck size={13} /> Verificato
-              </button>
-              <button
-                onClick={() => setFilters(f => ({ ...f, hasVideo: f.hasVideo ? null : true }))}
-                className={`${pillCls(!!filters.hasVideo)} flex items-center gap-1`}
-              >
-                <Video size={13} /> Con Video
-              </button>
+              {TIPO_IMMOBILE_OPTIONS.filter(o => o.value).map(o => (
+                <button
+                  key={o.value}
+                  onClick={() => setFilters(f => ({ ...f, tipoImmobile: f.tipoImmobile === o.value ? '' : o.value }))}
+                  className={pillCls(filters.tipoImmobile === o.value)}
+                >
+                  {o.label}
+                </button>
+              ))}
             </div>
           </FilterDropdown>
 
