@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Shield, CheckCircle, Zap } from 'lucide-react';
+import { CheckCircle, Zap } from 'lucide-react';
 
 export const FinalCTA: React.FC = () => {
   const [formData, setFormData] = useState({ nome: '', email: '', tipologia: '' });
@@ -93,17 +93,9 @@ export const FinalCTA: React.FC = () => {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
                 </svg>
               </button>
-
-              <p className="text-center text-white/50 text-xs mt-4">
-                Unisciti a oltre <span className="text-action-green font-semibold">30.000 inquilini</span> che hanno già trovato casa
-              </p>
             </form>
 
             <div className="flex items-center justify-center gap-4 mt-8 pt-8 border-t border-white/10">
-              <div className="flex items-center gap-1.5 text-white/60">
-                <Shield className="w-3 h-3 text-action-green shrink-0" />
-                <span className="text-xs">Dati protetti</span>
-              </div>
               <div className="flex items-center gap-1.5 text-white/60">
                 <CheckCircle className="w-3 h-3 text-action-green shrink-0" />
                 <span className="text-xs">Zero spam</span>
