@@ -16,7 +16,7 @@ export const Problems: React.FC = () => {
           Cercare Casa in Affitto è un Incubo
         </h2>
         <p className="text-lg md:text-xl text-medium-gray mb-10 leading-[1.5]">
-          Trovare un appartamento in affitto oggi è più difficile che mai. Il mercato premia solo chi sa presentarsi nel modo giusto.
+          Trovare un appartamento in affitto oggi è più difficile che mai: il mercato premia solo chi sa presentarsi nel modo giusto.
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
