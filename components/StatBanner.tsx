@@ -8,7 +8,7 @@ export const StatBanner: React.FC = () => {
           Statistiche AffittoChiaro
         </p>
         <p className="text-xl md:text-2xl lg:text-3xl font-bold text-white leading-snug max-w-4xl">
-          «Il <span className="text-action-green">73%</span> di chi cerca casa da oltre 2 mesi, con AffittoChiaro la trova in <span className="text-action-green">poche settimane</span>, perché si presenta con un profilo completo, credibile e verificato.»
+          “Il <span className="text-action-green">73%</span> di chi cerca casa da oltre 2 mesi, con AffittoChiaro la trova in <span className="text-action-green">poche settimane</span>, perché si presenta con un profilo completo, credibile e verificato.”
         </p>
       </div>
     </section>
