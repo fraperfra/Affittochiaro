@@ -87,9 +87,9 @@ export const Header: React.FC = () => {
               </Link>
               <Link
                 to="/login"
-                className="text-brand-green bg-white px-6 py-2.5 rounded-xl font-bold text-sm hover:bg-gray-50 transition-all border border-brand-green/30"
+                className="text-brand-green px-2 font-bold text-sm hover:text-action-green transition-colors"
               >
-                ACCEDI
+                Accedi
               </Link>
             </div>
           </nav>
