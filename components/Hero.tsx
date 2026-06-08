@@ -83,9 +83,6 @@ export const Hero: React.FC<HeroProps> = ({ counter, activeCityName }) => {
               <h2 className="text-xl md:text-2xl font-bold leading-tight mb-2">
                 La più grande community di inquilini in Italia
               </h2>
-              <p className="text-white/60 text-xs mb-6 leading-relaxed">
-                Ogni 5 minuti un nuovo inquilino completa il suo profilo.
-              </p>
 
               <div className="mb-6 pb-6 border-b border-white/10">
                 <div className="text-5xl md:text-6xl font-bold mb-2 tabular-nums tracking-tighter">
