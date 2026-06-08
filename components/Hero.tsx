@@ -64,9 +64,6 @@ export const Hero: React.FC<HeroProps> = ({ counter, activeCityName }) => {
                   prefilledTipologia={selectedTipologia}
                   onTipologiaFilled={() => setSelectedTipologia(null)}
                 />
-                <p className="mt-1.5 text-center lg:text-left text-xs text-medium-gray">
-                  Annunci verificati in 40+ città · Candidatura gratuita · Nessuna commissione
-                </p>
               </div>
 
             </div>
