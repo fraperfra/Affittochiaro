@@ -81,7 +81,7 @@ export const Hero: React.FC<HeroProps> = ({ counter, activeCityName }) => {
               </div>
 
               <h2 className="text-xl md:text-2xl font-bold leading-tight mb-2">
-                La più grande community di inquilini in Italia
+                Il portale di inquilini più grande in Italia
               </h2>
 
               <div className="mb-6 pb-6 border-b border-white/10">
@@ -109,7 +109,7 @@ export const Hero: React.FC<HeroProps> = ({ counter, activeCityName }) => {
                 </div>
                 <div>
                   <p className="text-xs font-semibold text-white">
-                    Unisciti a 30.000+ inquilini felici
+                    30.000+ inquilini felici
                   </p>
                   <div className="flex items-center gap-0.5 mt-0.5">
                     {[1,2,3,4,5].map(i => (
