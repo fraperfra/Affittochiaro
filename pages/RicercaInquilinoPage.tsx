@@ -13,11 +13,6 @@ import {
     MapPin,
     Lock,
     ArrowRight,
-    Check,
-    UserCheck,
-    ShieldCheck,
-    FileText,
-    Umbrella,
 } from 'lucide-react';
 import { mockTenants } from '../src/utils/mockData';
 import { OCCUPATIONS } from '../src/utils/constants';
@@ -698,75 +693,6 @@ export const RicercaInquilinoPage: React.FC = () => {
           <p className="text-sm text-gray-400 mt-3">Crea un account per accedere ai profili completi</p>
         </div>
       </div>
-
-      {/* ── 4. Benefits Bento Grid ──────────────────────────────── */}
-      <section className="py-24 bg-gray-50 border-t border-gray-200">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="text-center max-w-3xl mx-auto mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-6">Tutto quello che serve per <br />un Affitto Sicuro</h2>
-            <p className="text-xl text-gray-500">Abbiamo digitalizzato e semplificato ogni passaggio, per darti il controllo totale senza la burocrazia.</p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-6">
-            <div className="md:col-span-2 bg-white rounded-3xl p-8 shadow-sm border border-gray-100 hover:shadow-xl transition-all duration-300 relative overflow-hidden group">
-              <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 transition-opacity">
-                <ShieldCheck className="w-32 h-32 text-primary-600" />
-              </div>
-              <div className="relative z-10 max-w-md">
-                <div className="w-12 h-12 bg-primary-100 rounded-xl flex items-center justify-center text-primary-600 mb-6"><UserCheck className="w-6 h-6" /></div>
-                <h3 className="text-2xl font-bold mb-4">Tenant Check Certificato</h3>
-                <p className="text-gray-600 leading-relaxed mb-6">Il nostro algoritmo analizza oltre 50 parametri: reddito, tipologia di contratto, storia creditizia e referenze precedenti. Ricevi solo candidature con <strong>Tenant Score</strong> superiore a 80/100.</p>
-                <ul className="space-y-2 mb-6">
-                  <li className="flex items-center gap-2 text-sm font-medium text-gray-700"><Check className="w-4 h-4 text-primary-500" /> Analisi Busta Paga</li>
-                  <li className="flex items-center gap-2 text-sm font-medium text-gray-700"><Check className="w-4 h-4 text-primary-500" /> Controllo Protesti</li>
-                  <li className="flex items-center gap-2 text-sm font-medium text-gray-700"><Check className="w-4 h-4 text-primary-500" /> Verifica Identità</li>
-                </ul>
-              </div>
-            </div>
-
-            <div className="bg-primary-600 rounded-3xl p-8 shadow-xl text-white flex flex-col justify-between relative overflow-hidden group">
-              <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-white/10 rounded-full blur-2xl group-hover:bg-white/20 transition-all" />
-              <div>
-                <div className="w-12 h-12 bg-white/20 backdrop-blur rounded-xl flex items-center justify-center text-white mb-6"><Umbrella className="w-6 h-6" /></div>
-                <h3 className="text-2xl font-bold mb-4">Tutela Legale e Morosità</h3>
-                <p className="text-primary-100 text-sm leading-relaxed mb-4">Dormi sonni tranquilli con la nostra protezione proprietari. Copriamo fino a 12 mensilità in caso di morosità e offriamo assistenza legale gratuita.</p>
-              </div>
-              <button className="w-full py-3 bg-white text-primary-700 font-bold rounded-xl hover:bg-primary-50 transition-colors text-sm">Scopri Garanzie</button>
-            </div>
-
-            <div className="bg-white rounded-3xl p-8 shadow-sm border border-gray-100 hover:shadow-xl transition-all duration-300">
-              <div className="w-12 h-12 bg-orange-100 rounded-xl flex items-center justify-center text-orange-600 mb-6"><FileText className="w-6 h-6" /></div>
-              <h3 className="text-xl font-bold mb-3">Contratti Digitali</h3>
-              <p className="text-gray-600 text-sm leading-relaxed">Genera e firma il contratto direttamente online con Firma Elettronica Avanzata (FEA). Registrazione all'Agenzia delle Entrate inclusa.</p>
-            </div>
-
-            <div className="bg-white rounded-3xl p-8 shadow-sm border border-gray-100 hover:shadow-xl transition-all duration-300 md:col-span-2">
-              <div className="flex flex-col md:flex-row gap-6 items-start md:items-center">
-                <div>
-                  <div className="w-12 h-12 bg-teal-100 rounded-xl flex items-center justify-center text-teal-600 mb-6"><Briefcase className="w-6 h-6" /></div>
-                  <h3 className="text-xl font-bold mb-3">Gestione 100% Online</h3>
-                  <p className="text-gray-600 text-sm leading-relaxed max-w-lg">Dal caricamento dell'annuncio alla riscossione dell'affitto. Tutto in un'unica dashboard intuitiva.</p>
-                </div>
-                <div className="flex-grow bg-gray-50 rounded-2xl p-4 w-full">
-                  <div className="flex justify-between text-xs font-bold text-gray-500 mb-2"><span>STATO PAGAMENTI</span> <span>TUTTO REGOLARE</span></div>
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-2 bg-white p-2 rounded-lg border border-gray-100 shadow-sm">
-                      <div className="w-2 h-2 rounded-full bg-green-500" />
-                      <span className="text-xs font-bold text-gray-700">Gennaio</span>
-                      <span className="ml-auto text-xs font-bold text-green-600">Pagato</span>
-                    </div>
-                    <div className="flex items-center gap-2 bg-white p-2 rounded-lg border border-gray-100 shadow-sm">
-                      <div className="w-2 h-2 rounded-full bg-green-500" />
-                      <span className="text-xs font-bold text-gray-700">Febbraio</span>
-                      <span className="ml-auto text-xs font-bold text-green-600">Pagato</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* ── 6. Final CTA ────────────────────────────────────────── */}
       <section className="py-20 px-4">
