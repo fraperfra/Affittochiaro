@@ -696,16 +696,15 @@ export const RicercaInquilinoPage: React.FC = () => {
 
       {/* ── 6. Final CTA ────────────────────────────────────────── */}
       <section className="py-20 px-4">
-        <div className="max-w-7xl mx-auto bg-gray-900 rounded-[3rem] p-12 md:p-24 text-center relative overflow-hidden shadow-2xl">
+        <div className="max-w-7xl mx-auto bg-brand-green rounded-[3rem] p-12 md:p-24 text-center relative overflow-hidden shadow-2xl">
           <div className="absolute top-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10" />
           <div className="relative z-10 max-w-3xl mx-auto">
             <h2 className="text-4xl md:text-5xl font-bold text-white mb-8">Inizia a guadagnare dal tuo immobile oggi stesso</h2>
-            <p className="text-xl text-gray-400 mb-12">Nessuna carta di credito richiesta. Pubblica in 3 minuti.</p>
-            <div className="flex flex-col sm:flex-row justify-center gap-6">
-              <Link to="/landing-inquilino" className="btn bg-primary-600 text-white px-10 py-5 rounded-2xl text-lg font-bold shadow-lg shadow-primary-600/30 hover:bg-white hover:text-gray-900 transition-all">
-                Pubblica Gratis
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
+              <Link to="/register" className="btn bg-white text-action-green px-10 py-5 rounded-2xl text-lg font-bold shadow-lg hover:brightness-110 transition-all">
+                Trova l'inquilino
               </Link>
-              <Link to="/contact" className="btn bg-transparent border border-gray-700 text-white px-10 py-5 rounded-2xl text-lg font-bold hover:bg-white/10 transition-all">
+              <Link to="/contact" className="text-white text-lg font-bold hover:underline transition-all">
                 Parla con un Esperto
               </Link>
             </div>
