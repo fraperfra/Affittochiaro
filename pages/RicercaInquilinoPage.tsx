@@ -29,14 +29,9 @@ const BUDGET_MIN = 200;
 const BUDGET_MAX = 3000;
 const ETA_MIN = 18;
 const ETA_MAX = 60;
+const NUCLEO_MIN = 1;
+const NUCLEO_MAX = 6;
 const RAGGIO_DEFAULT = 10;
-
-const NUCLEO_OPTIONS: { value: string; label: string }[] = [
-  { value: 'solo', label: 'Single' },
-  { value: 'coppia', label: 'Coppia' },
-  { value: 'famiglia', label: 'Famiglia' },
-  { value: 'coinquilini', label: 'Coinquilini' },
-];
 
 const TIPO_IMMOBILE_OPTIONS = [
   { value: '', label: 'Seleziona' },
@@ -178,7 +173,8 @@ interface TenantFilters {
   genere: string;
   animali: 'indifferente' | 'con' | 'senza';
   statoImmobile: 'indifferente' | 'arredato' | 'non_arredato';
-  nucleoFamiliare: string[];
+  nucleoMin: number;
+  nucleoMax: number;
   tipoImmobile: string;
 }
 
@@ -195,7 +191,8 @@ const EMPTY_FILTERS: TenantFilters = {
   genere: '',
   animali: 'indifferente',
   statoImmobile: 'indifferente',
-  nucleoFamiliare: [],
+  nucleoMin: NUCLEO_MIN,
+  nucleoMax: NUCLEO_MAX,
   tipoImmobile: '',
 };
 
@@ -282,7 +279,8 @@ export const RicercaInquilinoPage: React.FC = () => {
         if (filters.statoImmobile === 'arredato' && t.preferences?.furnished !== 'yes') return false;
         if (filters.statoImmobile === 'non_arredato' && t.preferences?.furnished !== 'no') return false;
 
-        if (filters.nucleoFamiliare.length > 0 && (!t.familyUnit || !filters.nucleoFamiliare.includes(t.familyUnit))) return false;
+        const people = t.numPeople;
+        if (people != null && (people < filters.nucleoMin || people > filters.nucleoMax)) return false;
 
         if (filters.tipoImmobile) {
           const minR = t.preferences?.minRooms ?? 0;
@@ -300,6 +298,7 @@ export const RicercaInquilinoPage: React.FC = () => {
   // ── Active filter count ──────────────────────────────────────────────────────
   const budgetChanged = filters.budgetMin !== BUDGET_MIN || filters.budgetMax !== BUDGET_MAX;
   const etaChanged = filters.etaMin !== ETA_MIN || filters.etaMax !== ETA_MAX;
+  const nucleoChanged = filters.nucleoMin !== NUCLEO_MIN || filters.nucleoMax !== NUCLEO_MAX;
   const raggiChanged = filters.raggiKm !== RAGGIO_DEFAULT;
   const activeFilterCount =
     (filters.occupation ? 1 : 0) +
@@ -312,24 +311,16 @@ export const RicercaInquilinoPage: React.FC = () => {
     (filters.genere ? 1 : 0) +
     (filters.animali !== 'indifferente' ? 1 : 0) +
     (filters.statoImmobile !== 'indifferente' ? 1 : 0) +
-    filters.nucleoFamiliare.length +
+    (nucleoChanged ? 1 : 0) +
     (filters.tipoImmobile ? 1 : 0);
 
   const handleClearFilters = () => { setFilters(EMPTY_FILTERS); setSearchText(''); };
-
-  const toggleNucleo = (v: string) => {
-    setFilters(f => ({
-      ...f,
-      nucleoFamiliare: f.nucleoFamiliare.includes(v)
-        ? f.nucleoFamiliare.filter(x => x !== v)
-        : [...f.nucleoFamiliare, v],
-    }));
-  };
 
   // ── Format helpers ───────────────────────────────────────────────────────────
   const fmtBudgetMin = (v: number) => `€${v.toLocaleString('it-IT')}`;
   const fmtBudgetMax = (v: number) => v >= BUDGET_MAX ? `€${v.toLocaleString('it-IT')}+` : `€${v.toLocaleString('it-IT')}`;
   const fmtEta = (v: number) => `${v} anni`;
+  const fmtNucleo = (v: number) => v >= NUCLEO_MAX ? `${v}+ persone` : `${v} ${v === 1 ? 'persona' : 'persone'}`;
   const fmtRaggio = (v: number) => `${v} km`;
 
   const pillCls = (active: boolean) =>
@@ -436,12 +427,12 @@ export const RicercaInquilinoPage: React.FC = () => {
                   <button onClick={() => setFilters(f => ({ ...f, genere: '' }))}><X size={12} /></button>
                 </span>
               )}
-              {filters.nucleoFamiliare.map(v => (
-                <span key={v} className="flex items-center gap-1 shrink-0 px-3 py-1 bg-primary-50 text-primary-700 rounded-full text-xs font-semibold capitalize">
-                  {NUCLEO_OPTIONS.find(o => o.value === v)?.label ?? v}
-                  <button onClick={() => toggleNucleo(v)}><X size={12} /></button>
+              {nucleoChanged && (
+                <span className="flex items-center gap-1 shrink-0 px-3 py-1 bg-primary-50 text-primary-700 rounded-full text-xs font-semibold">
+                  {fmtNucleo(filters.nucleoMin)} – {fmtNucleo(filters.nucleoMax)}
+                  <button onClick={() => setFilters(f => ({ ...f, nucleoMin: NUCLEO_MIN, nucleoMax: NUCLEO_MAX }))}><X size={12} /></button>
                 </span>
-              ))}
+              )}
               {activeFilterCount > 0 && (
                 <button onClick={handleClearFilters} className="shrink-0 text-xs text-gray-500 hover:text-gray-800 underline">
                   Rimuovi tutti
@@ -565,19 +556,19 @@ export const RicercaInquilinoPage: React.FC = () => {
           {/* Nucleo familiare */}
           <FilterDropdown
             label="Nucleo familiare"
-            active={filters.nucleoFamiliare.length > 0}
+            active={nucleoChanged}
             open={openDropdown === 'nucleo'}
             onToggle={() => setOpenDropdown(openDropdown === 'nucleo' ? null : 'nucleo')}
-            width="w-72"
+            width="w-80"
           >
-            <label className="block text-xs font-bold text-gray-600 mb-2">Nucleo familiare</label>
-            <div className="flex flex-wrap gap-2">
-              {NUCLEO_OPTIONS.map(o => (
-                <button key={o.value} onClick={() => toggleNucleo(o.value)} className={pillCls(filters.nucleoFamiliare.includes(o.value))}>
-                  {o.label}
-                </button>
-              ))}
-            </div>
+            <label className="block text-xs font-bold text-gray-600 mb-3">Nucleo familiare</label>
+            <RangeSlider
+              min={NUCLEO_MIN} max={NUCLEO_MAX} step={1}
+              minVal={filters.nucleoMin} maxVal={filters.nucleoMax}
+              onChange={(min, max) => setFilters(f => ({ ...f, nucleoMin: min, nucleoMax: max }))}
+              formatMin={fmtNucleo}
+              formatMax={fmtNucleo}
+            />
           </FilterDropdown>
 
           {/* In cerca di: tipo di immobile */}
@@ -954,18 +945,14 @@ export const RicercaInquilinoPage: React.FC = () => {
 
               {/* Nucleo familiare */}
               <div>
-                <label className="block text-xs font-bold text-gray-600 mb-2">Nucleo familiare</label>
-                <div className="flex flex-wrap gap-2">
-                  {NUCLEO_OPTIONS.map(o => (
-                    <button
-                      key={o.value}
-                      onClick={() => toggleNucleo(o.value)}
-                      className={pillCls(filters.nucleoFamiliare.includes(o.value))}
-                    >
-                      {o.label}
-                    </button>
-                  ))}
-                </div>
+                <label className="block text-xs font-bold text-gray-600 mb-3">Nucleo familiare</label>
+                <RangeSlider
+                  min={NUCLEO_MIN} max={NUCLEO_MAX} step={1}
+                  minVal={filters.nucleoMin} maxVal={filters.nucleoMax}
+                  onChange={(min, max) => setFilters(f => ({ ...f, nucleoMin: min, nucleoMax: max }))}
+                  formatMin={fmtNucleo}
+                  formatMax={fmtNucleo}
+                />
               </div>
 
               {/* Badge + Professione */}

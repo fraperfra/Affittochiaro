@@ -177,6 +177,7 @@ export function generateMockTenants(count: number): Tenant[] {
       hobbies: Array.from({ length: randomNumber(2, 6) }, () => randomElement(ALL_HOBBIES))
         .filter((v, i, a) => a.indexOf(v) === i), // unique
       familyUnit: randomElement(FAMILY_UNITS),
+      numPeople: randomNumber(1, 5),
       ageRange: randomElement(AGE_RANGES),
       // 15% Pro, 25% Premium, 60% Free — weighted random
       tenantPlan: (() => {
