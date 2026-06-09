@@ -4,7 +4,6 @@ import {
     Search,
     X,
     SlidersHorizontal,
-    ChevronRight,
     ChevronDown,
     Navigation,
     Loader2,
@@ -203,7 +202,6 @@ export const RicercaInquilinoPage: React.FC = () => {
   const [showFilters, setShowFilters] = useState(false);
   const [gpsLoading, setGpsLoading] = useState(false);
   const [filters, setFilters] = useState<TenantFilters>(EMPTY_FILTERS);
-  const [faqOpen, setFaqOpen] = useState<number | null>(0);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const filterBarRef = useRef<HTMLDivElement>(null);
 
@@ -766,32 +764,6 @@ export const RicercaInquilinoPage: React.FC = () => {
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── 5. FAQ ──────────────────────────────────────────────── */}
-      <section className="py-24 bg-white border-t border-gray-100">
-        <div className="max-w-4xl mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold mb-4">Domande Frequenti dei Proprietari</h2>
-            <p className="text-gray-500">Tutto quello che devi sapere sulla gestione locazioni con AffittoChiaro.</p>
-          </div>
-          <div className="space-y-4">
-            {[
-              { q: "Quanto costa pubblicare un annuncio?", a: "La pubblicazione è 100% gratuita. Non applichiamo costi di inserimento né commissioni sul canone mensile per il servizio base." },
-              { q: "Come verificate l'affidabilità dell'inquilino?", a: "Utilizziamo un sistema integrato che incrocia dati da banche dati pubbliche (Crif, Protesti) e verifica la documentazione reddituale caricata, grazie alla partnership con istituti di credito." },
-              { q: "La firma digitale ha valore legale?", a: "Assolutamente sì. Utilizziamo la Firma Elettronica Avanzata (FEA) conforme al regolamento eIDAS europeo, legalmente vincolante e perfetta per la registrazione telematica." },
-              { q: "Offrite supporto per la registrazione del contratto?", a: "Sì, il nostro sistema si interfaccia direttamente con i servizi dell'Agenzia delle Entrate per la registrazione telematica in regime ordinario o cedolare secca." }
-            ].map((item, idx) => (
-              <div key={idx} className="border border-gray-200 rounded-2xl overflow-hidden hover:border-primary-200 transition-colors">
-                <button onClick={() => setFaqOpen(faqOpen === idx ? null : idx)} className="w-full flex justify-between items-center p-6 text-left bg-white hover:bg-gray-50 font-bold text-gray-800">
-                  {item.q}
-                  <ChevronRight className={`w-5 h-5 transition-transform text-gray-400 ${faqOpen === idx ? 'rotate-90 text-primary-600' : ''}`} />
-                </button>
-                <div className={`px-6 pb-6 text-gray-600 leading-relaxed ${faqOpen === idx ? 'block' : 'hidden'}`}>{item.a}</div>
-              </div>
-            ))}
           </div>
         </div>
       </section>
