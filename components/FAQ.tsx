@@ -43,9 +43,6 @@ export const FAQ: React.FC = () => {
           <h2 className="text-[24px] font-bold text-brand-green mb-4 leading-[1.2]">
             Hai qualche dubbio?
           </h2>
-          <p className="text-lg text-medium-gray leading-[1.5]">
-            Le risposte alle domande più comuni sul nostro servizio.
-          </p>
         </div>
 
         <div className="space-y-3 max-w-3xl mx-auto">
