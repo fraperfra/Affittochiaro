@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { CheckCircle, Zap } from 'lucide-react';
+import { CheckCircle } from 'lucide-react';
 
 export const FinalCTA: React.FC = () => {
   const [formData, setFormData] = useState({ nome: '', email: '', tipologia: '' });
@@ -94,17 +94,6 @@ export const FinalCTA: React.FC = () => {
                 </svg>
               </button>
             </form>
-
-            <div className="flex items-center justify-center gap-4 mt-8 pt-8 border-t border-white/10">
-              <div className="flex items-center gap-1.5 text-white/60">
-                <CheckCircle className="w-3 h-3 text-action-green shrink-0" />
-                <span className="text-xs">Zero spam</span>
-              </div>
-              <div className="flex items-center gap-1.5 text-white/60">
-                <Zap className="w-3 h-3 text-action-green shrink-0" />
-                <span className="text-xs">Risposte in 48h</span>
-              </div>
-            </div>
           </>
         ) : (
           <div className="text-center py-12">
