@@ -28,18 +28,6 @@ const INQUILINO_STEPS: Step[] = [
     description: "Sfoglia gli annunci e invia la candidatura istantaneamente. Il proprietario riceve subito il tuo profilo completo.",
     image: 'https://placehold.co/600x400/f4f9f6/004832?text=Candidati',
   },
-  {
-    number: '04',
-    title: 'Organizza la visita',
-    description: "Concorda data e orario direttamente dalla piattaforma. Solo visite qualificate, senza email e moduli da ricompilare.",
-    image: 'https://placehold.co/600x400/f4f9f6/004832?text=Visita',
-  },
-  {
-    number: '05',
-    title: 'Firma il contratto',
-    description: "Una volta approvato, ricevi il contratto pronto alla firma. Puoi richiedere la revisione legale prima di concludere.",
-    image: 'https://placehold.co/600x400/f4f9f6/004832?text=Firma',
-  },
 ];
 
 const PROPRIETARIO_STEPS: Step[] = [
@@ -60,18 +48,6 @@ const PROPRIETARIO_STEPS: Step[] = [
     title: 'Contatta e organizza la visita',
     description: "Scrivi direttamente all'inquilino dalla piattaforma. Niente intermediari, niente commissioni.",
     image: 'https://placehold.co/600x400/f4f9f6/004832?text=Contatta',
-  },
-  {
-    number: '04',
-    title: 'Seleziona il candidato giusto',
-    description: "Confronta i profili affiancati e scegli l'inquilino più affidabile grazie allo score di affidabilità.",
-    image: 'https://placehold.co/600x400/f4f9f6/004832?text=Seleziona',
-  },
-  {
-    number: '05',
-    title: 'Chiudi il contratto',
-    description: "Formalizza l'accordo in tempi rapidi. Tempo medio di locazione ridotto da 45 a 18 giorni.",
-    image: 'https://placehold.co/600x400/f4f9f6/004832?text=Contratto',
   },
 ];
 
@@ -145,7 +121,7 @@ export const ComeFunzionaPage: React.FC = () => {
             {activeTab === 'inquilino' ? 'Il percorso per chi cerca casa' : 'Il percorso per chi cerca inquilini'}
           </p>
           <h2 className="text-[24px] md:text-3xl font-bold text-brand-green mb-12 leading-[1.2]">
-            {activeTab === 'inquilino' ? 'Trovare casa in 5 passi' : "Trovare l'inquilino giusto in 5 passi"}
+            {activeTab === 'inquilino' ? 'Trovare casa in 3 passi' : "Trovare l'inquilino giusto in 3 passi"}
           </h2>
 
           <div className="space-y-14">

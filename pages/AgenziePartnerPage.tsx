@@ -134,9 +134,6 @@ export const AgenziePartnerPage: React.FC = () => {
       {/* ── GARANZIE AGENZIA VERIFICATA ───────────────────────── */}
       <section className="py-14 px-4 bg-white border-b border-gray-100">
         <div className="max-w-5xl mx-auto">
-          <p className="text-xs font-bold text-brand-green uppercase tracking-widest mb-3 border-l-2 border-action-green pl-3">
-            COSA SIGNIFICA "VERIFICATA"
-          </p>
           <h2 className="text-2xl md:text-[28px] font-bold text-brand-green mb-8 leading-[1.2]">
             Cosa garantisce un'agenzia partner Affittochiaro
           </h2>
@@ -245,9 +242,6 @@ export const AgenziePartnerPage: React.FC = () => {
       {/* ── PERCHÉ LE AGENZIE SCELGONO AFFITTOCHIARO (B2B) ───── */}
       <section className="py-16 px-4 bg-gray-50 border-t border-gray-100">
         <div className="max-w-5xl mx-auto">
-          <p className="text-xs font-bold text-brand-green uppercase tracking-widest mb-3 border-l-2 border-action-green pl-3">
-            PER LE AGENZIE IMMOBILIARI
-          </p>
           <h2 className="text-2xl md:text-3xl font-bold text-brand-green mb-3 leading-[1.2]">
             Perché le agenzie scelgono Affittochiaro
           </h2>
@@ -298,9 +292,6 @@ export const AgenziePartnerPage: React.FC = () => {
       {/* ── PRICING ───────────────────────────────────────────── */}
       <section className="py-16 px-4 bg-white border-t border-gray-100">
         <div className="max-w-5xl mx-auto">
-          <p className="text-xs font-bold text-brand-green uppercase tracking-widest mb-3 border-l-2 border-action-green pl-3">
-            PIANI E PREZZI
-          </p>
           <h2 className="text-2xl md:text-3xl font-bold text-brand-green mb-3 leading-[1.2]">
             Scegli il pacchetto più adatto alla tua agenzia
           </h2>
@@ -379,7 +370,6 @@ export const AgenziePartnerPage: React.FC = () => {
       <section className="py-14 px-4 bg-brand-green">
         <div className="max-w-5xl mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
           <div>
-            <p className="text-xs font-bold text-action-green uppercase tracking-widest mb-2">PER LE AGENZIE</p>
             <h2 className="text-2xl md:text-3xl font-bold text-white leading-tight">
               Sei un'agenzia immobiliare?<br />Lavora con noi.
             </h2>
