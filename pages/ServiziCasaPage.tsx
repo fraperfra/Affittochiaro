@@ -61,7 +61,7 @@ export const ServiziCasaPage: React.FC = () => {
                     <h1 className="mt-4 text-3xl md:text-5xl font-bold text-brand-green leading-[1.1]">
                         La tua casa, senza pensieri.
                     </h1>
-                    <p className="mt-4 text-sm md:text-base text-medium-gray leading-[1.5] w-full">
+                    <p className="mt-4 text-sm md:text-base text-medium-gray leading-[1.5] w-full lg:-mx-20">
                         Affittochiaro non è solo una piattaforma che permette l'incontro tra proprietari e inquilini, ma anche un fornitore di servizi esclusivi per la casa e per l'affitto. Scopri subito tutti i nostri servizi in collaborazione con partner rinomati e affidabili:
                     </p>
                 </div>
