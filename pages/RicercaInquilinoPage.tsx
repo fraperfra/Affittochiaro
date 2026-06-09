@@ -708,7 +708,7 @@ export const RicercaInquilinoPage: React.FC = () => {
                 Parla con un Esperto
               </Link>
             </div>
-            <p className="mt-8 text-sm text-gray-600">Leggi i nostri <a href="#" className="underline hover:text-white">Termini e Condizioni</a> per i proprietari.</p>
+            <p className="mt-8 text-sm text-white">Leggi i nostri <a href="#" className="underline hover:text-white">Termini e Condizioni</a> per i proprietari.</p>
           </div>
         </div>
       </section>
