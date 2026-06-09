@@ -1,114 +1,20 @@
-import React, { useState } from 'react';
-import { CheckCircle } from 'lucide-react';
+import React from 'react';
+import { Link } from 'react-router-dom';
 
 export const FinalCTA: React.FC = () => {
-  const [formData, setFormData] = useState({ nome: '', email: '', tipologia: '' });
-  const [isSubmitted, setIsSubmitted] = useState(false);
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitted(true);
-  };
-
   return (
-    <section className="py-16 px-4 bg-brand-green border-t-2 border-action-green/20">
-      <div className="max-w-full lg:px-20 mx-auto">
-        {!isSubmitted ? (
-          <>
-            <div className="mb-10">
-              <h2 className="text-[24px] font-bold text-white mb-4 leading-[1.2]">
-                La tua prossima casa{' '}
-                <span className="text-action-green">ti sta cercando</span>
-              </h2>
-              <p className="text-white/70 text-lg leading-[1.5]">
-                Lascia i tuoi dati e ricevi proposte personalizzate direttamente nella tua email.
-                Niente spam, solo annunci che fanno per te.
-              </p>
-            </div>
-
-            <form onSubmit={handleSubmit} className="bg-white/10 rounded-xl p-6 md:p-8 border border-white/15">
-              <div className="grid md:grid-cols-3 gap-4 mb-5">
-                {/* Nome: nascosto su mobile, visibile su desktop */}
-                <div className="hidden md:block">
-                  <label htmlFor="nome" className="block text-white/80 text-sm font-medium mb-1.5">Il tuo nome</label>
-                  <input
-                    type="text"
-                    id="nome"
-                    name="nome"
-                    value={formData.nome}
-                    onChange={handleChange}
-                    placeholder="Mario"
-                    autoComplete="given-name"
-                    className="w-full px-4 py-3 bg-white rounded-lg text-brand-green placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-action-green transition-all text-sm"
-                  />
-                </div>
-                {/* Email: sempre visibile, full-width su mobile */}
-                <div className="md:col-span-1">
-                  <label htmlFor="email" className="block text-white/80 text-sm font-medium mb-1.5">La tua email</label>
-                  <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    required
-                    placeholder="mario@email.com"
-                    autoComplete="email"
-                    inputMode="email"
-                    className="w-full px-4 py-3 bg-white rounded-lg text-brand-green placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-action-green transition-all text-sm"
-                  />
-                </div>
-                {/* Tipologia: nascosto su mobile */}
-                <div className="hidden md:block">
-                  <label htmlFor="tipologia" className="block text-white/80 text-sm font-medium mb-1.5">Cosa cerchi?</label>
-                  <select
-                    id="tipologia"
-                    name="tipologia"
-                    value={formData.tipologia}
-                    onChange={handleChange}
-                    className="w-full px-4 py-3 bg-white rounded-lg text-brand-green focus:outline-none focus:ring-2 focus:ring-action-green transition-all appearance-none cursor-pointer text-sm"
-                    style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23004832'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E")`, backgroundRepeat: 'no-repeat', backgroundPosition: 'right 1rem center', backgroundSize: '1.25rem' }}
-                  >
-                    <option value="" disabled>Seleziona...</option>
-                    <option value="monolocale">Monolocale</option>
-                    <option value="bilocale">Bilocale</option>
-                    <option value="trilocale">Trilocale</option>
-                    <option value="quadrilocale">Quadrilocale+</option>
-                    <option value="stanza">Stanza singola</option>
-                    <option value="condivisione">Stanza in condivisione</option>
-                  </select>
-                </div>
-              </div>
-
-              <button
-                type="submit"
-                className="w-full bg-action-green text-white py-4 min-h-[44px] rounded-lg font-bold text-base hover:brightness-110 transition-all flex items-center justify-center gap-3"
-              >
-                Inizia la ricerca
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                </svg>
-              </button>
-            </form>
-          </>
-        ) : (
-          <div className="text-center py-12">
-            <div className="w-16 h-16 bg-action-green/20 rounded-full flex items-center justify-center mx-auto mb-6 border border-action-green/30">
-              <CheckCircle className="w-8 h-8 text-action-green" />
-            </div>
-            <h3 className="text-[24px] font-bold text-white mb-4 leading-[1.2]">
-              {formData.nome ? `Perfetto, ${formData.nome}!` : 'Perfetto!'}
-            </h3>
-            <p className="text-white/70 text-lg mb-6 leading-[1.5]">
-              Inizierai a ricevere proposte personalizzate a <span className="text-action-green font-semibold">{formData.email}</span>
-            </p>
-            <p className="text-white/50 text-sm">Controlla la tua email per confermare</p>
-          </div>
-        )}
+    <section className="py-20 px-4 bg-brand-green border-t-2 border-action-green/20">
+      <div className="max-w-3xl mx-auto text-center">
+        <h2 className="text-2xl md:text-4xl font-bold text-white mb-8 leading-[1.2]">
+          Trova la casa dei tuoi sogni con{' '}
+          <span className="text-action-green">Affittochiaro</span>
+        </h2>
+        <Link
+          to="/case-e-stanze-in-affitto"
+          className="inline-flex items-center justify-center bg-action-green text-white px-8 py-4 min-h-[44px] rounded-lg font-bold text-base hover:brightness-110 transition-all"
+        >
+          Inizia a cercare
+        </Link>
       </div>
     </section>
   );
