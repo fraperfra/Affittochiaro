@@ -27,7 +27,6 @@ import {
   ChiSiamoPage,
   ArticlePresentarsiProprietario,
   ComeFunzionaPage,
-  ComponentLibraryPage,
 } from '../pages';
 
 // App Layouts - eagerly loaded (shared shell)
@@ -374,14 +373,6 @@ function App() {
             element={
               <LandingWrapper>
                 <TerminiServiziPage />
-              </LandingWrapper>
-            }
-          />
-          <Route
-            path="/design-system"
-            element={
-              <LandingWrapper>
-                <ComponentLibraryPage />
               </LandingWrapper>
             }
           />
