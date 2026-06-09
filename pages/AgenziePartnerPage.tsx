@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
   MapPin, BadgeCheck, Home, Star, ArrowRight,
-  Clock, ShieldCheck, FileText,
+  Clock, ShieldCheck,
   Users, Check, Shield, Zap, Crown, ClipboardList,
 } from 'lucide-react';
 import { mockAgencies } from '../src/utils/mockData';
@@ -17,11 +17,6 @@ const GUARANTEES = [
     icon: ShieldCheck,
     title: 'Identità e licenza verificate',
     description: 'Controlliamo CCIAA, iscrizione al registro mediatori e documenti di esercizio.',
-  },
-  {
-    icon: FileText,
-    title: 'Documenti in digitale',
-    description: 'Niente cartaceo via email. Tutto il flusso documentale avviene in piattaforma.',
   },
   {
     icon: BadgeCheck,
