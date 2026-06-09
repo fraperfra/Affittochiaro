@@ -101,6 +101,7 @@ export function generateMockTenants(count: number): Tenant[] {
       avatar: randomBoolean(0.7) ? `https://i.pravatar.cc/150?u=${i}` : undefined,
       dateOfBirth: randomDate(new Date('1970-01-01'), new Date('2002-01-01')),
       age: randomNumber(22, 55),
+      gender: randomElement(['uomo', 'donna', 'donna', 'uomo', 'non_binario'] as const),
       bio: randomBoolean(0.6)
         ? `Ciao! Sono ${firstName}, lavoro come ${occupation.toLowerCase()} a ${city}. Cerco un appartamento accogliente dove sentirmi a casa.`
         : undefined,

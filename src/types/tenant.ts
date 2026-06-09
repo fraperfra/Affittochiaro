@@ -10,6 +10,7 @@ export interface Tenant {
   dateOfBirth?: Date;
   age?: number;
   bio?: string;
+  gender?: 'uomo' | 'donna' | 'non_binario';
   nationality?: string;   // Codice ISO es: "IT", "RO", "MA"
   numPeople?: number;     // Persone totali che si trasferiscono
   hasChildren?: boolean;

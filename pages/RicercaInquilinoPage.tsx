@@ -40,10 +40,16 @@ const NUCLEO_OPTIONS: { value: string; label: string }[] = [
 
 const TIPO_IMMOBILE_OPTIONS = [
   { value: '', label: 'Seleziona' },
-  { value: 'stanza', label: 'Stanza singola' },
-  { value: 'bilocale', label: 'Bilocale' },
-  { value: 'trilocale', label: 'Trilocale o più' },
+  { value: 'stanza', label: 'Stanza' },
+  { value: 'appartamento', label: 'Appartamento' },
   { value: 'villa', label: 'Villa / Casa indipendente' },
+  { value: 'bifamiliare', label: 'Bifamiliare' },
+];
+
+const GENERE_OPTIONS: { value: string; label: string }[] = [
+  { value: 'uomo', label: 'Uomo' },
+  { value: 'donna', label: 'Donna' },
+  { value: 'non_binario', label: 'Non binario' },
 ];
 
 const CONTRATTO_OPTIONS: { value: string; label: string }[] = [
@@ -157,13 +163,6 @@ const FilterDropdown: React.FC<FilterDropdownProps> = ({ label, active, open, on
   </div>
 );
 
-const SORT_OPTIONS: { value: 'recenti' | 'budget-desc' | 'budget-asc' | 'eta-asc'; label: string }[] = [
-  { value: 'recenti', label: 'Più recenti' },
-  { value: 'budget-desc', label: 'Budget più alto' },
-  { value: 'budget-asc', label: 'Budget più basso' },
-  { value: 'eta-asc', label: 'Più giovani' },
-];
-
 // ── Types ──────────────────────────────────────────────────────────────────────
 
 interface TenantFilters {
@@ -176,6 +175,7 @@ interface TenantFilters {
   etaMin: number;
   etaMax: number;
   contratto: string;
+  genere: string;
   animali: 'indifferente' | 'con' | 'senza';
   statoImmobile: 'indifferente' | 'arredato' | 'non_arredato';
   nucleoFamiliare: string[];
@@ -192,6 +192,7 @@ const EMPTY_FILTERS: TenantFilters = {
   etaMin: ETA_MIN,
   etaMax: ETA_MAX,
   contratto: '',
+  genere: '',
   animali: 'indifferente',
   statoImmobile: 'indifferente',
   nucleoFamiliare: [],
@@ -206,7 +207,6 @@ export const RicercaInquilinoPage: React.FC = () => {
   const [gpsLoading, setGpsLoading] = useState(false);
   const [filters, setFilters] = useState<TenantFilters>(EMPTY_FILTERS);
   const [faqOpen, setFaqOpen] = useState<number | null>(0);
-  const [sortBy, setSortBy] = useState<'recenti' | 'budget-desc' | 'budget-asc' | 'eta-asc'>('recenti');
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const filterBarRef = useRef<HTMLDivElement>(null);
 
@@ -274,6 +274,8 @@ export const RicercaInquilinoPage: React.FC = () => {
 
         if (filters.contratto && t.employmentType !== filters.contratto) return false;
 
+        if (filters.genere && t.gender !== filters.genere) return false;
+
         if (filters.animali === 'con' && !t.preferences?.hasPets) return false;
         if (filters.animali === 'senza' && t.preferences?.hasPets) return false;
 
@@ -286,8 +288,6 @@ export const RicercaInquilinoPage: React.FC = () => {
           const minR = t.preferences?.minRooms ?? 0;
           const maxR = t.preferences?.maxRooms ?? 5;
           if (filters.tipoImmobile === 'stanza' && minR > 1) return false;
-          if (filters.tipoImmobile === 'bilocale' && minR !== 2) return false;
-          if (filters.tipoImmobile === 'trilocale' && maxR < 3) return false;
           if (filters.tipoImmobile === 'villa' && maxR < 4) return false;
         }
 
@@ -295,17 +295,7 @@ export const RicercaInquilinoPage: React.FC = () => {
       });
   }, [searchText, filters]);
 
-  const sortedTenants = useMemo(() => {
-    const arr = [...filteredTenants];
-    switch (sortBy) {
-      case 'budget-desc': return arr.sort((a, b) => (b.preferences?.maxBudget ?? 0) - (a.preferences?.maxBudget ?? 0));
-      case 'budget-asc': return arr.sort((a, b) => (a.preferences?.maxBudget ?? 0) - (b.preferences?.maxBudget ?? 0));
-      case 'eta-asc': return arr.sort((a, b) => (a.age ?? 999) - (b.age ?? 999));
-      default: return arr;
-    }
-  }, [filteredTenants, sortBy]);
-
-  const displayedTenants = sortedTenants.slice(0, 24);
+  const displayedTenants = filteredTenants.slice(0, 24);
 
   // ── Active filter count ──────────────────────────────────────────────────────
   const budgetChanged = filters.budgetMin !== BUDGET_MIN || filters.budgetMax !== BUDGET_MAX;
@@ -319,6 +309,7 @@ export const RicercaInquilinoPage: React.FC = () => {
     (budgetChanged ? 1 : 0) +
     (etaChanged ? 1 : 0) +
     (filters.contratto ? 1 : 0) +
+    (filters.genere ? 1 : 0) +
     (filters.animali !== 'indifferente' ? 1 : 0) +
     (filters.statoImmobile !== 'indifferente' ? 1 : 0) +
     filters.nucleoFamiliare.length +
@@ -439,6 +430,12 @@ export const RicercaInquilinoPage: React.FC = () => {
                   <button onClick={() => setFilters(f => ({ ...f, contratto: '' }))}><X size={12} /></button>
                 </span>
               )}
+              {filters.genere && (
+                <span className="flex items-center gap-1 shrink-0 px-3 py-1 bg-primary-50 text-primary-700 rounded-full text-xs font-semibold">
+                  {GENERE_OPTIONS.find(g => g.value === filters.genere)?.label ?? filters.genere}
+                  <button onClick={() => setFilters(f => ({ ...f, genere: '' }))}><X size={12} /></button>
+                </span>
+              )}
               {filters.nucleoFamiliare.map(v => (
                 <span key={v} className="flex items-center gap-1 shrink-0 px-3 py-1 bg-primary-50 text-primary-700 rounded-full text-xs font-semibold capitalize">
                   {NUCLEO_OPTIONS.find(o => o.value === v)?.label ?? v}
@@ -540,6 +537,31 @@ export const RicercaInquilinoPage: React.FC = () => {
             </div>
           </FilterDropdown>
 
+          {/* Genere */}
+          <FilterDropdown
+            label="Genere"
+            active={!!filters.genere}
+            open={openDropdown === 'genere'}
+            onToggle={() => setOpenDropdown(openDropdown === 'genere' ? null : 'genere')}
+            width="w-72"
+          >
+            <label className="block text-xs font-bold text-gray-600 mb-2">Genere</label>
+            <div className="flex flex-wrap gap-2">
+              <button onClick={() => setFilters(f => ({ ...f, genere: '' }))} className={pillCls(!filters.genere)}>
+                Qualsiasi
+              </button>
+              {GENERE_OPTIONS.map(g => (
+                <button
+                  key={g.value}
+                  onClick={() => setFilters(f => ({ ...f, genere: f.genere === g.value ? '' : g.value }))}
+                  className={pillCls(filters.genere === g.value)}
+                >
+                  {g.label}
+                </button>
+              ))}
+            </div>
+          </FilterDropdown>
+
           {/* Nucleo familiare */}
           <FilterDropdown
             label="Nucleo familiare"
@@ -599,30 +621,6 @@ export const RicercaInquilinoPage: React.FC = () => {
               Azzera
             </button>
           )}
-
-          {/* Sort */}
-          <div className="ml-auto shrink-0">
-            <FilterDropdown
-              label={`Ordina: ${SORT_OPTIONS.find(o => o.value === sortBy)?.label ?? ''}`}
-              open={openDropdown === 'sort'}
-              onToggle={() => setOpenDropdown(openDropdown === 'sort' ? null : 'sort')}
-              width="w-56"
-            >
-              <div className="flex flex-col">
-                {SORT_OPTIONS.map(o => (
-                  <button
-                    key={o.value}
-                    onClick={() => { setSortBy(o.value); setOpenDropdown(null); }}
-                    className={`text-left px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-                      sortBy === o.value ? 'bg-primary-50 text-primary-700' : 'text-gray-700 hover:bg-gray-50'
-                    }`}
-                  >
-                    {o.label}
-                  </button>
-                ))}
-              </div>
-            </FilterDropdown>
-          </div>
         </div>
       </div>
 
@@ -900,6 +898,25 @@ export const RicercaInquilinoPage: React.FC = () => {
                       </button>
                     ))}
                   </div>
+                </div>
+              </div>
+
+              {/* Genere */}
+              <div>
+                <label className="block text-xs font-bold text-gray-600 mb-2">Genere</label>
+                <div className="flex flex-wrap gap-2">
+                  <button onClick={() => setFilters(f => ({ ...f, genere: '' }))} className={pillCls(!filters.genere)}>
+                    Qualsiasi
+                  </button>
+                  {GENERE_OPTIONS.map(g => (
+                    <button
+                      key={g.value}
+                      onClick={() => setFilters(f => ({ ...f, genere: f.genere === g.value ? '' : g.value }))}
+                      className={pillCls(filters.genere === g.value)}
+                    >
+                      {g.label}
+                    </button>
+                  ))}
                 </div>
               </div>
 

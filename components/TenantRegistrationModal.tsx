@@ -38,6 +38,7 @@ export interface TenantRegistrationData {
   // Step 2: Personal Info
   firstName: string;
   lastName: string;
+  gender: string;
   phone: string;
   birthDate: string;
   // Step 3: Employment
@@ -114,14 +115,14 @@ const OCCUPATIONS = [
 const EMPLOYMENT_TYPES = [
   'Tempo indeterminato',
   'Tempo determinato',
-  'Partita IVA',
-  'Contratto di apprendistato',
-  'Stage/Tirocinio retribuito',
-  'Collaborazione occasionale',
-  'Studente con borsa di studio',
+  'Statale',
+  'Part-time',
+  'Autonomo',
+  'Studente',
   'Pensionato',
-  'Altro',
 ];
+
+const GENDER_OPTIONS = ['Uomo', 'Donna', 'Non Binario'];
 
 const BUDGET_RANGES = [
   'Fino a €300',
@@ -191,11 +192,10 @@ const ITALIAN_CITIES = [
 ];
 
 const ROOMS_OPTIONS = [
-  'Monolocale',
-  'Bilocale (2 locali)',
-  'Trilocale (3 locali)',
-  'Quadrilocale (4 locali)',
-  '5+ locali',
+  'Stanza',
+  'Appartamento',
+  'Villa/Casa Indipendente',
+  'Bifamiliare',
 ];
 
 export const TenantRegistrationModal: React.FC<TenantRegistrationModalProps> = ({
@@ -220,6 +220,7 @@ export const TenantRegistrationModal: React.FC<TenantRegistrationModalProps> = (
     password: '',
     firstName: '',
     lastName: '',
+    gender: '',
     phone: '',
     birthDate: '',
     occupation: '',
@@ -495,6 +496,7 @@ export const TenantRegistrationModal: React.FC<TenantRegistrationModalProps> = (
       profile: {
         firstName: formData.firstName,
         lastName: formData.lastName,
+        gender: formData.gender,
         phone: formData.phone,
         birthDate: formData.birthDate,
         occupation: formData.occupation,
@@ -765,6 +767,20 @@ export const TenantRegistrationModal: React.FC<TenantRegistrationModalProps> = (
                 </div>
 
                 <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1.5">Genere</label>
+                  <select
+                    value={formData.gender}
+                    onChange={(e) => updateFormData('gender', e.target.value)}
+                    className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-brand-green focus:ring-2 focus:ring-brand-green/20 outline-none transition-all bg-white"
+                  >
+                    <option value="">Seleziona...</option>
+                    {GENDER_OPTIONS.map(g => (
+                      <option key={g} value={g}>{g}</option>
+                    ))}
+                  </select>
+                </div>
+
+                <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1.5">Data di Nascita</label>
                   <input
                     type="date"
@@ -953,7 +969,7 @@ export const TenantRegistrationModal: React.FC<TenantRegistrationModalProps> = (
 
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1.5">Tipologia Minima</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-1.5">In cerca di</label>
                     <select
                       value={formData.minRooms}
                       onChange={(e) => updateFormData('minRooms', e.target.value)}
