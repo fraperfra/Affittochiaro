@@ -118,19 +118,6 @@ export const AffittoNewsPage: React.FC = () => {
                 </div>
               </article>
             ))}
-
-            {/* CTA fine pagina */}
-            <div className="pt-4 border-t border-gray-100">
-              <Link to="/case-e-stanze-in-affitto" className="btn btn-primary">
-                Cerca casa ora
-              </Link>
-              <Link
-                to="/register"
-                className="ml-4 text-primary-600 text-sm font-semibold hover:underline"
-              >
-                Hai già un profilo? Trova i tuoi annunci →
-              </Link>
-            </div>
           </div>
 
           {/* Sidebar */}
