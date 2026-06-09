@@ -690,7 +690,6 @@ export const RicercaInquilinoPage: React.FC = () => {
             Vedi i candidati disponibili
             <ArrowRight className="w-5 h-5" />
           </Link>
-          <p className="text-sm text-gray-400 mt-3">Crea un account per accedere ai profili completi</p>
         </div>
       </div>
 
