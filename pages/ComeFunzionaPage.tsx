@@ -14,7 +14,7 @@ const INQUILINO_STEPS: Step[] = [
     number: '01',
     title: 'Crea il tuo profilo',
     description: "Registrati in 2 minuti. Aggiungi città di ricerca, budget e una breve presentazione. I profili con video ricevono il 78% in più di risposte.",
-    image: 'https://placehold.co/600x400/f4f9f6/004832?text=Crea+il+profilo',
+    image: '/assets/photo_2026-06-11_14-18-56.jpg',
   },
   {
     number: '02',
