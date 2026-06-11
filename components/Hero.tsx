@@ -79,7 +79,7 @@ export const Hero: React.FC<HeroProps> = ({ counter, activeCityName }) => {
                 Il portale di inquilini più grande in Italia
               </h2>
 
-              <div className="mb-6 pb-6 border-b border-white/10">
+              <div className="mb-4">
                 <div className="text-5xl md:text-6xl font-bold mb-2 tabular-nums tracking-tighter">
                   {counter.toLocaleString()}
                 </div>
@@ -89,7 +89,7 @@ export const Hero: React.FC<HeroProps> = ({ counter, activeCityName }) => {
               </div>
 
               {/* Social proof — dentro la card */}
-              <div className="flex items-center gap-3 mt-6 pt-5 border-t border-white/10">
+              <div className="flex items-center gap-3 mt-4">
                 <div className="flex -space-x-2.5 shrink-0">
                   {[1, 2, 3, 4].map(i => (
                     <img key={i} src={`https://i.pravatar.cc/100?img=${i + 10}`} className="w-8 h-8 rounded-full border-2 border-brand-green" alt="User" />
