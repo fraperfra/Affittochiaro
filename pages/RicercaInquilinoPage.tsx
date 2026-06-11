@@ -686,7 +686,7 @@ export const RicercaInquilinoPage: React.FC = () => {
         </div>
 
         <div className="text-center mt-12">
-          <Link to="/register" className="btn bg-primary-600 text-white px-8 py-4 rounded-2xl text-lg font-bold shadow-xl shadow-primary-600/20 hover:bg-primary-700 transition-all inline-flex items-center gap-2">
+          <Link to="/register" className="inline-flex items-center justify-center bg-brand-green text-white px-8 py-4 rounded-xl font-bold hover:brightness-110 transition-all">
             Vedi i candidati disponibili
           </Link>
         </div>
@@ -905,7 +905,7 @@ export const RicercaInquilinoPage: React.FC = () => {
               ) : <div />}
               <button
                 onClick={() => setShowFilters(false)}
-                className="px-6 py-2.5 bg-primary-600 text-white rounded-xl font-bold text-sm hover:bg-primary-700 transition-colors"
+                className="px-6 py-2.5 bg-brand-green text-white rounded-xl font-bold text-sm hover:brightness-110 transition-all"
               >
                 Mostra {filteredTenants.length} profili
               </button>
