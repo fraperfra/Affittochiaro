@@ -19,7 +19,7 @@ const INQUILINO_STEPS: Step[] = [
     number: '02',
     title: 'Vieni trovato',
     description: "Il tuo profilo è visibile a proprietari e agenzie verificate: sono loro a contattarti con proposte in linea con la tua ricerca.",
-    image: 'https://placehold.co/600x400/f4f9f6/004832?text=Vieni+trovato',
+    image: '/assets/photo_2026-06-11_14-12-09.jpg',
   },
   {
     number: '03',
