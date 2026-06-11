@@ -12,6 +12,7 @@ export * from './Listings';
 export * from './Testimonials';
 export * from './FAQ';
 export * from './FinalCTA';
+export * from './QuoteBanner';
 export * from './Footer';
 export * from './StickyBottomBar';
 export * from './SearchByType';

@@ -5,6 +5,7 @@ import {
   Problems,
   StatBanner,
   Benefits,
+  QuoteBanner,
   ComeFunziona,
   CityMap,
   Testimonials,
@@ -34,6 +35,7 @@ export const HomePage: React.FC<HomePageProps> = ({
       <Problems />
       <StatBanner />
       <Benefits />
+      <QuoteBanner />
       <ComeFunziona />
       <CityMap activeCityName={activeCityName} onCityChange={onCityChange} />
       <Testimonials />
