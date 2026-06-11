@@ -7,7 +7,7 @@ interface FAQItem {
 
 const faqData: FAQItem[] = [
   {
-    question: "Come funziona AffittoChiaro?",
+    question: "Come funziona Affittochiaro?",
     answer: "Crei un profilo inquilino verificato con documenti, referenze e una video presentazione. Quando ti candidi per un annuncio, il proprietario riceve il tuo profilo completo e può risponderti in meno di 24 ore: senza attese infinite."
   },
   {

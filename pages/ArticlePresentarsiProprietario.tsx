@@ -44,7 +44,7 @@ export const ArticlePresentarsiProprietario: React.FC = () => {
                     <UserCheck className="w-5 h-5" /> Consiglio dell'Esperto
                 </h4>
                 <p className="text-primary-700 text-sm">
-                    Utilizza il tuo profilo AffittoChiaro come un CV immobiliare. Un profilo completato al 100% con foto e bio aumenta le probabilità di risposta del 40%.
+                    Utilizza il tuo profilo Affittochiaro come un CV immobiliare. Un profilo completato al 100% con foto e bio aumenta le probabilità di risposta del 40%.
                 </p>
             </div>
 
@@ -117,7 +117,7 @@ export const ArticlePresentarsiProprietario: React.FC = () => {
             <p>
                 L'errore numero uno? Mentire. Non nascondere animali domestici o situazioni lavorative precarie.
                 La verità viene sempre a galla (spesso tramite controlli creditizi o referenze).
-                AffittoChiaro ti aiuta a essere trasparente con il <strong>Tenant Score</strong>, che certifica la tua affidabilità in modo oggettivo.
+                Affittochiaro ti aiuta a essere trasparente con il <strong>Tenant Score</strong>, che certifica la tua affidabilità in modo oggettivo.
             </p>
 
             <hr className="my-12" />

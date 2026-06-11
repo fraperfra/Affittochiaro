@@ -6,7 +6,7 @@ export default function TerminiServiziPage() {
     <>
       <PageMeta
         title="Termini di Servizio"
-        description="Termini e condizioni di utilizzo della piattaforma AffittoChiaro. Leggi le regole che regolano il rapporto tra AffittoChiaro e i suoi utenti."
+        description="Termini e condizioni di utilizzo della piattaforma Affittochiaro. Leggi le regole che regolano il rapporto tra Affittochiaro e i suoi utenti."
       />
 
       <div className="max-w-3xl mx-auto px-4 pb-16">
@@ -29,9 +29,9 @@ export default function TerminiServiziPage() {
           <section>
             <h2 className="text-lg font-bold text-text-primary mb-3">1. Accettazione dei termini</h2>
             <p>
-              Utilizzando la piattaforma AffittoChiaro (il "Servizio"), l'utente accetta integralmente
+              Utilizzando la piattaforma Affittochiaro (il "Servizio"), l'utente accetta integralmente
               i presenti Termini di Servizio. Se non si accettano i presenti termini, non è consentito
-              l'utilizzo del Servizio. AffittoChiaro si riserva il diritto di aggiornare i termini
+              l'utilizzo del Servizio. Affittochiaro si riserva il diritto di aggiornare i termini
               in qualsiasi momento, con comunicazione agli utenti registrati.
             </p>
           </section>
@@ -39,10 +39,10 @@ export default function TerminiServiziPage() {
           <section>
             <h2 className="text-lg font-bold text-text-primary mb-3">2. Descrizione del servizio</h2>
             <p>
-              AffittoChiaro è una piattaforma digitale che facilita l'incontro tra inquilini in cerca
+              Affittochiaro è una piattaforma digitale che facilita l'incontro tra inquilini in cerca
               di un'abitazione e agenzie immobiliari partner. Il Servizio consente agli inquilini di
               creare un profilo verificato e candidarsi agli annunci pubblicati dalle agenzie.
-              AffittoChiaro non è parte dei contratti di locazione stipulati tra le parti.
+              Affittochiaro non è parte dei contratti di locazione stipulati tra le parti.
             </p>
           </section>
 
@@ -52,7 +52,7 @@ export default function TerminiServiziPage() {
               <li>La registrazione richiede dati veritieri e aggiornati. Informazioni false possono comportare la sospensione dell'account.</li>
               <li>L'utente è responsabile della riservatezza delle proprie credenziali di accesso.</li>
               <li>Un account è ad uso personale e non può essere trasferito a terzi.</li>
-              <li>AffittoChiaro si riserva di sospendere o chiudere account che violino i presenti termini.</li>
+              <li>Affittochiaro si riserva di sospendere o chiudere account che violino i presenti termini.</li>
             </ul>
           </section>
 
@@ -73,7 +73,7 @@ export default function TerminiServiziPage() {
             <h2 className="text-lg font-bold text-text-primary mb-3">5. Responsabilità degli utenti</h2>
             <p>
               L'utente è l'unico responsabile dei contenuti che pubblica sulla piattaforma (bio,
-              documenti, messaggi). AffittoChiaro non verifica la veridicità di tutti i contenuti
+              documenti, messaggi). Affittochiaro non verifica la veridicità di tutti i contenuti
               pubblicati dagli utenti, ma si riserva il diritto di rimuovere contenuti inappropriati
               o in violazione dei presenti termini.
             </p>
@@ -82,7 +82,7 @@ export default function TerminiServiziPage() {
           <section>
             <h2 className="text-lg font-bold text-text-primary mb-3">6. Limitazione di responsabilità</h2>
             <p>
-              AffittoChiaro è un intermediario tecnologico e non è responsabile per:
+              Affittochiaro è un intermediario tecnologico e non è responsabile per:
             </p>
             <ul className="space-y-2 ml-4 list-disc mt-3">
               <li>Il contenuto degli annunci pubblicati dalle agenzie partner</li>
@@ -96,7 +96,7 @@ export default function TerminiServiziPage() {
             <h2 className="text-lg font-bold text-text-primary mb-3">7. Proprietà intellettuale</h2>
             <p>
               Tutti i contenuti della piattaforma (testi, grafica, logo, software) sono di proprietà
-              di AffittoChiaro o dei rispettivi titolari. È vietata la riproduzione, distribuzione
+              di Affittochiaro o dei rispettivi titolari. È vietata la riproduzione, distribuzione
               o utilizzo commerciale senza autorizzazione scritta.
             </p>
           </section>
@@ -105,7 +105,7 @@ export default function TerminiServiziPage() {
             <h2 className="text-lg font-bold text-text-primary mb-3">8. Prezzi e pagamenti</h2>
             <p>
               La creazione di un profilo inquilino e la candidatura agli annunci sono gratuite.
-              AffittoChiaro può offrire servizi premium a pagamento, i cui prezzi e condizioni
+              Affittochiaro può offrire servizi premium a pagamento, i cui prezzi e condizioni
               saranno comunicati chiaramente prima dell'acquisto.
             </p>
           </section>

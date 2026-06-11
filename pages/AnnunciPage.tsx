@@ -786,9 +786,9 @@ export const AnnunciPage: React.FC = () => {
           )}
 
           <div className="mt-16 pt-8 border-t border-gray-200">
-            <h2 className="text-xl font-bold mb-3">Affitti in Italia: AffittoChiaro</h2>
+            <h2 className="text-xl font-bold mb-3">Affitti in Italia: Affittochiaro</h2>
             <p className="text-sm text-gray-500 leading-relaxed max-w-4xl">
-              Scopri la più ampia selezione di case in affitto in Italia su AffittoChiaro.
+              Scopri la più ampia selezione di case in affitto in Italia su Affittochiaro.
               Aggiorniamo gli annunci ogni giorno per offrirti solo soluzioni verificate e disponibili.
               Usa i filtri per tipologia, prezzo, metratura e caratteristiche per trovare la casa perfetta.
               Ogni inquilino può inviare la sua candidatura direttamente dall'annuncio con il Profilo Inquilino.

@@ -85,7 +85,7 @@ export const ComeFunzionaPage: React.FC = () => {
             Guida alla piattaforma
           </p>
           <h1 className="text-[28px] md:text-4xl lg:text-5xl font-bold text-brand-green mb-4 leading-[1.15]">
-            Come funziona <span className="text-action-green">AffittoChiaro</span>
+            Come funziona <span className="text-action-green">Affittochiaro</span>
           </h1>
           <p className="text-lg md:text-xl text-medium-gray mb-8 leading-[1.5] max-w-2xl">
             Una guida per capire come cercare casa o come trovare l'inquilino giusto.
@@ -160,7 +160,7 @@ export const ComeFunzionaPage: React.FC = () => {
       <section className="py-16 bg-gray-50 border-b border-gray-100 px-4">
         <div className="max-w-full lg:px-20 mx-auto">
           <p className="text-xs font-bold text-brand-green uppercase tracking-widest mb-3 border-l-2 border-action-green pl-3">
-            Perché AffittoChiaro
+            Perché Affittochiaro
           </p>
           <h2 className="text-[24px] md:text-3xl font-bold text-brand-green mb-8 leading-[1.2]">
             {activeTab === 'inquilino' ? 'I vantaggi per chi cerca casa' : 'I vantaggi per i proprietari'}

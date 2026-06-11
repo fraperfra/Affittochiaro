@@ -120,7 +120,7 @@ export const publicAgenzie: PublicAgenzia[] = [
     nome: 'Immobiliare Firenze Sud',
     citta: 'Firenze',
     regione: 'Toscana',
-    descrizione: 'Affitti residenziali a Firenze e dintorni. Partner certificato AffittoChiaro.',
+    descrizione: 'Affitti residenziali a Firenze e dintorni. Partner certificato Affittochiaro.',
     telefono: '+39 055 234 5678',
     email: 'info@immobiliarefirenze.it',
     logo: 'https://picsum.photos/seed/ag4/80/80',
@@ -650,7 +650,7 @@ Se sei giovane, hai un contratto a termine o sei libero professionista, molte ag
 
 ## Conclusione
 
-Investire qualche ora nella cura del tuo profilo può fare la differenza tra ottenere un appuntamento e non ricevere risposta. Con AffittoChiaro, puoi costruire il tuo curriculum inquilino completo e renderlo visibile alle agenzie partner.`,
+Investire qualche ora nella cura del tuo profilo può fare la differenza tra ottenere un appuntamento e non ricevere risposta. Con Affittochiaro, puoi costruire il tuo curriculum inquilino completo e renderlo visibile alle agenzie partner.`,
     immagine: 'https://picsum.photos/seed/art1/1200/630',
     dataPubblicazione: '2025-11-15',
     tempoLettura: 5,
@@ -679,11 +679,11 @@ Un genitore o un familiare con reddito fisso può fare da garante. È la soluzio
 Proporre 3-6 mesi di anticipo può rassicurare il proprietario. Non è sempre possibile, ma vale la pena provare.
 
 ### 4. Cerca agenzie aperte ai profili autonomi
-AffittoChiaro lavora con agenzie selezionate che hanno esperienza con inquilini freelance e partite IVA.
+Affittochiaro lavora con agenzie selezionate che hanno esperienza con inquilini freelance e partite IVA.
 
 ## Il curriculum inquilino fa la differenza
 
-Con un profilo completo e i documenti verificati su AffittoChiaro, le agenzie possono valutarti in modo più obiettivo, andando oltre il semplice tipo di contratto.`,
+Con un profilo completo e i documenti verificati su Affittochiaro, le agenzie possono valutarti in modo più obiettivo, andando oltre il semplice tipo di contratto.`,
     immagine: 'https://picsum.photos/seed/art2/1200/630',
     dataPubblicazione: '2025-12-03',
     tempoLettura: 6,
@@ -768,7 +768,7 @@ Zona multiculturale in riqualificazione. Prezzi contenuti e in crescita. Buona s
 ## Consigli pratici
 
 1. **Inizia la ricerca con 2-3 mesi di anticipo**, specialmente se cerchi per settembre
-2. **Completa il tuo profilo AffittoChiaro** prima di candidarti
+2. **Completa il tuo profilo Affittochiaro** prima di candidarti
 3. **Considera i costi totali**: spese condominiali, riscaldamento, garage
 4. **Verifica i mezzi pubblici**: Bologna ha un ottimo servizio di bus e tram`,
     immagine: 'https://picsum.photos/seed/art4/1200/630',
@@ -838,7 +838,7 @@ Un'agenzia radicata nella zona conosce i prezzi reali, i proprietari affidabili 
 Le commissioni di agenzia sono in genere pari a 1-2 mensilità. Diffida di chi non le specifica subito o le gonfia dopo.
 
 ### Portfolio verificato
-Le agenzie partner di AffittoChiaro sono selezionate e verificate. Questo significa che i loro annunci sono reali e aggiornati.
+Le agenzie partner di Affittochiaro sono selezionate e verificate. Questo significa che i loro annunci sono reali e aggiornati.
 
 ## I segnali di un'agenzia affidabile
 
@@ -857,7 +857,7 @@ Le agenzie partner di AffittoChiaro sono selezionate e verificate. Questo signif
 
 ## Conclusione
 
-Con AffittoChiaro puoi accedere a un network di agenzie selezionate che lavorano con inquilini verificati. Questo significa meno burocrazia, più fiducia e contratti più veloci.`,
+Con Affittochiaro puoi accedere a un network di agenzie selezionate che lavorano con inquilini verificati. Questo significa meno burocrazia, più fiducia e contratti più veloci.`,
     immagine: 'https://picsum.photos/seed/art6/1200/630',
     dataPubblicazione: '2026-02-05',
     tempoLettura: 5,

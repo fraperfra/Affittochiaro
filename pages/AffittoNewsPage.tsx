@@ -22,7 +22,7 @@ export const AffittoNewsPage: React.FC = () => {
     <>
       <PageMeta
         title="Guide Affitto"
-        description="Guide pratiche, consigli e notizie sul mercato degli affitti in Italia. Trova casa con sicurezza grazie alle risorse di AffittoChiaro."
+        description="Guide pratiche, consigli e notizie sul mercato degli affitti in Italia. Trova casa con sicurezza grazie alle risorse di Affittochiaro."
       />
 
       <div className="pt-8">

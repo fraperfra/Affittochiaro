@@ -95,7 +95,7 @@ export const ServiziCasaPage: React.FC = () => {
             <section className="py-16 bg-white px-4 border-b border-gray-100">
                 <div className="max-w-full lg:px-20 mx-auto">
                     <h2 className="text-[24px] font-bold text-brand-green mb-4 leading-[1.2]">
-                        Perché affidarsi al Concierge di AffittoChiaro?
+                        Perché affidarsi al Concierge di Affittochiaro?
                     </h2>
                     <p className="text-lg text-medium-gray mb-10 leading-[1.5]">
                         Non siamo solo un portale di annunci, ma un partner completo per la tua vita abitativa.

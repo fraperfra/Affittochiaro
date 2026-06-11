@@ -12,11 +12,11 @@ export const Benefits: React.FC = () => {
   return (
     <section id="come-funziona-info" className="py-16 bg-white px-4 border-b border-gray-100">
       <div className="max-w-full lg:px-20 mx-auto">
-        <h2 className="text-[24px] font-bold text-brand-green mb-4 leading-[1.2]">
-          Presenta Te Stesso Come il Candidato Ideale
+        <h2 className="text-[24px] md:text-3xl font-bold text-brand-green mb-4 leading-[1.2]">
+          Presenta te stesso come il candidato ideale
         </h2>
         <p className="text-lg md:text-xl text-medium-gray mb-10 leading-[1.5]">
-          Su AffittoChiaro trovare casa diventa semplice: bastano pochi minuti per creare il profilo che fa la differenza.
+          Su Affittochiaro trovare casa diventa semplice: bastano pochi minuti per creare il profilo che fa la differenza.
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">

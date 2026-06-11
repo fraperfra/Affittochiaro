@@ -6,7 +6,7 @@ export default function PrivacyPolicyPage() {
     <>
       <PageMeta
         title="Privacy Policy"
-        description="Informativa sul trattamento dei dati personali degli utenti di AffittoChiaro, ai sensi del Regolamento UE 2016/679 (GDPR)."
+        description="Informativa sul trattamento dei dati personali degli utenti di Affittochiaro, ai sensi del Regolamento UE 2016/679 (GDPR)."
       />
 
       <div className="max-w-3xl mx-auto px-4 pb-16">
@@ -29,8 +29,8 @@ export default function PrivacyPolicyPage() {
           <section>
             <h2 className="text-lg font-bold text-text-primary mb-3">1. Titolare del trattamento</h2>
             <p>
-              Il Titolare del trattamento dei dati personali è <strong className="text-text-primary">AffittoChiaro S.r.l.</strong>,
-              con sede legale in Italia (di seguito "AffittoChiaro", "noi" o "la Società").
+              Il Titolare del trattamento dei dati personali è <strong className="text-text-primary">Affittochiaro S.r.l.</strong>,
+              con sede legale in Italia (di seguito "Affittochiaro", "noi" o "la Società").
               Per qualsiasi questione relativa alla privacy è possibile contattarci all'indirizzo
               email: <span className="text-primary-600">privacy@affittochiaro.it</span>.
             </p>
@@ -39,7 +39,7 @@ export default function PrivacyPolicyPage() {
           <section>
             <h2 className="text-lg font-bold text-text-primary mb-3">2. Dati raccolti</h2>
             <p className="mb-3">
-              AffittoChiaro raccoglie le seguenti categorie di dati personali:
+              Affittochiaro raccoglie le seguenti categorie di dati personali:
             </p>
             <ul className="space-y-2 ml-4 list-disc">
               <li><strong className="text-text-primary">Dati di registrazione:</strong> nome, cognome, indirizzo email, numero di telefono, data di nascita.</li>
@@ -109,7 +109,7 @@ export default function PrivacyPolicyPage() {
           <section>
             <h2 className="text-lg font-bold text-text-primary mb-3">8. Modifiche alla presente informativa</h2>
             <p>
-              AffittoChiaro si riserva il diritto di aggiornare questa informativa in qualsiasi momento.
+              Affittochiaro si riserva il diritto di aggiornare questa informativa in qualsiasi momento.
               Le modifiche sostanziali saranno comunicate via email o tramite notifica in piattaforma.
               La data dell'ultimo aggiornamento è indicata in cima a questa pagina.
             </p>

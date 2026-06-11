@@ -20,7 +20,7 @@ const FEATURES = [
   {
     icon: <TrendingUp size={22} />,
     titolo: 'Annunci in esclusiva',
-    desc: 'Pubblica annunci in esclusiva AffittoChiaro. I tuoi immobili vengono mostrati agli inquilini più qualificati, aumentando la qualità delle candidature ricevute.',
+    desc: 'Pubblica annunci in esclusiva Affittochiaro. I tuoi immobili vengono mostrati agli inquilini più qualificati, aumentando la qualità delle candidature ricevute.',
   },
   {
     icon: <MessageCircle size={22} />,
@@ -41,7 +41,7 @@ export default function ComeFunzionaAgenziaPage() {
     <>
       <PageMeta
         title="Come funziona per le agenzie"
-        description="Scopri come AffittoChiaro aiuta le agenzie immobiliari a trovare inquilini verificati e gestire le candidature in modo digitale."
+        description="Scopri come Affittochiaro aiuta le agenzie immobiliari a trovare inquilini verificati e gestire le candidature in modo digitale."
       />
 
       <div className="max-w-4xl mx-auto px-4 pb-16">
@@ -56,7 +56,7 @@ export default function ComeFunzionaAgenziaPage() {
         {/* Hero */}
         <div className="text-center mb-12">
           <h1 className="font-bold text-text-primary mb-3">
-            AffittoChiaro per le agenzie
+            Affittochiaro per le agenzie
           </h1>
           <p className="text-text-secondary text-lg max-w-2xl mx-auto">
             Meno visite a vuoto, più contratti. Il database di inquilini verificati che le agenzie partner usano ogni giorno.
@@ -114,7 +114,7 @@ export default function ComeFunzionaAgenziaPage() {
         {/* CTA */}
         <div className="card bg-primary-500 text-white text-center py-10">
           <BadgeCheck size={36} className="mx-auto mb-3 text-white/80" />
-          <h2 className="font-bold mb-2">Diventa partner AffittoChiaro</h2>
+          <h2 className="font-bold mb-2">Diventa partner Affittochiaro</h2>
           <p className="text-white/80 text-sm mb-6 max-w-sm mx-auto">
             Ti contattiamo entro 24 ore per una chiamata conoscitiva.
           </p>

@@ -6,7 +6,7 @@ export default function CookiePolicyPage() {
     <>
       <PageMeta
         title="Cookie Policy"
-        description="Informativa sull'utilizzo dei cookie da parte di AffittoChiaro. Scopri come gestiamo i cookie e come puoi controllarli."
+        description="Informativa sull'utilizzo dei cookie da parte di Affittochiaro. Scopri come gestiamo i cookie e come puoi controllarli."
       />
 
       <div className="max-w-3xl mx-auto px-4 pb-16">
@@ -80,7 +80,7 @@ export default function CookiePolicyPage() {
           <section>
             <h2 className="text-lg font-bold text-text-primary mb-3">3. Cookie di terze parti</h2>
             <p className="mb-3">
-              AffittoChiaro utilizza i seguenti servizi di terze parti che possono impostare cookie:
+              Affittochiaro utilizza i seguenti servizi di terze parti che possono impostare cookie:
             </p>
             <ul className="space-y-2 ml-4 list-disc">
               <li><strong className="text-text-primary">Google Analytics:</strong> analisi del traffico e comportamento utenti</li>

@@ -12,8 +12,8 @@ export const Problems: React.FC = () => {
     <section className="py-16 bg-gray-50 px-4 border-b border-gray-100">
       <div className="max-w-full lg:px-20 mx-auto">
 
-        <h2 className="text-[24px] font-bold text-brand-green mb-4 leading-[1.2]">
-          Cercare Casa in Affitto è un Incubo
+        <h2 className="text-[24px] md:text-3xl font-bold text-brand-green mb-4 leading-[1.2]">
+          Cercare casa in affitto è un incubo
         </h2>
         <p className="text-lg md:text-xl text-medium-gray mb-10 leading-[1.5]">
           Trovare un appartamento in affitto oggi è più difficile che mai: il mercato premia solo chi sa presentarsi nel modo giusto.

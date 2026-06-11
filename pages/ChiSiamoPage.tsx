@@ -53,8 +53,8 @@ export const ChiSiamoPage: React.FC = () => {
 
             <div className="order-2 lg:order-1 mt-10 lg:mt-0">
               <img
-                src="https://placehold.co/640x480/004832/f4f9f6?text=AffittoChiaro"
-                alt="La piattaforma AffittoChiaro"
+                src="https://placehold.co/640x480/004832/f4f9f6?text=Affittochiaro"
+                alt="La piattaforma Affittochiaro"
                 className="w-full rounded-2xl"
               />
             </div>
@@ -64,7 +64,7 @@ export const ChiSiamoPage: React.FC = () => {
                 Come è nato
               </span>
               <h2 className="mt-4 text-[24px] font-bold text-brand-green leading-[1.2]">
-                Così è nato AffittoChiaro
+                Così è nato Affittochiaro
               </h2>
               <div className="mt-6 space-y-4 text-base text-gray-600 leading-[1.7]">
                 <p>
@@ -95,7 +95,7 @@ export const ChiSiamoPage: React.FC = () => {
             Una piattaforma, due lati
           </h2>
           <p className="text-lg md:text-xl text-medium-gray mb-10 leading-[1.5]">
-            AffittoChiaro connette chi cerca casa con chi la offre, in modo diretto e trasparente.
+            Affittochiaro connette chi cerca casa con chi la offre, in modo diretto e trasparente.
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
@@ -136,7 +136,7 @@ export const ChiSiamoPage: React.FC = () => {
             Pronto a iniziare?
           </h2>
           <p className="text-lg text-medium-gray mb-8 leading-[1.5]">
-            Unisciti a migliaia di persone che hanno già trovato la soluzione giusta su AffittoChiaro.
+            Unisciti a migliaia di persone che hanno già trovato la soluzione giusta su Affittochiaro.
           </p>
           <div className="flex flex-col sm:flex-row gap-3">
             <Link

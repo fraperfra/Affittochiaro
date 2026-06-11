@@ -116,7 +116,7 @@ export default function AnnuncioDetailPage() {
           />
           {listing.isExclusive && (
             <div className="absolute top-4 left-4 flex items-center gap-1 bg-primary-500 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow">
-              <Star size={11} className="fill-white" /> Esclusiva AffittoChiaro
+              <Star size={11} className="fill-white" /> Esclusiva Affittochiaro
             </div>
           )}
           {immagini.length > 1 && (
@@ -211,7 +211,7 @@ export default function AnnuncioDetailPage() {
                   <h2 className="text-base font-semibold text-text-primary">Requisiti candidatura</h2>
                 </div>
                 <p className="text-text-secondary text-sm mb-3">
-                  Questo è un annuncio in esclusiva AffittoChiaro. Per candidarti è necessario:
+                  Questo è un annuncio in esclusiva Affittochiaro. Per candidarti è necessario:
                 </p>
                 <ul className="space-y-1.5 text-sm text-text-secondary">
                   {[
@@ -318,7 +318,7 @@ export default function AnnuncioDetailPage() {
                   <h3 className="text-sm font-semibold text-text-primary">Hai domande?</h3>
                 </div>
                 <p className="text-xs text-text-secondary mb-3">
-                  Accedi per richiedere informazioni all'agenzia tramite AffittoChiaro.
+                  Accedi per richiedere informazioni all'agenzia tramite Affittochiaro.
                 </p>
                 <Link to="/register" className="w-full flex items-center justify-center py-3 px-4 rounded-xl bg-soft-green text-brand-green border border-action-green/40 font-bold text-sm hover:bg-action-green/20 transition-colors">
                   Cerca casa ora

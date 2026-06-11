@@ -11,8 +11,8 @@ export default function ExclusiveListingsPage() {
   return (
     <>
       <PageMeta
-        title="Affitti Esclusivi AffittoChiaro"
-        description="Gli appartamenti e le case disponibili in esclusiva su AffittoChiaro. Annunci verificati con inquilini selezionati."
+        title="Affitti Esclusivi Affittochiaro"
+        description="Gli appartamenti e le case disponibili in esclusiva su Affittochiaro. Annunci verificati con inquilini selezionati."
       />
 
       <div className="max-w-6xl mx-auto px-4 pb-16">
@@ -20,7 +20,7 @@ export default function ExclusiveListingsPage() {
           items={[
             { label: 'Home', href: '/' },
             { label: 'Trova Affitto', href: '/case-e-stanze-in-affitto' },
-            { label: 'Esclusivi AffittoChiaro' },
+            { label: 'Esclusivi Affittochiaro' },
           ]}
         />
 
@@ -28,11 +28,11 @@ export default function ExclusiveListingsPage() {
         <div className="bg-gradient-to-br from-primary-500 to-teal-700 rounded-2xl p-6 md:p-10 mb-8 text-white">
           <div className="flex items-center gap-2 mb-3">
             <Star size={18} className="fill-yellow-300 text-yellow-300" />
-            <span className="text-sm font-semibold uppercase tracking-wider text-white/80">Solo su AffittoChiaro</span>
+            <span className="text-sm font-semibold uppercase tracking-wider text-white/80">Solo su Affittochiaro</span>
           </div>
           <h1 className="font-bold mb-3">Affitti Esclusivi</h1>
           <p className="text-white/80 max-w-xl">
-            Questi annunci sono disponibili solo su AffittoChiaro. Le agenzie partner hanno
+            Questi annunci sono disponibili solo su Affittochiaro. Le agenzie partner hanno
             selezionato immobili di qualità per inquilini verificati con profilo completo.
           </p>
           <div className="mt-4 text-sm text-white/70">

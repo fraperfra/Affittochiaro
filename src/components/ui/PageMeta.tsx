@@ -9,7 +9,7 @@ type Props = {
 export function PageMeta({ title, description, canonical }: Props) {
   return (
     <Helmet>
-      <title>{title} | AffittoChiaro</title>
+      <title>{title} | Affittochiaro</title>
       <meta name="description" content={description} />
       {canonical && <link rel="canonical" href={canonical} />}
     </Helmet>

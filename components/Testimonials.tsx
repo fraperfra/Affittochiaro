@@ -20,8 +20,8 @@ export const Testimonials: React.FC = () => {
 
         {/* Header */}
         <div className="mb-10">
-          <h2 className="text-[24px] font-bold text-brand-green mb-4 leading-[1.2]">
-            Migliaia di persone hanno trovato casa con AffittoChiaro
+          <h2 className="text-[24px] md:text-3xl font-bold text-brand-green mb-4 leading-[1.2]">
+            Migliaia di persone hanno trovato casa con Affittochiaro
           </h2>
           <p className="text-lg text-medium-gray leading-[1.5]">
             Non solo annunci. Una piattaforma che cambia davvero il modo in cui cerchi casa.

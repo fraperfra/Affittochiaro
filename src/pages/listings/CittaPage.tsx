@@ -31,7 +31,7 @@ export default function CittaPage() {
     <>
       <PageMeta
         title={`Affitti a ${nomeCitta}`}
-        description={`Case e stanze in affitto a ${nomeCitta}, ${nomeRegione}. Trova il tuo prossimo appartamento con AffittoChiaro.`}
+        description={`Case e stanze in affitto a ${nomeCitta}, ${nomeRegione}. Trova il tuo prossimo appartamento con Affittochiaro.`}
       />
 
       <div className="max-w-6xl mx-auto px-4 pb-16">

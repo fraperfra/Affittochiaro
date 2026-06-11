@@ -61,8 +61,8 @@ export const ComeFunziona: React.FC = () => {
 
         {/* Header */}
         <div className="mb-10">
-          <h2 className="text-[24px] font-bold text-brand-green mb-3 leading-[1.2]">
-            Come funziona AffittoChiaro
+          <h2 className="text-[24px] md:text-3xl font-bold text-brand-green mb-3 leading-[1.2]">
+            Come funziona Affittochiaro
           </h2>
           <p className="text-lg md:text-xl text-medium-gray mb-6 leading-[1.5]">
             Una guida per capire come cercare casa o come trovare l'inquilino giusto.

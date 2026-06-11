@@ -16,8 +16,6 @@ export const Hero: React.FC<HeroProps> = ({ counter, activeCityName }) => {
   const navigate = useNavigate();
   const searchRef = useRef<HTMLDivElement>(null);
 
-  const cardCtaText = 'UNISCITI A LORO →';
-
   const handleRegistrationComplete = (data: TenantRegistrationData) => {
     toast.success(
       <div>
@@ -86,19 +84,12 @@ export const Hero: React.FC<HeroProps> = ({ counter, activeCityName }) => {
                   {counter.toLocaleString()}
                 </div>
                 <div className="text-xs text-white/50 uppercase tracking-widest font-semibold">
-                  Inquilini Registrati e Verificati
+                  Inquilini registrati e verificati
                 </div>
               </div>
 
-              <button
-                onClick={() => setIsModalOpen(true)}
-                className="w-full bg-white text-brand-green py-3.5 rounded-xl font-bold uppercase tracking-widest text-[10px] flex items-center justify-center gap-2 hover:bg-gray-100 transition-colors"
-              >
-                {cardCtaText}
-              </button>
-
               {/* Social proof — dentro la card */}
-              <div className="flex items-center gap-3 mt-5 pt-5 border-t border-white/10">
+              <div className="flex items-center gap-3 mt-6 pt-5 border-t border-white/10">
                 <div className="flex -space-x-2.5 shrink-0">
                   {[1, 2, 3, 4].map(i => (
                     <img key={i} src={`https://i.pravatar.cc/100?img=${i + 10}`} className="w-8 h-8 rounded-full border-2 border-brand-green" alt="User" />
@@ -110,7 +101,7 @@ export const Hero: React.FC<HeroProps> = ({ counter, activeCityName }) => {
                   </p>
                   <div className="flex items-center gap-0.5 mt-0.5">
                     {[1,2,3,4,5].map(i => (
-                      <svg key={i} className="w-3 h-3 text-[#00b67a] fill-current" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" /></svg>
+                      <svg key={i} className="w-3 h-3 text-yellow-400 fill-current" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" /></svg>
                     ))}
                     <span className="text-[10px] text-white/60 ml-1">4.9/5 su Trustpilot</span>
                   </div>

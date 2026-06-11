@@ -30,7 +30,7 @@ export default function TipologiaPage() {
     <>
       <PageMeta
         title={`${nomeTipologia} in affitto a ${nomeCitta}`}
-        description={`${nomeTipologia} in affitto a ${nomeCitta}, ${nomeRegione}. Annunci verificati con foto e prezzi aggiornati su AffittoChiaro.`}
+        description={`${nomeTipologia} in affitto a ${nomeCitta}, ${nomeRegione}. Annunci verificati con foto e prezzi aggiornati su Affittochiaro.`}
       />
 
       <div className="max-w-6xl mx-auto px-4 pb-16">

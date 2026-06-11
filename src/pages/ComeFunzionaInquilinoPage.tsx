@@ -27,7 +27,7 @@ const STEPS = [
     dettagli: [
       'Migliaia di annunci verificati',
       'Filtri per città, zona, prezzo e tipologia',
-      'Annunci esclusivi AffittoChiaro',
+      'Annunci esclusivi Affittochiaro',
       'Mappa interattiva delle zone',
     ],
   },
@@ -81,7 +81,7 @@ export default function ComeFunzionaInquilinoPage() {
     <>
       <PageMeta
         title="Come funziona per chi cerca casa"
-        description="Scopri come trovare casa con AffittoChiaro in 5 passi: crea il profilo, candidati agli annunci e vieni contattato dalle agenzie verificate."
+        description="Scopri come trovare casa con Affittochiaro in 5 passi: crea il profilo, candidati agli annunci e vieni contattato dalle agenzie verificate."
       />
 
       <div className="max-w-4xl mx-auto px-4 pb-16">
@@ -96,7 +96,7 @@ export default function ComeFunzionaInquilinoPage() {
         {/* Hero */}
         <div className="text-center mb-12">
           <h1 className="font-bold text-text-primary mb-3">
-            Trovare casa con AffittoChiaro
+            Trovare casa con Affittochiaro
           </h1>
           <p className="text-text-secondary text-lg max-w-2xl mx-auto">
             Crei il profilo una volta sola. Vale per tutti gli annunci. Le agenzie ti trovano — non il contrario.
@@ -134,7 +134,7 @@ export default function ComeFunzionaInquilinoPage() {
 
         {/* Vantaggi */}
         <div className="card bg-background-secondary mb-10">
-          <h2 className="text-base font-bold text-text-primary mb-4">Perché AffittoChiaro</h2>
+          <h2 className="text-base font-bold text-text-primary mb-4">Perché Affittochiaro</h2>
           <ul className="space-y-3">
             {VANTAGGI.map((v, i) => (
               <li key={i} className="flex items-center gap-3 text-text-secondary text-sm">

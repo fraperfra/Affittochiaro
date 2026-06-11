@@ -176,7 +176,7 @@ export default function TenantOnboardingPage() {
                         <div className="space-y-10 animate-slide-up">
                             <div className="text-center">
                                 <h1 className="font-bold text-gray-900 mb-3 tracking-tight">
-                                    Come hai conosciuto AffittoChiaro?
+                                    Come hai conosciuto Affittochiaro?
                                 </h1>
                                 <p className="text-lg text-gray-500 font-medium tracking-wide">
                                     Scegli l'opzione che corrisponde (puoi selezionarne più di una)
@@ -221,7 +221,7 @@ export default function TenantOnboardingPage() {
                     onClick={handleNext}
                     disabled={isNextDisabled()}
                 >
-                    {step === 3 ? 'Inizia a usare AffittoChiaro' : 'Continua'}
+                    {step === 3 ? 'Inizia a usare Affittochiaro' : 'Continua'}
                 </Button>
             </div>
         </div>

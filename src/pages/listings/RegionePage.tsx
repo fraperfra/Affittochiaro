@@ -18,7 +18,7 @@ export default function RegionePage() {
     <>
       <PageMeta
         title={`Affitti in ${nomeRegione}`}
-        description={`Case e stanze in affitto in ${nomeRegione}. Scegli la città e trova il tuo prossimo appartamento con AffittoChiaro.`}
+        description={`Case e stanze in affitto in ${nomeRegione}. Scegli la città e trova il tuo prossimo appartamento con Affittochiaro.`}
       />
 
       <div className="max-w-4xl mx-auto px-4 pb-16">
