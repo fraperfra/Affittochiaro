@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
-  MapPin, BadgeCheck, Home, Star, ArrowRight,
+  MapPin, BadgeCheck, Home, Star,
   Clock, ShieldCheck,
   Users, Check, Shield, Zap, Crown, ClipboardList,
 } from 'lucide-react';
@@ -261,31 +261,6 @@ export const AgenziePartnerPage: React.FC = () => {
             ))}
           </div>
 
-          {/* Social proof */}
-          <div className="bg-white rounded-xl border border-gray-100 p-6 flex flex-col sm:flex-row items-center gap-6">
-            <div className="grid grid-cols-3 gap-x-8 flex-1 w-full">
-              <div className="text-center">
-                <p className="text-2xl font-bold text-brand-green">20+</p>
-                <p className="text-xs text-medium-gray font-semibold">agenzie partner</p>
-              </div>
-              <div className="text-center border-x border-gray-100">
-                <p className="text-2xl font-bold text-brand-green">30.000+</p>
-                <p className="text-xs text-medium-gray font-semibold">inquilini attivi</p>
-              </div>
-              <div className="text-center">
-                <p className="text-2xl font-bold text-brand-green">100%</p>
-                <p className="text-xs text-medium-gray font-semibold">profili verificati</p>
-              </div>
-            </div>
-            <div className="border-t sm:border-t-0 sm:border-l border-gray-100 pt-5 sm:pt-0 sm:pl-8 flex flex-col gap-2 flex-shrink-0">
-              <p className="text-xs font-bold text-medium-gray uppercase tracking-widest">Partner istituzionali</p>
-              <div className="flex items-center gap-4">
-                <span className="text-sm font-bold text-brand-green">SIAP</span>
-                <span className="text-gray-200 text-lg">|</span>
-                <span className="text-sm font-bold text-brand-green">Politecnico di Milano</span>
-              </div>
-            </div>
-          </div>
         </div>
       </section>
 
@@ -351,7 +326,7 @@ export const AgenziePartnerPage: React.FC = () => {
                       : 'bg-soft-green text-brand-green hover:bg-action-green/20'
                   }`}
                 >
-                  Inizia ora <ArrowRight size={14} />
+                  Inizia ora
                 </Link>
               </div>
             ))}
@@ -367,21 +342,19 @@ export const AgenziePartnerPage: React.FC = () => {
       </section>
 
       {/* ── FOOTER CTA B2B ────────────────────────────────────── */}
-      <section className="py-14 px-4 bg-brand-green">
-        <div className="max-w-5xl mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
-          <div>
-            <h2 className="text-2xl md:text-3xl font-bold text-white leading-tight">
-              Sei un'agenzia immobiliare?<br />Lavora con noi.
-            </h2>
-            <p className="text-white/70 mt-2 text-sm max-w-lg">
-              Unisciti alle 20+ agenzie che gestiscono locazioni con Affittochiaro. Verifica gratuita, nessun vincolo.
-            </p>
-          </div>
+      <section className="py-20 px-4">
+        <div className="max-w-4xl mx-auto bg-brand-green rounded-2xl p-10 md:p-16 text-center">
+          <h2 className="text-2xl md:text-3xl font-bold text-white mb-3 leading-tight">
+            Sei un'agenzia immobiliare?<br />Lavora con noi.
+          </h2>
+          <p className="text-white/70 mb-8 text-base max-w-lg mx-auto leading-[1.5]">
+            Unisciti alle 20+ agenzie che gestiscono locazioni con Affittochiaro. Verifica gratuita, nessun vincolo.
+          </p>
           <Link
             to="/register"
-            className="flex-shrink-0 inline-flex items-center gap-2 bg-action-green text-white font-bold px-6 py-3.5 rounded-xl min-h-[44px] hover:brightness-110 transition-all whitespace-nowrap"
+            className="inline-flex items-center justify-center bg-action-green text-white font-bold px-8 py-4 min-h-[44px] rounded-xl hover:brightness-110 transition-all"
           >
-            Registra la tua agenzia <ArrowRight size={16} />
+            Registra la tua agenzia
           </Link>
         </div>
       </section>
