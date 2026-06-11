@@ -163,7 +163,7 @@ export const QuickSearchBox: React.FC<Props> = ({
           <div
             className={
               isLarge
-                ? 'relative flex items-center border border-gray-300 rounded-xl sm:border-0 sm:rounded-none sm:border-r sm:border-gray-300'
+                ? 'relative flex items-center border border-gray-200 rounded-xl sm:border-0 sm:rounded-none sm:border-r sm:border-gray-200'
                 : 'relative flex items-center bg-white border border-gray-200 rounded-xl'
             }
           >
@@ -175,8 +175,8 @@ export const QuickSearchBox: React.FC<Props> = ({
               className="absolute left-3 top-1/2 -translate-y-1/2 text-brand-green transition-colors disabled:opacity-50 z-10"
             >
               {isGeolocating
-                ? <Loader2 size={16} className="animate-spin" />
-                : <MapPin size={16} />}
+                ? <Loader2 size={15} className="animate-spin" />
+                : <MapPin size={15} />}
             </button>
             <input
               ref={cityInputRef}
@@ -247,18 +247,18 @@ export const QuickSearchBox: React.FC<Props> = ({
         </div>
 
         {/* Tipologia select */}
-        <div className={isLarge ? 'relative sm:w-[220px]' : 'relative sm:w-[200px]'}>
+        <div className={isLarge ? 'relative sm:w-[170px] sm:border-r sm:border-gray-200' : 'relative sm:w-[200px]'}>
           <ChevronDown
-            size={14}
+            size={13}
             className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"
           />
           <select
             value={tipologia}
             onChange={(e) => setTipologia(e.target.value)}
             aria-label="Tipologia immobile"
-            className={`w-full appearance-none bg-transparent outline-none cursor-pointer pr-8 ${
+            className={`w-full appearance-none bg-transparent outline-none cursor-pointer pr-7 ${
               isLarge
-                ? 'py-3.5 pl-4 text-sm border border-gray-300 rounded-xl sm:border-0 sm:rounded-none'
+                ? 'py-3.5 pl-4 text-sm border border-gray-200 rounded-xl sm:border-0 sm:rounded-none'
                 : 'py-2.5 pl-3 text-sm bg-white border border-gray-200 rounded-xl'
             } ${!tipologia ? 'text-gray-400' : 'text-gray-800'}`}
           >
@@ -275,13 +275,13 @@ export const QuickSearchBox: React.FC<Props> = ({
         <button
           type="button"
           onClick={onSubmit}
-          className={`flex items-center justify-center gap-2 bg-brand-green hover:bg-black text-white font-bold uppercase tracking-wide transition-colors ${
+          className={`flex items-center justify-center gap-1.5 bg-brand-green hover:bg-black text-white font-bold transition-colors ${
             isLarge
-              ? 'sm:w-[130px] py-3 px-5 rounded-xl text-sm'
+              ? 'sm:w-auto py-3.5 px-5 rounded-xl text-xs tracking-wide'
               : 'w-full sm:w-auto py-2.5 px-5 rounded-xl text-sm'
           }`}
         >
-          <Search size={15} />
+          <Search size={13} />
           Cerca Casa
         </button>
       </div>
