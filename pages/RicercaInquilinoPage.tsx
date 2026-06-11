@@ -12,7 +12,7 @@ import {
     Briefcase,
     MapPin,
     Lock,
-    ArrowRight,
+    
 } from 'lucide-react';
 import { mockTenants } from '../src/utils/mockData';
 import { OCCUPATIONS } from '../src/utils/constants';
@@ -688,26 +688,21 @@ export const RicercaInquilinoPage: React.FC = () => {
         <div className="text-center mt-12">
           <Link to="/register" className="btn bg-primary-600 text-white px-8 py-4 rounded-2xl text-lg font-bold shadow-xl shadow-primary-600/20 hover:bg-primary-700 transition-all inline-flex items-center gap-2">
             Vedi i candidati disponibili
-            <ArrowRight className="w-5 h-5" />
           </Link>
         </div>
       </div>
 
       {/* ── 6. Final CTA ────────────────────────────────────────── */}
       <section className="py-20 px-4">
-        <div className="max-w-7xl mx-auto bg-brand-green rounded-[3rem] p-12 md:p-24 text-center relative overflow-hidden shadow-2xl">
-          <div className="absolute top-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10" />
-          <div className="relative z-10 max-w-3xl mx-auto">
-            <h2 className="text-4xl md:text-5xl font-bold text-white mb-8">Inizia a guadagnare dal tuo immobile oggi stesso</h2>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
-              <Link to="/register" className="btn bg-white text-action-green px-10 py-5 rounded-2xl text-lg font-bold shadow-lg hover:brightness-110 transition-all">
-                Trova l'inquilino
-              </Link>
-              <Link to="/contact" className="text-white text-lg font-bold hover:underline transition-all">
-                Parla con un Esperto
-              </Link>
-            </div>
-            <p className="mt-8 text-sm text-white">Leggi i nostri <a href="#" className="underline hover:text-white">Termini e Condizioni</a> per i proprietari.</p>
+        <div className="max-w-4xl mx-auto bg-brand-green rounded-2xl p-10 md:p-16 text-center">
+          <h2 className="text-3xl md:text-4xl font-bold text-white mb-8 leading-[1.2]">Inizia a guadagnare dal tuo immobile oggi stesso</h2>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <Link to="/register" className="bg-white text-action-green px-8 py-4 rounded-xl font-bold hover:brightness-110 transition-all">
+              Trova l'inquilino
+            </Link>
+            <Link to="/contact" className="text-white font-bold hover:underline transition-all">
+              Parla con un Esperto
+            </Link>
           </div>
         </div>
       </section>
