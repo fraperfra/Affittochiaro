@@ -28,12 +28,14 @@ import {
   Lock,
   Zap,
   Mail,
+  HelpCircle,
 } from 'lucide-react';
 import { useAuthStore, useCVStore } from '../../store';
 import { TenantUser } from '../../types';
 import { ROUTES } from '../../utils/constants';
 import { formatRelativeTime } from '../../utils/formatters';
 import { Card, CardHeader, CardTitle, Button, Badge, Modal } from '../../components/ui';
+import TenantTour, { TENANT_TOUR_KEY } from '../../components/TenantTour';
 
 // Mock applications
 const mockApplications = [
@@ -359,7 +361,7 @@ function ProfileHeaderCard({
   const initials = `${firstName?.[0] || ''}${lastName?.[0] || ''}`.toUpperCase();
 
   return (
-    <div className="bg-white rounded-2xl shadow-card overflow-hidden">
+    <div data-tour="profile" className="bg-white rounded-2xl shadow-card overflow-hidden">
       {/* Accent strip */}
       <div className="h-1 bg-gradient-to-r from-teal-500 to-emerald-400" />
 
@@ -485,6 +487,13 @@ export default function TenantDashboardPage() {
   const tenantUser = user as TenantUser;
   const [localProfile, setLocalProfile] = useState<any>(null);
   const [showApplicationsModal, setShowApplicationsModal] = useState(false);
+  const [showTour, setShowTour] = useState(false);
+
+  useEffect(() => {
+    if (!localStorage.getItem(TENANT_TOUR_KEY)) {
+      setShowTour(true);
+    }
+  }, []);
 
   // Try to load profile from localStorage (for users registered via modal)
   useEffect(() => {
@@ -565,6 +574,7 @@ export default function TenantDashboardPage() {
         {/* Cerca Casa */}
         <Link
           to={ROUTES.TENANT_LISTINGS}
+          data-tour="search"
           className="bg-white rounded-2xl shadow-card p-4 flex items-center gap-3 hover:shadow-md transition-all group"
         >
           <div className="w-10 h-10 rounded-xl bg-teal-50 flex items-center justify-center shrink-0">
@@ -592,7 +602,7 @@ export default function TenantDashboardPage() {
         </button>
 
         {/* Visualizzazione profilo */}
-        <div className="bg-white rounded-2xl shadow-card p-4 flex items-center gap-3">
+        <div data-tour="views" className="bg-white rounded-2xl shadow-card p-4 flex items-center gap-3">
           <div className="w-10 h-10 rounded-xl bg-violet-50 flex items-center justify-center shrink-0">
             <Eye size={20} className="text-violet-600" />
           </div>
@@ -666,7 +676,7 @@ export default function TenantDashboardPage() {
               : pct >= 50 ? 'Buon inizio! Completa il profilo per più visibilità.'
                 : 'Profilo incompleto. Le agenzie potrebbero non trovarti.';
           return (
-            <div className="bg-white rounded-2xl shadow-card p-4">
+            <div data-tour="video" className="bg-white rounded-2xl shadow-card p-4">
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-2">
                   {pct >= 100 ? <CheckCircle size={20} className="text-green-500" /> : pct >= 80 ? <Star size={20} className="text-amber-500" /> : pct >= 50 ? <Zap size={20} className="text-amber-500" /> : <AlertTriangle size={20} className="text-red-500" />}
@@ -755,6 +765,20 @@ export default function TenantDashboardPage() {
           </div>
         </Card>
       )}
+
+      {/* Rivedi tutorial */}
+      <div className="flex justify-center">
+        <button
+          onClick={() => setShowTour(true)}
+          className="inline-flex items-center gap-2 text-sm text-gray-400 hover:text-primary-600 font-medium transition-colors py-2"
+        >
+          <HelpCircle size={16} />
+          Rivedi il tutorial
+        </button>
+      </div>
+
+      {/* Onboarding Tour */}
+      {showTour && <TenantTour onClose={() => setShowTour(false)} />}
 
       {/* Applications Modal */}
       <Modal
