@@ -35,7 +35,7 @@ const PROPRIETARIO_STEPS: Step[] = [
     number: '01',
     title: 'Cerca tra i profili verificati',
     description: "Filtra per città, budget e tipologia. Visualizza solo gli inquilini che corrispondono alle tue esigenze.",
-    image: 'https://placehold.co/600x400/f4f9f6/004832?text=Cerca+profili',
+    image: '/assets/photo_2026-06-11_14-12-09.jpg',
   },
   {
     number: '02',
