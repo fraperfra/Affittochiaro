@@ -752,6 +752,20 @@ export const RicercaInquilinoPage: React.FC = () => {
                 </div>
               </div>
 
+              {/* Tipo di immobile */}
+              <div>
+                <label className="block text-xs font-bold text-gray-600 mb-1.5">In cerca di: tipo di immobile</label>
+                <select
+                  className="w-full sm:w-64 px-3 py-2.5 border border-gray-200 rounded-xl text-xs bg-gray-50 font-semibold text-gray-700"
+                  value={filters.tipoImmobile}
+                  onChange={(e) => setFilters(f => ({ ...f, tipoImmobile: e.target.value }))}
+                >
+                  {TIPO_IMMOBILE_OPTIONS.map(o => (
+                    <option key={o.value} value={o.value}>{o.label}</option>
+                  ))}
+                </select>
+              </div>
+
               {/* Età + Contratto */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <div>
@@ -878,19 +892,6 @@ export const RicercaInquilinoPage: React.FC = () => {
                 </div>
               </div>
 
-              {/* Tipo di immobile */}
-              <div>
-                <label className="block text-xs font-bold text-gray-600 mb-1.5">In cerca di: tipo di immobile</label>
-                <select
-                  className="w-full sm:w-64 px-3 py-2.5 border border-gray-200 rounded-xl text-xs bg-gray-50 font-semibold text-gray-700"
-                  value={filters.tipoImmobile}
-                  onChange={(e) => setFilters(f => ({ ...f, tipoImmobile: e.target.value }))}
-                >
-                  {TIPO_IMMOBILE_OPTIONS.map(o => (
-                    <option key={o.value} value={o.value}>{o.label}</option>
-                  ))}
-                </select>
-              </div>
             </div>
 
             {/* Footer */}
