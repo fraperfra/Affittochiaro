@@ -3,7 +3,7 @@ import React from 'react';
 export const StatBanner: React.FC = () => {
   return (
     <section className="bg-brand-green px-4 py-10">
-      <div className="max-w-full lg:px-20 mx-auto">
+      <div className="max-w-7xl mx-auto">
         <p className="text-xs font-bold text-action-green uppercase tracking-widest mb-4 border-l-2 border-action-green pl-3">
           Statistiche Affittochiaro
         </p>

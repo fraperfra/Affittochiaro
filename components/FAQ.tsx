@@ -33,7 +33,7 @@ export const FAQ: React.FC = () => {
 
   return (
     <section className="py-16 px-4 bg-gray-50 border-b border-gray-100">
-      <div className="max-w-full lg:px-20 mx-auto">
+      <div className="max-w-7xl mx-auto">
 
         <div className="mb-10 text-left lg:text-center">
           <h2 className="text-[24px] font-bold text-brand-green mb-4 leading-[1.2]">

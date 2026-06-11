@@ -10,7 +10,7 @@ const PROBLEM_IMAGES = [
 export const Problems: React.FC = () => {
   return (
     <section className="py-16 bg-gray-50 px-4 border-b border-gray-100">
-      <div className="max-w-full lg:px-20 mx-auto">
+      <div className="max-w-7xl mx-auto">
 
         <h2 className="text-[24px] md:text-3xl font-bold text-brand-green mb-4 leading-[1.2]">
           Cercare casa in affitto è un incubo

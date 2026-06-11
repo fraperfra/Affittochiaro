@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import {
-    ArrowRight,
+    
     Phone,
 } from 'lucide-react';
 
@@ -57,7 +57,7 @@ export const ServiziCasaPage: React.FC = () => {
 
             {/* Hero */}
             <section className="py-16 bg-white px-4 border-b border-gray-100">
-                <div className="max-w-full lg:px-20 mx-auto">
+                <div className="max-w-7xl mx-auto">
                     <h1 className="mt-4 text-3xl md:text-5xl font-bold text-brand-green leading-[1.1]">
                         La tua casa, senza pensieri.
                     </h1>
@@ -69,7 +69,7 @@ export const ServiziCasaPage: React.FC = () => {
 
             {/* Services grid */}
             <section className="py-16 bg-gray-50 px-4 border-b border-gray-100">
-                <div className="max-w-full lg:px-20 mx-auto">
+                <div className="max-w-7xl mx-auto">
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
                         {SERVICES.map((s, idx) => (
                             <div key={idx} className="bg-white rounded-xl border border-gray-200 overflow-hidden hover:border-gray-300 transition-colors flex flex-col">
@@ -82,7 +82,7 @@ export const ServiziCasaPage: React.FC = () => {
                                     <h3 className="text-base font-bold text-brand-green mb-2">{s.title}</h3>
                                     <p className="text-medium-gray text-sm leading-[1.6] mb-4 flex-1">{s.description}</p>
                                     <Link to={s.link} className="inline-flex items-center gap-1 text-sm font-bold text-brand-green hover:text-action-green transition-colors">
-                                        Scopri il servizio <ArrowRight size={14} />
+                                        Scopri il servizio
                                     </Link>
                                 </div>
                             </div>
@@ -93,7 +93,7 @@ export const ServiziCasaPage: React.FC = () => {
 
             {/* Perché sceglierci */}
             <section className="py-16 bg-white px-4 border-b border-gray-100">
-                <div className="max-w-full lg:px-20 mx-auto">
+                <div className="max-w-7xl mx-auto">
                     <h2 className="text-[24px] font-bold text-brand-green mb-4 leading-[1.2]">
                         Perché affidarsi al Concierge di Affittochiaro?
                     </h2>
@@ -113,7 +113,7 @@ export const ServiziCasaPage: React.FC = () => {
 
             {/* CTA finale */}
             <section className="py-16 bg-gray-50 px-4">
-                <div className="max-w-full lg:px-20 mx-auto">
+                <div className="max-w-7xl mx-auto">
                     <h2 className="text-[24px] font-bold text-brand-green mb-3 leading-[1.2]">
                         Hai bisogno di aiuto ora?
                     </h2>

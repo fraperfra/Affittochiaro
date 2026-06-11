@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { UserCheck, Building2, ArrowRight } from 'lucide-react';
+import { UserCheck, Building2 } from 'lucide-react';
 
 export const ChiSiamoPage: React.FC = () => {
   return (
@@ -8,7 +8,7 @@ export const ChiSiamoPage: React.FC = () => {
 
       {/* ── Hero ───────────────────────────────────────────────────────── */}
       <section className="py-16 bg-white px-4 border-b border-gray-100">
-        <div className="max-w-full lg:px-20 mx-auto">
+        <div className="max-w-7xl mx-auto">
           <div className="lg:grid lg:grid-cols-2 lg:gap-16 lg:items-center">
 
             <div>
@@ -48,7 +48,7 @@ export const ChiSiamoPage: React.FC = () => {
 
       {/* ── Origine ────────────────────────────────────────────────────── */}
       <section className="py-16 bg-gray-50 px-4 border-b border-gray-100">
-        <div className="max-w-full lg:px-20 mx-auto">
+        <div className="max-w-7xl mx-auto">
           <div className="lg:grid lg:grid-cols-2 lg:gap-16 lg:items-center">
 
             <div className="order-2 lg:order-1 mt-10 lg:mt-0">
@@ -89,7 +89,7 @@ export const ChiSiamoPage: React.FC = () => {
 
       {/* ── Due lati ───────────────────────────────────────────────────── */}
       <section className="py-16 bg-white px-4 border-b border-gray-100">
-        <div className="max-w-full lg:px-20 mx-auto">
+        <div className="max-w-7xl mx-auto">
 
           <h2 className="text-[24px] font-bold text-brand-green mb-4 leading-[1.2]">
             Una piattaforma, due lati
@@ -131,7 +131,7 @@ export const ChiSiamoPage: React.FC = () => {
 
       {/* ── CTA ────────────────────────────────────────────────────────── */}
       <section className="py-16 bg-gray-50 px-4">
-        <div className="max-w-full lg:px-20 mx-auto">
+        <div className="max-w-7xl mx-auto">
           <h2 className="text-[24px] font-bold text-brand-green mb-3 leading-[1.2]">
             Pronto a iniziare?
           </h2>
@@ -144,7 +144,6 @@ export const ChiSiamoPage: React.FC = () => {
               className="inline-flex items-center justify-center gap-2 bg-brand-green text-white px-8 py-3.5 rounded-xl font-bold text-sm hover:brightness-110 transition-all"
             >
               Crea il tuo profilo gratis
-              <ArrowRight size={16} />
             </Link>
             <Link
               to="/case-e-stanze-in-affitto"

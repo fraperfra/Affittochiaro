@@ -11,7 +11,7 @@ const BENEFIT_IMAGES = [
 export const Benefits: React.FC = () => {
   return (
     <section id="come-funziona-info" className="py-16 bg-white px-4 border-b border-gray-100">
-      <div className="max-w-full lg:px-20 mx-auto">
+      <div className="max-w-7xl mx-auto">
         <h2 className="text-[24px] md:text-3xl font-bold text-brand-green mb-4 leading-[1.2]">
           Presenta te stesso come il candidato ideale
         </h2>

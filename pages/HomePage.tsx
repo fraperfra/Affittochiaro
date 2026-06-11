@@ -3,9 +3,7 @@ import { PartnersCarousel } from '../src/components/ui';
 import {
   Hero,
   Problems,
-  StatBanner,
   Benefits,
-  QuoteBanner,
   ComeFunziona,
   CityMap,
   Testimonials,
@@ -33,9 +31,7 @@ export const HomePage: React.FC<HomePageProps> = ({
       <Hero counter={counter} activeCityName={activeCityName} />
       <PartnersCarousel />
       <Problems />
-      <StatBanner />
       <Benefits />
-      <QuoteBanner />
       <ComeFunziona />
       <CityMap activeCityName={activeCityName} onCityChange={onCityChange} />
       <Testimonials />

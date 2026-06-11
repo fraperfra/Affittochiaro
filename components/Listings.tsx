@@ -33,7 +33,7 @@ export const Listings: React.FC<ListingsProps> = ({
 
   return (
     <section id="annunci" className="py-16 bg-[#FAFAFA] px-4">
-      <div className="max-w-full lg:px-20 mx-auto">
+      <div className="max-w-7xl mx-auto">
         <h2 className="text-[24px] font-bold text-brand-green mb-4 leading-[1.2]">Scegli la Tua Prossima Casa</h2>
         <p className="text-lg text-medium-gray mb-10 leading-[1.5]">
           Sfoglia le migliori opportunità immobiliari aggiornate in tempo reale dai portali e dai social a{' '}
@@ -102,11 +102,6 @@ export const Listings: React.FC<ListingsProps> = ({
             className="inline-flex items-center gap-3 text-brand-green font-bold text-lg hover:text-action-green transition-all"
           >
             <span>Vedi tutti gli annunci disponibili</span>
-            <div className="w-10 h-10 bg-brand-green/5 rounded-full flex items-center justify-center group-hover:bg-action-green group-hover:text-white transition-all">
-              <svg className="w-5 h-5 translate-x-0 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
-              </svg>
-            </div>
           </button>
         </div>
       </div>

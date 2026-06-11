@@ -57,7 +57,7 @@ export const ComeFunziona: React.FC = () => {
 
   return (
     <section className="py-16 bg-white px-4 border-b border-gray-100">
-      <div className="max-w-full lg:px-20 mx-auto">
+      <div className="max-w-7xl mx-auto">
 
         {/* Header */}
         <div className="mb-10">

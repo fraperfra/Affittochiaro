@@ -77,7 +77,7 @@ export const ComeFunzionaPage: React.FC = () => {
 
       {/* ── HERO ──────────────────────────────────────────────── */}
       <section className="py-16 lg:py-20 bg-soft-green/40 border-b border-gray-100 px-4">
-        <div className="max-w-full lg:px-20 mx-auto">
+        <div className="max-w-7xl mx-auto">
           <h1 className="text-[28px] md:text-4xl lg:text-5xl font-bold text-brand-green mb-4 leading-[1.15]">
             Come funziona <span className="text-action-green">Affittochiaro</span>
           </h1>
@@ -110,7 +110,7 @@ export const ComeFunzionaPage: React.FC = () => {
 
       {/* ── STEPS — alternating layout ────────────────────────── */}
       <section className="py-16 bg-white border-b border-gray-100 px-4">
-        <div className="max-w-full lg:px-20 mx-auto">
+        <div className="max-w-7xl mx-auto">
           <h2 className="text-[24px] md:text-3xl font-bold text-brand-green mb-12 leading-[1.2]">
             {activeTab === 'inquilino' ? 'Trovare casa in 3 passi' : "Trovare l'inquilino giusto in 3 passi"}
           </h2>
@@ -149,7 +149,7 @@ export const ComeFunzionaPage: React.FC = () => {
 
       {/* ── PERCHÉ AFFITTOCHIARO ──────────────────────────────── */}
       <section className="py-16 bg-gray-50 border-b border-gray-100 px-4">
-        <div className="max-w-full lg:px-20 mx-auto">
+        <div className="max-w-7xl mx-auto">
           <h2 className="text-[24px] md:text-3xl font-bold text-brand-green mb-8 leading-[1.2]">
             {activeTab === 'inquilino' ? 'I vantaggi per chi cerca casa' : 'I vantaggi per i proprietari'}
           </h2>

@@ -99,7 +99,7 @@ export const AgenziePartnerPage: React.FC = () => {
 
       {/* ── HERO ──────────────────────────────────────────────── */}
       <section className="relative pt-12 pb-20 lg:pt-20 lg:pb-28 overflow-hidden bg-gradient-to-b from-soft-green/40 to-white">
-        <div className="max-w-5xl mx-auto px-4">
+        <div className="max-w-7xl mx-auto px-4">
 
           <div className="space-y-8 relative z-10 max-w-2xl">
             <h1 className="text-4xl lg:text-5xl font-bold text-brand-green leading-tight">
@@ -133,7 +133,7 @@ export const AgenziePartnerPage: React.FC = () => {
 
       {/* ── GARANZIE AGENZIA VERIFICATA ───────────────────────── */}
       <section className="py-14 px-4 bg-white border-b border-gray-100">
-        <div className="max-w-5xl mx-auto">
+        <div className="max-w-7xl mx-auto">
           <h2 className="text-2xl md:text-[28px] font-bold text-brand-green mb-8 leading-[1.2]">
             Cosa garantisce un'agenzia partner Affittochiaro
           </h2>
@@ -153,7 +153,7 @@ export const AgenziePartnerPage: React.FC = () => {
 
       {/* ── GRIGLIA AGENZIE ───────────────────────────────────── */}
       <section className="py-12 px-4">
-        <div className="max-w-5xl mx-auto">
+        <div className="max-w-7xl mx-auto">
           <h2 className="text-xs font-bold text-medium-gray uppercase tracking-widest mb-6">
             {filtered.length} {filtered.length === 1 ? 'agenzia' : 'agenzie'} partner
           </h2>
@@ -241,7 +241,7 @@ export const AgenziePartnerPage: React.FC = () => {
 
       {/* ── PERCHÉ LE AGENZIE SCELGONO AFFITTOCHIARO (B2B) ───── */}
       <section className="py-16 px-4 bg-gray-50 border-t border-gray-100">
-        <div className="max-w-5xl mx-auto">
+        <div className="max-w-7xl mx-auto">
           <h2 className="text-2xl md:text-3xl font-bold text-brand-green mb-3 leading-[1.2]">
             Perché le agenzie scelgono Affittochiaro
           </h2>
@@ -266,7 +266,7 @@ export const AgenziePartnerPage: React.FC = () => {
 
       {/* ── PRICING ───────────────────────────────────────────── */}
       <section className="py-16 px-4 bg-white border-t border-gray-100">
-        <div className="max-w-5xl mx-auto">
+        <div className="max-w-7xl mx-auto">
           <h2 className="text-2xl md:text-3xl font-bold text-brand-green mb-3 leading-[1.2]">
             Scegli il pacchetto più adatto alla tua agenzia
           </h2>
