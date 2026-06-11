@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { User, Home, CheckCircle, ArrowRight } from 'lucide-react';
+import { User, Home, CheckCircle } from 'lucide-react';
 
 interface Step {
   number: string;
@@ -73,7 +73,6 @@ export const ComeFunzionaPage: React.FC = () => {
   const steps = activeTab === 'inquilino' ? INQUILINO_STEPS : PROPRIETARIO_STEPS;
   const perche = activeTab === 'inquilino' ? INQUILINO_PERCHE : PROPRIETARIO_PERCHE;
   const ctaHref = activeTab === 'inquilino' ? '/case-e-stanze-in-affitto' : '/register';
-  const ctaLabel = activeTab === 'inquilino' ? 'Inizia a cercare casa' : 'Registra la tua agenzia';
 
   return (
     <div className="bg-white">
@@ -178,31 +177,22 @@ export const ComeFunzionaPage: React.FC = () => {
       </section>
 
       {/* ── CTA ────────────────────────────────────────────────── */}
-      <section className="py-16 bg-brand-green px-4">
-        <div className="max-w-full lg:px-20 mx-auto">
+      <section className="py-20 px-4">
+        <div className="max-w-4xl mx-auto bg-brand-green rounded-2xl p-10 md:p-16 text-center">
           <h2 className="text-[24px] md:text-3xl font-bold text-white mb-3 leading-[1.2]">
             {activeTab === 'inquilino' ? 'Pronto a trovare la tua casa?' : "Pronto a trovare l'inquilino giusto?"}
           </h2>
-          <p className="text-white/70 text-base mb-8 max-w-xl leading-[1.5]">
+          <p className="text-white/70 text-base mb-8 max-w-xl mx-auto leading-[1.5]">
             {activeTab === 'inquilino'
               ? 'Crea il profilo una volta sola. Vale per tutti gli annunci.'
               : 'Inizia quando vuoi, senza abbonamenti né commissioni.'}
           </p>
-          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-            <Link
-              to="/register"
-              className="inline-flex items-center gap-2 bg-action-green text-white font-bold px-7 py-3.5 rounded-xl hover:brightness-110 transition-all"
-            >
-              Registrati gratis
-              <ArrowRight size={16} />
-            </Link>
-            <Link
-              to={ctaHref}
-              className="text-white/80 text-sm font-semibold hover:text-white transition-colors"
-            >
-              {ctaLabel} →
-            </Link>
-          </div>
+          <Link
+            to={ctaHref}
+            className="inline-flex items-center justify-center bg-action-green text-white px-8 py-4 min-h-[44px] rounded-xl font-bold text-base hover:brightness-110 transition-all"
+          >
+            {activeTab === 'inquilino' ? 'Inizia a cercare casa' : "Trova l'inquilino"}
+          </Link>
 
           <p className="mt-8 text-white/50 text-xs">
             {activeTab === 'inquilino' ? (
