@@ -194,23 +194,6 @@ export const ComeFunzionaPage: React.FC = () => {
             {activeTab === 'inquilino' ? 'Inizia a cercare casa' : "Trova l'inquilino"}
           </Link>
 
-          <p className="mt-8 text-white/50 text-xs">
-            {activeTab === 'inquilino' ? (
-              <>
-                Sei un proprietario?{' '}
-                <button onClick={() => setActiveTab('proprietario')} className="text-action-green font-bold hover:underline">
-                  Guarda come funziona per i proprietari
-                </button>
-              </>
-            ) : (
-              <>
-                Stai cercando casa?{' '}
-                <button onClick={() => setActiveTab('inquilino')} className="text-action-green font-bold hover:underline">
-                  Guarda come funziona per gli inquilini
-                </button>
-              </>
-            )}
-          </p>
         </div>
       </section>
 
