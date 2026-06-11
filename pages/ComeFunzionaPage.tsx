@@ -41,7 +41,7 @@ const PROPRIETARIO_STEPS: Step[] = [
     number: '02',
     title: 'Valuta tutto in una schermata',
     description: "Ogni profilo include occupazione, reddito mensile, referenze e video presentazione. Nessuna telefonata per raccogliere documenti.",
-    image: 'https://placehold.co/600x400/f4f9f6/004832?text=Valuta+profili',
+    image: '/assets/photo_2026-06-11_14-29-52.jpg',
   },
   {
     number: '03',
