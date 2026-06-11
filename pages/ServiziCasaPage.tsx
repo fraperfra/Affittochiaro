@@ -58,7 +58,7 @@ export const ServiziCasaPage: React.FC = () => {
             {/* Hero */}
             <section className="py-16 bg-white px-4 border-b border-gray-100">
                 <div className="max-w-7xl mx-auto">
-                    <h1 className="mt-4 text-3xl md:text-5xl font-bold text-brand-green leading-[1.1]">
+                    <h1 className="text-[28px] md:text-4xl lg:text-5xl font-bold text-brand-green leading-[1.15]">
                         La tua casa, senza pensieri.
                     </h1>
                     <p className="mt-4 text-sm md:text-base text-medium-gray leading-[1.5] w-full lg:-mr-20">

@@ -89,10 +89,6 @@ export const AgenziePartnerPage: React.FC = () => {
 
   const visibleAgencies = showAll ? filtered : filtered.slice(0, 10);
 
-  const avgRating = (
-    mockAgencies.filter(a => a.rating).reduce((s, a) => s + (a.rating ?? 0), 0) /
-    mockAgencies.filter(a => a.rating).length
-  ).toFixed(1);
 
   return (
     <div className="bg-white">
@@ -102,7 +98,7 @@ export const AgenziePartnerPage: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4">
 
           <div className="space-y-8 relative z-10 max-w-2xl">
-            <h1 className="text-4xl lg:text-5xl font-bold text-brand-green leading-tight">
+            <h1 className="text-[28px] md:text-4xl lg:text-5xl font-bold text-brand-green leading-[1.15]">
               Agenzie Partner{' '}
               <span className="text-action-green">Selezionate</span>
             </h1>
@@ -110,21 +106,6 @@ export const AgenziePartnerPage: React.FC = () => {
             <p className="text-xl text-gray-600 leading-relaxed max-w-lg">
               Ogni agenzia supera una verifica documentale prima di entrare nella rete. Trovi solo chi gestisce davvero affitti nella tua zona.
             </p>
-
-            <div className="flex flex-wrap gap-6 md:gap-10 pt-4">
-              <div>
-                <p className="text-3xl font-bold text-brand-green">20+</p>
-                <p className="text-xs uppercase tracking-widest text-gray-500 font-semibold mt-0.5">agenzie partner</p>
-              </div>
-              <div className="border-l border-gray-200 pl-6 md:pl-10">
-                <p className="text-3xl font-bold text-brand-green">{avgRating}/5</p>
-                <p className="text-xs uppercase tracking-widest text-gray-500 font-semibold mt-0.5">soddisfazione inquilini</p>
-              </div>
-              <div className="border-l border-gray-200 pl-6 md:pl-10">
-                <p className="text-3xl font-bold text-brand-green">30.000+</p>
-                <p className="text-xs uppercase tracking-widest text-gray-500 font-semibold mt-0.5">inquilini attivi</p>
-              </div>
-            </div>
           </div>
 
 
@@ -139,12 +120,14 @@ export const AgenziePartnerPage: React.FC = () => {
           </h2>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {GUARANTEES.map(({ icon: Icon, title, description }) => (
-              <div key={title} className="flex flex-col gap-3">
+              <div key={title} className="flex flex-row sm:flex-col items-start gap-3">
                 <div className="w-10 h-10 bg-soft-green rounded-xl flex items-center justify-center flex-shrink-0">
                   <Icon size={20} className="text-brand-green" />
                 </div>
-                <h3 className="font-bold text-brand-green text-sm leading-tight">{title}</h3>
-                <p className="text-sm text-medium-gray leading-[1.6]">{description}</p>
+                <div>
+                  <h3 className="font-bold text-brand-green text-sm leading-tight">{title}</h3>
+                  <p className="text-sm text-medium-gray leading-[1.6] mt-1">{description}</p>
+                </div>
               </div>
             ))}
           </div>
