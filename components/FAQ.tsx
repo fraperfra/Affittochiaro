@@ -15,10 +15,6 @@ const faqData: FAQItem[] = [
     answer: "Creare il profilo è completamente gratuito. Puoi aggiungere documenti, caricare la video presentazione e candidarti a tutti gli annunci che vuoi senza alcun costo. Sono disponibili piani premium per chi vuole maggiore visibilità."
   },
   {
-    question: "Come viene verificato il mio profilo?",
-    answer: "Verifichiamo identità, reddito e referenze dai precedenti proprietari. Un profilo verificato aumenta le possibilità di essere contattato del 300% rispetto a un profilo incompleto."
-  },
-  {
     question: "Quanto tempo ci vuole per trovare casa?",
     answer: "In media meno di 2 settimane. Grazie al profilo completo e verificato, i proprietari rispondono più velocemente. Il 78% degli utenti riceve almeno una risposta entro 48 ore dalla candidatura."
   },
