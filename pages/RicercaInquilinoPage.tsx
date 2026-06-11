@@ -438,7 +438,7 @@ export const RicercaInquilinoPage: React.FC = () => {
 
       {/* ── 2b. Filter Bar (desktop, immobiliare style) ──────────── */}
       <div className="hidden lg:block bg-white border-b border-gray-200 sticky top-20 z-40 shadow-sm">
-        <div ref={filterBarRef} className="max-w-screen-xl mx-auto px-4 py-3 flex items-center gap-2">
+        <div ref={filterBarRef} className="px-6 py-3 flex items-center gap-2">
 
           {/* Search */}
           <div className="relative w-64 shrink-0">
