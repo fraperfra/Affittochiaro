@@ -45,7 +45,7 @@ const PROPRIETARIO_STEPS: Step[] = [
   {
     number: '03',
     title: 'Contatta e organizza la visita',
-    description: "Scrivi direttamente all'inquilino dalla piattaforma. Niente intermediari, niente commissioni.",
+    description: "Scrivi direttamente all'inquilino per fissare un appuntamento e organizzare una visita.",
     image: 'https://placehold.co/600x400/f4f9f6/004832?text=Contatta',
   },
 ];
