@@ -25,7 +25,7 @@ const INQUILINO_STEPS: Step[] = [
     number: '03',
     title: 'Candidati con un click',
     description: "Sfoglia gli annunci e invia la candidatura istantaneamente. Il proprietario riceve subito il tuo profilo completo.",
-    image: 'https://placehold.co/600x400/f4f9f6/004832?text=Candidati',
+    image: '/assets/photo_2026-06-11_14-20-34.jpg',
   },
 ];
 
