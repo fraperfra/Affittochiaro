@@ -55,14 +55,12 @@ const INQUILINO_PERCHE = [
   'Un profilo vale per tutti gli annunci',
   'Agenzie e proprietari verificati',
   'Zero visite a vuoto',
-  'Documenti al sicuro e sempre accessibili',
 ];
 
 const PROPRIETARIO_PERCHE = [
   'Database di 30.000+ inquilini con profilo completo',
   'Candidature strutturate in una sola schermata',
   'Tempo medio di locazione ridotto da 45 a 18 giorni',
-  'Niente intermediari, niente commissioni',
 ];
 
 type Tab = 'inquilino' | 'proprietario';
