@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import {
   MapPin, BadgeCheck, Home, Star,
   Clock, ShieldCheck,
-  Users, Check, Shield, Zap, Crown, ClipboardList,
+  Users, Check, Shield, Zap, Crown, Target,
 } from 'lucide-react';
 import { mockAgencies } from '../src/utils/mockData';
 
@@ -37,9 +37,9 @@ const WHY_JOIN = [
     description: 'I candidati arrivano già pre-selezionati. Meno telefonate a freddo, più visite qualificate e contratti firmati in meno tempo.',
   },
   {
-    icon: ClipboardList,
-    title: 'CV locativo completo, zero sorprese',
-    description: 'Ogni inquilino ha uno storico affitti, garanti, documenti e uno score di affidabilità. Sai già con chi hai a che fare prima della visita.',
+    icon: Target,
+    title: 'Candidature in target',
+    description: 'Ricevi solo proposte in linea con i tuoi annunci: filtri per zona, budget e tipologia ti portano gli inquilini giusti, evitando visite a vuoto.',
   },
 ];
 
