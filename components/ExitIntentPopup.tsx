@@ -125,7 +125,7 @@ export const ExitIntentPopup: React.FC = () => {
                   type="submit"
                   className="w-full bg-action-green text-white py-3 rounded-xl font-bold text-base hover:brightness-110 transition-all shadow-md shadow-action-green/30 flex items-center justify-center gap-2"
                 >
-                  Inviami la guida →
+                  Inviami la guida
                 </button>
               </form>
 

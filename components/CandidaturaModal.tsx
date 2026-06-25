@@ -74,7 +74,7 @@ export const CandidaturaModal: React.FC<CandidaturaModalProps> = ({ isOpen, onCl
             <h2 className="text-base font-bold text-gray-900">Invia candidatura</h2>
             <p className="text-xs text-gray-500 mt-0.5 line-clamp-1">{listing.titolo}</p>
           </div>
-          <button onClick={onClose} className="p-2 rounded-xl hover:bg-gray-100 transition-colors text-gray-500">
+          <button onClick={onClose} aria-label="Chiudi" className="p-2 rounded-xl hover:bg-gray-100 transition-colors text-gray-500">
             <X size={18} />
           </button>
         </div>

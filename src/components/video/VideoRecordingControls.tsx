@@ -97,6 +97,7 @@ export function VideoRecordingControls({
             onClick={onStart}
             className="w-16 h-16 rounded-full bg-red-500 hover:bg-red-600 text-white flex items-center justify-center transition-all duration-200 shadow-lg hover:shadow-xl hover:scale-105"
             title="Avvia registrazione"
+            aria-label="Avvia registrazione"
           >
             <Circle className="w-6 h-6 fill-current" />
           </button>
@@ -110,6 +111,7 @@ export function VideoRecordingControls({
                 onClick={onPause}
                 className="w-12 h-12 rounded-full bg-yellow-500 hover:bg-yellow-600 text-white flex items-center justify-center transition-colors"
                 title="Pausa"
+                aria-label="Pausa registrazione"
               >
                 <Pause className="w-5 h-5" />
               </button>
@@ -120,6 +122,7 @@ export function VideoRecordingControls({
               onClick={onStop}
               className="w-16 h-16 rounded-full bg-red-500 hover:bg-red-600 text-white flex items-center justify-center transition-all duration-200 shadow-lg animate-pulse"
               title="Ferma registrazione"
+              aria-label="Ferma registrazione"
             >
               <Square className="w-6 h-6 fill-current" />
             </button>
@@ -134,6 +137,7 @@ export function VideoRecordingControls({
                 onClick={onResume}
                 className="w-16 h-16 rounded-full bg-green-500 hover:bg-green-600 text-white flex items-center justify-center transition-colors shadow-lg"
                 title="Riprendi"
+                aria-label="Riprendi registrazione"
               >
                 <Play className="w-6 h-6 fill-current ml-1" />
               </button>
@@ -144,6 +148,7 @@ export function VideoRecordingControls({
               onClick={onStop}
               className="w-12 h-12 rounded-full bg-red-500 hover:bg-red-600 text-white flex items-center justify-center transition-colors"
               title="Ferma registrazione"
+              aria-label="Ferma registrazione"
             >
               <Square className="w-5 h-5 fill-current" />
             </button>

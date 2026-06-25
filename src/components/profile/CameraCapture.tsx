@@ -188,6 +188,7 @@ export function CameraCapture({ onCapture, onCancel }: CameraCaptureProps) {
             onClick={switchCamera}
             className="p-3 bg-gray-100 hover:bg-gray-200 rounded-full transition-colors"
             title="Cambia camera"
+            aria-label="Cambia camera"
           >
             <SwitchCamera className="w-5 h-5 text-gray-600" />
           </button>
@@ -198,6 +199,7 @@ export function CameraCapture({ onCapture, onCancel }: CameraCaptureProps) {
           onClick={capture}
           className="w-16 h-16 rounded-full bg-white border-4 border-action-green flex items-center justify-center hover:scale-105 transition-transform shadow-lg"
           title="Scatta foto"
+          aria-label="Scatta foto"
         >
           <div className="w-12 h-12 rounded-full bg-action-green" />
         </button>
@@ -207,6 +209,7 @@ export function CameraCapture({ onCapture, onCancel }: CameraCaptureProps) {
           onClick={handleCancel}
           className="p-3 bg-gray-100 hover:bg-gray-200 rounded-full transition-colors"
           title="Annulla"
+          aria-label="Annulla"
         >
           <X className="w-5 h-5 text-gray-600" />
         </button>

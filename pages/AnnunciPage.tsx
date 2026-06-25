@@ -376,6 +376,7 @@ export const AnnunciPage: React.FC = () => {
               {searchText && (
                 <button
                   onClick={handleClearFilters}
+                  aria-label="Cancella ricerca"
                   className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-gray-400 hover:text-gray-600"
                 >
                   <X size={18} />
@@ -532,11 +533,12 @@ export const AnnunciPage: React.FC = () => {
               <div className="flex items-center bg-gray-100 p-0.5 rounded-lg border border-gray-200 shrink-0">
                 <button
                   onClick={() => setShowMap(false)}
+                  aria-label="Vista elenco"
                   className="flex items-center px-2 py-1.5 rounded-md text-xs font-bold text-gray-500 active:scale-95"
                 >
                   <List className="w-3.5 h-3.5" />
                 </button>
-                <button className="flex items-center px-2 py-1.5 rounded-md text-xs font-bold bg-white text-primary-600 shadow-sm">
+                <button aria-label="Vista mappa" className="flex items-center px-2 py-1.5 rounded-md text-xs font-bold bg-white text-primary-600 shadow-sm">
                   <MapIcon className="w-3.5 h-3.5" />
                 </button>
               </div>
@@ -1084,7 +1086,7 @@ export const AnnunciPage: React.FC = () => {
                       <div className="flex-1 p-4 flex flex-col min-w-0">
                         <div className="flex items-start justify-between gap-2">
                           <span className="text-xl font-bold text-gray-900">{formatPrice(listing.prezzo)}</span>
-                          <button className="text-gray-300 hover:text-primary-500 transition-colors shrink-0">
+                          <button aria-label="Salva tra i preferiti" className="text-gray-300 hover:text-primary-500 transition-colors shrink-0">
                             <Heart size={20} />
                           </button>
                         </div>
@@ -1105,7 +1107,7 @@ export const AnnunciPage: React.FC = () => {
                             <BadgeCheck size={13} className="text-primary-500" /> {listing.tipologia}
                           </span>
                           <Link to={url} className="text-sm font-bold text-primary-600 hover:text-primary-700">
-                            Candidati →
+                            Candidati
                           </Link>
                         </div>
                       </div>

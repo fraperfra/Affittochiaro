@@ -8,7 +8,7 @@ import {
   Home,
   FileText,
   CheckCircle,
-  ArrowRight,
+  
   ArrowLeft,
   Sparkles,
   Eye,
@@ -595,6 +595,7 @@ export const TenantRegistrationModal: React.FC<TenantRegistrationModalProps> = (
             <button
               onClick={handleClose}
               disabled={isSubmitting}
+              aria-label="Chiudi"
               className="w-9 h-9 flex items-center justify-center rounded-full bg-white/20 hover:bg-white/30 transition-colors disabled:opacity-50 shrink-0"
             >
               <X size={18} className="text-white" />
@@ -1214,7 +1215,6 @@ export const TenantRegistrationModal: React.FC<TenantRegistrationModalProps> = (
             ) : (
               <>
                 Continua
-                <ArrowRight size={18} />
               </>
             )}
           </button>

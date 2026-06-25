@@ -12,7 +12,7 @@ export default {
       colors: {
         // Landing Page Colors (legacy)
         'brand-green': '#1A5C38',
-        'action-green': '#3DB83A',
+        'action-green': '#1E7A2E',
         'soft-green': '#E8F5E9',
         'error-red': '#FF5A5F',
         'trust-blue': '#2B7DE9',

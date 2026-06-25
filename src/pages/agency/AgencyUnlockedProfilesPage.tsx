@@ -295,6 +295,7 @@ function ProfileCard({
               onClick={onEditNote}
               className="p-1.5 hover:bg-yellow-100 rounded-lg text-yellow-700 transition-colors"
               title="Modifica nota"
+              aria-label="Modifica nota"
             >
               <Edit2 size={13} />
             </button>

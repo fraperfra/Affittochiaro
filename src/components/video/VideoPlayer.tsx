@@ -174,6 +174,7 @@ export function VideoPlayer({
               {/* Fullscreen */}
               <button
                 onClick={toggleFullscreen}
+                aria-label="Schermo intero"
                 className="text-white hover:text-action-green transition-colors"
               >
                 <Maximize className="w-5 h-5" />

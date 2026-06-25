@@ -137,6 +137,7 @@ export function VideoUploader({
           />
           <button
             onClick={handleReset}
+            aria-label="Rimuovi video"
             className="absolute top-2 right-2 p-1.5 bg-black/50 hover:bg-black/70 text-white rounded-full transition-colors"
           >
             <X className="w-4 h-4" />

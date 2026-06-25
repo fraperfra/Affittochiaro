@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Calendar, Clock, ArrowRight } from 'lucide-react';
+import { Calendar, Clock } from 'lucide-react';
 import { PageMeta } from '@/components/ui/PageMeta';
 import { Breadcrumb } from '@/components/ui/Breadcrumb';
 import { articoli } from '@/lib/mock-data';
@@ -113,7 +113,7 @@ export const AffittoNewsPage: React.FC = () => {
                     to={`/guide-affitto/${articolo.slug}`}
                     className="inline-flex items-center gap-1 mt-3 text-primary-600 text-sm font-semibold hover:underline"
                   >
-                    Leggi la guida <ArrowRight className="w-4 h-4" />
+                    Leggi la guida
                   </Link>
                 </div>
               </article>

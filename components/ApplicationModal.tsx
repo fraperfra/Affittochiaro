@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { X, User, Briefcase, MessageSquare, CheckCircle, ArrowRight, ArrowLeft, Sparkles } from 'lucide-react';
+import { X, User, Briefcase, MessageSquare, CheckCircle, ArrowLeft, Sparkles } from 'lucide-react';
 
 interface ListingInfo {
   id: string;
@@ -249,6 +249,7 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({
         <button
           onClick={handleClose}
           disabled={isSubmitting}
+          aria-label="Chiudi"
           className="absolute top-4 right-4 z-10 w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 transition-colors disabled:opacity-50"
         >
           <X size={20} className="text-gray-600" />
@@ -516,7 +517,6 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({
               ) : (
                 <>
                   Continua
-                  <ArrowRight size={18} />
                 </>
               )}
             </button>

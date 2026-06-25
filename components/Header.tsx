@@ -308,6 +308,7 @@ export const Header: React.FC = () => {
             <button
               onClick={sendMessage}
               disabled={!chatInput.trim()}
+              aria-label="Invia messaggio"
               className="w-9 h-9 rounded-xl bg-brand-green text-white flex items-center justify-center disabled:opacity-40 active:scale-95 transition-all shrink-0"
             >
               <Send size={14} />

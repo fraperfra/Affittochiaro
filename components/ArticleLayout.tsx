@@ -127,16 +127,16 @@ export const ArticleLayout: React.FC<ArticleLayoutProps> = ({
                         <div className="pt-8 border-t border-gray-100">
                             <h4 className="font-bold font-serif text-gray-900 mb-4 uppercase text-sm tracking-wider">Condividi</h4>
                             <div className="flex gap-2">
-                                <button className="p-2 rounded-full bg-gray-100 hover:bg-blue-100 hover:text-blue-600 transition-colors">
+                                <button aria-label="Condividi su Facebook" className="p-2 rounded-full bg-gray-100 hover:bg-blue-100 hover:text-blue-600 transition-colors">
                                     <Facebook className="w-4 h-4" />
                                 </button>
-                                <button className="p-2 rounded-full bg-gray-100 hover:bg-sky-100 hover:text-sky-500 transition-colors">
+                                <button aria-label="Condividi su Twitter" className="p-2 rounded-full bg-gray-100 hover:bg-sky-100 hover:text-sky-500 transition-colors">
                                     <Twitter className="w-4 h-4" />
                                 </button>
-                                <button className="p-2 rounded-full bg-gray-100 hover:bg-blue-100 hover:text-blue-700 transition-colors">
+                                <button aria-label="Condividi su LinkedIn" className="p-2 rounded-full bg-gray-100 hover:bg-blue-100 hover:text-blue-700 transition-colors">
                                     <Linkedin className="w-4 h-4" />
                                 </button>
-                                <button className="p-2 rounded-full bg-gray-100 hover:bg-primary-50 hover:text-primary-600 transition-colors">
+                                <button aria-label="Condividi articolo" className="p-2 rounded-full bg-gray-100 hover:bg-primary-50 hover:text-primary-600 transition-colors">
                                     <Share2 className="w-4 h-4" />
                                 </button>
                             </div>

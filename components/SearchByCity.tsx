@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { MapPin, ArrowRight } from 'lucide-react';
+import { MapPin } from 'lucide-react';
 import { buildListingUrl } from '../src/lib/utils';
 
 const CITTA_IN_EVIDENZA = [
@@ -30,7 +30,6 @@ export const SearchByCity: React.FC = () => {
             className="flex-shrink-0 flex items-center gap-1.5 text-sm font-semibold text-action-green hover:text-brand-green transition-colors"
           >
             Tutte le città
-            <ArrowRight size={15} />
           </Link>
         </div>
 
