@@ -167,7 +167,7 @@ export default function BottomTabNav({ userRole, badges = {} }: BottomTabNavProp
       aria-label="Navigazione principale"
     >
       <div
-        className="flex justify-around items-center bg-white border border-gray-100 rounded-2xl"
+        className="flex justify-around items-center bg-white border-2 border-brand-green/40 rounded-2xl"
         style={{
           height: '72px',
           boxShadow: '0 4px 20px rgba(0, 0, 0, 0.08), 0 1px 4px rgba(0, 0, 0, 0.04)',
