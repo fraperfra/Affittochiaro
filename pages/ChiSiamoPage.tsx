@@ -33,7 +33,7 @@ export const ChiSiamoPage: React.FC = () => {
 
             <div className="mt-10 lg:mt-0">
               <img
-                src="https://placehold.co/640x480/f4f9f6/004832?text=Angelo+%26+Angela"
+                src="/assets/chi-siamo-angelo-angela.webp"
                 alt="Angelo e Angela"
                 className="w-full rounded-2xl border border-gray-100"
               />
