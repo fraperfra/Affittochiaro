@@ -50,7 +50,7 @@ export const ChiSiamoPage: React.FC = () => {
 
             <div className="order-2 lg:order-1 mt-10 lg:mt-0">
               <img
-                src="https://placehold.co/640x480/004832/f4f9f6?text=Affittochiaro"
+                src="/assets/photo_2026-06-11_14-12-09.jpg"
                 alt="La piattaforma Affittochiaro"
                 className="w-full rounded-2xl"
               />
