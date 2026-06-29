@@ -20,8 +20,8 @@ export const CityMap: React.FC<CityMapProps & { compact?: boolean }> = ({ active
             {/* Italy Map from SVG file */}
             <div className="relative w-full h-full">
               <img
-                src="/assets/mappa italia.svg"
-                alt="Mappa Italia"
+                src="/assets/mappa-italia-case.png"
+                alt="Mappa Italia con case in affitto disponibili nelle principali città"
                 className="w-full h-full object-contain opacity-90"
               />
             </div>
