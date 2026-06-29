@@ -11,7 +11,6 @@ import {
   LiveNotifications,
   Footer,
   StickyBottomBar,
-  ExitIntentPopup,
 } from '../components';
 import { AddToHomeScreenModal } from './components/ui';
 import {
@@ -155,7 +154,6 @@ function LandingWrapper({ children }: { children: React.ReactNode }) {
         {children}
       </main>
       <Footer />
-      {!isAuthenticated && <ExitIntentPopup />}
       <AddToHomeScreenModal />
     </div>
   );
