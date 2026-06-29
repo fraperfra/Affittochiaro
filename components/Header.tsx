@@ -61,7 +61,7 @@ export const Header: React.FC = () => {
         className="fixed top-0 left-0 right-0 z-50 flex flex-col shadow-sm bg-white"
         style={{ paddingTop: 'env(safe-area-inset-top, 0px)' }}
       >
-        <header className="relative bg-white/95 backdrop-blur-md px-4 md:px-8 h-20 flex items-center justify-center md:justify-between border-b-2 border-brand-green/40">
+        <header className="relative bg-white/95 backdrop-blur-md px-4 md:px-8 h-20 flex items-center justify-center md:justify-between border-b border-gray-100">
 
           {/* Logo — sinistra su tutti gli schermi */}
           <Link to="/" className="flex items-center shrink-0">
@@ -160,7 +160,7 @@ export const Header: React.FC = () => {
             aria-label="Navigazione mobile"
           >
             <div
-              className="mx-3 bg-white border border-gray-100 rounded-2xl overflow-hidden"
+              className="mx-3 bg-white border-2 border-brand-green/40 rounded-2xl overflow-hidden"
               style={{
                 boxShadow: '0 4px 20px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.04)',
               }}
