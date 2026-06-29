@@ -1,8 +1,60 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { UserCheck, Building2 } from 'lucide-react';
 
+interface Step {
+  number: string;
+  title: string;
+  description: string;
+  image: string;
+}
+
+const INQUILINO_STEPS: Step[] = [
+  {
+    number: '01',
+    title: 'Crea il tuo profilo',
+    description: "Registrati in 2 minuti. Aggiungi città di ricerca, budget e una breve presentazione. I profili con video ricevono il 78% in più di risposte.",
+    image: '/assets/photo_2026-06-11_14-18-56.jpg',
+  },
+  {
+    number: '02',
+    title: 'Vieni trovato',
+    description: "Il tuo profilo è visibile a proprietari e agenzie verificate: sono loro a contattarti con proposte in linea con la tua ricerca.",
+    image: '/assets/photo_2026-06-11_14-12-09.jpg',
+  },
+  {
+    number: '03',
+    title: 'Candidati con un click',
+    description: "Sfoglia gli annunci e invia la candidatura istantaneamente. Il proprietario riceve subito il tuo profilo completo.",
+    image: '/assets/photo_2026-06-11_14-20-34.jpg',
+  },
+];
+
+const PROPRIETARIO_STEPS: Step[] = [
+  {
+    number: '01',
+    title: 'Cerca tra i profili verificati',
+    description: "Filtra per città, budget e tipologia. Visualizza solo gli inquilini che corrispondono alle tue esigenze.",
+    image: '/assets/photo_2026-06-11_14-12-09.jpg',
+  },
+  {
+    number: '02',
+    title: 'Valuta tutto in una schermata',
+    description: "Ogni profilo include occupazione, reddito mensile, referenze e video presentazione. Nessuna telefonata per raccogliere documenti.",
+    image: '/assets/photo_2026-06-11_14-29-52.jpg',
+  },
+  {
+    number: '03',
+    title: 'Contatta e organizza la visita',
+    description: "Scrivi direttamente all'inquilino per fissare un appuntamento e organizzare una visita.",
+    image: '/assets/photo_2026-06-11_14-35-30.jpg',
+  },
+];
+
 export const ChiSiamoPage: React.FC = () => {
+  const [activeTab, setActiveTab] = useState<'inquilino' | 'proprietario'>('inquilino');
+  const steps = activeTab === 'inquilino' ? INQUILINO_STEPS : PROPRIETARIO_STEPS;
+
   return (
     <div>
 
@@ -92,10 +144,17 @@ export const ChiSiamoPage: React.FC = () => {
             Affittochiaro connette chi cerca casa con chi la offre, in modo diretto e trasparente.
           </p>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            <div className="bg-white rounded-xl p-6 border border-gray-200 flex items-start gap-4 hover:border-gray-300 transition-colors">
-              <div className="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center shrink-0">
-                <UserCheck size={20} className="text-gray-500" />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-14">
+            <button
+              type="button"
+              onClick={() => setActiveTab('inquilino')}
+              aria-pressed={activeTab === 'inquilino'}
+              className={`text-left bg-white rounded-xl p-6 border flex items-start gap-4 transition-colors ${
+                activeTab === 'inquilino' ? 'border-action-green ring-1 ring-action-green/30 bg-soft-green/40' : 'border-gray-200 hover:border-gray-300'
+              }`}
+            >
+              <div className={`w-10 h-10 rounded-lg flex items-center justify-center shrink-0 ${activeTab === 'inquilino' ? 'bg-action-green text-white' : 'bg-gray-100 text-gray-500'}`}>
+                <UserCheck size={20} />
               </div>
               <div>
                 <h3 className="text-base md:text-lg font-bold text-brand-green mb-2">Sei un inquilino?</h3>
@@ -104,11 +163,18 @@ export const ChiSiamoPage: React.FC = () => {
                   agli annunci con un click.
                 </p>
               </div>
-            </div>
+            </button>
 
-            <div className="bg-white rounded-xl p-6 border border-gray-200 flex items-start gap-4 hover:border-gray-300 transition-colors">
-              <div className="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center shrink-0">
-                <Building2 size={20} className="text-gray-500" />
+            <button
+              type="button"
+              onClick={() => setActiveTab('proprietario')}
+              aria-pressed={activeTab === 'proprietario'}
+              className={`text-left bg-white rounded-xl p-6 border flex items-start gap-4 transition-colors ${
+                activeTab === 'proprietario' ? 'border-action-green ring-1 ring-action-green/30 bg-soft-green/40' : 'border-gray-200 hover:border-gray-300'
+              }`}
+            >
+              <div className={`w-10 h-10 rounded-lg flex items-center justify-center shrink-0 ${activeTab === 'proprietario' ? 'bg-action-green text-white' : 'bg-gray-100 text-gray-500'}`}>
+                <Building2 size={20} />
               </div>
               <div>
                 <h3 className="text-base md:text-lg font-bold text-brand-green mb-2">Sei un proprietario o un'agenzia?</h3>
@@ -117,7 +183,38 @@ export const ChiSiamoPage: React.FC = () => {
                   di più.
                 </p>
               </div>
-            </div>
+            </button>
+          </div>
+
+          {/* Steps — same alternating layout as "Come funziona", filtered by selected tab */}
+          <div className="space-y-14">
+            {steps.map((step, idx) => {
+              const flip = idx % 2 === 1;
+              return (
+                <div
+                  key={step.number}
+                  className={`flex flex-col lg:flex-row items-center gap-10 lg:gap-16 ${flip ? 'lg:flex-row-reverse' : ''}`}
+                >
+                  <div className="lg:w-1/2 w-full">
+                    <span className="text-[3rem] font-bold text-gray-100 leading-none tabular-nums select-none block mb-2">
+                      {step.number}
+                    </span>
+                    <h3 className="text-xl md:text-[22px] xl:text-2xl font-bold text-brand-green mb-3 leading-[1.3]">
+                      {step.title}
+                    </h3>
+                    <p className="text-base text-medium-gray leading-[1.6]">
+                      {step.description}
+                    </p>
+                  </div>
+
+                  <div className="lg:w-1/2 w-full">
+                    <div className="rounded-xl overflow-hidden border border-gray-200 shadow-sm bg-soft-green">
+                      <img src={step.image} alt={step.title} className="w-full block" />
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
           </div>
 
         </div>
