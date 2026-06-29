@@ -6,6 +6,7 @@ const partners = [
     { img: '/assets/Switcho-Logotype-Green.png', alt: 'Switcho' },
     { img: '/assets/s-i-a-p-seeklogo.png', alt: 'SIAP' },
     { img: '/assets/politecnico-di-milano-seeklogo.png', alt: 'Politecnico di Milano' },
+    { img: '/assets/logo-round.png', alt: 'Bologna Business School' },
 ];
 
 export const PartnersCarousel: React.FC = () => {
