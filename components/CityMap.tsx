@@ -36,7 +36,7 @@ export const CityMap: React.FC<CityMapProps & { compact?: boolean }> = ({ active
               AffittoChiaro è <span className="text-action-green">vicino a te</span>
             </h2>
             <p className="text-lg text-medium-gray mb-12 leading-[1.5]">
-              Siamo attivi in tutte le principali città italiane: da Milano a Palermo. Ogni giorno aggiungiamo nuovi annunci verificati, così trovi sempre l'opportunità giusta nella tua zona.
+              Siamo presenti nelle principali città italiane, da Milano a Palermo. Ogni giorno decine di nuovi utenti si iscrivono su Affittochiaro per cercare case in affitto e consultare annunci immobiliari, creando nuove opportunità nella tua zona.
             </p>
 
             {/* Agency Quote Block */}
