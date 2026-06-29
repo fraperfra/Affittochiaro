@@ -5,6 +5,7 @@ const partners = [
     { img: '/assets/Holidu_Logo_370b2379fe.png', alt: 'Holidu' },
     { img: '/assets/Switcho-Logotype-Green.png', alt: 'Switcho' },
     { img: '/assets/s-i-a-p-seeklogo.png', alt: 'SIAP' },
+    { img: '/assets/politecnico-di-milano-seeklogo.png', alt: 'Politecnico di Milano' },
 ];
 
 export const PartnersCarousel: React.FC = () => {
