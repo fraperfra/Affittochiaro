@@ -4,6 +4,7 @@ const partners = [
     { img: '/assets/678f7ff916334f650a7a969e_Domeo-Servizi-Locazioni-Residenziali-logo-orizzontale (1).png', alt: 'Domeo' },
     { img: '/assets/Holidu_Logo_370b2379fe.png', alt: 'Holidu' },
     { img: '/assets/Switcho-Logotype-Green.png', alt: 'Switcho' },
+    { img: '/assets/s-i-a-p-seeklogo.png', alt: 'SIAP' },
 ];
 
 export const PartnersCarousel: React.FC = () => {
